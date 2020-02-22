@@ -9,6 +9,7 @@
 	</account>
 	<data>
 		<category1>
+			<label>Food</label>
 			<total>7.00</total>
 			<year id="2019">
 				<total>7.00</total>
@@ -29,8 +30,12 @@
 			</year>
 		</category1>
 		<category2>
+			<label>Entertainment</label>
+			<total>0.00</total>
 		</category2>
 		<category3>
+			<label>Transportation</label>
+			<total>0.00</total>
 		</category3>
 	</data>
 </xml>
