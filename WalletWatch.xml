@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<account>
+		<pin>1234</pin>
+		<security>
+			<question>What city were you born in?</question>
+			<answer>Seattle</answer>
+		</security>
+	</account>
+	<data>
+		<category1>
+			<total>7.00</total>
+			<year id="2019">
+				<total>7.00</total>
+				<month id="2">
+					<total>7.00</total>
+					<day id="13">
+						<total>7.00</total>
+                    				<entry>
+                        				<amount>5.00</amount>
+                        				<description>Starbucks Venti Mocha</description>
+                				</entry>
+                    				<entry>
+                        				<amount>2.00</amount>
+                        				<description></description>
+                        			</entry>
+                    			</day>
+            			</month>
+			</year>
+		</category1>
+		<category2>
+		</category2>
+		<category3>
+		</category3>
+	</data>
+</xml>
