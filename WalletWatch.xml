@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xml:id="r">
+	<security xml:id="s">
+		<pin xml:id="p">1234</pin>
+		<question xml:id="q">What city were you born in?</question>
+		<answer xml:id="a">Seattle</answer>
+	</security>
+	<data xml:id="d">
+		<total xml:id="t">133.00</total>
+		<category xml:id="c-1">
+			<label xml:id="c-1-l">Food</label>
+			<total xml:id="c-1-t">7.00</total>
+			<year xml:id="c-1-2020">
+				<total xml:id="c-1-2020-t">7.00</total>
+				<month xml:id="c-1-2020-02">
+					<total xml:id="c-1-2020-02-t">7.00</total>
+					<day xml:id="c-1-2020-02-13">
+						<total xml:id="c-1-2020-02-13-t">7.00</total>
+						<entry xml:id="c-1-2020-02-13-1">
+							<amount xml:id="c-1-2020-02-13-1-a">5.00</amount>
+							<description xml:id="c-1-2020-02-13-1-d">Starbucks Venti Mocha</description>
+						</entry>
+						<entry xml:id="c-1-2020-02-13-2">
+							<amount xml:id="c-1-2020-02-13-2-a">2.00</amount>
+							<description xml:id="c-1-2020-02-13-2-d"></description>
+						</entry>
+					</day>
+				</month>
+			</year>
+		</category>
+		<category xml:id="c-2">
+			<label xml:id="c-2-l">Entertainment</label>
+			<total xml:id="c-2-t">34.00</total>
+			<year xml:id="c-2-2019">
+				<total xml:id="c-2-2019-t">34.00</total>
+				<month xml:id="c-2-2019-02">
+					<total xml:id="c-2-2019-02-t">15.00</total>
+					<day xml:id="c-2-2019-02-16">
+						<total xml:id="c-2-2019-02-16-t">15.00</total>
+						<entry xml:id="c-2-2019-02-16-1">
+							<amount xml:id="c-2-2019-02-16-1-a">15.00</amount>
+							<description xml:id="c-2-2019-02-16-1-d">Star Wars Movie Night</description>
+						</entry>
+					</day>
+				</month>
+				<month xml:id="c-2-2019-01">
+					<total xml:id="c-2-2019-01-t">19.00</total>
+					<day xml:id="c-2-2019-01-28">
+						<total xml:id="c-2-2019-01-28-t">8.00</total>
+						<entry xml:id="c-2-2019-01-28-1">
+							<amount xml:id="c-2-2019-01-28-1-a">8.00</amount>
+							<description xml:id="c-2-2019-01-28-1-d"></description>
+						</entry>
+					</day>
+					<day xml:id="c-2-2019-01-10">
+						<total xml:id="c-2-2019-01-10-t">11.00</total>
+						<entry xml:id="c-2-2019-01-10-1">
+							<amount xml:id="c-2-2019-01-10-1-a">11.00</amount>
+							<description xml:id="c-2-2019-01-10-1-d">Mini Golf</description>
+						</entry>
+					</day>
+				</month>
+			</year>
+		</category>
+		<category xml:id="c-3">
+			<label xml:id="c-3-l">Transportation</label>
+			<total xml:id="c-3-t">92.00</total>
+			<year xml:id="c-3-2019">
+				<total xml:id="c-3-2019-t">47.00</total>
+				<month xml:id="c-3-2019-01">
+					<total xml:id="c-3-2019-01-t">47.00</total>
+					<day xml:id="c-3-2019-01-16">
+						<total xml:id="c-3-2019-01-16-t">47.00</total>
+						<entry xml:id="c-3-2019-01-16-1">
+							<amount xml:id="c-3-2019-01-16-1-a">47.00</amount>
+							<description xml:id="c-3-2019-01-16-1-d"></description>
+						</entry>
+					</day>
+				</month>
+			</year>
+			<year xml:id="c-3-2018">
+				<total xml:id="c-3-2018-t">45.00</total>
+				<month xml:id="c-3-2018-12">
+					<total xml:id="c-3-2018-12-t">45.00</total>
+					<day xml:id="c-3-2018-12-03">
+						<total xml:id="c-3-2018-12-03-t">45.00</total>
+						<entry xml:id="c-3-2018-12-03-1">
+							<amount xml:id="c-3-2018-12-03-1-a">45.00</amount>
+							<description xml:id="c-3-2018-12-03-1-d">Gas</description>
+						</entry>
+					</day>
+				</month>
+			</year>
+		</category>
+	</data>
+</root>
