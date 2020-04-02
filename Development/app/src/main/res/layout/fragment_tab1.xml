@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tab1Fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Tab1Fragment">
+
+    <Space
+        android:id="@+id/menuSpacing"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/amountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/amountField"
+        android:text="@string/amountString"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
+
+    <me.abhinay.input.CurrencyEditText
+        android:id="@+id/amountField"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/amountHintString"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amountLabel" />
+
+    <Space
+        android:id="@+id/amountSpacing"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amountField" />
+
+    <TextView
+        android:id="@+id/descriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/descriptionField"
+        android:text="@string/descriptionString"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amountSpacing" />
+
+    <EditText
+        android:id="@+id/descriptionField"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="@android:string/autofill"
+        android:ems="10"
+        android:inputType="textCapWords"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" />
+
+    <Space
+        android:id="@+id/descriptionSpacing"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionField" />
+
+    <TextView
+        android:id="@+id/dateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/dateField"
+        android:text="@string/dateString"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
+
+    <EditText
+        android:id="@+id/dateField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:inputType="date"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateLabel"
+        android:autofillHints="" />
+
+    <ImageButton
+        android:id="@+id/dateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:contentDescription="@string/calendarString"
+        android:src="@android:drawable/ic_menu_my_calendar"
+        app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
+        app:layout_constraintStart_toEndOf="@+id/dateField"
+        app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
+
+    <Space
+        android:id="@+id/dateSpacing"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateField" />
+
+    <TextView
+        android:id="@+id/categoryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/categoryString"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateSpacing" />
+
+    <Space
+        android:id="@+id/category1Spacing"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
+
+    <Button
+        android:id="@+id/category1Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="14"
+        android:paddingVertical="20dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category1Spacing" />
+
+    <Space
+        android:id="@+id/category2Spacing"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/category1Button" />
+
+    <Button
+        android:id="@+id/category2Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="14"
+        android:paddingVertical="20dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category2Spacing" />
+
+    <Space
+        android:id="@+id/category3Spacing"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/category2Button" />
+
+    <Button
+        android:id="@+id/category3Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="14"
+        android:paddingVertical="20dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category3Spacing" />
+
+    <View
+        android:id="@+id/dateOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
+
+    <CalendarView
+        android:id="@+id/dateSelector"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

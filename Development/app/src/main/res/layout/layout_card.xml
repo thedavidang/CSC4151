@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/entryCards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/cardWidget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/deleteCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="2dp" />
+
+            <TextView
+                android:id="@+id/amountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/deleteCheckbox"
+                android:ems="6"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/categoryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/editButton"
+                android:layout_toStartOf="@id/dateText"
+                android:layout_toEndOf="@id/deleteCheckbox"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/descriptionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/editButton"
+                android:layout_toEndOf="@id/amountText"
+                android:textAlignment="viewEnd" />
+
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/editButton"
+                android:layout_toStartOf="@id/editButton"
+                android:ems="6"
+                android:textAlignment="viewEnd" />
+
+            <ImageButton
+                android:id="@+id/editButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="2dp"
+                android:contentDescription="@string/editString"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_edit" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <Space
+        android:id="@+id/cardSpacing"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+</LinearLayout>
