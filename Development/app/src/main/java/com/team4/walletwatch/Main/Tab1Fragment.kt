@@ -76,6 +76,10 @@ class Tab1Fragment : Fragment() {
         var description = descriptionInput.text.toString()
         var date = dateInput.text.toString()
 
+        if (amount.length > 14) {
+            amount = "$ 9,999,999.99"
+        }
+
         if (description.length > 50) {
             description = description.substring(0, 50)
         }

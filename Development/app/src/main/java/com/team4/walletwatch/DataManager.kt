@@ -121,7 +121,7 @@ object DataManager {
         val month = date.substring(5, 7)
         val day = date.substring(8)
         val dateExists = findExistingDateTags(doc, category, year, month, day)
-        val amount = amountRaw.substring(2)
+        val amount = amountRaw.substring(2).replace(",", "")
 
         var entry = 1
         var id = "c-$category"
