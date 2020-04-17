@@ -72,8 +72,15 @@ class Tab1Fragment : Fragment() {
     }
 
     private fun submitEntry(category : Int) {
-        DataManager.addEntry(model.get(), amountInput.text.toString(),
-            descriptionInput.text.toString(), dateInput.text.toString(), category.toString())
+        var amount = amountInput.text.toString()
+        var description = descriptionInput.text.toString()
+        var date = dateInput.text.toString()
+
+        if (description.length > 50) {
+            description = description.substring(0, 50)
+        }
+
+        DataManager.addEntry(model.get(), amount, description, date, category.toString())
 
         model.save(main)
 

@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: me.abhinay.input:currency-edittext:1.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0c9f45570f70cb140e3be6ff97e3b9b0/jetified-currency-edittext-1.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0c9f45570f70cb140e3be6ff97e3b9b0/jetified-currency-edittext-1.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f45f8b1a0da58607b27c007bdb7c3a9/jetified-currency-edittext-1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f45f8b1a0da58607b27c007bdb7c3a9/jetified-currency-edittext-1.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.abhinay.input/currency-edittext/1.1/86d97a900fddf241a0ccd4e6b6505653ea778b2e/currency-edittext-1.1-javadoc.jar!/" />
