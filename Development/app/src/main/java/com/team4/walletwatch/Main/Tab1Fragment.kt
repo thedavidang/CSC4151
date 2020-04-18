@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -37,6 +38,7 @@ class Tab1Fragment : Fragment() {
     private lateinit var dateInput : EditText
     private lateinit var dateSelector : CalendarView
     private lateinit var dateOverlay : View
+    private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val today = LocalDate.now().toString()
 
     private lateinit var dateButton : ImageButton
@@ -74,7 +76,8 @@ class Tab1Fragment : Fragment() {
     private fun submitEntry(category : Int) {
         var amount = amountInput.text.toString()
         var description = descriptionInput.text.toString()
-        var date = dateInput.text.toString()
+        var date = dateInput.text.toString().replace(
+            Regex("[^0-9]+"), "-")
 
         if (amount.length > 14) {
             amount = "$ 9,999,999.99"
@@ -82,6 +85,31 @@ class Tab1Fragment : Fragment() {
 
         if (description.length > 50) {
             description = description.substring(0, 50)
+        }
+
+        if (date.startsWith("-")) {
+            date = date.removePrefix("-")
+        }
+        if (date.endsWith("-")) {
+            date = date.removeSuffix("-")
+        }
+        date = try {
+            var dateParsed = sdf.parse(date)
+            if (dateParsed == null ||
+                (dateParsed.year + 1900).toString() != date.substring(0, 4)) {
+                dateParsed = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(date)
+                if (dateParsed == null  ||
+                    (dateParsed.year + 1900).toString() != date.substring(6)) {
+                    dateParsed = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(date)
+                    if (dateParsed == null  ||
+                        (dateParsed.year + 1900).toString() != date.substring(6)) {
+                        dateParsed = sdf.parse(today)!!
+                    }
+                }
+            }
+            sdf.format(dateParsed)
+        } catch (e: Exception) {
+            today
         }
 
         DataManager.addEntry(model.get(), amount, description, date, category.toString())
@@ -141,7 +169,6 @@ class Tab1Fragment : Fragment() {
         })
 
         dateInput = rootView.findViewById(R.id.dateField)
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         dateInput.setText(today)
 
         dateSelector = rootView.findViewById(R.id.dateSelector)
