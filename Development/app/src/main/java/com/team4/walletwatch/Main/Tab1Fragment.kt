@@ -73,51 +73,82 @@ class Tab1Fragment : Fragment() {
         }
     }
 
+    /* Purpose: Controller method that retrieves and validates user input,
+    * then calls DataManager method addEntry to store entry in local repo
+    * and resets the Tab 1 screen.
+    *
+    * Parameters: category is an integer that represents the number of the
+    * category button that was selected.
+    *
+    * Returns: Nothing. */
     private fun submitEntry(category : Int) {
+        /* Retrieve user inputs and convert each to string */
         var amount = amountInput.text.toString()
         var description = descriptionInput.text.toString()
+        /* Replace all non-numeric characters in date with dashes.
+        * Consecutive non-numeric characters will be replaced with a single dash. */
         var date = dateInput.text.toString().replace(
             Regex("[^0-9]+"), "-")
 
+        /* Forcibly restrict amount from being ten million dollars or greater.
+        * If the amount is ten million or more, then there must be 15 or more characters.
+        * Although this number is somewhat arbitrary, doing so will ensure
+        * that the amount fits within the amountText TextView on layout_card.xml. */
         if (amount.length > 14) {
             amount = "$ 9,999,999.99"
         }
 
+        /* Forcibly restrict description from being more than 50 characters long.
+        * If description is too long, it will be sliced down to the first 50 characters. */
         if (description.length > 50) {
             description = description.substring(0, 50)
         }
 
+        /* Remove leading and trailing dashes from date */
         if (date.startsWith("-")) {
             date = date.removePrefix("-")
         }
         if (date.endsWith("-")) {
             date = date.removeSuffix("-")
         }
+        /* Check if date is valid format and convert into yyyy-MM-dd format. */
         date = try {
+            /* Attempt to read date as yyyy-MM-dd format. */
             var dateParsed = sdf.parse(date)
+            /* If date is not in yyyy-MM-dd format, then try MM-dd-yyyy format. */
             if (dateParsed == null ||
                 (dateParsed.year + 1900).toString() != date.substring(0, 4)) {
                 dateParsed = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(date)
+                /* If date is not in MM-dd-yyyy format, then try dd-MM-yyyy format. */
                 if (dateParsed == null  ||
                     (dateParsed.year + 1900).toString() != date.substring(6)) {
                     dateParsed = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(date)
+                    /* If date is not in dd-MM-yyyy format, then assume it must be
+                    * an invalid format and forcibly set date to current date. */
                     if (dateParsed == null  ||
                         (dateParsed.year + 1900).toString() != date.substring(6)) {
                         dateParsed = sdf.parse(today)!!
                     }
                 }
             }
+            /* Convert date to yyyy-MM-dd format. */
             sdf.format(dateParsed)
         } catch (e: Exception) {
+            /* If any exception occurs, then assume it must be
+            * an invalid format and forcibly set date to current date. */
             today
         }
 
+        /* Add the entry to the local repo. */
         DataManager.addEntry(model.get(), amount, description, date, category.toString())
 
+        /* Update the data model. */
         model.save(main)
 
+        /* Display the Toast message "Entry Added". */
         success.show()
 
+        /* Reset Tab 1 screen. */
         amountInput.setText("")
         descriptionInput.setText("")
         dateInput.setText(today)
