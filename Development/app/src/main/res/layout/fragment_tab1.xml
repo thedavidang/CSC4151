@@ -60,6 +60,7 @@
         android:id="@+id/descriptionField"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:maxLength="50"
         android:autofillHints="@android:string/autofill"
         android:ems="10"
         android:inputType="textCapWords"
