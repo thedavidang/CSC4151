@@ -46,7 +46,13 @@ class Tab1Fragment : Fragment() {
     private val categoryButtons = Array<Button?>(3) { null }
 
     private lateinit var success : Toast
-    
+
+    /* Purpose: Controller method that disables and hides CalendarView dateSelector or
+    * enables and shows CalendarView dateSelector.
+    *
+    * Parameters: isEnabled represents a Boolean of whether or not to enable the dateSelector.
+    *
+    * Returns: Nothing. */
     private fun toggleDateSelector(isEnabled: Boolean) {
         if (isEnabled) {
             dateSelector.visibility = View.VISIBLE
