@@ -5,8 +5,17 @@ import org.w3c.dom.Node
 import org.w3c.dom.NodeList
 import java.time.LocalDate
 
+/* This class represents an Entry object,
+* which is an expense that has a dollar amount, possibly a description of purchase,
+* a date of purchase, and the category the expense entry falls under. */
 class Entry(var amount: Double, var description: String, var date: LocalDate, var category: String)
 
+/* Purpose: Static method that sorts a list of Entry objects by date from newest to oldest.
+*
+* Parameters: entries represents a list of Entry objects.
+*
+* Returns: list represents the sorted list of Entry objects
+* or will return null if entries is null. */
 fun sortByDateDescending(entries : MutableList<Entry>?) : MutableList<Entry>? {
     val list = entries?.sortedWith(compareByDescending { it.date })
 
@@ -17,6 +26,12 @@ fun sortByDateDescending(entries : MutableList<Entry>?) : MutableList<Entry>? {
     return null
 }
 
+/* Purpose: Static method that sorts a list of Entry objects by date from oldest to newest.
+*
+* Parameters: entries represents a list of Entry objects.
+*
+* Returns: list represents the sorted list of Entry objects
+* or will return null if entries is null. */
 fun sortByDateAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
     val list = entries?.sortedWith(compareBy { it.date })
 
@@ -27,6 +42,12 @@ fun sortByDateAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
     return null
 }
 
+/* Purpose: Static method that sorts a list of Entry objects by price from highest to cheapest.
+*
+* Parameters: entries represents a list of Entry objects.
+*
+* Returns: list represents the sorted list of Entry objects
+* or will return null if entries is null. */
 fun sortByPriceDescending(entries : MutableList<Entry>?) : MutableList<Entry>? {
     val list = entries?.sortedWith(compareByDescending { it.amount })
 
@@ -37,6 +58,12 @@ fun sortByPriceDescending(entries : MutableList<Entry>?) : MutableList<Entry>? {
     return null
 }
 
+/* Purpose: Static method that sorts a list of Entry objects by price from cheapest to highest.
+*
+* Parameters: entries represents a list of Entry objects.
+*
+* Returns: list represents the sorted list of Entry objects
+* or will return null if entries is null. */
 fun sortByPriceAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
     val list = entries?.sortedWith(compareBy { it.amount })
 
@@ -47,6 +74,12 @@ fun sortByPriceAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
     return null
 }
 
+/* Purpose: Static method that retrieves a list of all entries
+* from the local repo XML file as Entry objects.
+*
+* Parameters: doc represents the Document of the local repo XML file.
+*
+* Returns: entries represent the list of Entry objects. */
 fun getEntries(doc : Document) : MutableList<Entry>? {
     val entries = mutableListOf<Entry>()
 
@@ -69,6 +102,9 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
 
     var node: Node
 
+    /* Perform a depth-first iterative search by traversing the DOM of doc,
+    * going deeper into the children of each element node until an Entry element is found.
+    * TODO: Research a more efficient process of accessing Entry elements in the DOM. */
     for (a in 0 until rootNodes.length) {
         node = rootNodes.item(a)
         if (node.nodeName == "data") {

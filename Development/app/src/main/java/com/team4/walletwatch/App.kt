@@ -3,6 +3,10 @@ package com.team4.walletwatch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
+/* This class provides support for live data updating.
+* By allowing fragments to share the same view model,
+* they can all reference the same data,
+* even as changes occur on that data. */
 class ViewModelFactory() : ViewModelProvider.Factory {
     override fun <T: ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SharedViewModel::class.java)) {

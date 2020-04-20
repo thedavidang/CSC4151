@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -37,6 +38,7 @@ class Tab1Fragment : Fragment() {
     private lateinit var dateInput : EditText
     private lateinit var dateSelector : CalendarView
     private lateinit var dateOverlay : View
+    private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val today = LocalDate.now().toString()
 
     private lateinit var dateButton : ImageButton
@@ -45,6 +47,12 @@ class Tab1Fragment : Fragment() {
 
     private lateinit var success : Toast
 
+    /* Purpose: Controller method that disables and hides CalendarView dateSelector or
+    * enables and shows CalendarView dateSelector.
+    *
+    * Parameters: isEnabled represents a Boolean of whether or not to enable the dateSelector.
+    *
+    * Returns: Nothing. */
     private fun toggleDateSelector(isEnabled: Boolean) {
         if (isEnabled) {
             dateSelector.visibility = View.VISIBLE
@@ -56,29 +64,91 @@ class Tab1Fragment : Fragment() {
         }
     }
 
+    /* Purpose: Controller method that disables and greys-out category buttons or
+    * enables and reveals category buttons.
+    *
+    * Parameters: isEnabled represents a Boolean of whether or not to enable the category buttons.
+    *
+    * Returns: Nothing. */
     private fun toggleCategoryButtons(isEnabled : Boolean) {
         for (button in categoryButtons) {
             if (isEnabled) {
                 button?.isEnabled = true
                 button?.isClickable = true
+                /* Set opacity to 100 % */
                 button?.alpha = 1.0F
             }
             else {
                 button?.isEnabled = false
                 button?.isClickable = false
+                /* Set opacity to 50 % */
                 button?.alpha = 0.5F
             }
         }
     }
 
+    /* Purpose: Controller method that retrieves and validates user input,
+    * then calls DataManager method addEntry to store entry in local repo
+    * and resets the Tab 1 screen.
+    *
+    * Parameters: category is an integer that represents the number of the
+    * category button that was selected.
+    *
+    * Returns: Nothing. */
     private fun submitEntry(category : Int) {
-        DataManager.addEntry(model.get(), amountInput.text.toString(),
-            descriptionInput.text.toString(), dateInput.text.toString(), category.toString())
+        /* Retrieve user inputs and convert each to string */
+        val amount = amountInput.text.toString()
+        val description = descriptionInput.text.toString()
+        /* Replace all non-numeric characters in date with dashes.
+        * Consecutive non-numeric characters will be replaced with a single dash. */
+        var date = dateInput.text.toString().replace(
+            Regex("[^0-9]+"), "-")
 
+        /* Remove leading and trailing dashes from date */
+        if (date.startsWith("-")) {
+            date = date.removePrefix("-")
+        }
+        if (date.endsWith("-")) {
+            date = date.removeSuffix("-")
+        }
+        /* Check if date is valid format and convert into yyyy-MM-dd format. */
+        date = try {
+            /* Attempt to read date as yyyy-MM-dd format. */
+            var dateParsed = sdf.parse(date)
+            /* If date is not in yyyy-MM-dd format, then try MM-dd-yyyy format. */
+            if (dateParsed == null ||
+                (dateParsed.year + 1900).toString() != date.substring(0, 4)) {
+                dateParsed = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(date)
+                /* If date is not in MM-dd-yyyy format, then try dd-MM-yyyy format. */
+                if (dateParsed == null  ||
+                    (dateParsed.year + 1900).toString() != date.substring(6)) {
+                    dateParsed = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(date)
+                    /* If date is not in dd-MM-yyyy format, then assume it must be
+                    * an invalid format and forcibly set date to current date. */
+                    if (dateParsed == null  ||
+                        (dateParsed.year + 1900).toString() != date.substring(6)) {
+                        dateParsed = sdf.parse(today)!!
+                    }
+                }
+            }
+            /* Convert date to yyyy-MM-dd format. */
+            sdf.format(dateParsed)
+        } catch (e: Exception) {
+            /* If any exception occurs, then assume it must be
+            * an invalid format and forcibly set date to current date. */
+            today
+        }
+
+        /* Add the entry to the local repo. */
+        DataManager.addEntry(model.get(), amount, description, date, category.toString())
+
+        /* Update the data model. */
         model.save(main)
 
+        /* Display the Toast message "Entry Added". */
         success.show()
 
+        /* Reset Tab 1 screen. */
         amountInput.setText("")
         descriptionInput.setText("")
         dateInput.setText(today)
@@ -130,7 +200,6 @@ class Tab1Fragment : Fragment() {
         })
 
         dateInput = rootView.findViewById(R.id.dateField)
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         dateInput.setText(today)
 
         dateSelector = rootView.findViewById(R.id.dateSelector)
