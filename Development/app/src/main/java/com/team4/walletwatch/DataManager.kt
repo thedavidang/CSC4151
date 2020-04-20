@@ -66,24 +66,21 @@ object DataManager {
     *
     * Returns: total represents the total amount of expenses from the last seven days. */
     fun last7DaysTotal(doc: Document, category : String) : Double {
-        var total = 0.00
         val cal: Calendar = Calendar.getInstance()
-        val days = ArrayList<LocalDate?>()
-        days.add(LocalDate.now())
 
-        /* Determine the previous six calendar days. */
-        for (i in 1..6) {
-            cal.add(Calendar.DAY_OF_MONTH, -1)
-            days.add(convertToLocalDate(cal.time))
-        }
-
-        /* Retrieve the total amount of expenses for each day, if the Day element exists. */
         var amount : String?
-        for (day in days) {
-            amount = getValueByID(doc, category + "-" + day.toString() + "-t")
+        var total = 0.00
+
+        /* Iterate through the last seven calendar days. */
+        for (i in 1..7) {
+            /* Retrieve the total amount of expenses for each day, if the Day element exists. */
+            amount = getValueByID(doc, category + "-" +
+                    convertToLocalDate(cal.time).toString() + "-t")
             if (amount != null) {
                 total += amount.toDouble()
             }
+            /* Determine the day previous to the current day. */
+            cal.add(Calendar.DAY_OF_MONTH, -1)
         }
 
         return total
@@ -96,26 +93,21 @@ object DataManager {
     *
     * Returns: total represents the total amount of expenses from the last twelve months. */
     fun last12MonthsTotal(doc: Document, category: String) : Double {
-        var total = 0.00
         val cal: Calendar = Calendar.getInstance()
-        val months = ArrayList<String?>(12)
-        var date = LocalDate.now()
-        months.add(date.toString().substring(0, 7))
 
-        /* Determine the previous eleven calendar months. */
-        for (i in 1..11) {
-            cal.add(Calendar.MONTH, -1)
-            date = convertToLocalDate(cal.time)
-            months.add(date.toString().substring(0, 7))
-        }
-
-        /* Retrieve the total amount of expenses for each month, if the Month element exists. */
         var amount : String?
-        for (month in months) {
-            amount = getValueByID(doc, "$category-$month-t")
+        var total = 0.00
+
+        /* Iterate through the last twelve calendar months. */
+        for (i in 1..12) {
+            /* Retrieve the total amount of expenses for each month, if the Month element exists. */
+            amount = getValueByID(doc, category + "-" +
+                    convertToLocalDate(cal.time).toString().substring(0, 7) + "-t")
             if (amount != null) {
                 total += amount.toDouble()
             }
+            /* Determine the month previous to the current month. */
+            cal.add(Calendar.MONTH, -1)
         }
 
         return total
@@ -143,23 +135,21 @@ object DataManager {
     private fun findExistingDateTags(doc : Document, category: String,
                                      year : String, month : String, day : String) : Int {
         var id = "c-$category-$year"
+        var xpath = "string(/root/data/category[@id=\"c-$category\"]/year[@id=\"$id\"]/month[@id=\""
         var dateExists = 0
 
         if (getValueByID(doc, id) != null) {
             dateExists++
-            id += "-month"
+            id += "-$month"
+            xpath += "$id\"]/day[@id=\""
             if (getValueByID(doc, id) != null) {
                 dateExists++
-                id += "-day"
+                id += "-$day"
+                xpath += "$id\"]/entry[last()]/@id)"
                 if (getValueByID(doc, id) != null) {
                     /* XPath to retrieve the id of the last Entry element within the Day element.*/
-                    val lastEntryIDXPath = "number(/root/data/" +
-                            "category[@id=\"" + category +
-                            "\"]/year[@id=\"" + year +
-                            "\"]/month[@id=\"" + month +
-                            "\"]/day[@id=\"" + day +
-                            "\"]/entry[last()]/@xml:id)"
-                    dateExists += getValueByXPath(doc, lastEntryIDXPath).toInt()
+                    dateExists += getValueByXPath(
+                        doc, xpath).substringAfterLast('-').toInt()
                 }
             }
         }

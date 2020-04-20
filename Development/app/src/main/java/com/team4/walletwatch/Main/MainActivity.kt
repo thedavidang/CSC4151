@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     lateinit var model : SharedViewModel
 
-    /* Overwritten function that performs tasks immediately upon app launch */
+    /* Overwritten function that performs tasks immediately upon app launch. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
