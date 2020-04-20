@@ -46,7 +46,7 @@ class Tab1Fragment : Fragment() {
     private val categoryButtons = Array<Button?>(3) { null }
 
     private lateinit var success : Toast
-
+    
     private fun toggleDateSelector(isEnabled: Boolean) {
         if (isEnabled) {
             dateSelector.visibility = View.VISIBLE
@@ -58,16 +58,24 @@ class Tab1Fragment : Fragment() {
         }
     }
 
+    /* Purpose: Controller method that disables and greys-out category buttons or
+    * enables and reveals category buttons.
+    *
+    * Parameters: isEnabled represents a Boolean of whether or not to enable the category buttons.
+    *
+    * Returns: Nothing. */
     private fun toggleCategoryButtons(isEnabled : Boolean) {
         for (button in categoryButtons) {
             if (isEnabled) {
                 button?.isEnabled = true
                 button?.isClickable = true
+                /* Set opacity to 100 % */
                 button?.alpha = 1.0F
             }
             else {
                 button?.isEnabled = false
                 button?.isClickable = false
+                /* Set opacity to 50 % */
                 button?.alpha = 0.5F
             }
         }
