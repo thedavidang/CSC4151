@@ -97,26 +97,12 @@ class Tab1Fragment : Fragment() {
     * Returns: Nothing. */
     private fun submitEntry(category : Int) {
         /* Retrieve user inputs and convert each to string */
-        var amount = amountInput.text.toString()
-        var description = descriptionInput.text.toString()
+        val amount = amountInput.text.toString()
+        val description = descriptionInput.text.toString()
         /* Replace all non-numeric characters in date with dashes.
         * Consecutive non-numeric characters will be replaced with a single dash. */
         var date = dateInput.text.toString().replace(
             Regex("[^0-9]+"), "-")
-
-        /* Forcibly restrict amount from being ten million dollars or greater.
-        * If the amount is ten million or more, then there must be 15 or more characters.
-        * Although this number is somewhat arbitrary, doing so will ensure
-        * that the amount fits within the amountText TextView on layout_card.xml. */
-        if (amount.length > 14) {
-            amount = "$ 9,999,999.99"
-        }
-
-        /* Forcibly restrict description from being more than 50 characters long.
-        * If description is too long, it will be sliced down to the first 50 characters. */
-        if (description.length > 50) {
-            description = description.substring(0, 50)
-        }
 
         /* Remove leading and trailing dashes from date */
         if (date.startsWith("-")) {
