@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -153,6 +152,8 @@ class Tab1Fragment : Fragment() {
         descriptionInput.setText("")
         dateInput.setText(today)
         toggleCategoryButtons(false)
+
+        main.showKeyboard(amountInput)
     }
 
     override fun onCreateView(
@@ -218,10 +219,7 @@ class Tab1Fragment : Fragment() {
         }
 
         dateButton = rootView.findViewById(R.id.dateButton)
-        dateButton.setOnClickListener { toggleDateSelector(true) }
-
-        /* TODO: Get numpad to display iff Tab 1 is the current active tab. */
-        amountInput.requestFocus()
+        dateButton.setOnClickListener { toggleDateSelector(true) })
 
         return rootView
     }

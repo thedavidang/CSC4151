@@ -1,7 +1,9 @@
 package com.team4.walletwatch
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 {
                     if (mainPager.currentItem != 0)
                     {
-                        // Hide the keyboard.
+                        /* Hide the keyboard. */
                         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
                             .hideSoftInputFromWindow(mainPager.windowToken, 0)
                     }
@@ -59,5 +61,12 @@ class MainActivity : AppCompatActivity() {
         model = ViewModelProviders.of(this, viewModelFactory).get(
             SharedViewModel::class.java)
         model.open(this)
+    }
+
+    fun showKeyboard(view : View) {
+        if (view.requestFocus()) {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .showSoftInput(view, 0)
+        }
     }
 }
