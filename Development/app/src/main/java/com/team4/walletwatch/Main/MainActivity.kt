@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_tab1.*
 
 /* This is the "main" of the program and is also the primary activity of the app.
 * This will immediately load upon app launch. */
@@ -44,6 +45,9 @@ class MainActivity : AppCompatActivity() {
                         /* Hide the keyboard. */
                         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
                             .hideSoftInputFromWindow(mainPager.windowToken, 0)
+                    }
+                    else {
+                        showKeyboard(amountField)
                     }
                 }
             }

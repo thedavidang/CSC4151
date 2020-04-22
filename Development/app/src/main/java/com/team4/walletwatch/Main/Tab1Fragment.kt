@@ -180,6 +180,7 @@ class Tab1Fragment : Fragment() {
         }
 
         amountInput = rootView.findViewById(R.id.amountField)
+        amountInput.requestFocus()
         amountInput.setCurrency(CurrencySymbols.USA)
         amountInput.setSpacing(true)
         amountInput.addTextChangedListener(object : TextWatcher {
@@ -219,7 +220,7 @@ class Tab1Fragment : Fragment() {
         }
 
         dateButton = rootView.findViewById(R.id.dateButton)
-        dateButton.setOnClickListener { toggleDateSelector(true) })
+        dateButton.setOnClickListener { toggleDateSelector(true) }
 
         return rootView
     }
