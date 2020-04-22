@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -153,6 +152,8 @@ class Tab1Fragment : Fragment() {
         descriptionInput.setText("")
         dateInput.setText(today)
         toggleCategoryButtons(false)
+
+        main.showKeyboard(amountInput)
     }
 
     override fun onCreateView(
@@ -179,6 +180,7 @@ class Tab1Fragment : Fragment() {
         }
 
         amountInput = rootView.findViewById(R.id.amountField)
+        amountInput.requestFocus()
         amountInput.setCurrency(CurrencySymbols.USA)
         amountInput.setSpacing(true)
         amountInput.addTextChangedListener(object : TextWatcher {
