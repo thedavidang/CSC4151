@@ -221,6 +221,7 @@ class Tab1Fragment : Fragment() {
         dateButton.setOnClickListener { toggleDateSelector(true) }
 
         /* TODO: Get numpad to display iff Tab 1 is the current active tab. */
+        amountInput.requestFocus()
 
         return rootView
     }
