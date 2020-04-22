@@ -2,9 +2,12 @@ package com.team4.walletwatch
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 /* This is the "main" of the program and is also the primary activity of the app.
@@ -22,6 +25,27 @@ class MainActivity : AppCompatActivity() {
         /* Setup the fragment manager, which will load the three tabs and select Tab 1. */
         val fragmentAdapter = MainPagerAdapter(supportFragmentManager)
         mainPager.adapter = fragmentAdapter
+        mainPager.addOnPageChangeListener(object : OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {}
+            override fun onPageScrollStateChanged(state: Int) {
+                if (state == ViewPager.SCROLL_STATE_IDLE)
+                {
+                    if (mainPager.currentItem != 0)
+                    {
+                        // Hide the keyboard.
+                        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                            .hideSoftInputFromWindow(mainPager.windowToken, 0)
+                    }
+                }
+            }
+        })
 
         mainTabs.setupWithViewPager(mainPager)
 
