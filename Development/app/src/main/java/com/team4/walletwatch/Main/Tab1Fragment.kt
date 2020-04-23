@@ -11,7 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
-import java.text.DateFormat
+import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -32,10 +32,12 @@ class Tab1Fragment : Fragment() {
     private lateinit var model : SharedViewModel
 
     private lateinit var amountInput : CurrencyEditText
+    private var validAmount = false
 
     private lateinit var descriptionInput : EditText
 
     private lateinit var dateInput : EditText
+    private var validDate = true
     private lateinit var dateSelector : CalendarView
     private lateinit var dateOverlay : View
     private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -87,6 +89,72 @@ class Tab1Fragment : Fragment() {
         }
     }
 
+    /* Purpose: Validate amount EditText ensuring that field is not empty, and does not only
+        * consist of whitespace.
+        *
+        * Parameters: s: charSequence that represents user input in amount field
+        *
+        * Returns: True if amount field is not empty and not whitespace. */
+    private fun validateAmountInput(s:CharSequence):Boolean{
+        val trimmed = s.toString().trim { it <= ' ' }
+        validAmount = trimmed.isNotEmpty()
+        return validAmount
+    }
+
+    /* Purpose: Validate date EditText ensuring that field is properly formatted, and is not
+    * impossible or a future date.
+    *
+    * Parameters: s: Editable that represents user input in date field.
+    *
+    * Returns: True if date field is both a valid format and possible. */
+    private fun validateDateInput(s:Editable):Boolean{
+        /* Replace all non-numeric characters in date with dashes.
+        * Consecutive non-numeric characters will be replaced with a single dash. */
+        var date = s.toString().replace(Regex("[^0-9]+"), "-")
+        /* Remove leading and trailing dashes from date */
+        if (date.startsWith("-")) {
+            date = date.removePrefix("-")
+        }
+        if (date.endsWith("-")) {
+            date = date.removeSuffix("-")
+        }
+
+        /* Check if date is valid format and convert into yyyy-MM-dd format. */
+        try {
+            /* Attempt to read date as yyyy-MM-dd format. */
+            var dateParsed = sdf.parse(date)
+            /* If date is not in yyyy-MM-dd format, then try MM-dd-yyyy format. */
+            if (dateParsed == null) {
+                dateParsed = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(date)
+                /* If date is not in MM-dd-yyyy format, then try dd-MM-yyyy format. */
+                if (dateParsed == null) {
+                    dateParsed = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(date)
+                    /* If date is not in dd-MM-yyyy format, then assume it must be
+                    * an invalid format. */
+                    if (dateParsed == null) {
+                        validDate = false
+                    }
+                }
+            }
+            /* Convert date to yyyy-MM-dd format. */
+            date = sdf.format(dateParsed)
+            var userDate = LocalDate.parse(date)
+            var currentDate = LocalDate.parse(today)
+            if (userDate > currentDate) {
+                validDate = false
+            }
+            else if (!userDate.isLeapYear && userDate.getMonth() == Month.FEBRUARY && userDate.getDayOfMonth() == 29) {
+                validDate = false
+            } else {
+                validDate = true
+            }
+            /* If exception occurs, assume date is invalid or impossible. */
+        } catch (e: Exception) {
+            validDate = false
+        }
+        return validDate
+    }
+
     /* Purpose: Controller method that retrieves and validates user input,
     * then calls DataManager method addEntry to store entry in local repo
     * and resets the Tab 1 screen.
@@ -99,45 +167,8 @@ class Tab1Fragment : Fragment() {
         /* Retrieve user inputs and convert each to string */
         val amount = amountInput.text.toString()
         val description = descriptionInput.text.toString()
-        /* Replace all non-numeric characters in date with dashes.
-        * Consecutive non-numeric characters will be replaced with a single dash. */
-        var date = dateInput.text.toString().replace(
-            Regex("[^0-9]+"), "-")
+        val date = dateInput.text.toString()
 
-        /* Remove leading and trailing dashes from date */
-        if (date.startsWith("-")) {
-            date = date.removePrefix("-")
-        }
-        if (date.endsWith("-")) {
-            date = date.removeSuffix("-")
-        }
-        /* Check if date is valid format and convert into yyyy-MM-dd format. */
-        date = try {
-            /* Attempt to read date as yyyy-MM-dd format. */
-            var dateParsed = sdf.parse(date)
-            /* If date is not in yyyy-MM-dd format, then try MM-dd-yyyy format. */
-            if (dateParsed == null ||
-                (dateParsed.year + 1900).toString() != date.substring(0, 4)) {
-                dateParsed = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(date)
-                /* If date is not in MM-dd-yyyy format, then try dd-MM-yyyy format. */
-                if (dateParsed == null  ||
-                    (dateParsed.year + 1900).toString() != date.substring(6)) {
-                    dateParsed = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(date)
-                    /* If date is not in dd-MM-yyyy format, then assume it must be
-                    * an invalid format and forcibly set date to current date. */
-                    if (dateParsed == null  ||
-                        (dateParsed.year + 1900).toString() != date.substring(6)) {
-                        dateParsed = sdf.parse(today)!!
-                    }
-                }
-            }
-            /* Convert date to yyyy-MM-dd format. */
-            sdf.format(dateParsed)
-        } catch (e: Exception) {
-            /* If any exception occurs, then assume it must be
-            * an invalid format and forcibly set date to current date. */
-            today
-        }
 
         /* Add the entry to the local repo. */
         DataManager.addEntry(model.get(), amount, description, date, category.toString())
@@ -185,22 +216,29 @@ class Tab1Fragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val trimmed = s.toString().trim { it <= ' ' }
-
-                if (trimmed.isEmpty()) {
-                    toggleCategoryButtons(false)
-                } else {
-                    if (!categoryButtons[0]!!.isEnabled) {
-                        toggleCategoryButtons(true)
-                    }
-                }
+            if(validateAmountInput(s) && validDate) {
+                toggleCategoryButtons(true)
+            } else {
+                toggleCategoryButtons(false)
             }
+        }
 
             override fun afterTextChanged(s: Editable) {}
         })
 
         dateInput = rootView.findViewById(R.id.dateField)
         dateInput.setText(today)
+        dateInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (validAmount && validateDateInput(dateInput.text)) {
+                    toggleCategoryButtons(true)
+                } else {
+                    toggleCategoryButtons(false)
+                }
+            }
+            override fun afterTextChanged(s: Editable) {}
+        })
 
         dateSelector = rootView.findViewById(R.id.dateSelector)
         dateSelector.maxDate = sdf.parse(today)!!.time
