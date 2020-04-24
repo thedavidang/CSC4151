@@ -152,6 +152,8 @@ class Tab1Fragment : Fragment() {
         descriptionInput.setText("")
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
         toggleCategoryButtons(false)
+
+        main.showKeyboard(amountInput)
     }
 
     override fun onCreateView(
