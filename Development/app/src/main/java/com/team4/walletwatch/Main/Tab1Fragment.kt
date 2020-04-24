@@ -11,7 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
-import java.lang.NullPointerException
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -40,7 +40,8 @@ class Tab1Fragment : Fragment() {
     private var validDate = true
     private lateinit var dateSelector : CalendarView
     private lateinit var dateOverlay : View
-    private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val modelDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val userDateFormat = SimpleDateFormat("M/d/yyyy", Locale.US)
     private val today = LocalDate.now().toString()
 
     private lateinit var dateButton : ImageButton
@@ -89,69 +90,36 @@ class Tab1Fragment : Fragment() {
         }
     }
 
-    /* Purpose: Validate amount EditText ensuring that field is not empty, and does not only
-        * consist of whitespace.
-        *
-        * Parameters: s: charSequence that represents user input in amount field
-        *
-        * Returns: True if amount field is not empty and not whitespace. */
-    private fun validateAmountInput(s:CharSequence):Boolean{
-        val trimmed = s.toString().trim { it <= ' ' }
-        validAmount = trimmed.isNotEmpty()
+    /* Purpose: Validate amount EditText ensuring that field is not empty
+    * and is not an amount of zero.
+    *
+    * Parameters: None.
+    *
+    * Returns: True if amount field is not empty and not zero. */
+    private fun validateAmountInput() : Boolean {
+        val input = amountInput.text.toString()
+        validAmount = (input.isNotEmpty() && input != "$ 0.00")
         return validAmount
     }
 
-    /* Purpose: Validate date EditText ensuring that field is properly formatted, and is not
-    * impossible or a future date.
+    /* Purpose: Validate date EditText ensuring that field is properly formatted
+    * and is not an impossible or future date.
     *
-    * Parameters: s: Editable that represents user input in date field.
+    * Parameters: None.
     *
-    * Returns: True if date field is both a valid format and possible. */
-    private fun validateDateInput(s:Editable):Boolean{
-        /* Replace all non-numeric characters in date with dashes.
-        * Consecutive non-numeric characters will be replaced with a single dash. */
-        var date = s.toString().replace(Regex("[^0-9]+"), "-")
-        /* Remove leading and trailing dashes from date */
-        if (date.startsWith("-")) {
-            date = date.removePrefix("-")
-        }
-        if (date.endsWith("-")) {
-            date = date.removeSuffix("-")
+    * Returns: True if date field is both in valid format and possible. */
+    private fun validateDateInput() : Boolean {
+        validDate = try {
+            /* Replace all non-numeric characters in date with slashes.
+            * Consecutive non-numeric characters will be replaced with a single dash. */
+            val dateParsed = userDateFormat.parse(
+                dateInput.text.toString().replace(Regex("[^0-9]+"), "/"))
+            /* Check if date is in MM/dd/yyyy format. */
+            (dateParsed != null && !dateParsed.after(modelDateFormat.parse(today)))
+        } catch (_ : Exception) {
+            false
         }
 
-        /* Check if date is valid format and convert into yyyy-MM-dd format. */
-        try {
-            /* Attempt to read date as yyyy-MM-dd format. */
-            var dateParsed = sdf.parse(date)
-            /* If date is not in yyyy-MM-dd format, then try MM-dd-yyyy format. */
-            if (dateParsed == null) {
-                dateParsed = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(date)
-                /* If date is not in MM-dd-yyyy format, then try dd-MM-yyyy format. */
-                if (dateParsed == null) {
-                    dateParsed = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(date)
-                    /* If date is not in dd-MM-yyyy format, then assume it must be
-                    * an invalid format. */
-                    if (dateParsed == null) {
-                        validDate = false
-                    }
-                }
-            }
-            /* Convert date to yyyy-MM-dd format. */
-            date = sdf.format(dateParsed)
-            var userDate = LocalDate.parse(date)
-            var currentDate = LocalDate.parse(today)
-            if (userDate > currentDate) {
-                validDate = false
-            }
-            else if (!userDate.isLeapYear && userDate.getMonth() == Month.FEBRUARY && userDate.getDayOfMonth() == 29) {
-                validDate = false
-            } else {
-                validDate = true
-            }
-            /* If exception occurs, assume date is invalid or impossible. */
-        } catch (e: Exception) {
-            validDate = false
-        }
         return validDate
     }
 
@@ -167,8 +135,8 @@ class Tab1Fragment : Fragment() {
         /* Retrieve user inputs and convert each to string */
         val amount = amountInput.text.toString()
         val description = descriptionInput.text.toString()
-        val date = dateInput.text.toString()
-
+        /* Convert date input into "yyyy-MM-dd" format. */
+        val date = modelDateFormat.format(userDateFormat.parse(dateInput.text.toString())!!)
 
         /* Add the entry to the local repo. */
         DataManager.addEntry(model.get(), amount, description, date, category.toString())
@@ -182,7 +150,7 @@ class Tab1Fragment : Fragment() {
         /* Reset Tab 1 screen. */
         amountInput.setText("")
         descriptionInput.setText("")
-        dateInput.setText(today)
+        dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
         toggleCategoryButtons(false)
     }
 
@@ -196,27 +164,40 @@ class Tab1Fragment : Fragment() {
 
         descriptionInput = rootView.findViewById(R.id.descriptionField)
 
+        /* Set Toast to "Entry Added".
+        * Ignore the warning since the Toast is shown in submitEntry. */
         success = Toast.makeText(context, R.string.addedEntryString, Toast.LENGTH_LONG)
+        /* Center the "Entry Added" Toast and position it at the top. */
         success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
 
+        /* Populate the fixed array of category buttons. */
         categoryButtons[0] = rootView.findViewById(R.id.category1Button)
         categoryButtons[1] = rootView.findViewById(R.id.category2Button)
         categoryButtons[2] = rootView.findViewById(R.id.category3Button)
+        /* The category buttons should initially be disabled. */
         toggleCategoryButtons(false)
+        /* Retrieve the labels for each category. */
         val categories = DataManager.getCategories(model.get())
+        /* Set the category label and submit listener for each corresponding category button. */
         for ((index, button) in categoryButtons.withIndex()) {
             button?.text = categories[index + 1]
-            button?.setOnClickListener { submitEntry(index + 1) }
+            button?.setOnClickListener {
+                submitEntry(index + 1)
+            }
         }
 
         amountInput = rootView.findViewById(R.id.amountField)
+        /* Use the dollar sign "$". */
         amountInput.setCurrency(CurrencySymbols.USA)
+        /* Add a space after the dollar sign. */
         amountInput.setSpacing(true)
+        /* Set listener to enable category buttons if both inputs are valid. */
         amountInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
+            /* Do not bother checking the date input since only the amount was just changed. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            if(validateAmountInput(s) && validDate) {
+            if(validateAmountInput() && validDate) {
                 toggleCategoryButtons(true)
             } else {
                 toggleCategoryButtons(false)
@@ -227,36 +208,49 @@ class Tab1Fragment : Fragment() {
         })
 
         dateInput = rootView.findViewById(R.id.dateField)
-        dateInput.setText(today)
+        /* The date should be initially set to the current date in the "MM/dd/yyyy" format. */
+        dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
+        /* Set listener to enable category buttons if both inputs are valid. */
         dateInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            /* Do not bother checking the amount input since only the date was just changed. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (validAmount && validateDateInput(dateInput.text)) {
+                if (validAmount && validateDateInput()) {
                     toggleCategoryButtons(true)
                 } else {
                     toggleCategoryButtons(false)
                 }
             }
+
             override fun afterTextChanged(s: Editable) {}
         })
 
+        /* Force both date formatters to require strict pattern matching. */
+        modelDateFormat.isLenient = false
+        userDateFormat.isLenient = false
+
         dateSelector = rootView.findViewById(R.id.dateSelector)
-        dateSelector.maxDate = sdf.parse(today)!!.time
+        /* Restrict the user from selecting a future date in the CalendarView. */
+        dateSelector.maxDate = modelDateFormat.parse(today)!!.time
+        /* Set the date selected listener to hide the CalendarView and its background and
+        * replace the date input with the selected date. */
+        dateSelector.setOnDateChangeListener { _: CalendarView, year: Int, month: Int, day: Int ->
+            toggleDateSelector(false)
+            val dateString = (month + 1).toString() + "/$day/$year"
+            dateInput.setText(dateString)
+        }
 
         dateOverlay = rootView.findViewById(R.id.dateOverlay)
 
+        /* The CalendarView and its background overlay should be hidden initially. */
         toggleDateSelector(false)
 
-        dateSelector.setOnDateChangeListener {
-                view: CalendarView, year: Int, month: Int, day: Int ->
-            toggleDateSelector(false)
-
-            val monthOneBased = month + 1
-            dateInput.setText(sdf.format(sdf.parse("$year-$monthOneBased-$day")!!))
-        }
-
         dateButton = rootView.findViewById(R.id.dateButton)
-        dateButton.setOnClickListener { toggleDateSelector(true) }
+        /* Set the listener to reveal the CalendarView and its background. */
+        dateButton.setOnClickListener {
+            toggleDateSelector(true)
+        }
 
         return rootView
     }
