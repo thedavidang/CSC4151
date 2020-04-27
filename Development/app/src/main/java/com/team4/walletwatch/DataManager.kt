@@ -2,6 +2,7 @@ package com.team4.walletwatch
 
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -147,7 +148,8 @@ object DataManager {
                 id += "-$day"
                 xpath += "$id\"]/entry[last()]/@id)"
                 if (getValueByID(doc, id) != null) {
-                    /* XPath to retrieve the id of the last Entry element within the Day element.*/
+                    /* XPath to retrieve the id of the last Entry element within the Day element.
+                    * New entries are appended, so the most recent entry is last. */
                     dateExists += getValueByXPath(
                         doc, xpath).substringAfterLast('-').toInt()
                 }
@@ -285,6 +287,17 @@ object DataManager {
         descriptionTag.textContent = description
         entryTag.appendChild(descriptionTag)
 
+        /* Grab the current timestamp from the device clock in UTC,
+        * but replace the date portion with the user's date input. */
+        val timestampTag = doc.createElement("timestamp")
+        timestampTag.setAttribute("id", "$id-s")
+        timestampTag.textContent =
+            Instant.now().toString().replaceRange(0, 10, date)
+        entryTag.appendChild(timestampTag)
+
+        /* Append the new Entry element right after the last Entry element of the Day element.
+        * If there are no Entry elements in this Day yet, it will simply add it right after the
+        * Total element for that Day. */
         dayTag.appendChild(entryTag)
     }
 

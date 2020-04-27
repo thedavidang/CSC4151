@@ -30,11 +30,7 @@ class MainActivity : AppCompatActivity() {
         mainPager.adapter = fragmentAdapter
         mainPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
+                position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {}
             override fun onPageScrollStateChanged(state: Int) {
