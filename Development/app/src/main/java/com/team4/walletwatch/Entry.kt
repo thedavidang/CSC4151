@@ -113,5 +113,5 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
     }
 
     /* Return the list of entries, which can safely be empty. */
-    return entries
+    return sortByDateDescending(entries)
 }

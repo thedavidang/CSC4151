@@ -106,7 +106,7 @@ class Tab3Fragment : Fragment() {
                     0 -> adapterRecycler.entries = adapterRecycler.entriesRaw
                     else -> adapterRecycler.filter(spinFiltering.selectedItem.toString())
                 }
-                sortEntries(position)
+                sortEntries(spinSorting.selectedItemPosition)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
