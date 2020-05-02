@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.w3c.dom.Document
 import java.text.DecimalFormat
+import kotlin.collections.ArrayList
 
 /* This class provides support for the scrollable RecyclerView cardRecycler. */
 class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.EntryViewHolder?>() {
@@ -79,12 +80,17 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
         /* Confirm that there is at least one entry to display in the list of filtered entries. */
         if (itemCount > 0) {
             /* Format the purchase price amount  to 2 decimals and
-            * prepend with a dollar sign and a space. */
+            * prepend with a dollar sign and a space with thousand-separator commas. */
             val amountText =  "$ " +
-                    DecimalFormat("0.00").format(entries!![i].amount)
+                    DecimalFormat("#,##0.00").format(entries!![i].amount)
+
             entryViewHolder.amount.text = amountText
+
             entryViewHolder.description.text = entries!![i].description
-            entryViewHolder.date.text = entries!![i].date.toString()
+
+            /* Extract the date from the timestamp member of the entry. */
+            entryViewHolder.date.text = entries!![i].timestamp.toString().substring(0, 10)
+
             entryViewHolder.category.text = entries!![i].category
         }
     }
