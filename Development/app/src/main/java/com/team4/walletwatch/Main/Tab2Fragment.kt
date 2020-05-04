@@ -75,6 +75,7 @@ class Tab2Fragment : Fragment() {
         values.add(PointValue(5f, 3f))
         values.add(PointValue(6f, 4f))
 
+
         val line = Line(values).setColor(Color.BLACK)
         val lines = ArrayList<Line>()
         lines.add(line)
@@ -162,6 +163,7 @@ class Tab2Fragment : Fragment() {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 when (position) {
+                    // last 12 months
                     1 -> {
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
@@ -182,6 +184,7 @@ class Tab2Fragment : Fragment() {
                         allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
+                    // all-time
                     2 -> {
                         category1Amount = DataManager.getValueByID(
                             model.get(), "c-1-t")!!.toDouble()
@@ -206,31 +209,15 @@ class Tab2Fragment : Fragment() {
                         allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
-                    3 -> {
-                        category1Amount = DataManager.getValueByID(
-                            model.get(), "c-1-t")!!.toDouble()
-                        category1TotalString = "$ " +
-                                DecimalFormat("0.00").format(category1Amount)
-                        category1Total.text = category1TotalString
-
-                        category2Amount = DataManager.getValueByID(
-                            model.get(), "c-2-t")!!.toDouble()
-                        category2TotalString = "$ " +
-                                DecimalFormat("0.00").format(category2Amount)
-                        category2Total.text = category2TotalString
-
-                        category3Amount = DataManager.getValueByID(
-                            model.get(), "c-3-t")!!.toDouble()
-                        category3TotalString = "$ " +
-                                DecimalFormat("0.00").format(category3Amount)
-                        category3Total.text = category3TotalString
-
-                        allAmount = DataManager.getValueByID(
-                            model.get(), "t")!!.toDouble()
-                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
-                        allTotal.text = allTotalString
-                    }
+                    // last 7 days
                     else -> {
+                        if(spinChartCategory.selectedItemPosition == 0) {
+                            var days = DataManager.last7Days(model.get(), "all")
+                        }
+                        else {
+                            var days = DataManager.last7Days(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
+                        }
+
                         category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)

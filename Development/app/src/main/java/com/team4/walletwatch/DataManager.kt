@@ -87,6 +87,50 @@ object DataManager {
         return total
     }
 
+    /* Purpose: Grabs last 7 days for one or all categories
+    *
+    * Parameters: doc represents the Document of the local repo XML file.
+    * categoryID represents the specific category to filter for.
+    *
+    * Returns: array holding totals for category/all categories for current day/prior 6 days */
+    fun last7Days(doc: Document, categoryID : String) : DoubleArray {
+        val cal: Calendar = Calendar.getInstance()
+
+        var amount : String?
+        val daysOfWeek = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        if(categoryID == "all") {
+            for(i in 0..6) {
+                var daySum = 0.0
+                for (j in 1..3) {
+                    /* Retrieve the total amount of expenses for each day, if the Day element exists. */
+                    amount = getValueByID(doc, "c-" + j.toString() + "-" +
+                            convertToLocalDate(cal.time).toString() + "-t") // can get substring of just the year (last 4 characters)
+                    if (amount != null) {
+                        daySum += amount.toDouble()
+                    }
+                }
+                daysOfWeek[i] = daySum
+                /* Determine the day previous to the current day. */
+                cal.add(Calendar.DAY_OF_MONTH, -1) // Can change Calender._ to years, ect.
+            }
+        }
+
+        else {
+            /* Iterate through the last seven calendar days. */
+            for (i in 0..6) {
+                /* Retrieve the total amount of expenses for each day, if the Day element exists. */
+                amount = getValueByID(doc, categoryID + "-" +
+                        convertToLocalDate(cal.time).toString() + "-t")
+                if (amount != null) {
+                    daysOfWeek[i] = amount.toDouble()
+                }
+                /* Determine the day previous to the current day. */
+                cal.add(Calendar.DAY_OF_MONTH, -1)
+            }
+        }
+        return daysOfWeek
+    }
+
     /* Purpose: Retrieves the total amount of expenses from the last twelve months.
     *
     * Parameters: doc represents the Document of the local repo XML file.
