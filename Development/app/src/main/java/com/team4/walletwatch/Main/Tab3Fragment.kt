@@ -21,63 +21,92 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Tab3Fragment : Fragment() {
-   fun sortEntries(adapter : RecyclerAdapter, position : Int) {
+    private lateinit var rootView : View
+    private lateinit var main : MainActivity
+    private lateinit var model : SharedViewModel
+
+    private lateinit var recycler : RecyclerView
+    private lateinit var adapterRecycler : RecyclerAdapter
+
+    private lateinit var deleteButton : Button
+
+    private lateinit var spinSorting : Spinner
+
+    private lateinit var spinFiltering : Spinner
+
+    /* Purpose: Controller method that will update the RecyclerView after the back-end sorts
+    * the list of entries.
+    *
+    * Parameters: position represents the position of the sortingSpinner Spinbox.
+    *
+    * Returns: Nothing. */
+    fun sortEntries(position : Int) {
         when (position) {
-            1 -> adapter.entries = sortByDateAscending(adapter.entries)
-            2 -> adapter.entries = sortByPriceDescending(adapter.entries)
-            3 -> adapter.entries = sortByPriceAscending(adapter.entries)
-            else -> adapter.entries = sortByDateDescending(adapter.entries)
+            1 -> adapterRecycler.entries = sortByDateAscending(adapterRecycler.entries)
+            2 -> adapterRecycler.entries = sortByPriceDescending(adapterRecycler.entries)
+            3 -> adapterRecycler.entries = sortByPriceAscending(adapterRecycler.entries)
+            else -> adapterRecycler.entries = sortByDateDescending(adapterRecycler.entries)
         }
-        adapter.notifyDataSetChanged()
+        /* Update the model, so that the changes are immediately displayed in the app. */
+        adapterRecycler.notifyDataSetChanged()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_tab3, container, false)
-        val main = activity as MainActivity
-        val model = main.model
+        rootView = inflater.inflate(R.layout.fragment_tab3, container, false)
+        main = activity as MainActivity
+        model = main.model
 
-        val recycler : RecyclerView = rootView.findViewById(R.id.cardRecycler)
-        recycler.setHasFixedSize(true)
+        /* Setup the RecyclerView, which will dynamically load entry cards as the user scolls. */
+        recycler = rootView.findViewById(R.id.cardRecycler)
+        /* Set the RecyclerView to have a vertical layout. */
         val layout = LinearLayoutManager(context)
         recycler.layoutManager = layout
-        val adapter = RecyclerAdapter(model.get())
-        recycler.adapter = adapter
+        /* Connect the RecyclerView to the data model using the RecyclerAdapter. */
+        adapterRecycler = RecyclerAdapter(model.get())
+        recycler.adapter = adapterRecycler
 
-        val deleteButton: Button = rootView.findViewById(R.id.deleteButton)
+        /* Initially set the "Delete Selected" button to be disabled and greyed-out. */
+        deleteButton = rootView.findViewById(R.id.deleteButton)
         deleteButton.isEnabled = false
         deleteButton.isClickable = false
         deleteButton.alpha = 0.5F
 
-        val spinSorting : Spinner = rootView.findViewById(R.id.sortingSpinner)
+        /* Set the possible options for the sorting Spinbox. */
+        spinSorting = rootView.findViewById(R.id.sortingSpinner)
         val adapterSorting = ArrayAdapter(requireActivity(),
             R.layout.support_simple_spinner_dropdown_item,
             resources.getStringArray(R.array.sortingOptions))
         spinSorting.adapter = adapterSorting
+        /* Set the listener that will sort the entries in a new order
+        * when a new option is selected. */
         spinSorting.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                sortEntries(adapter, position)
+                sortEntries(position)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
         }
 
-        val spinFiltering : Spinner = rootView.findViewById(R.id.filteringSpinner)
+        /* Set the possible options for the filtering Spinbox. */
+        spinFiltering = rootView.findViewById(R.id.filteringSpinner)
         val adapterFiltering = ArrayAdapter<String?>(requireActivity(),
             R.layout.support_simple_spinner_dropdown_item,
             DataManager.getCategories(model.get()))
         spinFiltering.adapter = adapterFiltering
+        /* Set the listener that will filter the entries down
+        * to only those of the category chosen. If the user taps "All", then clear any filtering. */
         spinFiltering.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 when (position) {
-                    0 -> adapter.entries = adapter.entriesRaw
-                    else -> adapter.filter(spinFiltering.selectedItem.toString())
+                    0 -> adapterRecycler.entries = adapterRecycler.entriesRaw
+                    else -> adapterRecycler.filter(spinFiltering.selectedItem.toString())
                 }
-                sortEntries(adapter, spinSorting.selectedItemPosition)
+                sortEntries(spinSorting.selectedItemPosition)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}

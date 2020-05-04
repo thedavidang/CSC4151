@@ -33,7 +33,7 @@
 	<!ELEMENT day (total,entry+)>
 	<!ATTLIST day id ID #REQUIRED>
 
-	<!ELEMENT entry (amount,description)>
+	<!ELEMENT entry (amount,description,timestamp)>
 	<!ATTLIST entry id ID #REQUIRED>
 
 	<!ELEMENT amount (#PCDATA)>
@@ -41,6 +41,9 @@
 
 	<!ELEMENT description (#PCDATA)>
 	<!ATTLIST description id ID #REQUIRED>
+
+	<!ELEMENT timestamp (#PCDATA)>
+	<!ATTLIST timestamp id ID #REQUIRED>
 
 	<!ELEMENT total (#PCDATA)>
 	<!ATTLIST total id ID #REQUIRED>

@@ -116,7 +116,8 @@ class Tab1Fragment : Fragment() {
                 dateInput.text.toString().replace(Regex("[^0-9]+"), "/"))
             /* Check if date is in MM/dd/yyyy format. */
             (dateParsed != null && !dateParsed.after(modelDateFormat.parse(today)))
-        } catch (_ : Exception) {
+        }
+        catch (_ : Exception) {
             false
         }
 
@@ -203,7 +204,8 @@ class Tab1Fragment : Fragment() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             if(validateAmountInput() && validDate) {
                 toggleCategoryButtons(true)
-            } else {
+            }
+            else {
                 toggleCategoryButtons(false)
             }
         }
@@ -222,7 +224,8 @@ class Tab1Fragment : Fragment() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (validAmount && validateDateInput()) {
                     toggleCategoryButtons(true)
-                } else {
+                }
+                else {
                     toggleCategoryButtons(false)
                 }
             }
