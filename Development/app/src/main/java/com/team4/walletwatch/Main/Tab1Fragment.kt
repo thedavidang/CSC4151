@@ -190,6 +190,8 @@ class Tab1Fragment : Fragment() {
         }
 
         amountInput = rootView.findViewById(R.id.amountField)
+        /* Set focus to amountField and open the numpad. */
+        amountInput.requestFocus()
         /* Use the dollar sign "$". */
         amountInput.setCurrency(CurrencySymbols.USA)
         /* Add a space after the dollar sign. */

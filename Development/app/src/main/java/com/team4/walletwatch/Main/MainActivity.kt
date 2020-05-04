@@ -30,18 +30,27 @@ class MainActivity : AppCompatActivity() {
         mainPager.adapter = fragmentAdapter
         mainPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(
-                position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {}
 
             override fun onPageSelected(position: Int) {}
+
+            /* Listener that will force the numpad to open on Tab 1
+            * and force the numpad to close when not on Tab 1. */
             override fun onPageScrollStateChanged(state: Int) {
+                /* Wait until the Tab scrolling animation is done. */
                 if (state == ViewPager.SCROLL_STATE_IDLE)
                 {
+                    /* Check if the current tab is not Tab 1. */
                     if (mainPager.currentItem != 0)
                     {
                         /* Hide the keyboard. */
                         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
                             .hideSoftInputFromWindow(mainPager.windowToken, 0)
                     }
+                    /* Otherwise, open the numpad. */
                     else {
                         showKeyboard(amountField)
                     }
@@ -63,10 +72,20 @@ class MainActivity : AppCompatActivity() {
         model.open(this)
     }
 
+    /* Purpose: Force the focus on the given UI object and
+    * then force the keyboard with the correct key layout to open.
+    *
+    * Parameters: view represents the UI object to set the focus on to.
+    *
+    * Returns: Nothing. */
     fun showKeyboard(view : View) {
+        /* Set the focus on the UI object. */
         if (view.requestFocus()) {
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .showSoftInput(view, 0)
+            /* Open the keyboard that has the correct layout for the given UI textbox.
+            * For example, if it is a numerical textbox, such as amountField,
+            * it will open the numpad. */
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).toggleSoftInput(
+                    InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
         }
     }
 }
