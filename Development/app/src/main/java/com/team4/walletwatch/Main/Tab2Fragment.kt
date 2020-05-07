@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
@@ -61,7 +62,11 @@ class Tab2Fragment : Fragment() {
         super.setUserVisibleHint(true)
         if (isVisibleToUser) {
             if (isVisibleToUser && !_hasLoadedOnce) {
-
+                //try to detach and attach
+                val ft: FragmentTransaction = this.fragmentManager!!.beginTransaction()
+                ft.detach(this)
+                ft.attach(this)
+                ft.commit()
                 _hasLoadedOnce = true;
             }
 
