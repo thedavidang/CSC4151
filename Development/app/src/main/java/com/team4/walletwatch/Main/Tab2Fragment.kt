@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_tab2.*
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.*
@@ -26,6 +27,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Tab2Fragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+
+
+
+
 class Tab2Fragment : Fragment() {
     private lateinit var rootView : View
     private lateinit var main : MainActivity
@@ -52,10 +58,22 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
+    fun showHide(view:View) {
+        view.visibility = if (view.visibility == View.VISIBLE){
+            View.INVISIBLE
+        } else{
+            View.VISIBLE
+        }
+    }
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         rootView = inflater.inflate(R.layout.fragment_tab2, container, false)
         main = activity as MainActivity
         model = main.model
@@ -115,12 +133,29 @@ class Tab2Fragment : Fragment() {
         lineChart.maximumViewport = view
         lineChart.currentViewport = view
 
+
+
+       //
+
+
+       pieChart = rootView.findViewById(R.id.pieView) as PieChartView
+        val valuess = ArrayList<SliceValue>()
+        valuess.add(SliceValue(20f,Color.BLUE))    // pie data
+
+        valuess.add(SliceValue(30f,Color.RED))
+        valuess.add(SliceValue(30f,Color.GREEN))
+        val piedata = PieChartData()
+        piedata.values = valuess
+        pieChart.pieChartData = piedata
+
+
+
         category1Text = rootView.findViewById(R.id.category1Text)
         category1Text.text = categories[1]
         category1Total = rootView.findViewById(R.id.category1Total)
         var category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
         var category1TotalString = "$ " +
-                DecimalFormat("#,##0.00").format(category1Amount)
+                DecimalFormat("0.00").format(category1Amount)
         category1Total.text = category1TotalString
 
         category2Text = rootView.findViewById(R.id.category2Text)
@@ -128,7 +163,7 @@ class Tab2Fragment : Fragment() {
         category2Total = rootView.findViewById(R.id.category2Total)
         var category2Amount = DataManager.last7DaysTotal(model.get(), "c-2")
         var category2TotalString = "$ " +
-                DecimalFormat("#,##0.00").format(category2Amount)
+                DecimalFormat("0.00").format(category2Amount)
         category2Total.text = category2TotalString
 
         category3Text = rootView.findViewById(R.id.category3Text)
@@ -136,7 +171,7 @@ class Tab2Fragment : Fragment() {
         category3Total = rootView.findViewById(R.id.category3Total)
         var category3Amount = DataManager.last7DaysTotal(model.get(), "c-3")
         var category3TotalString = "$ " +
-                DecimalFormat("#,##0.00").format(category3Amount)
+                DecimalFormat("0.00").format(category3Amount)
         category3Total.text = category3TotalString
 
         allText = rootView.findViewById(R.id.allText)
@@ -144,7 +179,7 @@ class Tab2Fragment : Fragment() {
         allTotal = rootView.findViewById(R.id.allTotal)
         var allAmount = category1Amount + category2Amount + category3Amount
         var allTotalString = "$ " +
-                DecimalFormat("#,##0.00").format(allAmount)
+                DecimalFormat("0.00").format(allAmount)
         allTotal.text = allTotalString
 
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
@@ -154,10 +189,50 @@ class Tab2Fragment : Fragment() {
         spinChartType.adapter = adapterChartType
 
         spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)
-        val adapterTimeInterval = ArrayAdapter(requireActivity(),
+        var adapterTimeInterval = ArrayAdapter(requireActivity(),
             R.layout.support_simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartIntervals))
         spinTimeInterval.adapter = adapterTimeInterval
+
+
+        spinChartType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
+                showHide(chartView)
+                showHide(pieView)
+                if (position == 0) {
+
+                    adapterTimeInterval = ArrayAdapter(
+                        requireActivity(),
+                        R.layout.support_simple_spinner_dropdown_item,
+                        resources.getStringArray(R.array.chartIntervals)
+                    )
+                    spinTimeInterval.adapter = adapterTimeInterval
+                }
+
+                if (position == 1) {
+
+                    adapterTimeInterval = ArrayAdapter(
+                        requireActivity(),
+                        R.layout.support_simple_spinner_dropdown_item,
+                        resources.getStringArray(R.array.pieIntervals)
+                    )
+                    spinTimeInterval.adapter = adapterTimeInterval
+                }
+
+
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+
+            }
+
+        }
+
+
+
         spinTimeInterval.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
@@ -165,65 +240,89 @@ class Tab2Fragment : Fragment() {
                     1 -> {
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category1Amount)
+                                DecimalFormat("0.00").format(category1Amount)
                         category1Total.text = category1TotalString
 
                         category2Amount = DataManager.last12MonthsTotal(model.get(), "c-2")
                         category2TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category2Amount)
+                                DecimalFormat("0.00").format(category2Amount)
                         category2Total.text = category2TotalString
 
                         category3Amount = DataManager.last12MonthsTotal(model.get(), "c-3")
                         category3TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category3Amount)
+                                DecimalFormat("0.00").format(category3Amount)
                         category3Total.text = category3TotalString
 
                         allAmount = category1Amount + category2Amount + category3Amount
-                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
+                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
                     2 -> {
                         category1Amount = DataManager.getValueByID(
                             model.get(), "c-1-t")!!.toDouble()
                         category1TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category1Amount)
+                                DecimalFormat("0.00").format(category1Amount)
                         category1Total.text = category1TotalString
 
                         category2Amount = DataManager.getValueByID(
                             model.get(), "c-2-t")!!.toDouble()
                         category2TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category2Amount)
+                                DecimalFormat("0.00").format(category2Amount)
                         category2Total.text = category2TotalString
 
                         category3Amount = DataManager.getValueByID(
                             model.get(), "c-3-t")!!.toDouble()
                         category3TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category3Amount)
+                                DecimalFormat("0.00").format(category3Amount)
                         category3Total.text = category3TotalString
 
                         allAmount = DataManager.getValueByID(
                             model.get(), "t")!!.toDouble()
-                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
+                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
+                        allTotal.text = allTotalString
+                    }
+                    3 -> {
+                        category1Amount = DataManager.getValueByID(
+                            model.get(), "c-1-t")!!.toDouble()
+                        category1TotalString = "$ " +
+                                DecimalFormat("0.00").format(category1Amount)
+                        category1Total.text = category1TotalString
+
+                        category2Amount = DataManager.getValueByID(
+                            model.get(), "c-2-t")!!.toDouble()
+                        category2TotalString = "$ " +
+                                DecimalFormat("0.00").format(category2Amount)
+                        category2Total.text = category2TotalString
+
+                        category3Amount = DataManager.getValueByID(
+                            model.get(), "c-3-t")!!.toDouble()
+                        category3TotalString = "$ " +
+                                DecimalFormat("0.00").format(category3Amount)
+                        category3Total.text = category3TotalString
+
+                        allAmount = DataManager.getValueByID(
+                            model.get(), "t")!!.toDouble()
+                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
                     else -> {
                         category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category1Amount)
+                                DecimalFormat("0.00").format(category1Amount)
                         category1Total.text = category1TotalString
 
                         category2Amount = DataManager.last7DaysTotal(model.get(), "c-2")
                         category2TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category2Amount)
+                                DecimalFormat("0.00").format(category2Amount)
                         category2Total.text = category2TotalString
 
                         category3Amount = DataManager.last7DaysTotal(model.get(), "c-3")
                         category3TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category3Amount)
+                                DecimalFormat("0.00").format(category3Amount)
                         category3Total.text = category3TotalString
 
                         allAmount = category1Amount + category2Amount + category3Amount
-                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
+                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
                 }
@@ -237,6 +336,23 @@ class Tab2Fragment : Fragment() {
             R.layout.support_simple_spinner_dropdown_item,
             categories)
         spinChartCategory.adapter = adapterChartCategory
+
+        spinChartCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
+
+
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+
+            }
+
+        }
+
+
 
         return rootView
     }
