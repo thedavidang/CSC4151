@@ -24,20 +24,25 @@ class SharedViewModel() : ViewModel() {
     * Returns: Nothing. */
     fun open(activity: Activity) {
         /* Locate XML file in Android Internal Storage */
-        var file = activity.getFileStreamPath(activity.getString(R.string.fileNameString))
+        var file = activity.getFileStreamPath(activity.getString(R.string.docFilenameString))
+
         /* Check if XML file does not yet exist since
         * app has likely just now been installed on user's device. */
         if(!file.exists()) {
             try {
-                /* Open skeleton XML file from assets and write the contents into buffer. */
+                /* Open skeleton XML file from assets. */
                 val outputWriter = OutputStreamWriter(
-                    activity.openFileOutput(activity.getString(R.string.fileNameString), Context.MODE_PRIVATE))
+                    activity.openFileOutput(activity.getString(R.string.docFilenameString), Context.MODE_PRIVATE))
+
+                /* Write the contents of the skeleton XML into buffer. */
                 outputWriter.write(activity.assets.open(
-                    activity.getString(R.string.fileNameString)).bufferedReader().use{it.readText()})
+                    activity.getString(R.string.docFilenameString)).bufferedReader().use{it.readText()})
+
                 /* Close the buffer. */
                 outputWriter.close()
+
                 /* Open the newly created XML file in Android Internal Storage. */
-                file = activity.getFileStreamPath(activity.getString(R.string.fileNameString))
+                file = activity.getFileStreamPath(activity.getString(R.string.docFilenameString))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -61,11 +66,13 @@ class SharedViewModel() : ViewModel() {
     * Parameters: doc represents the Document of the local repo XML file.
     *
     * Returns: String of the contents of the value of doc. */
-    fun docString(doc : Document?) : String {
+    private fun docString(doc : Document?) : String {
         val tf: TransformerFactory = TransformerFactory.newInstance()
         val trans: Transformer = tf.newTransformer()
         val sw = StringWriter()
+
         trans.transform(DOMSource(doc), StreamResult(sw))
+
         return sw.toString()
     }
 
@@ -79,12 +86,15 @@ class SharedViewModel() : ViewModel() {
         try {
             /* Open the local repo XML file in MODE_PRIVATE (Forced Overwrite) mode. */
             val outputWriter = OutputStreamWriter(
-                activity.openFileOutput(activity.getString(R.string.fileNameString), Context.MODE_PRIVATE))
+                activity.openFileOutput(activity.getString(R.string.docFilenameString), Context.MODE_PRIVATE))
+
             /* Convert the value of doc into a string and
             * write it to the now empty local repo XML file */
             outputWriter.write(docString(doc.value))
+
             /* Close the buffer. */
             outputWriter.close()
+
         } catch (e: Exception) {
             e.printStackTrace()
         }

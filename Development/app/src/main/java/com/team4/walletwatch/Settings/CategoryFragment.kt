@@ -21,25 +21,34 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CategoryFragment : Fragment() {
+    private lateinit var rootView : View
+    private lateinit var settings : SettingsActivity
+    private lateinit var model : SharedViewModel
+
+    private lateinit var categories : MutableList<String?>
+    private var changed = arrayOfNulls<String?>(3)
+
+    private lateinit var saveButton : Button
+
+    private lateinit var category1Edit : EditText
+    private lateinit var category2Edit : EditText
+    private lateinit var category3Edit : EditText
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_category, container, false)
-        val settings = activity as SettingsActivity
-        val model = settings.model
-        val categories = DataManager.getCategories(model.get())
-        val changed = ArrayList<String?>(3)
-        changed.add(null)
-        changed.add(null)
-        changed.add(null)
+        rootView = inflater.inflate(R.layout.fragment_category, container, false)
+        settings = activity as SettingsActivity
+        model = settings.model
+        categories = DataManager.getCategories(model.get())
 
-        val saveButton : Button = rootView.findViewById(R.id.saveButton)
+        saveButton = rootView.findViewById(R.id.saveButton)
         saveButton.isEnabled = false
         saveButton.isClickable = false
         saveButton.alpha = 0.5F
         saveButton.setOnClickListener {
-            DataManager.overwriteCategories(model.get(), changed)
+            DataManager.changeCategories(settings, model.get(), changed)
 
             model.save(settings)
 
@@ -48,7 +57,7 @@ class CategoryFragment : Fragment() {
             saveButton.alpha = 0.5F
         }
 
-        val category1Edit : EditText = rootView.findViewById(R.id.category1Edit)
+        category1Edit = rootView.findViewById(R.id.category1Edit)
         category1Edit.setText(categories[1])
         category1Edit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -73,7 +82,7 @@ class CategoryFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-        val category2Edit : EditText = rootView.findViewById(R.id.category2Edit)
+        category2Edit = rootView.findViewById(R.id.category2Edit)
         category2Edit.setText(categories[2])
         category2Edit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -91,14 +100,14 @@ class CategoryFragment : Fragment() {
                         saveButton.isClickable = true
                         saveButton.alpha = 1.0F
                     }
-                    changed[0] = category2Edit.text.toString()
+                    changed[1] = category2Edit.text.toString()
                 }
             }
 
             override fun afterTextChanged(s: Editable) {}
         })
 
-        val category3Edit : EditText = rootView.findViewById(R.id.category3Edit)
+        category3Edit = rootView.findViewById(R.id.category3Edit)
         category3Edit.setText(categories[3])
         category3Edit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -116,7 +125,7 @@ class CategoryFragment : Fragment() {
                         saveButton.isClickable = true
                         saveButton.alpha = 1.0F
                     }
-                    changed[0] = category3Edit.text.toString()
+                    changed[2] = category3Edit.text.toString()
                 }
             }
 

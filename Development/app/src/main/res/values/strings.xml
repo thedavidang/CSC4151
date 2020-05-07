@@ -1,7 +1,8 @@
 <resources>
     <string name="nameString">WalletWatch</string>
     <string name="headingString">WalletWatch ©</string>
-    <string name="fileNameString">WalletWatch.xml</string>
+    <string name="docFilenameString">WalletWatch.xml</string>
+    <string name="archiveFilenameString">Archive.xml</string>
 
     <string name="amountString">Amount:</string>
     <string name="amountHintString">$ 0.00</string>
