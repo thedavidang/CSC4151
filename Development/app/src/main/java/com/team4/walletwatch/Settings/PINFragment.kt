@@ -21,41 +21,68 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class PINFragment : Fragment() {
+    private lateinit var rootView : View
+    private lateinit var settings : SettingsActivity
+    private lateinit var model : SharedViewModel
+
+    private lateinit var protectSwitch : Switch
+
+    private lateinit var createText : TextView
+    private lateinit var createPIN : EditText
+
+    private lateinit var confirmText : TextView
+    private lateinit var confirmPIN : EditText
+
+    private lateinit var forgotButton : Button
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_pin, container, false)
-        val settings = activity as SettingsActivity
-        val model = settings.model
+        rootView = inflater.inflate(R.layout.fragment_pin, container, false)
+        settings = activity as SettingsActivity
+        model = settings.model
 
-        val protectSwitch : Switch = rootView.findViewById(R.id.pinSwitch)
+        protectSwitch = rootView.findViewById(R.id.pinSwitch)
 
-        val createText : TextView = rootView.findViewById(R.id.createLabel)
-        val createPIN : EditText = rootView.findViewById(R.id.createEdit)
+        createText = rootView.findViewById(R.id.createLabel)
+        createPIN = rootView.findViewById(R.id.createEdit)
 
-        val confirmText : TextView = rootView.findViewById(R.id.confirmLabel)
-        val confirmPIN : EditText = rootView.findViewById(R.id.confirmEdit)
+        confirmText = rootView.findViewById(R.id.confirmLabel)
+        confirmPIN = rootView.findViewById(R.id.confirmEdit)
 
-        val forgotButton : Button = rootView.findViewById(R.id.forgotPINButton)
+        forgotButton = rootView.findViewById(R.id.forgotPINButton)
 
+        /* Check if there is an active PIN set in the XML file. */
         if (DataManager.getValueByID(model.get(), "p")!!.length == 4) {
+            /* Denote PIN Protection as enabled. */
             protectSwitch.isChecked = true
 
+            /* Set text of Create PIN label to "Change PIN:" since there is an active PIN.
+            * Then, make it completely opaque. */
             createText.text = resources.getString(R.string.changePINString)
             createText.alpha = 1.0F
 
+            /* Enable the Create Pin Textbox, which will be used to change the PIN
+            * since there is an active PIN. */
             createPIN.isEnabled = true
             createPIN.isClickable = true
             createPIN.alpha = 1.0F
 
+            /* Set text of Create PIN label to "Confirm New PIN:" since there is an active PIN.
+            * Then, make it greyed out since the user
+            * has not entered anything in the Create/Change PIN textbox. */
             confirmText.text = resources.getString(R.string.confirmNewPINString)
             confirmText.alpha = 0.5F
 
+            /* Disable and grey-out the Confirm Pin Textbox, since the user has not yet entered
+            * anything in the Create/Change PIN Textbox.
+            * This Textbox will be used to confirm the changed PIN since there is an active PIN. */
             confirmPIN.isEnabled = false
             confirmPIN.isClickable = false
             confirmPIN.alpha = 0.5F
 
+            /* Enable the Forgot PIN button since there is an active PIN. */
             forgotButton.isEnabled = true
             forgotButton.isClickable = true
             forgotButton.alpha = 1.0F
