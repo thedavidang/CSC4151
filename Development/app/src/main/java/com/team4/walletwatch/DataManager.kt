@@ -113,6 +113,7 @@ object DataManager {
                 /* Determine the day previous to the current day. */
                 cal.add(Calendar.DAY_OF_MONTH, -1) // Can change Calender._ to years, ect.
             }
+            return daysOfWeek
         }
 
         else {
@@ -156,6 +157,43 @@ object DataManager {
         }
 
         return total
+    }
+
+    fun last12Months(doc: Document, categoryID : String) : DoubleArray {
+        val cal: Calendar = Calendar.getInstance()
+
+        var amount : String?
+        val monthsOfYear = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        if(categoryID == "all") {
+            for(i in 0..11) {
+                var monthSum = 0.0
+                for (j in 1..3) {
+                    /* Retrieve the total amount of expenses for each Month, if the Month element exists. */
+                    amount = getValueByID(doc, "c-" + j.toString() + "-" +
+                            convertToLocalDate(cal.time).toString().substringBeforeLast("-") + "-t") // can get substring of just the year (last 4 characters) (change to substring Before first)
+                    if (amount != null) {
+                        monthSum += amount.toDouble()
+                    }
+                }
+                monthsOfYear[i] = monthSum
+                /* Determine the month previous to the current month. */
+                cal.add(Calendar.MONTH, -1) // Can change Calender._ to years, ect.
+            }
+        }
+        else {
+            /* Iterate through the last 12 calendar months. */
+            for (i in 0..11) {
+                /* Retrieve the total amount of expenses for each month, if the month element exists. */
+                amount = getValueByID(doc, categoryID + "-" +
+                        convertToLocalDate(cal.time).toString().substringBeforeLast("-") + "-t")
+                if (amount != null) {
+                    monthsOfYear[i] = amount.toDouble()
+                }
+                /* Determine the month previous to the current month. */
+                cal.add(Calendar.MONTH, -1)
+            }
+        }
+        return monthsOfYear
     }
 
     /* Purpose: Determine how much of the date XML tree hierarchy already exists.

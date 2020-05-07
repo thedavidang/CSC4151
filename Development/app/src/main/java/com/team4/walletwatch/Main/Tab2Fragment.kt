@@ -52,29 +52,19 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.fragment_tab2, container, false)
-        main = activity as MainActivity
-        model = main.model
-
-        val categories = DataManager.getCategories(model.get())
-
-        lineChart = rootView.findViewById(R.id.chartView) as LineChartView
+    fun displayLineChart(days: DoubleArray) {
         var view = Viewport(lineChart.maximumViewport)
         view.top = view.top + view.height() * 0.05f
 
         val values = ArrayList<PointValue>()
-        values.add(PointValue(0f, 2f))
-        values.add(PointValue(1f, 4f))
-        values.add(PointValue(2f, 3f))
-        values.add(PointValue(3f, 5f))
-        values.add(PointValue(4f, 5f))
-        values.add(PointValue(5f, 3f))
-        values.add(PointValue(6f, 4f))
 
+        values.add(PointValue(0f, days[0].toFloat()))
+        values.add(PointValue(1f, days[1].toFloat()))
+        values.add(PointValue(2f, days[2].toFloat()))
+        values.add(PointValue(3f, days[3].toFloat()))
+        values.add(PointValue(4f, days[4].toFloat()))
+        values.add(PointValue(5f, days[5].toFloat()))
+        values.add(PointValue(6f, days[6].toFloat()))
 
         val line = Line(values).setColor(Color.BLACK)
         val lines = ArrayList<Line>()
@@ -115,6 +105,18 @@ class Tab2Fragment : Fragment() {
         view.bottom = view.bottom - padding
         lineChart.maximumViewport = view
         lineChart.currentViewport = view
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        rootView = inflater.inflate(R.layout.fragment_tab2, container, false)
+        main = activity as MainActivity
+        model = main.model
+
+        val categories = DataManager.getCategories(model.get())
+
+        lineChart = rootView.findViewById(R.id.chartView) as LineChartView
 
         category1Text = rootView.findViewById(R.id.category1Text)
         category1Text.text = categories[1]
@@ -165,6 +167,12 @@ class Tab2Fragment : Fragment() {
                 when (position) {
                     // last 12 months
                     1 -> {
+                        if(spinChartCategory.selectedItemPosition == 0) {
+                            var months = DataManager.last12Months(model.get(), "all")
+                        }
+                        else {
+                            var months = DataManager.last12Months(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
+                        }
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)
@@ -211,13 +219,15 @@ class Tab2Fragment : Fragment() {
                     }
                     // last 7 days
                     else -> {
+                        var days: DoubleArray
                         if(spinChartCategory.selectedItemPosition == 0) {
-                            var days = DataManager.last7Days(model.get(), "all")
+                             days = DataManager.last7Days(model.get(), "all")
+
                         }
                         else {
-                            var days = DataManager.last7Days(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
+                             days = DataManager.last7Days(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
                         }
-
+                        displayLineChart(days)
                         category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)
