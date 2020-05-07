@@ -12,7 +12,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.model.*
-import lecho.lib.hellocharts.view.*
+import lecho.lib.hellocharts.view.LineChartView
+import lecho.lib.hellocharts.view.PieChartView
 import java.text.DecimalFormat
 import java.util.*
 
@@ -51,6 +52,22 @@ class Tab2Fragment : Fragment() {
     private lateinit var spinTimeInterval : Spinner
 
     private lateinit var spinChartCategory : Spinner
+
+    private var _hasLoadedOnce = false // your boolean field
+
+
+    /* Try to refresh tab 2 when view is changed*/
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(true)
+        if (isVisibleToUser) {
+            if (isVisibleToUser && !_hasLoadedOnce) {
+
+                _hasLoadedOnce = true;
+            }
+
+            }
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
