@@ -167,12 +167,14 @@ class Tab2Fragment : Fragment() {
                 when (position) {
                     // last 12 months
                     1 -> {
+                        var months:DoubleArray
                         if(spinChartCategory.selectedItemPosition == 0) {
-                            var months = DataManager.last12Months(model.get(), "all")
+                             months = DataManager.last12Months(model.get(), "all")
                         }
                         else {
-                            var months = DataManager.last12Months(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
+                             months = DataManager.last12Months(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
                         }
+                        displayLineChart(months)
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)
