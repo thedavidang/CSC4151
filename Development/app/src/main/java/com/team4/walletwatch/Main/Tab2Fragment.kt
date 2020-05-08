@@ -52,19 +52,19 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
-    fun displayLineChart(days: DoubleArray) {
+    fun displayLineChart(total: DoubleArray, timeSpan: String) {
         var view = Viewport(lineChart.maximumViewport)
         view.top = view.top + view.height() * 0.05f
 
         val values = ArrayList<PointValue>()
 
-        values.add(PointValue(0f, days[0].toFloat()))
-        values.add(PointValue(1f, days[1].toFloat()))
-        values.add(PointValue(2f, days[2].toFloat()))
-        values.add(PointValue(3f, days[3].toFloat()))
-        values.add(PointValue(4f, days[4].toFloat()))
-        values.add(PointValue(5f, days[5].toFloat()))
-        values.add(PointValue(6f, days[6].toFloat()))
+        values.add(PointValue(0f, total[0].toFloat()))
+        values.add(PointValue(1f, total[1].toFloat()))
+        values.add(PointValue(2f, total[2].toFloat()))
+        values.add(PointValue(3f, total[3].toFloat()))
+        values.add(PointValue(4f, total[4].toFloat()))
+        values.add(PointValue(5f, total[5].toFloat()))
+        values.add(PointValue(6f, total[6].toFloat()))
 
         val line = Line(values).setColor(Color.BLACK)
         val lines = ArrayList<Line>()
@@ -73,38 +73,110 @@ class Tab2Fragment : Fragment() {
         val data = LineChartData()
         data.lines = lines
 
-        val axisValues = ArrayList<AxisValue>()
-        axisValues.add(AxisValue(0f, "Sun".toCharArray()))
-        axisValues.add(AxisValue(1f, "Mon".toCharArray()))
-        axisValues.add(AxisValue(2f, "Tue".toCharArray()))
-        axisValues.add(AxisValue(3f, "Wed".toCharArray()))
-        axisValues.add(AxisValue(4f, "Thu".toCharArray()))
-        axisValues.add(AxisValue(5f, "Fri".toCharArray()))
-        axisValues.add(AxisValue(6f, "Sat".toCharArray()))
+        if(timeSpan == "byDay") {
+            val axisValues = ArrayList<AxisValue>()
+            axisValues.add(AxisValue(0f, "Sun".toCharArray()))
+            axisValues.add(AxisValue(1f, "Mon".toCharArray()))
+            axisValues.add(AxisValue(2f, "Tue".toCharArray()))
+            axisValues.add(AxisValue(3f, "Wed".toCharArray()))
+            axisValues.add(AxisValue(4f, "Thu".toCharArray()))
+            axisValues.add(AxisValue(5f, "Fri".toCharArray()))
+            axisValues.add(AxisValue(6f, "Sat".toCharArray()))
 
-        val axisX = Axis(axisValues).setHasLines(true)
-        axisX.maxLabelChars = 4
-        data.axisXBottom = axisX
+            val axisX = Axis(axisValues).setHasLines(true)
+            axisX.maxLabelChars = 4
+            data.axisXBottom = axisX
 
-        val axisY = Axis().setHasLines(true)
-        val formatter = SimpleAxisValueFormatter()
-        if (view.top < 10f) {
-            formatter.decimalDigitsNumber = 2
+            val axisY = Axis().setHasLines(true)
+            val formatter = SimpleAxisValueFormatter()
+            if (view.top < 10f) {
+                formatter.decimalDigitsNumber = 2
+            }
+            else {
+                formatter.decimalDigitsNumber = 0
+            }
+            axisY.formatter = formatter
+            data.axisYLeft = axisY
+
+            lineChart.lineChartData = data
+
+            view = Viewport(lineChart.maximumViewport)
+            val padding = view.height() * 0.05f
+            view.top = view.top + padding
+            view.bottom = view.bottom - padding
+            lineChart.maximumViewport = view
+            lineChart.currentViewport = view
         }
-        else {
-            formatter.decimalDigitsNumber = 0
+        else if(timeSpan == "byMonth") {
+            val axisValues = ArrayList<AxisValue>()
+            axisValues.add(AxisValue(0f, "Sun".toCharArray()))
+            axisValues.add(AxisValue(1f, "Mon".toCharArray()))
+            axisValues.add(AxisValue(2f, "Tue".toCharArray()))
+            axisValues.add(AxisValue(3f, "Wed".toCharArray()))
+            axisValues.add(AxisValue(4f, "Thu".toCharArray()))
+            axisValues.add(AxisValue(5f, "Fri".toCharArray()))
+            axisValues.add(AxisValue(6f, "Sat".toCharArray()))
+
+            val axisX = Axis(axisValues).setHasLines(true)
+            axisX.maxLabelChars = 4
+            data.axisXBottom = axisX
+
+            val axisY = Axis().setHasLines(true)
+            val formatter = SimpleAxisValueFormatter()
+            if (view.top < 10f) {
+                formatter.decimalDigitsNumber = 2
+            }
+            else {
+                formatter.decimalDigitsNumber = 0
+            }
+            axisY.formatter = formatter
+            data.axisYLeft = axisY
+
+            lineChart.lineChartData = data
+
+            view = Viewport(lineChart.maximumViewport)
+            val padding = view.height() * 0.05f
+            view.top = view.top + padding
+            view.bottom = view.bottom - padding
+            lineChart.maximumViewport = view
+            lineChart.currentViewport = view
         }
-        axisY.formatter = formatter
-        data.axisYLeft = axisY
+        else if(timeSpan == "byYear") {
+            val axisValues = ArrayList<AxisValue>()
+            axisValues.add(AxisValue(0f, "Sun".toCharArray()))
+            axisValues.add(AxisValue(1f, "Mon".toCharArray()))
+            axisValues.add(AxisValue(2f, "Tue".toCharArray()))
+            axisValues.add(AxisValue(3f, "Wed".toCharArray()))
+            axisValues.add(AxisValue(4f, "Thu".toCharArray()))
+            axisValues.add(AxisValue(5f, "Fri".toCharArray()))
+            axisValues.add(AxisValue(6f, "Sat".toCharArray()))
 
-        lineChart.lineChartData = data
+            val axisX = Axis(axisValues).setHasLines(true)
+            axisX.maxLabelChars = 4
+            data.axisXBottom = axisX
 
-        view = Viewport(lineChart.maximumViewport)
-        val padding = view.height() * 0.05f
-        view.top = view.top + padding
-        view.bottom = view.bottom - padding
-        lineChart.maximumViewport = view
-        lineChart.currentViewport = view
+            val axisY = Axis().setHasLines(true)
+            val formatter = SimpleAxisValueFormatter()
+            if (view.top < 10f) {
+                formatter.decimalDigitsNumber = 2
+            }
+            else {
+                formatter.decimalDigitsNumber = 0
+            }
+            axisY.formatter = formatter
+            data.axisYLeft = axisY
+
+            lineChart.lineChartData = data
+
+            view = Viewport(lineChart.maximumViewport)
+            val padding = view.height() * 0.05f
+            view.top = view.top + padding
+            view.bottom = view.bottom - padding
+            lineChart.maximumViewport = view
+            lineChart.currentViewport = view
+        }
+
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -174,7 +246,7 @@ class Tab2Fragment : Fragment() {
                         else {
                              months = DataManager.last12Months(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
                         }
-                        displayLineChart(months)
+                        displayLineChart(months, "byMonth")
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)
@@ -229,7 +301,7 @@ class Tab2Fragment : Fragment() {
                         else {
                              days = DataManager.last7Days(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
                         }
-                        displayLineChart(days)
+                        displayLineChart(days, "byDay")
                         category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)
