@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import org.w3c.dom.Node
 import java.io.OutputStreamWriter
 import java.io.StringWriter
 import java.time.Instant
@@ -324,6 +325,49 @@ object DataManager {
         return sw.toString()
     }
 
+    /* Purpose: Recursively goes through each child node that has an id attribute and updates
+    * the category number. For example, if a restored category was originally "c-1", but is
+    * now being set as "c-2", all the children of the restored category will need their id
+    * attributes to change from "c-1-..." to "c-2-...".
+    *
+    * Parameters: source represents the node that needs its children to have updated id attributes
+    * newCategoryID is the new category id section to overwrite
+    *  for each child id attribute (e.g. "c-3")
+    *
+    * Returns: Nothing. */
+    private fun recursiveCategoryNumberUpdate(source: Node, newCategoryID: String) {
+        /* Iterate through all child nodes of the source. */
+        for (i in 0 until source.childNodes.length) {
+            val child = source.childNodes.item(i)
+            /* Make sure child node exists and has attributes,
+            * which should mean it has an id attribute. */
+            if (child != null && child.hasAttributes()) {
+                /* Ensure the id attribute of the the node exists. */
+                try {
+                    val id = child.attributes.getNamedItem("id")
+                    if (id != null) {
+                        /* Replace the category section of the id attribute. */
+                        id.textContent = newCategoryID + id.textContent.substring(3)
+                        /* Check if the child has child nodes of its own.
+                        * And also check to make sure the child is not simply a PCDATA node,
+                        * which does not have any children with attributes (e.g. "total" node). */
+                        if (child.hasChildNodes() &&
+                            !(child.childNodes.length == 1 && !child.firstChild.hasAttributes())
+                        ) {
+                            /* Recursive call that will update the id attributes of
+                            * the children nodes of the child node. */
+                            recursiveCategoryNumberUpdate(child, newCategoryID)
+                        }
+                    }
+                }
+                /* Simply ignore child since it does not have an id attribute. */
+                catch (e : Exception) {
+                    continue
+                }
+            }
+        }
+    }
+
     /* Purpose: Saves each changed category data to Archive.xml and then resets for each new label.
     * To save, first make a cloned copy of the category data and have the archive adopt the clone.
     * Then, append that adopted clone to the root element of the archive.
@@ -372,37 +416,105 @@ object DataManager {
         for ((index, label) in labels.withIndex()) {
             /* Check if this label was actually changed. */
             if (label != null) {
+                /* Retrieve list of all label nodes in the Archive.xml. */
+                val archivedLabels = archive.getElementsByTagName("label")
+                /* Initialize archived category node to restore and set to null. */
+                var restoreCategory : Node? = null
+
+                /* Iterate through archived label nodes until finding a match. */
+                var labelIndex = 0
+                while (restoreCategory == null && labelIndex < archivedLabels.length) {
+                    val archivedLabel = archivedLabels.item(labelIndex)
+                    /* If the current archived label node matches the new label. */
+                    if (archivedLabel.textContent == label) {
+                        /* Set the parent category node of this archived label node. */
+                        restoreCategory = archivedLabel.parentNode
+                    }
+                    labelIndex++
+                }
+
+                /* Initialize the category id for the id attributes. */
+                val categoryID = "c-" + (index + 1).toString()
+
                 /* Access the category element that will be changed. */
-                val category = doc.getElementById("c-" + (index + 1).toString())
-                /* Access the root element of the Archive.xml. */
-                val root = archive.getElementById("r")
+                val category = doc.getElementById(categoryID)
 
-                 /* Move a cloned copy of the category data over to the Archive.xml. */
-                 root.appendChild(archive.adoptNode(category.cloneNode(true)))
+                /* Move a cloned copy of the category data over to the Archive.xml. */
+                archive.getElementById("r").appendChild(
+                    archive.adoptNode(category.cloneNode(true)))
 
-                 /* Access the total amount spent in the old category. */
-                 val categoryTotal = doc.getElementById(
-                     "c-" + (index + 1).toString() + "-t")
-                 /* Decrement the total of all data by the total spent in the old category.
-                 * Decrementing is done by concatenating a minus sign
-                 * in front of the amount string. */
-                 incrementTotal(
-                     doc.getElementById("t"), "-" + categoryTotal.textContent)
+                /* Access the total amount spent in the old category. */
+                val categoryTotal = doc.getElementById("$categoryID-t")
 
-                 /* Reset the total amount of the category to zero. */
-                 categoryTotal.textContent = "0.00"
+                /* Grab the total of all the data in the WalletWatch.xml. */
+                val total = doc.getElementById("t")
 
-                 /* Access the label of the category. */
-                 val categoryLabel = doc.getElementById(
-                     "c-" + (index + 1).toString() + "-l")
-                 /* Change the label of the old category to the new label. */
-                 categoryLabel.textContent = label
+                /* Decrement the total of all data by the total spent in the old category.
+                * Decrementing is done by concatenating a minus sign
+                * in front of the amount string. */
+                incrementTotal(total, "-" + categoryTotal.textContent)
 
-                 /* Remove all children of the category element,
-                 * except the label and total elements. */
-                 while (category.lastChild != categoryTotal) {
-                     category.removeChild(category.lastChild)
-                 }
+                /* Access the label of the category. */
+                val categoryLabel = doc.getElementById("$categoryID-l")
+
+                /* Change the label of the old category to the new label. */
+                categoryLabel.textContent = label
+
+                /* Remove all children of the category element,
+                * except the label and total elements. */
+                while (category.lastChild != categoryTotal) {
+                    category.removeChild(category.lastChild)
+                }
+
+                /* Check if a category is to be restored from the Archive.xml. */
+                if (restoreCategory != null) {
+                    /* Iterate through the children of the archived category. */
+                    for(i in 0 until restoreCategory.childNodes.length) {
+                        val child = restoreCategory.childNodes.item(i)
+                        /* If the child node is the "total" node of the archived category,
+                        * grab the total and adjust the category total and data total
+                        * in the WalletWatch.xml. */
+                        if (child.nodeName == "total") {
+                            /* Restore the total amount of the category. */
+                            categoryTotal.textContent = child.textContent
+
+                            /* Increment the total of all data by the
+                            * total spent in the restored category. */
+                            incrementTotal(total, child.textContent)
+                        }
+                        /* Check if the child node is one of the
+                        * "year" nodes of the archived category. */
+                        else if (child.nodeName == "year") {
+                            /* Move the category data out of the archive and
+                            * paste it into the category in the WalletWatch.xml. */
+                            val year = doc.adoptNode(child)
+                            category.appendChild(year)
+
+                            /* Check if the restored category is now in a new position.
+                            * If so, then all id attributes of the year node and all of
+                            * its recursive children need to be updated.  */
+                            val yearID = year.attributes.getNamedItem("id")
+                            /* Check if the year id attribute category section does not match the
+                            * new category id. */
+                            if (yearID.textContent.substring(0, 3) != categoryID) {
+                                /* Update the year id attribute. */
+                                yearID.textContent =
+                                    categoryID + yearID.textContent.substring(3)
+                                /* Update the id attributes of all the recursive children
+                                * of the year node */
+                                recursiveCategoryNumberUpdate(year, categoryID)
+                            }
+                        }
+                    }
+                    /* Completely delete the restored category data that is left inside
+                    * the Archive.xml, since it has all been restored into the WalletWatch.xml. */
+                    archive.getElementById("r").removeChild(restoreCategory)
+                }
+                /* If not restoring an archived category, simply reset the category total. */
+                else {
+                    /* Reset the total amount of the category to zero. */
+                    categoryTotal.textContent = "0.00"
+                }
             }
         }
 
