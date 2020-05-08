@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE root [
-	<!ELEMENT root (security,data)>
+	<!ELEMENT root (total,category,category,category)>
 	<!ATTLIST root id ID #REQUIRED>
-
-	<!ELEMENT security (pin,question,answer)>
-	<!ATTLIST security id ID #REQUIRED>
-
-	<!ELEMENT data (total,category+)>
-	<!ATTLIST data id ID #REQUIRED>
-
-	<!ELEMENT pin (#PCDATA)>
-	<!ATTLIST pin id ID #REQUIRED>
-
-	<!ELEMENT question (#PCDATA)>
-	<!ATTLIST question id ID #REQUIRED>
-
-	<!ELEMENT answer (#PCDATA)>
-	<!ATTLIST answer id ID #REQUIRED>
 
 	<!ELEMENT category (label,total,year*)>
 	<!ATTLIST category id ID #REQUIRED>
@@ -49,24 +34,17 @@
 	<!ATTLIST total id ID #REQUIRED>
 	]>
 <root id="r">
-	<security id="s">
-		<pin id="p"></pin>
-		<question id="q">What city were you born in?</question>
-		<answer id="a"></answer>
-	</security>
-	<data id="d">
-		<total id="t">0.00</total>
-		<category id="c-1">
-			<label id="c-1-l">Food</label>
-			<total id="c-1-t">0.00</total>
-		</category>
-		<category id="c-2">
-			<label id="c-2-l">Entertainment</label>
-			<total id="c-2-t">0.00</total>
-		</category>
-		<category id="c-3">
-			<label id="c-3-l">Transportation</label>
-			<total id="c-3-t">0.00</total>
-		</category>
-	</data>
+	<total id="t">0.00</total>
+	<category id="c-1">
+		<label id="c-1-l">Food</label>
+		<total id="c-1-t">0.00</total>
+	</category>
+	<category id="c-2">
+		<label id="c-2-l">Entertainment</label>
+		<total id="c-2-t">0.00</total>
+	</category>
+	<category id="c-3">
+		<label id="c-3-l">Transportation</label>
+		<total id="c-3-t">0.00</total>
+	</category>
 </root>
