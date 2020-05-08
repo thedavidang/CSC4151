@@ -18,6 +18,20 @@ import kotlinx.android.synthetic.main.fragment_tab1.*
 class MainActivity : AppCompatActivity() {
     lateinit var model : SharedViewModel
 
+    override fun onDestroy() {
+        super.onDestroy()
+        /* Hide the keyboard. */
+        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(mainPager.windowToken, 0)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        /* Hide the keyboard. */
+        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(mainPager.windowToken, 0)
+    }
+
     /* Overwritten function that performs tasks immediately upon app launch. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +44,7 @@ class MainActivity : AppCompatActivity() {
         mainPager.adapter = fragmentAdapter
         mainPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {}
+                position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {}
 
@@ -84,7 +95,8 @@ class MainActivity : AppCompatActivity() {
             /* Open the keyboard that has the correct layout for the given UI textbox.
             * For example, if it is a numerical textbox, such as amountField,
             * it will open the numpad. */
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).toggleSoftInput(
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .toggleSoftInput(
                     InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
         }
     }
