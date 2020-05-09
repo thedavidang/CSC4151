@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root [
+	<!ELEMENT root (category*)>
+	<!ATTLIST root id ID #REQUIRED>
+
+	<!ELEMENT category (label,total,year*)>
+	<!ATTLIST category id ID #REQUIRED>
+
+	<!ELEMENT label (#PCDATA)>
+	<!ATTLIST label id ID #REQUIRED>
+
+	<!ELEMENT year (total,month+)>
+	<!ATTLIST year id ID #REQUIRED>
+
+	<!ELEMENT month (total,day+)>
+	<!ATTLIST month id ID #REQUIRED>
+
+	<!ELEMENT day (total,entry+)>
+	<!ATTLIST day id ID #REQUIRED>
+
+	<!ELEMENT entry (amount,description,timestamp)>
+	<!ATTLIST entry id ID #REQUIRED>
+
+	<!ELEMENT amount (#PCDATA)>
+	<!ATTLIST amount id ID #REQUIRED>
+
+	<!ELEMENT description (#PCDATA)>
+	<!ATTLIST description id ID #REQUIRED>
+
+	<!ELEMENT timestamp (#PCDATA)>
+	<!ATTLIST timestamp id ID #REQUIRED>
+
+	<!ELEMENT total (#PCDATA)>
+	<!ATTLIST total id ID #REQUIRED>
+	]>
+<root id="r">
+</root>

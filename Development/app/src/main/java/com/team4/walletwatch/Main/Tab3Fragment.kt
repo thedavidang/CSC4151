@@ -73,6 +73,30 @@ class Tab3Fragment : Fragment() {
         deleteButton.isEnabled = false
         deleteButton.isClickable = false
         deleteButton.alpha = 0.5F
+        /* TODO (SPEN-8): Display Confirmation alert that confirms that the user would like
+        *   to delete X entries and that it cannot be undone. */
+
+        /* TODO (SPEN-32): If the user taps "Yes", then call the back-end function that
+        *   deletes a given list of selected entries.
+        *   Then disable the "Delete Selected" button.
+        *   Save the changes using: model.save(main)
+        *   The deleted entries should now no longer appear in Tab 3 whatsoever.
+        *   If the user taps "No", then simply close the Confirmation alert. */
+
+
+
+        /* TODO (SPEN-8): Display Edit window for user to modify existing entry. */
+
+        /* TODO (SPEN-8): Display Confirmation alert that confirms that the user would like
+        *   to edit fields X, Y, ... of the entry. */
+
+        /* TODO (SPEN-33): If the user taps "Yes", then call the back-end function that
+        *   edits a given entry.
+        *   Then, close the Edit Entry window.
+        *   Save the changes using: model.save(main)
+        *   The modified entry should now reflect the changes in Tab 3.
+        *   If the user taps "No", then simply close the Confirmation alert,
+        *   but do not close the Edit Entry window. */
 
         /* Set the possible options for the sorting Spinbox. */
         spinSorting = rootView.findViewById(R.id.sortingSpinner)

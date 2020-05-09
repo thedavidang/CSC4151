@@ -1,13 +1,21 @@
 package com.team4.walletwatch
 
+import android.app.Activity
+import android.content.Context
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import java.io.OutputStreamWriter
+import java.io.StringWriter
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 import javax.xml.xpath.XPathFactory
-import kotlin.collections.ArrayList
 
 object DataManager {
     /* Purpose: Retrieve a value from an element in the local repo using an id.
@@ -301,13 +309,143 @@ object DataManager {
         dayTag.appendChild(entryTag)
     }
 
-    /* Purpose: Completely erase an obsolete category data and replace with new category label.
+    /* Purpose: Converts the contents of the archive into a string.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: archive represents the Document of the archive XML file.
+    *
+    * Returns: String of the contents of the archive. */
+    private fun archiveString(archive : Document?) : String {
+        val tf: TransformerFactory = TransformerFactory.newInstance()
+        val trans: Transformer = tf.newTransformer()
+        val sw = StringWriter()
+
+        trans.transform(DOMSource(archive), StreamResult(sw))
+
+        return sw.toString()
+    }
+
+    /* Purpose: Saves each changed category data to Archive.xml and then resets for each new label.
+    * To save, first make a cloned copy of the category data and have the archive adopt the clone.
+    * Then, append that adopted clone to the root element of the archive.
+    *
+    * To reset, first subtracts category total from data total.
+    * Second, sets category total to 0.00.
+    * Third, changes category label to new label name.
+    * Finally, deletes all children of category tag, except label tag and total tag.
+    *
+    * Parameters: activity represents the activity that called this function.
+    * doc represents the Document of the local repo XML file.
     * labels represent an array of which categories to overwrite
     *
     * Returns: Nothing. */
-    fun overwriteCategories(doc: Document, labels : ArrayList<String?>) {
+    fun changeCategories(activity : Activity, doc : Document, labels : Array<String?>) {
+        /* Locate archive XML file in Android Internal Storage */
+        var archiveFile = activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
+
+        /* Check if archive XML file does not yet exist since
+        * app has likely just now been installed on user's device. */
+        if(!archiveFile.exists()) {
+            try {
+                /* Open skeleton archive XML file from assets. */
+                val outputWriter = OutputStreamWriter(
+                    activity.openFileOutput(activity.getString(R.string.archiveFilenameString), Context.MODE_PRIVATE))
+
+                /* Write the contents of the skeleton archive XML into buffer. */
+                outputWriter.write(activity.assets.open(
+                    activity.getString(R.string.archiveFilenameString)).bufferedReader().use{it.readText()})
+
+                /* Close the buffer. */
+                outputWriter.close()
+
+                /* Open the newly created archive XML file in Android Internal Storage. */
+                archiveFile = activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        /* Load the contents of the archive XML file to the value of archive. */
+        val archive = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder().parse(archiveFile)
+
+        /* Iterate through each label in the array. */
+        for ((index, label) in labels.withIndex()) {
+            /* Check if this label was actually changed. */
+            if (label != null) {
+                /* Access the category element that will be changed. */
+                val category = doc.getElementById("c-" + (index + 1).toString())
+                /* Access the root element of the Archive.xml. */
+                val root = archive.getElementById("r")
+
+                 /* Move a cloned copy of the category data over to the Archive.xml. */
+                 root.appendChild(archive.adoptNode(category.cloneNode(true)))
+
+                 /* Access the total amount spent in the old category. */
+                 val categoryTotal = doc.getElementById(
+                     "c-" + (index + 1).toString() + "-t")
+                 /* Decrement the total of all data by the total spent in the old category.
+                 * Decrementing is done by concatenating a minus sign
+                 * in front of the amount string. */
+                 incrementTotal(
+                     doc.getElementById("t"), "-" + categoryTotal.textContent)
+
+                 /* Reset the total amount of the category to zero. */
+                 categoryTotal.textContent = "0.00"
+
+                 /* Access the label of the category. */
+                 val categoryLabel = doc.getElementById(
+                     "c-" + (index + 1).toString() + "-l")
+                 /* Change the label of the old category to the new label. */
+                 categoryLabel.textContent = label
+
+                 /* Remove all children of the category element,
+                 * except the label and total elements. */
+                 while (category.lastChild != categoryTotal) {
+                     category.removeChild(category.lastChild)
+                 }
+            }
+        }
+
+        /* Open skeleton archive XML file from assets. */
+        val outputWriter = OutputStreamWriter(
+            activity.openFileOutput(activity.getString(R.string.archiveFilenameString), Context.MODE_PRIVATE))
+
+        /* Convert the value of archive into a string and
+        * write it to the now empty archive XML file */
+        outputWriter.write(archiveString(archive))
+
+        /* Close the buffer. */
+        outputWriter.close()
+    }
+
+    /* TODO (SPEN-32): Implement this back-end function.
+    *   Feel free to include parameters as needed and/or include a return data type if needed.
+    *   If deleting an entry results in their being no more entries in its parent Day element,
+    *   then you must check to see how much of the date XML tree needs to be deleted:
+    *    Case 1 (Day element has sibling Day elements): Delete this Day element.
+    *    Case 2 (Day element has no siblings, but its
+    *            parent Month element has sibling Month elements): Delete the Month element.
+    *    Case 3 (Day element has no siblings and parent Month element has no siblings): Delete
+    *             the Year element. */
+    fun deleteEntries() {
+
+    }
+
+    /* TODO (SPEN-33): Implement this back-end function.
+    *   Feel free to include parameters as needed and/or include a return data type if needed.
+    *   If the date field is edited, then you must check to see how much
+    *   of the old date XML tree needs to be deleted:
+    *    Case 1 (Day element no longer has any Entry child elements): Delete the Day element.
+    *    Case 2 (Day element no longer has any Entry child elements
+    *            and Day element has no sibling Day elements,
+    *            but parent Month element has sibling Month elements): Delete the Month element.
+    *    Case 3 (Day element no longer has any Entry child elements
+    *            and Day element has no sibling Day elements
+    *            and Month element has no sibling Month elements): Delete the Year element.
+    *   AND how much of the new date XML tree needs to be created:
+    *    Use "findExistingDateTags" to determine whether the Year, Month, and/or Day elements
+    *    already exist. Then create the elements that do not yet exist. */
+    fun editEntry() {
 
     }
 }

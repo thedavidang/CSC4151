@@ -19,25 +19,18 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class AboutFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var rootView : View
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var aboutText : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_about, container, false)
+        rootView = inflater.inflate(R.layout.fragment_about, container, false)
 
-        val aboutText: TextView = rootView.findViewById(R.id.aboutText)
+        /* Allow the about text to be scrollable. */
+        aboutText = rootView.findViewById(R.id.aboutText)
         aboutText.movementMethod = ScrollingMovementMethod()
 
         return rootView
