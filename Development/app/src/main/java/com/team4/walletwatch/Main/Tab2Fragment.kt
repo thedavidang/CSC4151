@@ -1,6 +1,7 @@
 package com.team4.walletwatch
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +11,14 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.FragmentStatePagerAdapter
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
 import lecho.lib.hellocharts.view.PieChartView
 import java.text.DecimalFormat
 import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,23 +63,22 @@ class Tab2Fragment : Fragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(true)
         if (isVisibleToUser) {
-            if (isVisibleToUser && !_hasLoadedOnce) {
                 //try to detach and attach
-                val ft: FragmentTransaction = this.fragmentManager!!.beginTransaction()
-                ft.detach(this)
-                ft.attach(this)
-                ft.commit()
-                _hasLoadedOnce = true;
-            }
+                val ft =
+                    fragmentManager!!.beginTransaction()
+                if (Build.VERSION.SDK_INT >= 26) {
+                    ft.setReorderingAllowed(false)
+                }
+                ft.detach(this).attach(this).commit()
 
             }
         }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         rootView = inflater.inflate(R.layout.fragment_tab2, container, false)
         main = activity as MainActivity
         model = main.model
