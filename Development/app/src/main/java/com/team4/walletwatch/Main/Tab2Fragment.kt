@@ -56,8 +56,6 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
-    private var _hasLoadedOnce = false // your boolean field
-
 
     /* Try to refresh tab 2 when view is changed*/
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -70,7 +68,6 @@ class Tab2Fragment : Fragment() {
                     ft.setReorderingAllowed(false)
                 }
                 ft.detach(this).attach(this).commit()
-
             }
         }
 
