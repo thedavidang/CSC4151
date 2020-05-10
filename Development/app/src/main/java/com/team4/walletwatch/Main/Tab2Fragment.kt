@@ -17,6 +17,8 @@ import java.text.DecimalFormat
 import java.time.LocalDate
 import java.util.*
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.util.Calendar
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,13 +64,9 @@ class Tab2Fragment : Fragment() {
 
             val values = ArrayList<PointValue>()
 
-            values.add(PointValue(0f, total[6].toFloat()))
-            values.add(PointValue(1f, total[5].toFloat()))
-            values.add(PointValue(2f, total[4].toFloat()))
-            values.add(PointValue(3f, total[3].toFloat()))
-            values.add(PointValue(4f, total[2].toFloat()))
-            values.add(PointValue(5f, total[1].toFloat()))
-            values.add(PointValue(6f, total[0].toFloat()))
+            for (i in 6 downTo 0) {
+                values.add(PointValue(i.toFloat(), total[i].toFloat()))
+            }
 
             val line = Line(values).setColor(Color.BLACK)
             val lines = ArrayList<Line>()
@@ -78,6 +76,11 @@ class Tab2Fragment : Fragment() {
             data.lines = lines
             val axisValues = ArrayList<AxisValue>()
 
+            var currentDay = Calendar.DAY_OF_WEEK.toChar()
+
+            for (i  in 0..6) {
+                //axisValues.add(AxisValue(i.toFloat(), currentDay.)
+            }
             axisValues.add(AxisValue(0f, "Sun".toCharArray()))
             axisValues.add(AxisValue(1f, "Mon".toCharArray()))
             axisValues.add(AxisValue(2f, "Tue".toCharArray()))
