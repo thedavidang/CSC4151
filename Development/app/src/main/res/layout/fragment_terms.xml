@@ -21,7 +21,7 @@
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
         android:scrollbars="vertical"
-        android:text="@string/aboutString"
+        android:text="@string/termsString"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/menuSpacing" />
 </androidx.constraintlayout.widget.ConstraintLayout>

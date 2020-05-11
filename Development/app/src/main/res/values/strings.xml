@@ -43,23 +43,26 @@
         <item>Price (Low to High)</item>
     </string-array>
 
-    <string name="termsString">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eros quam, suscipit at gravida vitae, euismod sed leo. Aliquam porta ornare libero quis convallis. Sed varius pulvinar erat, sit amet pulvinar nibh porttitor at. Aliquam eu elementum arcu. Ut faucibus risus et condimentum semper. Curabitur sagittis odio vel quam tincidunt accumsan. Etiam et sagittis massa. Duis in lacinia quam. Donec eget nisl sed neque porta posuere. Phasellus facilisis enim ac luctus pretium. Nam nibh justo, pulvinar eu risus eu, elementum finibus lacus. Sed venenatis pretium nisl, at posuere lectus fermentum tempor. Duis vitae mollis erat. Ut finibus neque nec nisl mollis, ac lacinia orci varius.
+    <string name="termsString">
+        MIT License\n\nCopyright © 2020 SpendSages\n\nPermission is hereby granted, free of charge,
+        to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:\n\nThe above copyright notice and
+        this permission notice shall be included in all
+        copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS",
+        WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+    </string>
 
-Maecenas aliquet lectus a ex imperdiet condimentum. Cras vehicula eros at fringilla pulvinar. Quisque non dui a metus ultricies fermentum. Phasellus congue ex nec nisi blandit, quis aliquet urna pharetra. Nullam placerat mi dui, eget vehicula turpis consectetur et. Morbi vel suscipit magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam eu nibh justo. Maecenas scelerisque nulla tellus, a dapibus odio tristique nec. Proin ac diam sit amet nisl sodales interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ipsum elit, pretium nec turpis vel, ornare interdum ipsum.
-
-Sed quis nunc auctor, bibendum felis ac, commodo lectus. Donec dapibus scelerisque nisi ut faucibus. Quisque ac tincidunt magna, nec vestibulum est. Nulla facilisi. In vel diam interdum, accumsan urna eu, rutrum augue. Nunc lacinia lacus eget mauris porttitor, viverra dignissim metus congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam sed feugiat ex. Nam id bibendum nunc, eget aliquam nibh. Integer id orci ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean ac nulla in felis interdum iaculis.
-
-Fusce at magna et neque interdum pharetra a ac turpis. Phasellus dictum, dolor et elementum pretium, nisi arcu mattis neque, eu congue diam justo nec massa. In congue sapien euismod mi ultricies, sed lobortis odio rutrum. Morbi posuere ut nisl vel finibus. In ut varius dolor. Aliquam efficitur eleifend ultricies. Praesent viverra at augue molestie lacinia.
-
-Sed magna erat, rhoncus eget nisi vel, blandit posuere ex. Suspendisse consequat metus at vehicula lobortis. Duis consectetur sollicitudin arcu eget tempor. Sed id lacinia purus. Pellentesque ultricies rhoncus sagittis. Proin ac consequat est. Proin non lacus consectetur, varius tortor eu, eleifend quam. Nulla vulputate, velit ut iaculis congue, diam turpis auctor lacus, non ultrices urna lacus viverra nulla.</string>
-
-    <string name="aboutString">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eros quam, suscipit at gravida vitae, euismod sed leo. Aliquam porta ornare libero quis convallis. Sed varius pulvinar erat, sit amet pulvinar nibh porttitor at. Aliquam eu elementum arcu. Ut faucibus risus et condimentum semper. Curabitur sagittis odio vel quam tincidunt accumsan. Etiam et sagittis massa. Duis in lacinia quam. Donec eget nisl sed neque porta posuere. Phasellus facilisis enim ac luctus pretium. Nam nibh justo, pulvinar eu risus eu, elementum finibus lacus. Sed venenatis pretium nisl, at posuere lectus fermentum tempor. Duis vitae mollis erat. Ut finibus neque nec nisl mollis, ac lacinia orci varius.
-
-Maecenas aliquet lectus a ex imperdiet condimentum. Cras vehicula eros at fringilla pulvinar. Quisque non dui a metus ultricies fermentum. Phasellus congue ex nec nisi blandit, quis aliquet urna pharetra. Nullam placerat mi dui, eget vehicula turpis consectetur et. Morbi vel suscipit magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam eu nibh justo. Maecenas scelerisque nulla tellus, a dapibus odio tristique nec. Proin ac diam sit amet nisl sodales interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ipsum elit, pretium nec turpis vel, ornare interdum ipsum.
-
-Sed quis nunc auctor, bibendum felis ac, commodo lectus. Donec dapibus scelerisque nisi ut faucibus. Quisque ac tincidunt magna, nec vestibulum est. Nulla facilisi. In vel diam interdum, accumsan urna eu, rutrum augue. Nunc lacinia lacus eget mauris porttitor, viverra dignissim metus congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam sed feugiat ex. Nam id bibendum nunc, eget aliquam nibh. Integer id orci ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean ac nulla in felis interdum iaculis.
-
-Fusce at magna et neque interdum pharetra a ac turpis. Phasellus dictum, dolor et elementum pretium, nisi arcu mattis neque, eu congue diam justo nec massa. In congue sapien euismod mi ultricies, sed lobortis odio rutrum. Morbi posuere ut nisl vel finibus. In ut varius dolor. Aliquam efficitur eleifend ultricies. Praesent viverra at augue molestie lacinia.
-
-Sed magna erat, rhoncus eget nisi vel, blandit posuere ex. Suspendisse consequat metus at vehicula lobortis. Duis consectetur sollicitudin arcu eget tempor. Sed id lacinia purus. Pellentesque ultricies rhoncus sagittis. Proin ac consequat est. Proin non lacus consectetur, varius tortor eu, eleifend quam. Nulla vulputate, velit ut iaculis congue, diam turpis auctor lacus, non ultrices urna lacus viverra nulla.</string>
+    <string name="aboutString">
+        ABOUT PAGE CONTENT HERE.
+    </string>
 </resources>
