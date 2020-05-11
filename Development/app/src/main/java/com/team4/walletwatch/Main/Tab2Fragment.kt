@@ -81,30 +81,30 @@ class Tab2Fragment : Fragment() {
             data.lines = lines
             val axisValues = ArrayList<AxisValue>()
 
-            var currentDay = Calendar.DAY_OF_WEEK
+            var currentDay = cal.get(Calendar.DAY_OF_WEEK)
             var currentDayString = "string"
             var j = 6;
             for (i  in 1..7) {
                 if (currentDay == 1) {
-                    currentDayString = "Mon"
+                    currentDayString = "Sun"
                 }
                 else if(currentDay == 2) {
-                    currentDayString = "Tue"
+                    currentDayString = "Mon"
                 }
                 else if(currentDay == 3) {
-                    currentDayString = "Wed"
+                    currentDayString = "Tue"
                 }
                 else if(currentDay == 4) {
-                    currentDayString = "Thu"
+                    currentDayString = "Wed"
                 }
                 else if(currentDay == 5) {
-                    currentDayString = "Fri"
+                    currentDayString = "Thu"
                 }
                 else if(currentDay == 6) {
-                    currentDayString = "Sat"
+                    currentDayString = "Fri"
                 }
                 else if(currentDay == 7) {
-                    currentDayString = "Sun"
+                    currentDayString = "Sat"
                 }
                 axisValues.add(AxisValue(j.toFloat(), currentDayString.toCharArray()))
                 currentDay = currentDay - 1

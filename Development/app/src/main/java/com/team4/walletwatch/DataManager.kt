@@ -115,7 +115,6 @@ object DataManager {
             }
             return daysOfWeek
         }
-
         else {
             /* Iterate through the last seven calendar days. */
             for (i in 0..6) {
