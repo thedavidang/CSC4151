@@ -18,7 +18,10 @@ import java.time.LocalDate
 import java.util.*
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
+import java.time.Month
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,6 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Tab2Fragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class Tab2Fragment : Fragment() {
     private lateinit var rootView : View
     private lateinit var main : MainActivity
@@ -57,7 +61,7 @@ class Tab2Fragment : Fragment() {
     private lateinit var spinChartCategory : Spinner
 
     fun displayLineChart(total: DoubleArray, timeSpan: String) {
-
+        val cal: Calendar = Calendar.getInstance()
         if(timeSpan == "byDay") {
             var view = Viewport(lineChart.maximumViewport)
             view.top = view.top + view.height() * 0.05f
@@ -116,7 +120,7 @@ class Tab2Fragment : Fragment() {
 
             val axisY = Axis().setHasLines(true)
             val formatter = SimpleAxisValueFormatter()
-            if (view.top < 10f) {
+                if (view.top < 10f) {
                 formatter.decimalDigitsNumber = 2
             }
             else {
@@ -134,19 +138,17 @@ class Tab2Fragment : Fragment() {
             lineChart.maximumViewport = view
             lineChart.currentViewport = view
         }
+
         else if(timeSpan == "byMonth") {
             var view = Viewport(lineChart.maximumViewport)
             view.top = view.top + view.height() * 0.05f
 
             val values = ArrayList<PointValue>()
-
-            values.add(PointValue(0f, total[0].toFloat()))
-            values.add(PointValue(1f, total[1].toFloat()))
-            values.add(PointValue(2f, total[2].toFloat()))
-            values.add(PointValue(3f, total[3].toFloat()))
-            values.add(PointValue(4f, total[4].toFloat()))
-            values.add(PointValue(5f, total[5].toFloat()))
-            values.add(PointValue(6f, total[6].toFloat()))
+            var h = 11
+            for (i in 0..11) {
+                values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                h--
+            }
 
             val line = Line(values).setColor(Color.BLACK)
             val lines = ArrayList<Line>()
@@ -155,13 +157,54 @@ class Tab2Fragment : Fragment() {
             val data = LineChartData()
             data.lines = lines
             val axisValues = ArrayList<AxisValue>()
-            axisValues.add(AxisValue(0f, "Sun".toCharArray()))
-            axisValues.add(AxisValue(1f, "Mon".toCharArray()))
-            axisValues.add(AxisValue(2f, "Tue".toCharArray()))
-            axisValues.add(AxisValue(3f, "Wed".toCharArray()))
-            axisValues.add(AxisValue(4f, "Thu".toCharArray()))
-            axisValues.add(AxisValue(5f, "Fri".toCharArray()))
-            axisValues.add(AxisValue(6f, "Sat".toCharArray()))
+
+            var currentMonth = cal.get(Calendar.MONTH)
+            var currentMonthString = "string"
+            var j = 11
+            for (i  in 1..12) {
+                if (currentMonth == 0) {
+                    currentMonthString = "Jan"
+                }
+                else if(currentMonth == 1) {
+                    currentMonthString = "Feb"
+                }
+                else if(currentMonth == 2) {
+                    currentMonthString = "Mar"
+                }
+                else if(currentMonth == 3) {
+                    currentMonthString = "Apr"
+                }
+                else if(currentMonth == 4) {
+                    currentMonthString = "May"
+                }
+                else if(currentMonth == 5) {
+                    currentMonthString = "Jun"
+                }
+                else if(currentMonth == 6) {
+                    currentMonthString = "Jul"
+                }
+                else if(currentMonth == 7) {
+                    currentMonthString = "Aug"
+                }
+                else if(currentMonth == 8) {
+                    currentMonthString = "Sep"
+                }
+                else if(currentMonth == 9) {
+                    currentMonthString = "Oct"
+                }
+                else if(currentMonth == 10) {
+                    currentMonthString = "Nov"
+                }
+                else if(currentMonth == 11) {
+                    currentMonthString = "Dec"
+                }
+                axisValues.add(AxisValue(j.toFloat(), currentMonthString.toCharArray()))
+                currentMonth = currentMonth - 1
+                if(currentMonth == -1) {
+                    currentMonth = 11
+                }
+                j--
+            }
 
             val axisX = Axis(axisValues).setHasLines(true)
             axisX.maxLabelChars = 4
@@ -192,14 +235,11 @@ class Tab2Fragment : Fragment() {
             view.top = view.top + view.height() * 0.05f
 
             val values = ArrayList<PointValue>()
-
-            values.add(PointValue(0f, total[6].toFloat()))
-            values.add(PointValue(1f, total[5].toFloat()))
-            values.add(PointValue(2f, total[4].toFloat()))
-            values.add(PointValue(3f, total[3].toFloat()))
-            values.add(PointValue(4f, total[2].toFloat()))
-            values.add(PointValue(5f, total[1].toFloat()))
-            values.add(PointValue(6f, total[0].toFloat()))
+            var h = 9
+            for (i in 0..9) {
+                values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                h--
+            }
 
             val line = Line(values).setColor(Color.BLACK)
             val lines = ArrayList<Line>()
@@ -208,13 +248,17 @@ class Tab2Fragment : Fragment() {
             val data = LineChartData()
             data.lines = lines
             val axisValues = ArrayList<AxisValue>()
-            axisValues.add(AxisValue(0f, "Sun".toCharArray()))
-            axisValues.add(AxisValue(1f, "Mon".toCharArray()))
-            axisValues.add(AxisValue(2f, "Tue".toCharArray()))
-            axisValues.add(AxisValue(3f, "Wed".toCharArray()))
-            axisValues.add(AxisValue(4f, "Thu".toCharArray()))
-            axisValues.add(AxisValue(5f, "Fri".toCharArray()))
-            axisValues.add(AxisValue(6f, "Sat".toCharArray()))
+
+            var currentYear = cal.get(Calendar.YEAR)
+            var j = 9;
+            for (i  in 1..10) {
+                axisValues.add(AxisValue(j.toFloat(), currentYear.toString().toCharArray()))
+                currentYear = currentYear - 1
+                if(currentYear == 0) {
+                    currentYear = 9999
+                }
+                j--
+            }
 
             val axisX = Axis(axisValues).setHasLines(true)
             axisX.maxLabelChars = 4
@@ -341,6 +385,7 @@ class Tab2Fragment : Fragment() {
                         else {
                             years = DataManager.last10Years(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
                         }
+                        displayLineChart(years, "byYear")
                         category1Amount = DataManager.getValueByID(
                             model.get(), "c-1-t")!!.toDouble()
                         category1TotalString = "$ " +
