@@ -63,9 +63,10 @@ class Tab2Fragment : Fragment() {
             view.top = view.top + view.height() * 0.05f
 
             val values = ArrayList<PointValue>()
-
-            for (i in 6 downTo 0) {
-                values.add(PointValue(i.toFloat(), total[i].toFloat()))
+            var h = 6
+            for (i in 0..6) {
+                values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                h--
             }
 
             val line = Line(values).setColor(Color.BLACK)
@@ -76,18 +77,35 @@ class Tab2Fragment : Fragment() {
             data.lines = lines
             val axisValues = ArrayList<AxisValue>()
 
-            var currentDay = Calendar.DAY_OF_WEEK.toChar()
-
-            for (i  in 0..6) {
-                //axisValues.add(AxisValue(i.toFloat(), currentDay.)
+            var currentDay = Calendar.DAY_OF_WEEK.toInt()
+            var currentDayString = "string"
+            var j = 0;
+            for (i  in 1..7) {
+                if (currentDay == 1) {
+                    currentDayString = "Mon"
+                }
+                else if(currentDay == 2) {
+                    currentDayString = "Tue"
+                }
+                else if(currentDay == 3) {
+                    currentDayString = "Wed"
+                }
+                else if(currentDay == 4) {
+                    currentDayString = "Thu"
+                }
+                else if(currentDay == 5) {
+                    currentDayString = "Fri"
+                }
+                else if(currentDay == 6) {
+                    currentDayString = "Sat"
+                }
+                else if(currentDay == 7) {
+                    currentDayString = "Sun"
+                }
+                axisValues.add(AxisValue(j.toFloat(), currentDayString.toCharArray()))
+                currentDay = (currentDay % 7) + 1
+                j++
             }
-            axisValues.add(AxisValue(0f, "Sun".toCharArray()))
-            axisValues.add(AxisValue(1f, "Mon".toCharArray()))
-            axisValues.add(AxisValue(2f, "Tue".toCharArray()))
-            axisValues.add(AxisValue(3f, "Wed".toCharArray()))
-            axisValues.add(AxisValue(4f, "Thu".toCharArray()))
-            axisValues.add(AxisValue(5f, "Fri".toCharArray()))
-            axisValues.add(AxisValue(6f, "Sat".toCharArray()))
 
             val axisX = Axis(axisValues).setHasLines(true)
             axisX.maxLabelChars = 4
@@ -119,13 +137,13 @@ class Tab2Fragment : Fragment() {
 
             val values = ArrayList<PointValue>()
 
-            values.add(PointValue(0f, total[6].toFloat()))
-            values.add(PointValue(1f, total[5].toFloat()))
-            values.add(PointValue(2f, total[4].toFloat()))
+            values.add(PointValue(0f, total[0].toFloat()))
+            values.add(PointValue(1f, total[1].toFloat()))
+            values.add(PointValue(2f, total[2].toFloat()))
             values.add(PointValue(3f, total[3].toFloat()))
-            values.add(PointValue(4f, total[2].toFloat()))
-            values.add(PointValue(5f, total[1].toFloat()))
-            values.add(PointValue(6f, total[0].toFloat()))
+            values.add(PointValue(4f, total[4].toFloat()))
+            values.add(PointValue(5f, total[5].toFloat()))
+            values.add(PointValue(6f, total[6].toFloat()))
 
             val line = Line(values).setColor(Color.BLACK)
             val lines = ArrayList<Line>()
@@ -348,7 +366,6 @@ class Tab2Fragment : Fragment() {
                         var days: DoubleArray
                         if(spinChartCategory.selectedItemPosition == 0) {
                              days = DataManager.last7Days(model.get(), "all")
-
                         }
                         else {
                              days = DataManager.last7Days(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
