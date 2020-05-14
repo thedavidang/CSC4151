@@ -60,7 +60,7 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
-    fun displayLineChart(total: DoubleArray, timeSpan: String) {
+    fun displayLineChart(total: DoubleArray, timeSpan: String, colorPosition: Int) {
         val cal: Calendar = Calendar.getInstance()
         if(timeSpan == "byDay") {
             var view = Viewport(lineChart.maximumViewport)
@@ -73,7 +73,21 @@ class Tab2Fragment : Fragment() {
                 h--
             }
 
-            val line = Line(values).setColor(Color.BLACK)
+            val line = Line(values)
+            when (colorPosition) {
+                1 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory1))
+                }
+                2 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory2))
+                }
+                3 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory3))
+                }
+                else -> {
+                    line.setColor(this.resources.getColor(R.color.colorAll))
+                }
+            }
             val lines = ArrayList<Line>()
             lines.add(line)
 
@@ -120,7 +134,7 @@ class Tab2Fragment : Fragment() {
 
             val axisY = Axis().setHasLines(true)
             val formatter = SimpleAxisValueFormatter()
-                if (view.top < 10f) {
+            if (view.top < 10f) {
                 formatter.decimalDigitsNumber = 2
             }
             else {
@@ -150,7 +164,21 @@ class Tab2Fragment : Fragment() {
                 h--
             }
 
-            val line = Line(values).setColor(Color.BLACK)
+            val line = Line(values)
+            when (colorPosition) {
+                1 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory1))
+                }
+                2 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory2))
+                }
+                3 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory3))
+                }
+                else -> {
+                    line.setColor(this.resources.getColor(R.color.colorAll))
+                }
+            }
             val lines = ArrayList<Line>()
             lines.add(line)
 
@@ -241,7 +269,21 @@ class Tab2Fragment : Fragment() {
                 h--
             }
 
-            val line = Line(values).setColor(Color.BLACK)
+            val line = Line(values)
+            when (colorPosition) {
+                1 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory1))
+                }
+                2 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory2))
+                }
+                3 -> {
+                    line.setColor(this.resources.getColor(R.color.colorCategory3))
+                }
+                else -> {
+                    line.setColor(this.resources.getColor(R.color.colorAll))
+                }
+            }
             val lines = ArrayList<Line>()
             lines.add(line)
 
@@ -355,7 +397,7 @@ class Tab2Fragment : Fragment() {
                         else {
                              months = DataManager.last12Months(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
                         }
-                        displayLineChart(months, "byMonth")
+                        displayLineChart(months, "byMonth", spinChartCategory.selectedItemPosition)
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)
@@ -385,7 +427,7 @@ class Tab2Fragment : Fragment() {
                         else {
                             years = DataManager.last10Years(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
                         }
-                        displayLineChart(years, "byYear")
+                        displayLineChart(years, "byYear", spinChartCategory.selectedItemPosition)
                         category1Amount = DataManager.getValueByID(
                             model.get(), "c-1-t")!!.toDouble()
                         category1TotalString = "$ " +
@@ -418,7 +460,7 @@ class Tab2Fragment : Fragment() {
                         else {
                              days = DataManager.last7Days(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
                         }
-                        displayLineChart(days, "byDay")
+                        displayLineChart(days, "byDay", spinChartCategory.selectedItemPosition)
                         category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)
@@ -449,6 +491,47 @@ class Tab2Fragment : Fragment() {
             R.layout.support_simple_spinner_dropdown_item,
             categories)
         spinChartCategory.adapter = adapterChartCategory
+
+        spinChartCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                // Categories 1, 2, or 3 (Specific category)
+                if(position != 0) {
+                    var data:DoubleArray
+                    if(spinTimeInterval.selectedItemPosition == 0) {
+                        data = DataManager.last7Days(model.get(), "c-" + position.toString())
+                        displayLineChart(data, "byDay", position)
+                    }
+                    else if (spinTimeInterval.selectedItemPosition == 1) {
+                        data = DataManager.last12Months(model.get(), "c-" + position.toString())
+                        displayLineChart(data, "byMonth", position)
+                    }
+                    else {
+                        data = DataManager.last10Years(model.get(), "c-" + position.toString())
+                        displayLineChart(data, "byYear", position)
+                    }
+                }
+                // all categories
+                else {
+                    var data:DoubleArray
+                    if(spinTimeInterval.selectedItemPosition == 0) {
+                        data = DataManager.last7Days(model.get(), "all")
+                        displayLineChart(data, "byDay", position)
+                    }
+                    else if (spinTimeInterval.selectedItemPosition == 1) {
+                        data = DataManager.last12Months(model.get(), "all")
+                        displayLineChart(data, "byMonth", position)
+                    }
+                    else {
+                        data = DataManager.last10Years(model.get(), "all")
+                        displayLineChart(data, "byYear", position)
+                    }
+                }
+            }
+
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {}
+        }
 
         return rootView
     }
