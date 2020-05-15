@@ -33,18 +33,4 @@
 	<!ELEMENT total (#PCDATA)>
 	<!ATTLIST total id ID #REQUIRED>
 	]>
-<root id="r">
-	<total id="t">0.00</total>
-	<category id="c-1">
-		<label id="c-1-l">Food</label>
-		<total id="c-1-t">0.00</total>
-	</category>
-	<category id="c-2">
-		<label id="c-2-l">Entertainment</label>
-		<total id="c-2-t">0.00</total>
-	</category>
-	<category id="c-3">
-		<label id="c-3-l">Transportation</label>
-		<total id="c-3-t">0.00</total>
-	</category>
-</root>
+<root id="r"><total id="t">0.00</total><category id="c-1"><label id="c-1-l">Food</label><total id="c-1-t">0.00</total></category><category id="c-2"><label id="c-2-l">Entertainment</label><total id="c-2-t">0.00</total></category><category id="c-3"><label id="c-3-l">Transportation</label><total id="c-3-t">0.00</total></category></root>

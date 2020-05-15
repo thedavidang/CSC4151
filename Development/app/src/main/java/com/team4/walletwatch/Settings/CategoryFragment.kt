@@ -149,7 +149,7 @@ class CategoryFragment : Fragment() {
         rootView.setOnTouchListener { _: View, _: MotionEvent ->
             /* Hide the keyboard. */
             (settings.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(category1Edit.windowToken, 0)
+                .hideSoftInputFromWindow(categoryTextboxes[0]!!.windowToken, 0)
         }
 
         return rootView

@@ -33,5 +33,4 @@
 	<!ELEMENT total (#PCDATA)>
 	<!ATTLIST total id ID #REQUIRED>
 	]>
-<root id="r">
-</root>
+<root id="r" />
