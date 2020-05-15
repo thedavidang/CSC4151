@@ -2,6 +2,7 @@ package com.team4.walletwatch
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,17 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
 import kotlinx.android.synthetic.main.fragment_tab2.*
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.*
 import java.text.DecimalFormat
+import java.time.LocalDate
 import java.util.*
+import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.util.Calendar
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,7 +72,309 @@ class Tab2Fragment : Fragment() {
         }
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(true)
+        if (isVisibleToUser) {
+            //try to detach and attach
+            val ft =
+                fragmentManager!!.beginTransaction()
+            if (Build.VERSION.SDK_INT >= 26) {
+                ft.setReorderingAllowed(false)
+            }
+            ft.detach(this).attach(this).commit()
+        }
+    }
 
+    fun displayLineChart(total: DoubleArray, timeSpan: String) {
+        val cal: Calendar = Calendar.getInstance()
+        if(timeSpan == "byDay") {
+            var view = Viewport(lineChart.maximumViewport)
+            view.top = view.top + view.height() * 0.05f
+
+            val values = ArrayList<PointValue>()
+            var h = 6
+            for (i in 0..6) {
+                values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                h--
+            }
+
+            val line = Line(values).setColor(Color.BLACK)
+            val lines = ArrayList<Line>()
+            lines.add(line)
+
+            val data = LineChartData()
+            data.lines = lines
+            val axisValues = ArrayList<AxisValue>()
+
+            var currentDay = Calendar.DAY_OF_WEEK
+            var currentDayString = "string"
+            var j = 6;
+            for (i  in 1..7) {
+                if (currentDay == 1) {
+                    currentDayString = "Mon"
+                }
+                else if(currentDay == 2) {
+                    currentDayString = "Tue"
+                }
+                else if(currentDay == 3) {
+                    currentDayString = "Wed"
+                }
+                else if(currentDay == 4) {
+                    currentDayString = "Thu"
+                }
+                else if(currentDay == 5) {
+                    currentDayString = "Fri"
+                }
+                else if(currentDay == 6) {
+                    currentDayString = "Sat"
+                }
+                else if(currentDay == 7) {
+                    currentDayString = "Sun"
+                }
+                axisValues.add(AxisValue(j.toFloat(), currentDayString.toCharArray()))
+                currentDay = currentDay - 1
+                if(currentDay == 0) {
+                    currentDay = 7
+                }
+                j--
+            }
+
+            val axisX = Axis(axisValues).setHasLines(true)
+            axisX.maxLabelChars = 4
+            data.axisXBottom = axisX
+
+            val axisY = Axis().setHasLines(true)
+            val formatter = SimpleAxisValueFormatter()
+            if (view.top < 10f) {
+                formatter.decimalDigitsNumber = 2
+            }
+            else {
+                formatter.decimalDigitsNumber = 0
+            }
+            axisY.formatter = formatter
+            data.axisYLeft = axisY
+
+            lineChart.lineChartData = data
+
+            view = Viewport(lineChart.maximumViewport)
+            val padding = view.height() * 0.05f
+            view.top = view.top + padding
+            view.bottom = view.bottom - padding
+            lineChart.maximumViewport = view
+            lineChart.currentViewport = view
+        }
+
+        else if(timeSpan == "byMonth") {
+            var view = Viewport(lineChart.maximumViewport)
+            view.top = view.top + view.height() * 0.05f
+
+            val values = ArrayList<PointValue>()
+            var h = 11
+            for (i in 0..11) {
+                values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                h--
+            }
+
+            val line = Line(values).setColor(Color.BLACK)
+            val lines = ArrayList<Line>()
+            lines.add(line)
+
+            val data = LineChartData()
+            data.lines = lines
+            val axisValues = ArrayList<AxisValue>()
+
+            var currentMonth = cal.get(Calendar.MONTH)
+            var currentMonthString = "string"
+            var j = 11
+            for (i  in 1..12) {
+                if (currentMonth == 0) {
+                    currentMonthString = "Jan"
+                }
+                else if(currentMonth == 1) {
+                    currentMonthString = "Feb"
+                }
+                else if(currentMonth == 2) {
+                    currentMonthString = "Mar"
+                }
+                else if(currentMonth == 3) {
+                    currentMonthString = "Apr"
+                }
+                else if(currentMonth == 4) {
+                    currentMonthString = "May"
+                }
+                else if(currentMonth == 5) {
+                    currentMonthString = "Jun"
+                }
+                else if(currentMonth == 6) {
+                    currentMonthString = "Jul"
+                }
+                else if(currentMonth == 7) {
+                    currentMonthString = "Aug"
+                }
+                else if(currentMonth == 8) {
+                    currentMonthString = "Sep"
+                }
+                else if(currentMonth == 9) {
+                    currentMonthString = "Oct"
+                }
+                else if(currentMonth == 10) {
+                    currentMonthString = "Nov"
+                }
+                else if(currentMonth == 11) {
+                    currentMonthString = "Dec"
+                }
+                axisValues.add(AxisValue(j.toFloat(), currentMonthString.toCharArray()))
+                currentMonth = currentMonth - 1
+                if(currentMonth == -1) {
+                    currentMonth = 11
+                }
+                j--
+            }
+
+            val axisX = Axis(axisValues).setHasLines(true)
+            axisX.maxLabelChars = 4
+            data.axisXBottom = axisX
+
+            val axisY = Axis().setHasLines(true)
+            val formatter = SimpleAxisValueFormatter()
+            if (view.top < 10f) {
+                formatter.decimalDigitsNumber = 2
+            }
+            else {
+                formatter.decimalDigitsNumber = 0
+            }
+            axisY.formatter = formatter
+            data.axisYLeft = axisY
+
+            lineChart.lineChartData = data
+
+            view = Viewport(lineChart.maximumViewport)
+            val padding = view.height() * 0.05f
+            view.top = view.top + padding
+            view.bottom = view.bottom - padding
+            lineChart.maximumViewport = view
+            lineChart.currentViewport = view
+        }
+        else if(timeSpan == "byYear") {
+            var view = Viewport(lineChart.maximumViewport)
+            view.top = view.top + view.height() * 0.05f
+
+            val values = ArrayList<PointValue>()
+            var h = 9
+            for (i in 0..9) {
+                values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                h--
+            }
+
+            val line = Line(values).setColor(Color.BLACK)
+            val lines = ArrayList<Line>()
+            lines.add(line)
+
+            val data = LineChartData()
+            data.lines = lines
+            val axisValues = ArrayList<AxisValue>()
+
+            var currentYear = cal.get(Calendar.YEAR)
+            var j = 9;
+            for (i  in 1..10) {
+                axisValues.add(AxisValue(j.toFloat(), currentYear.toString().toCharArray()))
+                currentYear = currentYear - 1
+                if(currentYear == 0) {
+                    currentYear = 9999
+                }
+                j--
+            }
+
+            val axisX = Axis(axisValues).setHasLines(true)
+            axisX.maxLabelChars = 4
+            data.axisXBottom = axisX
+
+            val axisY = Axis().setHasLines(true)
+            val formatter = SimpleAxisValueFormatter()
+            if (view.top < 10f) {
+                formatter.decimalDigitsNumber = 2
+            }
+            else {
+                formatter.decimalDigitsNumber = 0
+            }
+            axisY.formatter = formatter
+            data.axisYLeft = axisY
+
+            lineChart.lineChartData = data
+
+            view = Viewport(lineChart.maximumViewport)
+            val padding = view.height() * 0.05f
+            view.top = view.top + padding
+            view.bottom = view.bottom - padding
+            lineChart.maximumViewport = view
+            lineChart.currentViewport = view
+        }
+    }
+
+    fun displayPieChart(timeSpan: String){                              // display piechart data according to time interval
+        pieChart = rootView.findViewById(R.id.pieView) as PieChartView
+        var red: String?
+        var redTotal = 0.00F
+        var green: String?
+        var greenTotal = 0.00F
+        var blue: String?
+        var blueTotal = 0.00F
+        var today :LocalDate  = LocalDate.now()
+
+        val values = ArrayList<SliceValue>()
+        if (timeSpan == "all_Time") {
+            red = DataManager.getValueByID(model.get(), "c-1-t")
+            if (red != null)
+                redTotal = red.toFloat()
+            green = DataManager.getValueByID(model.get(), "c-2-t")
+            if (green != null)
+                greenTotal = green.toFloat()
+            blue = DataManager.getValueByID(model.get(), "c-3-t")
+            if (blue != null)
+                blueTotal = blue.toFloat()
+        }
+
+        if (timeSpan == "daily"){
+            red = DataManager.getValueByID(model.get(),"c-1-"+
+                    today.toString() + "-t")
+            if (red != null)
+                redTotal = red.toFloat()
+            green = DataManager.getValueByID(model.get(),"c-2-"+
+                    today.toString() + "-t")
+            if (green != null)
+                greenTotal = green.toFloat()
+            blue = DataManager.getValueByID(model.get(),"c-3-"+
+                    today.toString() + "-t")
+            if (blue != null)
+                blueTotal = blue.toFloat()
+
+        }
+
+        if (timeSpan == "this_Month"){
+            red = DataManager.getValueByID(model.get(),"c-1-"+
+                    today.toString().substring(0, 7) + "-t")
+            if (red != null)
+                redTotal = red.toFloat()
+            green = DataManager.getValueByID(model.get(),"c-2-"+
+                    today.toString().substring(0, 7) + "-t")
+            if (green != null)
+                greenTotal = green.toFloat()
+            blue = DataManager.getValueByID(model.get(),"c-3-"+
+                    today.toString().substring(0, 7) + "-t")
+            if (blue != null)
+                blueTotal = blue.toFloat()
+        }
+
+
+
+        values.add(SliceValue(redTotal,Color.RED))
+        values.add(SliceValue(greenTotal,Color.GREEN))
+        values.add(SliceValue(blueTotal,Color.BLUE))
+        val piedata = PieChartData()
+        piedata.values = values
+        pieChart.pieChartData = piedata
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -135,20 +443,6 @@ class Tab2Fragment : Fragment() {
 
 
 
-       //
-
-
-       pieChart = rootView.findViewById(R.id.pieView) as PieChartView
-        val valuess = ArrayList<SliceValue>()
-        valuess.add(SliceValue(20f,Color.BLUE))    // pie data
-
-        valuess.add(SliceValue(30f,Color.RED))
-        valuess.add(SliceValue(30f,Color.GREEN))
-        val piedata = PieChartData()
-        piedata.values = valuess
-        pieChart.pieChartData = piedata
-
-
 
         category1Text = rootView.findViewById(R.id.category1Text)
         category1Text.text = categories[1]
@@ -182,18 +476,25 @@ class Tab2Fragment : Fragment() {
                 DecimalFormat("0.00").format(allAmount)
         allTotal.text = allTotalString
 
-        spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
+        /*all 3 spinners*/
+
+        spinChartType = rootView.findViewById(R.id.chartTypeSpinner)            // chart type
         val adapterChartType= ArrayAdapter(requireActivity(),
             R.layout.support_simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartTypes))
         spinChartType.adapter = adapterChartType
 
-        spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)
+        spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)     // time interval
         var adapterTimeInterval = ArrayAdapter(requireActivity(),
             R.layout.support_simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartIntervals))
         spinTimeInterval.adapter = adapterTimeInterval
 
+        spinChartCategory = rootView.findViewById(R.id.lineCategorySpinner)    // category
+        val adapterChartCategory = ArrayAdapter<String?>(requireActivity(),
+            R.layout.support_simple_spinner_dropdown_item,
+            categories)
+        spinChartCategory.adapter = adapterChartCategory
 
         spinChartType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -236,8 +537,22 @@ class Tab2Fragment : Fragment() {
         spinTimeInterval.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+
+
+
                 when (position) {
+                    0 -> {
+                        if(spinChartType.selectedItemPosition == 1) {
+                            displayPieChart("daily")
+                        }
+                    }
+
+
                     1 -> {
+                        if(spinChartType.selectedItemPosition == 1) {
+                            displayPieChart("this_Month")
+                        }
+
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("0.00").format(category1Amount)
@@ -258,6 +573,9 @@ class Tab2Fragment : Fragment() {
                         allTotal.text = allTotalString
                     }
                     2 -> {
+                        if(spinChartType.selectedItemPosition == 1) {
+                            displayPieChart("all_Time")
+                        }
                         category1Amount = DataManager.getValueByID(
                             model.get(), "c-1-t")!!.toDouble()
                         category1TotalString = "$ " +
@@ -282,6 +600,7 @@ class Tab2Fragment : Fragment() {
                         allTotal.text = allTotalString
                     }
                     3 -> {
+
                         category1Amount = DataManager.getValueByID(
                             model.get(), "c-1-t")!!.toDouble()
                         category1TotalString = "$ " +
@@ -331,11 +650,7 @@ class Tab2Fragment : Fragment() {
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
         }
 
-        spinChartCategory = rootView.findViewById(R.id.lineCategorySpinner)
-        val adapterChartCategory = ArrayAdapter<String?>(requireActivity(),
-            R.layout.support_simple_spinner_dropdown_item,
-            categories)
-        spinChartCategory.adapter = adapterChartCategory
+
 
         spinChartCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
