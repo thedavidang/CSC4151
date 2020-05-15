@@ -8,6 +8,7 @@ import java.time.Instant
 * which is an expense that has a dollar amount, possibly a description of purchase,
 * a timestamp of purchase, and the category the expense entry falls under. */
 class Entry(
+    var id: String,
     var amount: Double,
     var description: String,
     var timestamp: Instant,
@@ -89,6 +90,7 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
     val entries = mutableListOf<Entry>()
 
     var node: Node
+    var id: String
     var amount: Double
     var description: String
     var timestamp : Instant
@@ -99,17 +101,16 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
         node = entryNodes.item(index)
 
         /* Grab the values from the children nodes of the current Entry element. */
+        id = node.attributes.getNamedItem("id").textContent
         amount = node.firstChild.textContent.toDouble()
         description = node.childNodes.item(1).textContent
         /* Parse the timestamp string as a timestamp object known as Instant. */
         timestamp = Instant.parse(node.lastChild.textContent)
         /* Retrieve the category label by using the id "c-x-l". */
-        category = doc.getElementById(
-            node.attributes.item(0).textContent.substring(0, 4) + "l"
-        ).textContent
+        category = doc.getElementById(id.substring(0, 4) + "l").textContent
 
         /* Create an instance of the Entry class and add it to the list of entries. */
-        entries.add(Entry(amount, description, timestamp, category))
+        entries.add(Entry(id, amount, description, timestamp, category))
     }
 
     /* Return the list of entries, which can safely be empty. */

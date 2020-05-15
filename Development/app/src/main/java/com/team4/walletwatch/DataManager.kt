@@ -169,10 +169,13 @@ object DataManager {
         element.textContent = (element.textContent.toDouble() + amount.toDouble()).toString()
     }
 
-    /* Purpose: Increment the amount of a total element in the local repo.
+    /* Purpose: Add an entry to the local repo XML file.
     *
-    * Parameters: element represents the total Element to increment.
-    * amount represents the amount to increment element by.
+    * Parameters: doc represents the Document of the local repo XML file.
+    * amountRaw represents the string of the raw dollar amount input.
+    * description represents the string of the optional expense description.
+    * date represents the string of the date of the expense.
+    * category represents the string of the selected category of the expense.
     *
     * Returns: Nothing. */
     fun addEntry(doc : Document, amountRaw : String, description : String,
@@ -301,13 +304,58 @@ object DataManager {
         dayTag.appendChild(entryTag)
     }
 
-    /* Purpose: Completely erase an obsolete category data and replace with new category label.
+    /* Purpose: Check how much of a date tree hierarchy will be "empty" after removing a
+    * particular Entry tag. Any "empty" date tags will be deleted from the local repo XML file.
     *
     * Parameters: doc represents the Document of the local repo XML file.
-    * labels represent an array of which categories to overwrite
+    * entryID represents the id of the entry that will be deleted.
     *
     * Returns: Nothing. */
-    fun overwriteCategories(doc: Document, labels : ArrayList<String?>) {
+    fun deleteEmptyTags(doc: Document, entryID: String) {
+        val entryTag = doc.getElementById(entryID)
+        val entryAmount = getValueByID(doc, "$entryID-a")!!
 
+        /* Grab ancestor tags and their totals. */
+        val dayTag = entryTag.parentNode
+        val dayTotal = dayTag.firstChild as Element
+
+        val monthTag = dayTag.parentNode
+        val monthTotal = monthTag.firstChild as Element
+
+        val yearTag = monthTag.parentNode
+        val yearTotal = yearTag.firstChild as Element
+
+        val categoryTag = yearTag.parentNode
+        val categoryTotal = categoryTag.firstChild as Element
+
+        val total = doc.getElementById("t")
+
+        /* Subtract entry amount from the totals of its ancestors. */
+        incrementTotal(dayTotal, "-$entryAmount")
+        incrementTotal(monthTotal, "-$entryAmount")
+        incrementTotal(yearTotal, "-$entryAmount")
+        incrementTotal(categoryTotal, "-$entryAmount")
+        incrementTotal(total, "-$entryAmount")
+
+        /* Remove the entry from the Day tag. */
+        dayTag.removeChild(entryTag)
+
+        /* Check if the Day tag now only has a Total child tag. */
+        if (dayTag.childNodes.length == 1) {
+            /* Then, remove the Day tag from the Month tag. */
+            monthTag.removeChild(dayTag)
+
+            /* Check if the Month tag now only has a Total child tag. */
+            if (monthTag.childNodes.length == 1) {
+                /* Then, remove the Month tag from the Year tag. */
+                yearTag.removeChild(monthTag)
+
+                /* Check if the Year tag now only has a Total child tag. */
+                if (yearTag.childNodes.length == 1) {
+                    /* Then, remove the Year tag from the Category tag. */
+                    categoryTag.removeChild(yearTag)
+                }
+            }
+        }
     }
 }
