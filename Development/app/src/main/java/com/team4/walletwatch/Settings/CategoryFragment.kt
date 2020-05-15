@@ -1,12 +1,15 @@
 package com.team4.walletwatch
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 
@@ -141,6 +144,12 @@ class CategoryFragment : Fragment() {
 
                 override fun afterTextChanged(s: Editable) {}
             })
+        }
+
+        rootView.setOnTouchListener { _: View, _: MotionEvent ->
+            /* Hide the keyboard. */
+            (settings.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(category1Edit.windowToken, 0)
         }
 
         return rootView

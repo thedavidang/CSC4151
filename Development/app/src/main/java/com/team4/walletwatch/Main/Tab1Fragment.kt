@@ -1,12 +1,11 @@
 package com.team4.walletwatch
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import me.abhinay.input.CurrencyEditText
@@ -257,6 +256,15 @@ class Tab1Fragment : Fragment() {
         /* Set the listener to reveal the CalendarView and its background. */
         dateButton.setOnClickListener {
             toggleDateSelector(true)
+            /* Hide the keyboard. */
+            (main.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(amountInput.windowToken, 0)
+        }
+
+        rootView.setOnTouchListener { _: View, _: MotionEvent ->
+            /* Hide the keyboard. */
+            (main.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(amountInput.windowToken, 0)
         }
 
         return rootView
