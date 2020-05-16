@@ -98,8 +98,6 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
     /* Iterate through the Entry elements in the XML file  */
     for (index in 0 until entryNodes.length) {
         node = entryNodes.item(index)
-        val id = node.attributes.getNamedItem("id").textContent.toString()
-
         /* Grab the values from the children nodes of the current Entry element. */
         id = node.attributes.getNamedItem("id").textContent
         amount = node.firstChild.textContent.toDouble()

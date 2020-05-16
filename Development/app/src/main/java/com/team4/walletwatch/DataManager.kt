@@ -590,30 +590,29 @@ object DataManager {
 
     /* TODO (SPEN-32): Implement this back-end function.
     *   Feel free to include parameters as needed and/or include a return data type if needed.
-    *   If deleting an entry results in their being no more entries in its parent Day element,
-    *   then you must check to see how much of the date XML tree needs to be deleted:
-    *    Case 1 (Day element has sibling Day elements): Delete this Day element.
-    *    Case 2 (Day element has no siblings, but its
-    *            parent Month element has sibling Month elements): Delete the Month element.
-    *    Case 3 (Day element has no siblings and parent Month element has no siblings): Delete
-    *             the Year element. */
+    *   1. The selectedEntries parameter should contain the id string
+    *      for each entry selected for deletion.
+    *     (Each Entry object displayed on Tab 3 has a member variable called "id".)
+    *   2. Remove each Entry element node by iterating through selectedEntries and
+    *      calling the deleteEmptyTags function, which has an Entry id string as a parameter.*/
     fun deleteEntries(doc: Document, selectedEntries: MutableList<String>) {
 
     }
 
     /* TODO (SPEN-33): Implement this back-end function.
     *   Feel free to include parameters as needed and/or include a return data type if needed.
-    * Determine which fields were modified.
-    * 1. If only the description was changed, simply edit the text content 
-    * of the Description child of the Entry element.
-    * 2. If the amount was changed, then determine the difference between the current amount 
-    * and the new amount: (difference = new amount - current amount)
-    * Then, increment all ancestor totals by the difference. Lastly, edit the text content 
-    * of the Amount child of the Entry element to the new amount.
-    * 3. If the category was changed, then call the addEntry function with the new date.
-    * Lastly, call deleteEmptyTags using the id of the original Entry element.
-    * 4. If the category was changed, then call the addEntry function with the new category number.
-    * Lastly, call deleteEmptyTags using the id of the original Entry element. */
+    *   Determine which fields were modified.
+    *    1. If only the description was changed, simply edit the text content
+    *       of the Description child of the Entry element.
+    *    2. If the amount was changed, then determine the difference between the current amount
+    *       and the new amount: (difference = new amount - current amount)
+    *       Then, increment all ancestor totals by the difference. Lastly, edit the text content
+    *       of the Amount child of the Entry element to the new amount.
+    *    3. If the category was changed, then call the addEntry function with the new date.
+    *       Lastly, call deleteEmptyTags using the id of the original Entry element.
+    *    4. If the category was changed, then call the addEntry function with the
+    *       new category number. Lastly, call deleteEmptyTags using the id of
+    *       the original Entry element. */
     fun editEntry(doc: Document, entryID: String) {
       
     }
