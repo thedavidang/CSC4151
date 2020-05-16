@@ -86,7 +86,6 @@ fun sortByPriceAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
 * Returns: entries represent the list of Entry objects. */
 fun getEntries(doc : Document) : MutableList<Entry>? {
     val entryNodes = doc.getElementsByTagName("entry")
-    val numEntries = entryNodes.length
     val entries = mutableListOf<Entry>()
 
     var node: Node
@@ -97,17 +96,18 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
     var category: String
 
     /* Iterate through the Entry elements in the XML file  */
-    for (index in 0 until numEntries) {
+    for (index in 0 until entryNodes.length) {
         node = entryNodes.item(index)
+        val id = node.attributes.getNamedItem("id").textContent.toString()
 
         /* Grab the values from the children nodes of the current Entry element. */
         id = node.attributes.getNamedItem("id").textContent
         amount = node.firstChild.textContent.toDouble()
         description = node.childNodes.item(1).textContent
         /* Parse the timestamp string as a timestamp object known as Instant. */
-        timestamp = Instant.parse(node.lastChild.textContent)
+        timestamp = Instant.parse(DataManager.getValueByID(doc, "$id-s")!!)
         /* Retrieve the category label by using the id "c-x-l". */
-        category = doc.getElementById(id.substring(0, 4) + "l").textContent
+        category = DataManager.getValueByID(doc, id.substring(0, 4) + "l")!!
 
         /* Create an instance of the Entry class and add it to the list of entries. */
         entries.add(Entry(id, amount, description, timestamp, category))

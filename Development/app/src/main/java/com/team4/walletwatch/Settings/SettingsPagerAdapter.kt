@@ -14,7 +14,7 @@ class SettingsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) 
     * Returns: Nothing. */
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            1 -> PINFragment()
+            1 -> TermsFragment()
             2 -> AboutFragment()
             else -> CategoryFragment()
         }
@@ -24,7 +24,7 @@ class SettingsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) 
     *
     * Parameters: None.
     *
-    * Returns: 3 since there are only ever the three tabs "Categories", "PIN", and "About". */
+    * Returns: 3 since there are only ever the three tabs "Categories", "Terms", and "About". */
     override fun getCount(): Int {
         return 3
     }
@@ -36,7 +36,7 @@ class SettingsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) 
     * Returns: Title of a tab. */
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            1 -> "PIN"
+            1 -> "Terms"
             2 -> "About"
             else -> "Categories"
         }

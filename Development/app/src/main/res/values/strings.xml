@@ -1,7 +1,8 @@
 <resources>
     <string name="nameString">WalletWatch</string>
     <string name="headingString">WalletWatch ©</string>
-    <string name="fileNameString">WalletWatch.xml</string>
+    <string name="docFilenameString">WalletWatch.xml</string>
+    <string name="archiveFilenameString">Archive.xml</string>
 
     <string name="amountString">Amount:</string>
     <string name="amountHintString">$ 0.00</string>
@@ -24,22 +25,6 @@
     <string name="saveString">Save Changes</string>
     <string name="changedCategoryString">Category Changed</string>
 
-    <string name="protectPINString">PIN Protection:</string>
-    <string name="createPINString">Create PIN:</string>
-    <string name="confirmPINString">Confirm PIN:</string>
-    <string name="changePINString">Change PIN:</string>
-    <string name="confirmNewPINString">Confirm New PIN:</string>
-    <string name="forgotPINString">Forgot PIN?</string>
-    <string name="changedPINString">PIN Changed</string>
-
-    <string name="questionString">Security Question:</string>
-    <string name="answerString">Answer:</string>
-    <string name="setupString">Finish Setup</string>
-    <string name="checkString">Check Answer</string>
-    <string name="revealPINString">Your PIN is:</string>
-    <string name="returnString">Back</string>
-    <string name="correctAnswerString">Answer Correct</string>
-
     <string-array name="chartTypes">
         <item>Line</item>
         <item>Pie </item>
@@ -57,6 +42,16 @@
         <item>Price (High to Low)</item>
         <item>Price (Low to High)</item>
     </string-array>
+
+    <string name="termsString">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eros quam, suscipit at gravida vitae, euismod sed leo. Aliquam porta ornare libero quis convallis. Sed varius pulvinar erat, sit amet pulvinar nibh porttitor at. Aliquam eu elementum arcu. Ut faucibus risus et condimentum semper. Curabitur sagittis odio vel quam tincidunt accumsan. Etiam et sagittis massa. Duis in lacinia quam. Donec eget nisl sed neque porta posuere. Phasellus facilisis enim ac luctus pretium. Nam nibh justo, pulvinar eu risus eu, elementum finibus lacus. Sed venenatis pretium nisl, at posuere lectus fermentum tempor. Duis vitae mollis erat. Ut finibus neque nec nisl mollis, ac lacinia orci varius.
+
+Maecenas aliquet lectus a ex imperdiet condimentum. Cras vehicula eros at fringilla pulvinar. Quisque non dui a metus ultricies fermentum. Phasellus congue ex nec nisi blandit, quis aliquet urna pharetra. Nullam placerat mi dui, eget vehicula turpis consectetur et. Morbi vel suscipit magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam eu nibh justo. Maecenas scelerisque nulla tellus, a dapibus odio tristique nec. Proin ac diam sit amet nisl sodales interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ipsum elit, pretium nec turpis vel, ornare interdum ipsum.
+
+Sed quis nunc auctor, bibendum felis ac, commodo lectus. Donec dapibus scelerisque nisi ut faucibus. Quisque ac tincidunt magna, nec vestibulum est. Nulla facilisi. In vel diam interdum, accumsan urna eu, rutrum augue. Nunc lacinia lacus eget mauris porttitor, viverra dignissim metus congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam sed feugiat ex. Nam id bibendum nunc, eget aliquam nibh. Integer id orci ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean ac nulla in felis interdum iaculis.
+
+Fusce at magna et neque interdum pharetra a ac turpis. Phasellus dictum, dolor et elementum pretium, nisi arcu mattis neque, eu congue diam justo nec massa. In congue sapien euismod mi ultricies, sed lobortis odio rutrum. Morbi posuere ut nisl vel finibus. In ut varius dolor. Aliquam efficitur eleifend ultricies. Praesent viverra at augue molestie lacinia.
+
+Sed magna erat, rhoncus eget nisi vel, blandit posuere ex. Suspendisse consequat metus at vehicula lobortis. Duis consectetur sollicitudin arcu eget tempor. Sed id lacinia purus. Pellentesque ultricies rhoncus sagittis. Proin ac consequat est. Proin non lacus consectetur, varius tortor eu, eleifend quam. Nulla vulputate, velit ut iaculis congue, diam turpis auctor lacus, non ultrices urna lacus viverra nulla.</string>
 
     <string name="aboutString">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eros quam, suscipit at gravida vitae, euismod sed leo. Aliquam porta ornare libero quis convallis. Sed varius pulvinar erat, sit amet pulvinar nibh porttitor at. Aliquam eu elementum arcu. Ut faucibus risus et condimentum semper. Curabitur sagittis odio vel quam tincidunt accumsan. Etiam et sagittis massa. Duis in lacinia quam. Donec eget nisl sed neque porta posuere. Phasellus facilisis enim ac luctus pretium. Nam nibh justo, pulvinar eu risus eu, elementum finibus lacus. Sed venenatis pretium nisl, at posuere lectus fermentum tempor. Duis vitae mollis erat. Ut finibus neque nec nisl mollis, ac lacinia orci varius.
 

@@ -1,6 +1,7 @@
 package com.team4.walletwatch
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,14 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.model.*
-import lecho.lib.hellocharts.view.*
+import lecho.lib.hellocharts.view.LineChartView
+import lecho.lib.hellocharts.view.PieChartView
 import java.text.DecimalFormat
 import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,10 +56,26 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
+
+    /* Try to refresh tab 2 when view is changed*/
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(true)
+        if (isVisibleToUser) {
+                //try to detach and attach
+                val ft =
+                    fragmentManager!!.beginTransaction()
+                if (Build.VERSION.SDK_INT >= 26) {
+                    ft.setReorderingAllowed(false)
+                }
+                ft.detach(this).attach(this).commit()
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         rootView = inflater.inflate(R.layout.fragment_tab2, container, false)
         main = activity as MainActivity
         model = main.model
@@ -120,7 +140,7 @@ class Tab2Fragment : Fragment() {
         category1Total = rootView.findViewById(R.id.category1Total)
         var category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
         var category1TotalString = "$ " +
-                DecimalFormat("0.00").format(category1Amount)
+                DecimalFormat("#,##0.00").format(category1Amount)
         category1Total.text = category1TotalString
 
         category2Text = rootView.findViewById(R.id.category2Text)
@@ -128,7 +148,7 @@ class Tab2Fragment : Fragment() {
         category2Total = rootView.findViewById(R.id.category2Total)
         var category2Amount = DataManager.last7DaysTotal(model.get(), "c-2")
         var category2TotalString = "$ " +
-                DecimalFormat("0.00").format(category2Amount)
+                DecimalFormat("#,##0.00").format(category2Amount)
         category2Total.text = category2TotalString
 
         category3Text = rootView.findViewById(R.id.category3Text)
@@ -136,7 +156,7 @@ class Tab2Fragment : Fragment() {
         category3Total = rootView.findViewById(R.id.category3Total)
         var category3Amount = DataManager.last7DaysTotal(model.get(), "c-3")
         var category3TotalString = "$ " +
-                DecimalFormat("0.00").format(category3Amount)
+                DecimalFormat("#,##0.00").format(category3Amount)
         category3Total.text = category3TotalString
 
         allText = rootView.findViewById(R.id.allText)
@@ -144,7 +164,7 @@ class Tab2Fragment : Fragment() {
         allTotal = rootView.findViewById(R.id.allTotal)
         var allAmount = category1Amount + category2Amount + category3Amount
         var allTotalString = "$ " +
-                DecimalFormat("0.00").format(allAmount)
+                DecimalFormat("#,##0.00").format(allAmount)
         allTotal.text = allTotalString
 
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
@@ -165,89 +185,65 @@ class Tab2Fragment : Fragment() {
                     1 -> {
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
-                                DecimalFormat("0.00").format(category1Amount)
+                                DecimalFormat("#,##0.00").format(category1Amount)
                         category1Total.text = category1TotalString
 
                         category2Amount = DataManager.last12MonthsTotal(model.get(), "c-2")
                         category2TotalString = "$ " +
-                                DecimalFormat("0.00").format(category2Amount)
+                                DecimalFormat("#,##0.00").format(category2Amount)
                         category2Total.text = category2TotalString
 
                         category3Amount = DataManager.last12MonthsTotal(model.get(), "c-3")
                         category3TotalString = "$ " +
-                                DecimalFormat("0.00").format(category3Amount)
+                                DecimalFormat("#,##0.00").format(category3Amount)
                         category3Total.text = category3TotalString
 
                         allAmount = category1Amount + category2Amount + category3Amount
-                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
+                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
                     2 -> {
                         category1Amount = DataManager.getValueByID(
                             model.get(), "c-1-t")!!.toDouble()
                         category1TotalString = "$ " +
-                                DecimalFormat("0.00").format(category1Amount)
+                                DecimalFormat("#,##0.00").format(category1Amount)
                         category1Total.text = category1TotalString
 
                         category2Amount = DataManager.getValueByID(
                             model.get(), "c-2-t")!!.toDouble()
                         category2TotalString = "$ " +
-                                DecimalFormat("0.00").format(category2Amount)
+                                DecimalFormat("#,##0.00").format(category2Amount)
                         category2Total.text = category2TotalString
 
                         category3Amount = DataManager.getValueByID(
                             model.get(), "c-3-t")!!.toDouble()
                         category3TotalString = "$ " +
-                                DecimalFormat("0.00").format(category3Amount)
+                                DecimalFormat("#,##0.00").format(category3Amount)
                         category3Total.text = category3TotalString
 
                         allAmount = DataManager.getValueByID(
                             model.get(), "t")!!.toDouble()
-                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
-                        allTotal.text = allTotalString
-                    }
-                    3 -> {
-                        category1Amount = DataManager.getValueByID(
-                            model.get(), "c-1-t")!!.toDouble()
-                        category1TotalString = "$ " +
-                                DecimalFormat("0.00").format(category1Amount)
-                        category1Total.text = category1TotalString
-
-                        category2Amount = DataManager.getValueByID(
-                            model.get(), "c-2-t")!!.toDouble()
-                        category2TotalString = "$ " +
-                                DecimalFormat("0.00").format(category2Amount)
-                        category2Total.text = category2TotalString
-
-                        category3Amount = DataManager.getValueByID(
-                            model.get(), "c-3-t")!!.toDouble()
-                        category3TotalString = "$ " +
-                                DecimalFormat("0.00").format(category3Amount)
-                        category3Total.text = category3TotalString
-
-                        allAmount = DataManager.getValueByID(
-                            model.get(), "t")!!.toDouble()
-                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
+                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
                     else -> {
                         category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
-                                DecimalFormat("0.00").format(category1Amount)
+                                DecimalFormat("#,##0.00").format(category1Amount)
                         category1Total.text = category1TotalString
 
                         category2Amount = DataManager.last7DaysTotal(model.get(), "c-2")
                         category2TotalString = "$ " +
-                                DecimalFormat("0.00").format(category2Amount)
+                                DecimalFormat("#,##0.00").format(category2Amount)
                         category2Total.text = category2TotalString
 
                         category3Amount = DataManager.last7DaysTotal(model.get(), "c-3")
                         category3TotalString = "$ " +
-                                DecimalFormat("0.00").format(category3Amount)
+                                DecimalFormat("#,##0.00").format(category3Amount)
                         category3Total.text = category3TotalString
 
                         allAmount = category1Amount + category2Amount + category3Amount
-                        allTotalString = "$ " + DecimalFormat("0.00").format(allAmount)
+                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
                 }
