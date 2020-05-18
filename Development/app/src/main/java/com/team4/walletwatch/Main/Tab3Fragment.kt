@@ -25,6 +25,8 @@ class Tab3Fragment : Fragment() {
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
+    private lateinit var categories : MutableList<String?>
+
     private lateinit var recycler : RecyclerView
     private lateinit var adapterRecycler : RecyclerAdapter
 

@@ -30,6 +30,8 @@ class Tab1Fragment : Fragment() {
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
+    private lateinit var categories : MutableList<String?>
+
     private lateinit var amountInput : CurrencyEditText
     private var validAmount = false
 
@@ -179,7 +181,7 @@ class Tab1Fragment : Fragment() {
         /* The category buttons should initially be disabled. */
         toggleCategoryButtons(false)
         /* Retrieve the labels for each category. */
-        val categories = DataManager.getCategories(model.get())
+        categories = DataManager.getCategories(model.get())
         /* Set the category label and submit listener for each corresponding category button. */
         for ((index, button) in categoryButtons.withIndex()) {
             button?.text = categories[index + 1]
