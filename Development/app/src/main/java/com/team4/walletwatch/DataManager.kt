@@ -96,6 +96,50 @@ object DataManager {
         return total
     }
 
+    /* Purpose: Grabs last 7 days for one or all categories
+    *
+    * Parameters: doc represents the Document of the local repo XML file.
+    * categoryID represents the specific category to filter for.
+    *
+    * Returns: array holding totals for category/all categories for current day/prior 6 days */
+    fun last7Days(doc: Document, categoryID : String) : DoubleArray {
+        val cal: Calendar = Calendar.getInstance()
+
+        var amount : String?
+        val daysOfWeek = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        if(categoryID == "all") {
+            for(i in 0..6) {
+                var daySum = 0.0
+                for (j in 1..3) {
+                    /* Retrieve the total amount of expenses for each day, if the Day element exists. */
+                    amount = getValueByID(doc, "c-" + j.toString() + "-" +
+                            convertToLocalDate(cal.time).toString() + "-t")
+                    if (amount != null) {
+                        daySum += amount.toDouble()
+                    }
+                }
+                daysOfWeek[i] = daySum
+                /* Determine the day previous to the current day. */
+                cal.add(Calendar.DAY_OF_MONTH, -1) // Can change Calender._ to years, ect.
+            }
+            return daysOfWeek
+        }
+        else {
+            /* Iterate through the last seven calendar days. */
+            for (i in 0..6) {
+                /* Retrieve the total amount of expenses for each day, if the Day element exists. */
+                amount = getValueByID(doc, categoryID + "-" +
+                        convertToLocalDate(cal.time).toString() + "-t")
+                if (amount != null) {
+                    daysOfWeek[i] = amount.toDouble()
+                }
+                /* Determine the day previous to the current day. */
+                cal.add(Calendar.DAY_OF_MONTH, -1)
+            }
+        }
+        return daysOfWeek
+    }
+
     /* Purpose: Retrieves the total amount of expenses from the last twelve months.
     *
     * Parameters: doc represents the Document of the local repo XML file.
@@ -121,6 +165,82 @@ object DataManager {
         }
 
         return total
+    }
+
+    fun last12Months(doc: Document, categoryID : String) : DoubleArray {
+        val cal: Calendar = Calendar.getInstance()
+
+        var amount : String?
+        val monthsOfYear = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        if(categoryID == "all") {
+            for(i in 0..11) {
+                var monthSum = 0.0
+                for (j in 1..3) {
+                    /* Retrieve the total amount of expenses for each Month, if the Month element exists. */
+                    amount = getValueByID(doc, "c-" + j.toString() + "-" +
+                            convertToLocalDate(cal.time).toString().substringBeforeLast("-") + "-t") // can get substring of just the year (last 4 characters) (change to substring Before first)
+                    if (amount != null) {
+                        monthSum += amount.toDouble()
+                    }
+                }
+                monthsOfYear[i] = monthSum
+                /* Determine the month previous to the current month. */
+                cal.add(Calendar.MONTH, -1) // Can change Calender._ to years, ect.
+            }
+            return monthsOfYear
+        }
+        else {
+            /* Iterate through the last 12 calendar months. */
+            for (i in 0..11) {
+                /* Retrieve the total amount of expenses for each month, if the month element exists. */
+                amount = getValueByID(doc, categoryID + "-" +
+                        convertToLocalDate(cal.time).toString().substringBeforeLast("-") + "-t")
+                if (amount != null) {
+                    monthsOfYear[i] = amount.toDouble()
+                }
+                /* Determine the month previous to the current month. */
+                cal.add(Calendar.MONTH, -1)
+            }
+        }
+        return monthsOfYear
+    }
+
+    fun last10Years(doc: Document, categoryID : String) : DoubleArray {
+        val cal: Calendar = Calendar.getInstance()
+
+        var amount : String?
+        val yearsOfDecade = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        if(categoryID == "all") {
+            for(i in 0..9) {
+                var yearSum = 0.0
+                for (j in 1..3) {
+                    /* Retrieve the total amount of expenses for each year, if the year element exists for the past decade. */
+                    amount = getValueByID(doc, "c-" + j.toString() + "-" +
+                            convertToLocalDate(cal.time).toString().substringBefore("-") + "-t") // can get substring of just the year (last 4 characters)
+                    if (amount != null) {
+                        yearSum += amount.toDouble()
+                    }
+                }
+                yearsOfDecade[i] = yearSum
+                /* Determine the year previous to the current year. */
+                cal.add(Calendar.YEAR, -1) // Can change Calender._ to years, ect.
+            }
+            return yearsOfDecade
+        }
+        else {
+            /* Iterate through the last 10 calendar years. */
+            for (i in 0..9) {
+                /* Retrieve the total amount of expenses for each year, if the year element exists. */
+                amount = getValueByID(doc, categoryID + "-" +
+                        convertToLocalDate(cal.time).toString().substringBefore("-") + "-t")
+                if (amount != null) {
+                    yearsOfDecade[i] = amount.toDouble()
+                }
+                /* Determine the year previous to the current year. */
+                cal.add(Calendar.YEAR, -1)
+            }
+        }
+        return yearsOfDecade
     }
 
     /* Purpose: Determine how much of the date XML tree hierarchy already exists.

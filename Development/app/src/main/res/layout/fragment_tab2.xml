@@ -58,6 +58,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab2Spinners" />
 
+    <lecho.lib.hellocharts.view.PieChartView
+        android:id="@+id/pieView"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="7dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab2Spinners" />
+
     <Space
         android:id="@+id/chartSpacing"
         android:layout_width="match_parent"
@@ -84,7 +94,7 @@
                 android:id="@+id/category1Color"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="#F44336"
+                android:background="@color/colorCategory1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -128,7 +138,7 @@
                 android:id="@+id/category2Color"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="#4CAF50"
+                android:background="@color/colorCategory2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -174,7 +184,7 @@
                 android:id="@+id/category3Color"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="#2196F3"
+                android:background="@color/colorCategory3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -219,7 +229,7 @@
                 android:id="@+id/allColor"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="#000000"
+                android:background="@color/colorAll"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
