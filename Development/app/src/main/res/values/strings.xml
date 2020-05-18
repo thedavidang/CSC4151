@@ -63,6 +63,10 @@
     </string>
 
     <string name="aboutString">
-        ABOUT PAGE CONTENT HERE.
+        WalletWatch ©\n\n
+        Self-discover your spending habits with this simple, secure, and offline Android app.\n\n
+        Version 0.1.0 (Beta)\n\n
+        https://github.com/thedavidang/CSC4151\n\n
+        © Copyright 2020 SpendSages
     </string>
 </resources>
