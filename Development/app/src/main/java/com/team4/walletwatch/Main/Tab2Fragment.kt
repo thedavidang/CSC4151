@@ -1,6 +1,5 @@
 package com.team4.walletwatch
 
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,22 +10,12 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_tab2.*
-import androidx.fragment.app.FragmentStatePagerAdapter
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
 import lecho.lib.hellocharts.view.PieChartView
 import java.text.DecimalFormat
-import java.time.LocalDate
 import java.util.*
-import java.text.SimpleDateFormat
-import java.time.DayOfWeek
-import java.time.Month
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,6 +35,8 @@ class Tab2Fragment : Fragment() {
     private lateinit var lineChart : LineChartView
     private lateinit var pieChart : PieChartView
 
+    private lateinit var categories : MutableList<String?>
+
     private lateinit var category1Text : TextView
     private lateinit var category1Total : TextView
 
@@ -64,332 +55,352 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
-    fun showHide(view: View) {
-        view.visibility = if (view.visibility == View.VISIBLE){
-            View.INVISIBLE
-        } else {
-            View.VISIBLE
-        }
-    }
-
-    /* Try to refresh tab 2 when view is changed*/
+    /* Purpose: Refresh Tab 2 so that the live data is updated on the chart and totals.
+    *
+    * Parameters: isVisibleToUser represents whether Tab 2 is currently visible to the user.
+    *
+    * Returns: Nothing. */
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(true)
+
+        /* Check if Tab 2 is currently visible to the user. */
         if (isVisibleToUser) {
-            //try to detach and attach
+            /* Try to detach and attach the Tab 2 fragment. */
             val ft = fragmentManager!!.beginTransaction()
+
             if (Build.VERSION.SDK_INT >= 26) {
                 ft.setReorderingAllowed(false)
             }
+
             ft.detach(this).attach(this).commit()
         }
     }
 
-    fun displayLineChart(total: DoubleArray, timeSpan: String, colorPosition: Int) {
-        val cal: Calendar = Calendar.getInstance()
-        if (timeSpan == "byDay") {
-            var view = Viewport(lineChart.maximumViewport)
-            view.top = view.top + view.height() * 0.05f
+    /* Purpose: Controller method that reveals the line chart and hides the pie chart.
+    *
+    * Parameters: None.
+    *
+    * Returns: Nothing. */
+    fun showLineChart() {
+        lineChart.visibility = View.VISIBLE
+        pieChart.visibility = View.INVISIBLE
+    }
 
-            val values = ArrayList<PointValue>()
-            var h = 6
-            for (i in 0..6) {
-                values.add(PointValue(i.toFloat(), total[h].toFloat()))
-                h--
-            }
+    /* Purpose: Controller method that reveals the pie chart and hides the line chart.
+    *
+    * Parameters: None.
+    *
+    * Returns: Nothing. */
+    fun showPieChart() {
+        lineChart.visibility = View.INVISIBLE
+        pieChart.visibility = View.VISIBLE
+    }
 
-            val line = Line(values)
-            when (colorPosition) {
-                1 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory1))
-                }
-                2 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory2))
-                }
-                3 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory3))
-                }
-                else -> {
-                    line.setColor(this.resources.getColor(R.color.colorAll))
-                }
-            }
-            val lines = ArrayList<Line>()
-            lines.add(line)
-
-            val data = LineChartData()
-            data.lines = lines
-            val axisValues = ArrayList<AxisValue>()
-
-            var currentDay = cal.get(Calendar.DAY_OF_WEEK)
-            var currentDayString = "string"
-            var j = 6;
-            for (i in 1..7) {
-                if (currentDay == 1) {
-                    currentDayString = "Sun"
-                } else if (currentDay == 2) {
-                    currentDayString = "Mon"
-                } else if (currentDay == 3) {
-                    currentDayString = "Tue"
-                } else if (currentDay == 4) {
-                    currentDayString = "Wed"
-                } else if (currentDay == 5) {
-                    currentDayString = "Thu"
-                } else if (currentDay == 6) {
-                    currentDayString = "Fri"
-                } else if (currentDay == 7) {
-                    currentDayString = "Sat"
-                }
-                axisValues.add(AxisValue(j.toFloat(), currentDayString.toCharArray()))
-                currentDay = currentDay - 1
-                if (currentDay == 0) {
-                    currentDay = 7
-                }
-                j--
-            }
-
-            val axisX = Axis(axisValues).setHasLines(true)
-            axisX.maxLabelChars = 4
-            data.axisXBottom = axisX
-
-            val axisY = Axis().setHasLines(true)
-            val formatter = SimpleAxisValueFormatter()
-            if (view.top < 10f) {
-                formatter.decimalDigitsNumber = 2
-            } else {
-                formatter.decimalDigitsNumber = 0
-            }
-            axisY.formatter = formatter
-            data.axisYLeft = axisY
-
-            lineChart.lineChartData = data
-
-            view = Viewport(lineChart.maximumViewport)
-            val padding = view.height() * 0.05f
-            view.top = view.top + padding
-            view.bottom = view.bottom - padding
-            lineChart.maximumViewport = view
-            lineChart.currentViewport = view
-        } else if (timeSpan == "byMonth") {
-            var view = Viewport(lineChart.maximumViewport)
-            view.top = view.top + view.height() * 0.05f
-
-            val values = ArrayList<PointValue>()
-            var h = 11
-            for (i in 0..11) {
-                values.add(PointValue(i.toFloat(), total[h].toFloat()))
-                h--
-            }
-
-            val line = Line(values)
-            when (colorPosition) {
-                1 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory1))
-                }
-                2 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory2))
-                }
-                3 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory3))
-                }
-                else -> {
-                    line.setColor(this.resources.getColor(R.color.colorAll))
-                }
-            }
-            val lines = ArrayList<Line>()
-            lines.add(line)
-
-            val data = LineChartData()
-            data.lines = lines
-            val axisValues = ArrayList<AxisValue>()
-
-            var currentMonth = cal.get(Calendar.MONTH)
-            var currentMonthString = "string"
-            var j = 11
-            for (i in 1..12) {
-                if (currentMonth == 0) {
-                    currentMonthString = "Jan"
-                } else if (currentMonth == 1) {
-                    currentMonthString = "Feb"
-                } else if (currentMonth == 2) {
-                    currentMonthString = "Mar"
-                } else if (currentMonth == 3) {
-                    currentMonthString = "Apr"
-                } else if (currentMonth == 4) {
-                    currentMonthString = "May"
-                } else if (currentMonth == 5) {
-                    currentMonthString = "Jun"
-                } else if (currentMonth == 6) {
-                    currentMonthString = "Jul"
-                } else if (currentMonth == 7) {
-                    currentMonthString = "Aug"
-                } else if (currentMonth == 8) {
-                    currentMonthString = "Sep"
-                } else if (currentMonth == 9) {
-                    currentMonthString = "Oct"
-                } else if (currentMonth == 10) {
-                    currentMonthString = "Nov"
-                } else if (currentMonth == 11) {
-                    currentMonthString = "Dec"
-                }
-                axisValues.add(AxisValue(j.toFloat(), currentMonthString.toCharArray()))
-                currentMonth = currentMonth - 1
-                if (currentMonth == -1) {
-                    currentMonth = 11
-                }
-                j--
-            }
-
-            val axisX = Axis(axisValues).setHasLines(true)
-            axisX.maxLabelChars = 4
-            data.axisXBottom = axisX
-
-            val axisY = Axis().setHasLines(true)
-            val formatter = SimpleAxisValueFormatter()
-            if (view.top < 10f) {
-                formatter.decimalDigitsNumber = 2
-            } else {
-                formatter.decimalDigitsNumber = 0
-            }
-            axisY.formatter = formatter
-            data.axisYLeft = axisY
-
-            lineChart.lineChartData = data
-
-            view = Viewport(lineChart.maximumViewport)
-            val padding = view.height() * 0.05f
-            view.top = view.top + padding
-            view.bottom = view.bottom - padding
-            lineChart.maximumViewport = view
-            lineChart.currentViewport = view
-        } else if (timeSpan == "byYear") {
-            var view = Viewport(lineChart.maximumViewport)
-            view.top = view.top + view.height() * 0.05f
-
-            val values = ArrayList<PointValue>()
-            var h = 9
-            for (i in 0..9) {
-                values.add(PointValue(i.toFloat(), total[h].toFloat()))
-                h--
-            }
-
-            val line = Line(values)
-            when (colorPosition) {
-                1 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory1))
-                }
-                2 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory2))
-                }
-                3 -> {
-                    line.setColor(this.resources.getColor(R.color.colorCategory3))
-                }
-                else -> {
-                    line.setColor(this.resources.getColor(R.color.colorAll))
-                }
-            }
-            val lines = ArrayList<Line>()
-            lines.add(line)
-
-            val data = LineChartData()
-            data.lines = lines
-            val axisValues = ArrayList<AxisValue>()
-
-            var currentYear = cal.get(Calendar.YEAR)
-            var j = 9;
-            for (i in 1..10) {
-                axisValues.add(AxisValue(j.toFloat(), currentYear.toString().toCharArray()))
-                currentYear = currentYear - 1
-                if (currentYear == 0) {
-                    currentYear = 9999
-                }
-                j--
-            }
-
-            val axisX = Axis(axisValues).setHasLines(true)
-            axisX.maxLabelChars = 4
-            data.axisXBottom = axisX
-
-            val axisY = Axis().setHasLines(true)
-            val formatter = SimpleAxisValueFormatter()
-            if (view.top < 10f) {
-                formatter.decimalDigitsNumber = 2
-            } else {
-                formatter.decimalDigitsNumber = 0
-            }
-            axisY.formatter = formatter
-            data.axisYLeft = axisY
-
-            lineChart.lineChartData = data
-
-            view = Viewport(lineChart.maximumViewport)
-            val padding = view.height() * 0.05f
-            view.top = view.top + padding
-            view.bottom = view.bottom - padding
-            lineChart.maximumViewport = view
-            lineChart.currentViewport = view
+    /* Purpose: Controller method that disables and greys-out category selector or
+    * enables and reveals category selector.
+    *
+    * Parameters: isEnabled represents a Boolean of whether or not to enable the category selector.
+    *
+    * Returns: Nothing. */
+    private fun toggleCategorySelector(isEnabled : Boolean) {
+        if (isEnabled) {
+            spinChartCategory.isEnabled = true
+            spinChartCategory.isClickable = true
+            /* Set opacity to 100 % */
+            spinChartCategory.alpha = 1.0F
+        }
+        else {
+            spinChartCategory.isEnabled = false
+            spinChartCategory.isClickable = false
+            /* Set opacity to 50 % */
+            spinChartCategory.alpha = 0.5F
         }
     }
-    
-    fun displayPieChart(timeSpan: String){                              // display piechart data according to time interval
-        pieChart = rootView.findViewById(R.id.pieView) as PieChartView
-        var red: String?
-        var redTotal = 0.00F
-        var green: String?
-        var greenTotal = 0.00F
-        var blue: String?
-        var blueTotal = 0.00F
-        var today :LocalDate  = LocalDate.now()
 
+    /* Purpose: Controller method that populates the line chart with the selected data set.
+    *
+    * Parameters: total represents the array of doubles for each data point.
+    * timeSpan represents whether the user selected 0) Last 7 Days, 1) Last 12 Months,
+    * or 2) All Time (All Time will only display the last 10 years).
+    * colorPosition represent whether the user selected 0) All categories
+    * or 1-3) a specific Category.
+    *
+    * Returns: Nothing. */
+    fun displayLineChart(total: DoubleArray, timeSpan: Int, colorPosition: Int) {
+        /* Initialize a Calender object. */
+        val cal: Calendar = Calendar.getInstance()
+
+        /* Initialize the view of the line chart and set its initial dimensions. */
+        var view = Viewport(lineChart.maximumViewport)
+        view.top = view.top + view.height() * 0.05f
+
+        /* Populate the X-axis float values. */
+        val values = ArrayList<PointValue>()
+        /* Initialize counter to six, which acts as a default to 0) Last 7 Days. */
+        var h = 6
+        /* Check which time interval to use. */
+        when (timeSpan) {
+            /* Last 12 Months. */
+            1 -> {
+                /* Populate an X-value for each of the 12 months. */
+                h = 11
+                for (i in 0..11) {
+                    values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                    h--
+                }
+            }
+            /* All Time (in this case it is actually last 10 years). */
+            2 -> {
+                /* Populate an X-value for each of the 10 years. */
+                h = 9
+                for (i in 0..9) {
+                    values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                    h--
+                }
+            }
+            /* Last 7 Days. */
+            else -> {
+                /* Populate an X-value for each of the 7 days. */
+                for (i in 0..6) {
+                    values.add(PointValue(i.toFloat(), total[h].toFloat()))
+                    h--
+                }
+            }
+        }
+
+        /* Create a line object and color it according to the selected category. */
+        val line = Line(values)
+        /* Check which category the user selected. */
+        when (colorPosition) {
+            /* Set line to red for Category 1. */
+            1 -> {
+                line.color = this.resources.getColor(R.color.colorCategory1)
+            }
+            /* Set line to green for Category 2. */
+            2 -> {
+                line.color = this.resources.getColor(R.color.colorCategory2)
+            }
+            /* Set line to blue for Category 3. */
+            3 -> {
+                line.color = this.resources.getColor(R.color.colorCategory3)
+            }
+            /* Set line to black for All Categories. */
+            else -> {
+                line.color = this.resources.getColor(R.color.colorAll)
+            }
+        }
+
+        /* Initialize the lines array such that the line can be added to the LineChartData. */
+        val lines = ArrayList<Line>()
+        lines.add(line)
+        /* Add the line to the LineChartData. */
+        val data = LineChartData()
+        data.lines = lines
+
+        /* Populate the X-axis labels. */
+        val axisValues = ArrayList<AxisValue>()
+        /* Check which time interval the user selected. */
+        when (timeSpan) {
+            /* Last 12 Months. */
+            1 -> {
+                /* Determine the current month. */
+                var currentMonth = cal.get(Calendar.MONTH)
+                var currentMonthString = ""
+                /* Grab the abbreviation for the last 12 months. */
+                var j = 11
+                for (i in 1..12) {
+                    when (currentMonth) {
+                        0 -> {
+                            currentMonthString = "Jan"
+                        }
+                        1 -> {
+                            currentMonthString = "Feb"
+                        }
+                        2 -> {
+                            currentMonthString = "Mar"
+                        }
+                        3 -> {
+                            currentMonthString = "Apr"
+                        }
+                        4 -> {
+                            currentMonthString = "May"
+                        }
+                        5 -> {
+                            currentMonthString = "Jun"
+                        }
+                        6 -> {
+                            currentMonthString = "Jul"
+                        }
+                        7 -> {
+                            currentMonthString = "Aug"
+                        }
+                        8 -> {
+                            currentMonthString = "Sep"
+                        }
+                        9 -> {
+                            currentMonthString = "Oct"
+                        }
+                        10 -> {
+                            currentMonthString = "Nov"
+                        }
+                        11 -> {
+                            currentMonthString = "Dec"
+                        }
+                    }
+                    /* Add the abbreviation to the X-axis labels array. */
+                    axisValues.add(AxisValue(j.toFloat(), currentMonthString.toCharArray()))
+                    currentMonth -= 1
+                    /* Account for rollover into December of the previous year. */
+                    if (currentMonth == -1) {
+                        currentMonth = 11
+                    }
+                    j--
+                }
+            }
+            /* All Time (in this case it is actually last 10 years). */
+            2 -> {
+                /* Determine the current year. */
+                var currentYear = cal.get(Calendar.YEAR)
+                var j = 9
+                /* Grab the last 10 years. */
+                for (i in 1..10) {
+                    /* Add the year to the X-axis labels array. */
+                    axisValues.add(AxisValue(j.toFloat(), currentYear.toString().toCharArray()))
+                    currentYear -= 1
+                    j--
+                }
+            }
+            /* Last 7 Days. */
+            else -> {
+                /* Determine the current day. */
+                var currentDay = cal.get(Calendar.DAY_OF_WEEK)
+                var currentDayString = ""
+                /* Grab the abbreviation for the last 7 days. */
+                var j = 6
+                for (i in 1..7) {
+                    when (currentDay) {
+                        1 -> {
+                            currentDayString = "Sun"
+                        }
+                        2 -> {
+                            currentDayString = "Mon"
+                        }
+                        3 -> {
+                            currentDayString = "Tue"
+                        }
+                        4 -> {
+                            currentDayString = "Wed"
+                        }
+                        5 -> {
+                            currentDayString = "Thu"
+                        }
+                        6 -> {
+                            currentDayString = "Fri"
+                        }
+                        7 -> {
+                            currentDayString = "Sat"
+                        }
+                    }
+                    /* Add the abbreviation to the X-axis labels array. */
+                    axisValues.add(AxisValue(j.toFloat(), currentDayString.toCharArray()))
+                    currentDay -= 1
+                    /* Account for rollover into Sunday of the previous week. */
+                    if (currentDay == 0) {
+                        currentDay = 7
+                    }
+                    j--
+                }
+            }
+        }
+
+        /* Populate the X-axis with labels. */
+        val axisX = Axis(axisValues).setHasLines(true)
+        axisX.maxLabelChars = 4
+        data.axisXBottom = axisX
+
+        /* Populate the Y-axis with value labels. */
+        val axisY = Axis().setHasLines(true)
+        /* Format the Y-axis value labels for user readability. */
+        val formatter = SimpleAxisValueFormatter()
+        /* Determine the maximum Y-axis value. */
+        if (view.top < 10f) {
+            /* If the max Y-value is less than 10, show 2 decimal places. */
+            formatter.decimalDigitsNumber = 2
+        } else {
+            /* Otherwise, hide decimal places. */
+            formatter.decimalDigitsNumber = 0
+        }
+        axisY.formatter = formatter
+        data.axisYLeft = axisY
+
+        /* Populate the line with the data points. */
+        lineChart.lineChartData = data
+
+        /* Adjust the dimensions of the line chart to fit the highest Y-value data point. */
+        view = Viewport(lineChart.maximumViewport)
+        val padding = view.height() * 0.05f
+        view.top = view.top + padding
+        view.bottom = view.bottom - padding
+        lineChart.maximumViewport = view
+        lineChart.currentViewport = view
+    }
+
+    /* Purpose: Controller method that populates the pie chart with the selected data set.
+    *
+    * Parameters: timeSpan represents whether the user selected 0) Last 7 Days, 1) Last 12 Months,
+    * or 2) All Time.
+    *
+    * Returns: Nothing. */
+    fun displayPieChart(timeSpan: Int) {
+        /* Initialize value variables used to populate the pie chart. */
         val values = ArrayList<SliceValue>()
-        if (timeSpan == "all_Time") {
-            red = DataManager.getValueByID(model.get(), "c-1-t")
-            if (red != null)
-                redTotal = red.toFloat()
-            green = DataManager.getValueByID(model.get(), "c-2-t")
-            if (green != null)
-                greenTotal = green.toFloat()
-            blue = DataManager.getValueByID(model.get(), "c-3-t")
-            if (blue != null)
-                blueTotal = blue.toFloat()
+        val category1Amount : Float
+        val category2Amount : Float
+        val category3Amount : Float
+
+        /* Check which time interval the user selected. */
+        when (timeSpan) {
+            /* Last 12 Months. */
+            1 -> {
+                category1Amount = DataManager.last12MonthsTotal(
+                    model.get(), "c-1").toFloat()
+                category2Amount = DataManager.last12MonthsTotal(
+                    model.get(), "c-2").toFloat()
+                category3Amount = DataManager.last12MonthsTotal(
+                    model.get(), "c-3").toFloat()
+            }
+            /* All Time. */
+            2 -> {
+                category1Amount = DataManager.getValueByID(model.get(), "c-1-t")!!.toFloat()
+                category2Amount = DataManager.getValueByID(model.get(), "c-2-t")!!.toFloat()
+                category3Amount = DataManager.getValueByID(model.get(), "c-3-t")!!.toFloat()
+            }
+            /* Last 7 Days. */
+            else -> {
+                category1Amount = DataManager.last7DaysTotal(model.get(), "c-1").toFloat()
+                category2Amount = DataManager.last7DaysTotal(model.get(), "c-2").toFloat()
+                category3Amount = DataManager.last7DaysTotal(model.get(), "c-3").toFloat()
+            }
         }
 
-        if (timeSpan == "daily"){
-            red = DataManager.getValueByID(model.get(),"c-1-"+
-                    today.toString() + "-t")
-            if (red != null)
-                redTotal = red.toFloat()
-            green = DataManager.getValueByID(model.get(),"c-2-"+
-                    today.toString() + "-t")
-            if (green != null)
-                greenTotal = green.toFloat()
-            blue = DataManager.getValueByID(model.get(),"c-3-"+
-                    today.toString() + "-t")
-            if (blue != null)
-                blueTotal = blue.toFloat()
+        /* Set the colors and percentage labels for each of the category data set slices. */
+        val category1Slice = SliceValue(category1Amount, resources.getColor(R.color.colorCategory1))
+        category1Slice.setLabel(category1Slice.value.toString() + "%")
+        values.add(category1Slice)
 
-        }
+        val category2Slice = SliceValue(category2Amount, resources.getColor(R.color.colorCategory2))
+        category2Slice.setLabel(category2Slice.value.toString() + "%")
+        values.add(category2Slice)
 
-        if (timeSpan == "this_Month"){
-            red = DataManager.getValueByID(model.get(),"c-1-"+
-                    today.toString().substring(0, 7) + "-t")
-            if (red != null)
-                redTotal = red.toFloat()
-            green = DataManager.getValueByID(model.get(),"c-2-"+
-                    today.toString().substring(0, 7) + "-t")
-            if (green != null)
-                greenTotal = green.toFloat()
-            blue = DataManager.getValueByID(model.get(),"c-3-"+
-                    today.toString().substring(0, 7) + "-t")
-            if (blue != null)
-                blueTotal = blue.toFloat()
-        }
-            values.add(SliceValue(redTotal,this.resources.getColor(R.color.colorCategory1)))
-            values.add(SliceValue(greenTotal,this.resources.getColor(R.color.colorCategory2)))
-            values.add(SliceValue(blueTotal,this.resources.getColor(R.color.colorCategory3)))
-            val piedata = PieChartData()
-            piedata.values = values
-            pieChart.pieChartData = piedata
-        }
+        val category3Slice = SliceValue(category3Amount, resources.getColor(R.color.colorCategory3))
+        category3Slice.setLabel(category3Slice.value.toString() + "%")
+        values.add(category3Slice)
+
+        /* Populate the pie chart with the colored slices. */
+        val pieData = PieChartData()
+        pieData.values = values
+        pieChart.pieChartData = pieData
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -399,10 +410,23 @@ class Tab2Fragment : Fragment() {
         main = activity as MainActivity
         model = main.model
 
-        val categories = DataManager.getCategories(model.get())
+        /* Grab category labels as they currently exist in the local XML repo file. */
+        categories = DataManager.getCategories(model.get())
 
         lineChart = rootView.findViewById(R.id.chartView) as LineChartView
+        pieChart = rootView.findViewById(R.id.pieView) as PieChartView
 
+        /* Populate the line chart with Last 7 Days for All Categories. */
+        displayLineChart(DataManager.last7Days(model.get(), "all"),
+            0, 0)
+
+        /* Populate pie chart with Last 7 Days. */
+        displayPieChart(0)
+
+        /* Show the line chart and hide the pie chart. */
+        showLineChart()
+
+        /* Set the total and label for Category 1 over the Last 7 Days. */
         category1Text = rootView.findViewById(R.id.category1Text)
         category1Text.text = categories[1]
         category1Total = rootView.findViewById(R.id.category1Total)
@@ -411,6 +435,7 @@ class Tab2Fragment : Fragment() {
                 DecimalFormat("#,##0.00").format(category1Amount)
         category1Total.text = category1TotalString
 
+        /* Set the total and label for Category 2 over the Last 7 Days. */
         category2Text = rootView.findViewById(R.id.category2Text)
         category2Text.text = categories[2]
         category2Total = rootView.findViewById(R.id.category2Total)
@@ -419,6 +444,7 @@ class Tab2Fragment : Fragment() {
                 DecimalFormat("#,##0.00").format(category2Amount)
         category2Total.text = category2TotalString
 
+        /* Set the total and label for Category 3 over the Last 7 Days. */
         category3Text = rootView.findViewById(R.id.category3Text)
         category3Text.text = categories[3]
         category3Total = rootView.findViewById(R.id.category3Total)
@@ -427,6 +453,7 @@ class Tab2Fragment : Fragment() {
                 DecimalFormat("#,##0.00").format(category3Amount)
         category3Total.text = category3TotalString
 
+        /* Set the total for All Categories over the Last 7 Days. */
         allText = rootView.findViewById(R.id.allText)
         allText.text = categories[0]
         allTotal = rootView.findViewById(R.id.allTotal)
@@ -435,66 +462,63 @@ class Tab2Fragment : Fragment() {
                 DecimalFormat("#,##0.00").format(allAmount)
         allTotal.text = allTotalString
 
+        /* Populate the Chart selector with "Line" and "Pie". */
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
-        val adapterChartType= ArrayAdapter(requireActivity(),
-            R.layout.support_simple_spinner_dropdown_item,
+        spinChartType.adapter = ArrayAdapter(main, R.layout.support_simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartTypes))
-        spinChartType.adapter = adapterChartType
-
-        spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)
-        var adapterTimeInterval = ArrayAdapter(requireActivity(),
-            R.layout.support_simple_spinner_dropdown_item,
-            resources.getStringArray(R.array.chartIntervals))
-        spinTimeInterval.adapter = adapterTimeInterval
-
+        /* Create a listener that swaps between the line chart and pie chart. */
         spinChartType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
-                showHide(chartView)
-                showHide(pieView)
-                if (position == 0) {
-
-                    adapterTimeInterval = ArrayAdapter(
-                        requireActivity(),
-                        R.layout.support_simple_spinner_dropdown_item,
-                        resources.getStringArray(R.array.chartIntervals)
-                    )
-                    spinTimeInterval.adapter = adapterTimeInterval
-                }
-
-                if (position == 1) {
-
-                    adapterTimeInterval = ArrayAdapter(
-                        requireActivity(),
-                        R.layout.support_simple_spinner_dropdown_item,
-                        resources.getStringArray(R.array.pieIntervals)
-                    )
-                    spinTimeInterval.adapter = adapterTimeInterval
+                when (position) {
+                    /* If "Pie" is selected. */
+                    1 -> {
+                        /* Show the pie chart, hide the line chart,
+                        * and disable and grey-out the category selector. */
+                        showPieChart()
+                        toggleCategorySelector(false)
+                    }
+                    /* If "Line" is selected. */
+                    else -> {
+                        /* Show the line chart, hide the pie chart,
+                        * and enable and reveal the category selector. */
+                        showLineChart()
+                        toggleCategorySelector(true)
+                    }
                 }
             }
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // write code to perform some action
-            }
-
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+
+        /* Popluate Time Interval selector with "Last 7 Days", "Last 12 Months", and "All Time". */
+        spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)
+        spinTimeInterval.adapter = ArrayAdapter(main,
+            R.layout.support_simple_spinner_dropdown_item,
+            resources.getStringArray(R.array.chartIntervals))
+        /* Listener to switch the time interval selected. */
         spinTimeInterval.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long
+            ) {
+                /* Initialize array to store data points for line chart. */
+                val data : DoubleArray
+
+                /* Check which time interval the user selected. */
                 when (position) {
-                    // last 12 months
+                    /* Last 12 Months. */
                     1 -> {
-                        var months:DoubleArray
-                        if(spinChartCategory.selectedItemPosition == 0) {
-                             months = DataManager.last12Months(model.get(), "all")
-                        }
-                        else {
-                             months = DataManager.last12Months(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
-                        }
-                        if(spinChartType.selectedItemPosition == 1) {
-                            displayPieChart("this_Month")
-                        }
-                        displayLineChart(months, "byMonth", spinChartCategory.selectedItemPosition)
+                        /* Grab the Last 12 Months of data points from
+                        * whichever category the user selected. */
+                        data =
+                            if (spinChartCategory.selectedItemPosition == 0) {
+                                DataManager.last12Months(model.get(), "all")
+                            } else {
+                                DataManager.last12Months(model.get(), "c-" +
+                                        spinChartCategory.selectedItemPosition.toString())
+                            }
+
+                        /* Update the totals to use the Last 12 Months totals. */
                         category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("#,##0.00").format(category1Amount)
@@ -514,19 +538,19 @@ class Tab2Fragment : Fragment() {
                         allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
-                    // all-time
+                    /* All Time. */
                     2 -> {
-                        var years: DoubleArray
-                        if(spinChartCategory.selectedItemPosition == 0) {
-                            years = DataManager.last10Years(model.get(), "all")
-                        }
-                        else {
-                            years = DataManager.last10Years(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
-                        }
-                        if(spinChartType.selectedItemPosition == 1) {
-                            displayPieChart("all_Time")
-                        }
-                        displayLineChart(years, "byYear", spinChartCategory.selectedItemPosition)
+                        /* Grab the Last 10 Years of data points from
+                        * whichever category the user selected. */
+                        data =
+                            if(spinChartCategory.selectedItemPosition == 0) {
+                                DataManager.last10Years(model.get(), "all")
+                            } else {
+                                DataManager.last10Years(model.get(), "c-" +
+                                        spinChartCategory.selectedItemPosition.toString())
+                            }
+
+                        /* Update the totals to use the All Time totals. */
                         category1Amount = DataManager.getValueByID(
                             model.get(), "c-1-t")!!.toDouble()
                         category1TotalString = "$ " +
@@ -550,19 +574,19 @@ class Tab2Fragment : Fragment() {
                         allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
                         allTotal.text = allTotalString
                     }
-                    // last 7 days
+                    /* Last 7 days. */
                     else -> {
-                        var days: DoubleArray
-                        if(spinChartCategory.selectedItemPosition == 0) {
-                             days = DataManager.last7Days(model.get(), "all")
-                        }
-                        else {
-                             days = DataManager.last7Days(model.get(), "c-" + spinChartCategory.selectedItemPosition.toString())
-                        }
-                        if(spinChartType.selectedItemPosition == 1) {
-                            displayPieChart("daily")
-                        }
-                        displayLineChart(days, "byDay", spinChartCategory.selectedItemPosition)
+                        /* Grab the Last 7 Days of data points from
+                        * whichever category the user selected. */
+                        data =
+                            if(spinChartCategory.selectedItemPosition == 0) {
+                                DataManager.last7Days(model.get(), "all")
+                            } else {
+                                DataManager.last7Days(model.get(), "c-" +
+                                        spinChartCategory.selectedItemPosition.toString())
+                            }
+
+                        /* Update the totals to use the Last 7 Days totals. */
                         category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
                         category1TotalString = "$ " +
                                 DecimalFormat("#,##0.00").format(category1Amount)
@@ -583,52 +607,70 @@ class Tab2Fragment : Fragment() {
                         allTotal.text = allTotalString
                     }
                 }
+
+                /* Update the line chart with the new time interval data set. */
+                displayLineChart(data, position,
+                    spinChartCategory.selectedItemPosition)
+
+                /* Update the pie chart with the new time interval data set. */
+                displayPieChart(position)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
         }
 
+        /* Populate the Category selector with "All" and the current category labels. */
         spinChartCategory = rootView.findViewById(R.id.lineCategorySpinner)
-        val adapterChartCategory = ArrayAdapter<String?>(requireActivity(),
-            R.layout.support_simple_spinner_dropdown_item,
-            categories)
-        spinChartCategory.adapter = adapterChartCategory
-
+        spinChartCategory.adapter = ArrayAdapter<String?>(main,
+            R.layout.support_simple_spinner_dropdown_item, categories)
+        /* Enable the category selector drop-down menu. */
+        toggleCategorySelector(true)
+        /* Listener to update the line chart based on the category selected. */
         spinChartCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                // Categories 1, 2, or 3 (Specific category)
-                if(position != 0) {
-                    var data:DoubleArray
-                    if(spinTimeInterval.selectedItemPosition == 0) {
-                        data = DataManager.last7Days(model.get(), "c-" + position.toString())
-                        displayLineChart(data, "byDay", position)
-                    }
-                    else if (spinTimeInterval.selectedItemPosition == 1) {
-                        data = DataManager.last12Months(model.get(), "c-" + position.toString())
-                        displayLineChart(data, "byMonth", position)
-                    }
-                    else {
-                        data = DataManager.last10Years(model.get(), "c-" + position.toString())
-                        displayLineChart(data, "byYear", position)
+                parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long
+            ) {
+                /* Initialize the array of data points for the line chart. */
+                val data : DoubleArray
+                /* Grab the selected time interval. */
+                val timeSpan = spinTimeInterval.selectedItemPosition
+
+                /* Check if the user selected a specific category. */
+                if (position != 0) {
+                    /* Grab the data set from whichever time interval
+                    * and category the user selected. */
+                    data = when (timeSpan) {
+                        0 -> {
+                            DataManager.last7Days(model.get(), "c-$position")
+
+                        }
+                        1 -> {
+                            DataManager.last12Months(model.get(), "c-$position")
+                        }
+                        else -> {
+                            DataManager.last10Years(model.get(), "c-$position")
+                        }
                     }
                 }
-                // all categories
+                /* Otherwise, the use selected All Categories. */
                 else {
-                    var data:DoubleArray
-                    if(spinTimeInterval.selectedItemPosition == 0) {
-                        data = DataManager.last7Days(model.get(), "all")
-                        displayLineChart(data, "byDay", position)
-                    }
-                    else if (spinTimeInterval.selectedItemPosition == 1) {
-                        data = DataManager.last12Months(model.get(), "all")
-                        displayLineChart(data, "byMonth", position)
-                    }
-                    else {
-                        data = DataManager.last10Years(model.get(), "all")
-                        displayLineChart(data, "byYear", position)
+                    /* Grab the data set from whichever time interval
+                    * the user selected. */
+                    data = when (timeSpan) {
+                        0 -> {
+                            DataManager.last7Days(model.get(), "all")
+                        }
+                        1 -> {
+                            DataManager.last12Months(model.get(), "all")
+                        }
+                        else -> {
+                            DataManager.last10Years(model.get(), "all")
+                        }
                     }
                 }
+
+                /* Update the line chart with the update category selection. */
+                displayLineChart(data, timeSpan, position)
             }
 
 
