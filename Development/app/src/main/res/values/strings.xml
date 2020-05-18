@@ -51,6 +51,12 @@
         <item>All Time</item>
     </string-array>
 
+    <string-array name="pieIntervals">
+        <item>Daily</item>
+        <item>This month</item>
+        <item>All Time</item>
+    </string-array>
+
     <string-array name="sortingOptions">
         <item>Date (New to Old)</item>
         <item>Date (Old to New)</item>
