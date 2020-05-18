@@ -60,6 +60,14 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
+    fun showHide(view:View) {
+        view.visibility = if (view.visibility == View.VISIBLE){
+            View.INVISIBLE
+        } else{
+            View.VISIBLE
+        }
+    }
+
     fun displayLineChart(total: DoubleArray, timeSpan: String, colorPosition: Int) {
         val cal: Calendar = Calendar.getInstance()
         if(timeSpan == "byDay") {
@@ -326,7 +334,67 @@ class Tab2Fragment : Fragment() {
             lineChart.maximumViewport = view
             lineChart.currentViewport = view
         }
+    fun displayPieChart(timeSpan: String){                              // display piechart data according to time interval
+        pieChart = rootView.findViewById(R.id.pieView) as PieChartView
+        var red: String?
+        var redTotal = 0.00F
+        var green: String?
+        var greenTotal = 0.00F
+        var blue: String?
+        var blueTotal = 0.00F
+        var today :LocalDate  = LocalDate.now()
 
+        val values = ArrayList<SliceValue>()
+        if (timeSpan == "all_Time") {
+            red = DataManager.getValueByID(model.get(), "c-1-t")
+            if (red != null)
+                redTotal = red.toFloat()
+            green = DataManager.getValueByID(model.get(), "c-2-t")
+            if (green != null)
+                greenTotal = green.toFloat()
+            blue = DataManager.getValueByID(model.get(), "c-3-t")
+            if (blue != null)
+                blueTotal = blue.toFloat()
+        }
+
+        if (timeSpan == "daily"){
+            red = DataManager.getValueByID(model.get(),"c-1-"+
+                    today.toString() + "-t")
+            if (red != null)
+                redTotal = red.toFloat()
+            green = DataManager.getValueByID(model.get(),"c-2-"+
+                    today.toString() + "-t")
+            if (green != null)
+                greenTotal = green.toFloat()
+            blue = DataManager.getValueByID(model.get(),"c-3-"+
+                    today.toString() + "-t")
+            if (blue != null)
+                blueTotal = blue.toFloat()
+
+        }
+
+        if (timeSpan == "this_Month"){
+            red = DataManager.getValueByID(model.get(),"c-1-"+
+                    today.toString().substring(0, 7) + "-t")
+            if (red != null)
+                redTotal = red.toFloat()
+            green = DataManager.getValueByID(model.get(),"c-2-"+
+                    today.toString().substring(0, 7) + "-t")
+            if (green != null)
+                greenTotal = green.toFloat()
+            blue = DataManager.getValueByID(model.get(),"c-3-"+
+                    today.toString().substring(0, 7) + "-t")
+            if (blue != null)
+                blueTotal = blue.toFloat()
+        }
+            values.add(SliceValue(redTotal,Color.RED))
+            values.add(SliceValue(greenTotal,Color.GREEN))
+            values.add(SliceValue(blueTotal,Color.BLUE))
+            val piedata = PieChartData()
+            piedata.values = values
+            pieChart.pieChartData = piedata
+
+        }
 
     }
     override fun onCreateView(

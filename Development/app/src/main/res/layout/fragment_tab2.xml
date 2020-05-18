@@ -50,6 +50,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <lecho.lib.hellocharts.view.LineChartView
+        android:visibility="invisible"
         android:id="@+id/chartView"
         android:layout_width="wrap_content"
         android:layout_height="300dp"
@@ -57,6 +58,18 @@
         android:paddingEnd="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab2Spinners" />
+
+    <lecho.lib.hellocharts.view.PieChartView
+        android:id="@+id/pieView"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="7dp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/chartSpacing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab2Spinners"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Space
         android:id="@+id/chartSpacing"
