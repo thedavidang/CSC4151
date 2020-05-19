@@ -21,17 +21,11 @@ private const val ARG_PARAM2 = "param2"
 class AboutFragment : Fragment() {
     private lateinit var rootView : View
 
-    private lateinit var aboutText : TextView
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_about, container, false)
-
-        /* Allow the about text to be scrollable. */
-        aboutText = rootView.findViewById(R.id.aboutText)
-        aboutText.movementMethod = ScrollingMovementMethod()
 
         return rootView
     }
