@@ -7,13 +7,11 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.team4.walletwatch"
+        applicationId "com.spendsages.walletwatch"
         minSdkVersion 28
         targetSdkVersion 29
         versionCode 1
         versionName "0.1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -36,7 +34,4 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.github.lecho:hellocharts-android:v1.5.8'
     implementation 'me.abhinay.input:currency-edittext:1.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
