@@ -9,7 +9,7 @@ A Software Engineering Project by the SpendSages©:
 - Jason Djajasasmita
 
 JIRA SCRUM Board and Backlog:
-[SpendSages SPEN Agile Board](https://angd.atlassian.net/secure/RapidBoard.jspa?rapidView=2&projectKey=SPEN&view=planning.nodetail&selectedIssue=SPEN-47&issueLimit=100)
+- [SpendSages SPEN Agile Board](https://angd.atlassian.net/secure/RapidBoard.jspa?rapidView=2&projectKey=SPEN&view=planning.nodetail&issueLimit=100)
 
 ## Table of Contents
 - [Introduction](https://github.com/thedavidang/CSC4151#introduction)
