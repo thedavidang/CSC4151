@@ -464,6 +464,7 @@ class Tab2Fragment : Fragment() {
 
         /* Populate the Chart selector with "Line" and "Pie". */
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
+        spinChartType.requestFocus()
         spinChartType.adapter = ArrayAdapter(main, R.layout.support_simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartTypes))
         /* Create a listener that swaps between the line chart and pie chart. */
@@ -621,6 +622,7 @@ class Tab2Fragment : Fragment() {
 
         /* Populate the Category selector with "All" and the current category labels. */
         spinChartCategory = rootView.findViewById(R.id.lineCategorySpinner)
+        /* Focus on category Spinner as to prevent any of the totals from displaying blank. */
         spinChartCategory.adapter = ArrayAdapter<String?>(main,
             R.layout.support_simple_spinner_dropdown_item, categories)
         /* Enable the category selector drop-down menu. */

@@ -155,7 +155,11 @@ class Tab1Fragment : Fragment() {
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
         toggleCategoryButtons(false)
 
+        /* Reopen the numpad for next entry to add. */
         main.showKeyboard(amountInput)
+
+        /* Reset CalendarView to current date. */
+        dateSelector.date = modelDateFormat.parse(today)!!.time
     }
 
     override fun onCreateView(
