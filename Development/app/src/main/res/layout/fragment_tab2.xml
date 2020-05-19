@@ -87,7 +87,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/category1Layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="45dp">
 
             <View
                 android:id="@+id/category1Color"
@@ -100,9 +100,8 @@
 
             <TextView
                 android:id="@+id/category1Text"
-                android:layout_width="wrap_content"
+                android:layout_width="206dp"
                 android:layout_height="match_parent"
-                android:ems="9"
                 android:paddingHorizontal="5dp"
                 android:textAlignment="viewStart"
                 android:textSize="19sp"
@@ -131,7 +130,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/category2Layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="45dp">
 
             <View
                 android:id="@+id/category2Color"
@@ -144,9 +143,8 @@
 
             <TextView
                 android:id="@+id/category2Text"
-                android:layout_width="wrap_content"
+                android:layout_width="206dp"
                 android:layout_height="match_parent"
-                android:ems="9"
                 android:paddingHorizontal="5dp"
                 android:textAlignment="viewStart"
                 android:textSize="19sp"
@@ -177,7 +175,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/category3Layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="45dp">
 
             <View
                 android:id="@+id/category3Color"
@@ -190,9 +188,8 @@
 
             <TextView
                 android:id="@+id/category3Text"
-                android:layout_width="wrap_content"
+                android:layout_width="206dp"
                 android:layout_height="match_parent"
-                android:ems="9"
                 android:paddingHorizontal="5dp"
                 android:textAlignment="viewStart"
                 android:textSize="19sp"
@@ -222,7 +219,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/allLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="45dp">
 
             <View
                 android:id="@+id/allColor"
@@ -235,9 +232,8 @@
 
             <TextView
                 android:id="@+id/allText"
-                android:layout_width="wrap_content"
+                android:layout_width="206dp"
                 android:layout_height="match_parent"
-                android:ems="9"
                 android:paddingHorizontal="5dp"
                 android:textAlignment="viewStart"
                 android:textSize="19sp"

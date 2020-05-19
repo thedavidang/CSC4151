@@ -353,7 +353,7 @@ class Tab2Fragment : Fragment() {
     * Returns: Nothing. */
     fun displayPieChart(timeSpan: Int) {
         /* Initialize value variables used to populate the pie chart. */
-        val values = ArrayList<SliceValue>()
+        val values = ArrayList<SliceValue>(3)
         val category1Amount : Float
         val category2Amount : Float
         val category3Amount : Float
@@ -385,21 +385,19 @@ class Tab2Fragment : Fragment() {
 
         /* Set the colors and percentage labels for each of the category data set slices. */
         val category1Slice = SliceValue(category1Amount, resources.getColor(R.color.colorCategory1))
-        category1Slice.setLabel(category1Slice.value.toString() + "%")
+        category1Slice.setLabel("$category1Amount %")
         values.add(category1Slice)
 
         val category2Slice = SliceValue(category2Amount, resources.getColor(R.color.colorCategory2))
-        category2Slice.setLabel(category2Slice.value.toString() + "%")
+        category2Slice.setLabel("$category2Amount %")
         values.add(category2Slice)
 
         val category3Slice = SliceValue(category3Amount, resources.getColor(R.color.colorCategory3))
-        category3Slice.setLabel(category3Slice.value.toString() + "%")
+        category3Slice.setLabel("$category3Amount %")
         values.add(category3Slice)
 
         /* Populate the pie chart with the colored slices. */
-        val pieData = PieChartData()
-        pieData.values = values
-        pieChart.pieChartData = pieData
+        pieChart.pieChartData = PieChartData(values).setHasLabels(true)
     }
 
     override fun onCreateView(
@@ -464,7 +462,6 @@ class Tab2Fragment : Fragment() {
 
         /* Populate the Chart selector with "Line" and "Pie". */
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
-        spinChartType.requestFocus()
         spinChartType.adapter = ArrayAdapter(main, R.layout.support_simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartTypes))
         /* Create a listener that swaps between the line chart and pie chart. */
@@ -492,7 +489,7 @@ class Tab2Fragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        /* Popluate Time Interval selector with "Last 7 Days", "Last 12 Months", and "All Time". */
+        /* Populate Time Interval selector with "Last 7 Days", "Last 12 Months", and "All Time". */
         spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)
         spinTimeInterval.adapter = ArrayAdapter(main,
             R.layout.support_simple_spinner_dropdown_item,
