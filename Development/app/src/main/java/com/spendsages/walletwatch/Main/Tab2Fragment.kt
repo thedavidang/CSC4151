@@ -383,17 +383,22 @@ class Tab2Fragment : Fragment() {
             }
         }
 
+        val total = category1Amount + category2Amount + category3Amount
+
         /* Set the colors and percentage labels for each of the category data set slices. */
         val category1Slice = SliceValue(category1Amount, resources.getColor(R.color.colorCategory1))
-        category1Slice.setLabel("$category1Amount %")
+        category1Slice.setLabel(
+            ((category1Amount / total) * 100).toString().substringBefore(".") + " %")
         values.add(category1Slice)
 
         val category2Slice = SliceValue(category2Amount, resources.getColor(R.color.colorCategory2))
-        category2Slice.setLabel("$category2Amount %")
+        category2Slice.setLabel(
+            ((category2Amount / total) * 100).toString().substringBefore(".") + " %")
         values.add(category2Slice)
 
         val category3Slice = SliceValue(category3Amount, resources.getColor(R.color.colorCategory3))
-        category3Slice.setLabel("$category3Amount %")
+        category3Slice.setLabel(
+            ((category3Amount / total) * 100).toString().substringBefore(".") + " %")
         values.add(category3Slice)
 
         /* Populate the pie chart with the colored slices. */
