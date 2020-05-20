@@ -10,12 +10,12 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
 import lecho.lib.hellocharts.view.PieChartView
 import java.text.DecimalFormat
 import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -130,11 +130,7 @@ class Tab2Fragment : Fragment() {
         /* Initialize a Calender object. */
         val cal: Calendar = Calendar.getInstance()
 
-        /* Initialize the view of the line chart and set its initial dimensions. */
-        var view = Viewport(lineChart.maximumViewport)
-        view.top = view.top + view.height() * 0.05f
-
-        /* Populate the X-axis float values. */
+        /* Populate the coordinates for each data point. */
         val values = ArrayList<PointValue>()
         /* Initialize counter to six, which acts as a default to 0) Last 7 Days. */
         var h = 6
@@ -142,7 +138,7 @@ class Tab2Fragment : Fragment() {
         when (timeSpan) {
             /* Last 12 Months. */
             1 -> {
-                /* Populate an X-value for each of the 12 months. */
+                /* Populate a data point for each of the 12 months. */
                 h = 11
                 for (i in 0..11) {
                     values.add(PointValue(i.toFloat(), total[h].toFloat()))
@@ -151,7 +147,7 @@ class Tab2Fragment : Fragment() {
             }
             /* All Time (in this case it is actually last 10 years). */
             2 -> {
-                /* Populate an X-value for each of the 10 years. */
+                /* Populate a data point for each of the 10 years. */
                 h = 9
                 for (i in 0..9) {
                     values.add(PointValue(i.toFloat(), total[h].toFloat()))
@@ -160,7 +156,7 @@ class Tab2Fragment : Fragment() {
             }
             /* Last 7 Days. */
             else -> {
-                /* Populate an X-value for each of the 7 days. */
+                /* Populate a data point for each of the 7 days. */
                 for (i in 0..6) {
                     values.add(PointValue(i.toFloat(), total[h].toFloat()))
                     h--
@@ -198,7 +194,7 @@ class Tab2Fragment : Fragment() {
         data.lines = lines
 
         /* Populate the X-axis labels. */
-        val axisValues = ArrayList<AxisValue>()
+        val xAxisValues = ArrayList<AxisValue>()
         /* Check which time interval the user selected. */
         when (timeSpan) {
             /* Last 12 Months. */
@@ -248,7 +244,7 @@ class Tab2Fragment : Fragment() {
                         }
                     }
                     /* Add the abbreviation to the X-axis labels array. */
-                    axisValues.add(AxisValue(j.toFloat(), currentMonthString.toCharArray()))
+                    xAxisValues.add(AxisValue(j.toFloat(), currentMonthString.toCharArray()))
                     currentMonth -= 1
                     /* Account for rollover into December of the previous year. */
                     if (currentMonth == -1) {
@@ -265,7 +261,7 @@ class Tab2Fragment : Fragment() {
                 /* Grab the last 10 years. */
                 for (i in 1..10) {
                     /* Add the year to the X-axis labels array. */
-                    axisValues.add(AxisValue(j.toFloat(), currentYear.toString().toCharArray()))
+                    xAxisValues.add(AxisValue(j.toFloat(), currentYear.toString().toCharArray()))
                     currentYear -= 1
                     j--
                 }
@@ -302,7 +298,7 @@ class Tab2Fragment : Fragment() {
                         }
                     }
                     /* Add the abbreviation to the X-axis labels array. */
-                    axisValues.add(AxisValue(j.toFloat(), currentDayString.toCharArray()))
+                    xAxisValues.add(AxisValue(j.toFloat(), currentDayString.toCharArray()))
                     currentDay -= 1
                     /* Account for rollover into Sunday of the previous week. */
                     if (currentDay == 0) {
@@ -314,35 +310,70 @@ class Tab2Fragment : Fragment() {
         }
 
         /* Populate the X-axis with labels. */
-        val axisX = Axis(axisValues).setHasLines(true)
+        val axisX = Axis(xAxisValues).setHasLines(true)
         axisX.maxLabelChars = 4
         data.axisXBottom = axisX
 
-        /* Populate the Y-axis with value labels. */
-        val axisY = Axis().setHasLines(true)
-        /* Format the Y-axis value labels for user readability. */
-        val formatter = SimpleAxisValueFormatter()
-        /* Determine the maximum Y-axis value. */
-        if (view.top < 10f) {
-            /* If the max Y-value is less than 10, show 2 decimal places. */
-            formatter.decimalDigitsNumber = 2
-        } else {
-            /* Otherwise, hide decimal places. */
-            formatter.decimalDigitsNumber = 0
-        }
-        axisY.formatter = formatter
-        data.axisYLeft = axisY
-
-        /* Populate the line with the data points. */
-        lineChart.lineChartData = data
-
         /* Adjust the dimensions of the line chart to fit the highest Y-value data point. */
-        view = Viewport(lineChart.maximumViewport)
+        val view = Viewport(lineChart.maximumViewport)
+        val highestYValue = view.top
+        val lowestYValue = view.bottom
         val padding = view.height() * 0.05f
         view.top = view.top + padding
         view.bottom = view.bottom - padding
         lineChart.maximumViewport = view
         lineChart.currentViewport = view
+
+        /* Populate the Y-axis with values and labels. */
+        val yAxisValues = ArrayList<AxisValue>()
+        /* Setup metric prefixes for one thousand and above. */
+        val metric = arrayListOf("k", "M", "G", "T", "P", "E", "Z", "Y")
+        /* Setup step value such that there will be evenly spaced Y-axis labels. */
+        val step = (highestYValue - lowestYValue) / 10
+        /* Initialize the bottom Y-axis value and label.*/
+        var yValue = lowestYValue
+        var yLabel : String
+        /* Iterate to create evenly spaced Y-axis values with labels. */
+        for (i in 0..10) {
+            /* Calculate the scientific notation exponent of the Y-value by
+            * taking the floor of the base 10 logarithm of the Y-axis value. */
+            val yValExponent = kotlin.math.floor(kotlin.math.log10(yValue))
+            /* Check if the Y-axis value is less than 10. */
+            if (yValExponent < 1) {
+                /* Display cents with two decimal places. */
+                yLabel = DecimalFormat("0.00").format(yValue)
+            }
+            /* Check if the Y-axis value is from 10 to 1,000. */
+            else if (yValExponent < 3) {
+                /* Display dollars without cents with no decimal places. */
+                yLabel = yValue.toString().substringBefore(".")
+            }
+            /* Otherwise, the Y-axis value is 1,000 or more. */
+            else {
+                /* Set the Y-axis label by consolidating the value to the digits before the
+                * thousand separator by getting the substring up to the index of
+                * one plus the remainder of the exponent divided by three.
+                * Determine the metric prefix by
+                * subtracting one from the floor of the exponent divided by three. */
+                yLabel = yValue.toLong().toString().substring(0, ((yValExponent % 3) + 1).toInt()) +
+                        " " + (metric[((yValExponent / 3) - 1).toInt()])
+            }
+
+            /* Add the Y-axis value and label to the Y-axis object. */
+            yAxisValues.add(AxisValue(yValue, yLabel.toCharArray()))
+
+            /* Increment the yValue by the step. */
+            yValue += step
+         }
+
+        /* Populate the Y-axis with values and labels. */
+        val axisY = Axis(yAxisValues).setHasLines(true)
+        /* Limit Y-axis labels to five characters. */
+        axisY.maxLabelChars = 5
+        data.axisYLeft = axisY
+
+        /* Populate the line with the data points. */
+        lineChart.lineChartData = data
     }
 
     /* Purpose: Controller method that populates the pie chart with the selected data set.
