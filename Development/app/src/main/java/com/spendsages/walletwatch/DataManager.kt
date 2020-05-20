@@ -265,7 +265,7 @@ object DataManager {
     private fun findExistingDateTags(doc : Document, category: String,
                                      year : String, month : String, day : String) : Int {
         var id = "c-$category-$year"
-        var xpath = "string(/root/data/category[@id=\"c-$category\"]/year[@id=\"$id\"]/month[@id=\""
+        var xpath = "string(/root/category[@id=\"c-$category\"]/year[@id=\"$id\"]/month[@id=\""
         var dateExists = 0
 
         if (getValueByID(doc, id) != null) {
