@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tab2Spinners"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuSpacing">
 
@@ -87,7 +87,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/category1Layout"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="39dp">
 
             <View
                 android:id="@+id/category1Color"
@@ -102,6 +102,7 @@
                 android:id="@+id/category1Text"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
+                android:hint="@string/category1LabelString"
                 android:paddingHorizontal="5dp"
                 android:textAlignment="viewStart"
                 android:textSize="19sp"
@@ -113,6 +114,7 @@
                 android:id="@+id/category1Total"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:hint="@string/category1TotalString"
                 android:paddingHorizontal="10dp"
                 android:textAlignment="viewEnd"
                 android:textSize="19sp"
@@ -130,7 +132,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/category2Layout"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="39dp">
 
             <View
                 android:id="@+id/category2Color"
@@ -145,6 +147,7 @@
                 android:id="@+id/category2Text"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
+                android:hint="@string/category2LabelString"
                 android:paddingHorizontal="5dp"
                 android:textAlignment="viewStart"
                 android:textSize="19sp"
@@ -156,6 +159,7 @@
                 android:id="@+id/category2Total"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:hint="@string/category2TotalString"
                 android:paddingHorizontal="10dp"
                 android:textAlignment="viewEnd"
                 android:textSize="19sp"
@@ -175,7 +179,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/category3Layout"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="39dp">
 
             <View
                 android:id="@+id/category3Color"
@@ -190,6 +194,7 @@
                 android:id="@+id/category3Text"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
+                android:hint="@string/category3LabelString"
                 android:paddingHorizontal="5dp"
                 android:textAlignment="viewStart"
                 android:textSize="19sp"
@@ -201,6 +206,7 @@
                 android:id="@+id/category3Total"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:hint="@string/category3TotalString"
                 android:paddingHorizontal="10dp"
                 android:textAlignment="viewEnd"
                 android:textSize="19sp"
@@ -219,7 +225,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/allLayout"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="39dp">
 
             <View
                 android:id="@+id/allColor"
@@ -234,6 +240,7 @@
                 android:id="@+id/allText"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
+                android:hint="@string/allLabelString"
                 android:paddingHorizontal="5dp"
                 android:textAlignment="viewStart"
                 android:textSize="19sp"
@@ -245,6 +252,7 @@
                 android:id="@+id/allTotal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:hint="@string/allTotalString"
                 android:paddingHorizontal="10dp"
                 android:textAlignment="viewEnd"
                 android:textSize="19sp"

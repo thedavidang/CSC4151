@@ -60,11 +60,11 @@
     <EditText
         android:id="@+id/descriptionField"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:maxLength="50"
+        android:layout_height="48dp"
         android:autofillHints="@android:string/autofill"
         android:ems="10"
         android:inputType="textCapWords"
+        android:maxLength="50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,19 +91,19 @@
     <EditText
         android:id="@+id/dateField"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:autofillHints=""
         android:ems="6"
         android:inputType="date"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateLabel"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
 
     <ImageButton
         android:id="@+id/dateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:contentDescription="@string/calendarString"
         android:src="@android:drawable/ic_menu_my_calendar"
         app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
@@ -198,6 +198,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#FFFFFF"
+        android:contentDescription="@string/calendarString"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />

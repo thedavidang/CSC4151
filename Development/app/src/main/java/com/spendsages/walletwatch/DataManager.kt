@@ -84,8 +84,8 @@ object DataManager {
         /* Iterate through the last seven calendar days. */
         for (i in 1..7) {
             /* Retrieve the total amount of expenses for each day, if the Day element exists. */
-            amount = getValueByID(doc, category + "-" +
-                    convertToLocalDate(cal.time).toString() + "-t")
+            amount = getValueByID(doc, "$category-" + convertToLocalDate(
+                cal.time).toString() + "-t")
             if (amount != null) {
                 total += amount.toDouble()
             }
@@ -104,32 +104,36 @@ object DataManager {
     * Returns: array holding totals for category/all categories for current day/prior 6 days */
     fun last7Days(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
+        val daysOfWeek = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
         var amount : String?
-        val daysOfWeek = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-        if(categoryID == "all") {
+
+        if (categoryID == "all") {
+            var daySum: Double
+
             for(i in 0..6) {
-                var daySum = 0.0
+                daySum = 0.0
+
                 for (j in 1..3) {
-                    /* Retrieve the total amount of expenses for each day, if the Day element exists. */
-                    amount = getValueByID(doc, "c-" + j.toString() + "-" +
-                            convertToLocalDate(cal.time).toString() + "-t")
+                    /* Retrieve the total amount of expenses for each day,
+                    * if the Day element exists. */
+                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
+                                cal.time).toString() + "-t")
                     if (amount != null) {
                         daySum += amount.toDouble()
                     }
                 }
                 daysOfWeek[i] = daySum
                 /* Determine the day previous to the current day. */
-                cal.add(Calendar.DAY_OF_MONTH, -1) // Can change Calender._ to years, ect.
+                cal.add(Calendar.DAY_OF_MONTH, -1)
             }
-            return daysOfWeek
         }
         else {
             /* Iterate through the last seven calendar days. */
             for (i in 0..6) {
                 /* Retrieve the total amount of expenses for each day, if the Day element exists. */
-                amount = getValueByID(doc, categoryID + "-" +
-                        convertToLocalDate(cal.time).toString() + "-t")
+                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
+                    cal.time).toString() + "-t")
                 if (amount != null) {
                     daysOfWeek[i] = amount.toDouble()
                 }
@@ -155,8 +159,8 @@ object DataManager {
         /* Iterate through the last twelve calendar months. */
         for (i in 1..12) {
             /* Retrieve the total amount of expenses for each month, if the Month element exists. */
-            amount = getValueByID(doc, category + "-" +
-                    convertToLocalDate(cal.time).toString().substring(0, 7) + "-t")
+            amount = getValueByID(doc, "$category-" + convertToLocalDate(
+                cal.time).toString().substring(0, 7) + "-t")
             if (amount != null) {
                 total += amount.toDouble()
             }
@@ -169,16 +173,22 @@ object DataManager {
 
     fun last12Months(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
+        val monthsOfYear = doubleArrayOf(
+            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
         var amount : String?
-        val monthsOfYear = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-        if(categoryID == "all") {
+
+        if (categoryID == "all") {
+            var monthSum : Double
+
             for(i in 0..11) {
-                var monthSum = 0.0
+                monthSum = 0.0
+
                 for (j in 1..3) {
-                    /* Retrieve the total amount of expenses for each Month, if the Month element exists. */
-                    amount = getValueByID(doc, "c-" + j.toString() + "-" +
-                            convertToLocalDate(cal.time).toString().substringBeforeLast("-") + "-t") // can get substring of just the year (last 4 characters) (change to substring Before first)
+                    /* Retrieve the total amount of expenses for each Month,
+                    * if the Month element exists. */
+                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
+                        cal.time).toString().substringBeforeLast("-") + "-t")
                     if (amount != null) {
                         monthSum += amount.toDouble()
                     }
@@ -187,14 +197,14 @@ object DataManager {
                 /* Determine the month previous to the current month. */
                 cal.add(Calendar.MONTH, -1) // Can change Calender._ to years, ect.
             }
-            return monthsOfYear
         }
         else {
             /* Iterate through the last 12 calendar months. */
             for (i in 0..11) {
-                /* Retrieve the total amount of expenses for each month, if the month element exists. */
-                amount = getValueByID(doc, categoryID + "-" +
-                        convertToLocalDate(cal.time).toString().substringBeforeLast("-") + "-t")
+                /* Retrieve the total amount of expenses for each month,
+                * if the month element exists. */
+                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
+                            cal.time).toString().substringBeforeLast("-") + "-t")
                 if (amount != null) {
                     monthsOfYear[i] = amount.toDouble()
                 }
@@ -207,16 +217,22 @@ object DataManager {
 
     fun last10Years(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
+        val yearsOfDecade = doubleArrayOf(
+            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
         var amount : String?
-        val yearsOfDecade = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+
         if(categoryID == "all") {
+            var yearSum: Double
+
             for(i in 0..9) {
-                var yearSum = 0.0
+                yearSum = 0.0
+
                 for (j in 1..3) {
-                    /* Retrieve the total amount of expenses for each year, if the year element exists for the past decade. */
-                    amount = getValueByID(doc, "c-" + j.toString() + "-" +
-                            convertToLocalDate(cal.time).toString().substringBefore("-") + "-t") // can get substring of just the year (last 4 characters)
+                    /* Retrieve the total amount of expenses for each year,
+                    * if the year element exists for the past decade. */
+                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
+                                cal.time).toString().substringBefore("-") + "-t")
                     if (amount != null) {
                         yearSum += amount.toDouble()
                     }
@@ -225,14 +241,14 @@ object DataManager {
                 /* Determine the year previous to the current year. */
                 cal.add(Calendar.YEAR, -1) // Can change Calender._ to years, ect.
             }
-            return yearsOfDecade
         }
         else {
             /* Iterate through the last 10 calendar years. */
             for (i in 0..9) {
-                /* Retrieve the total amount of expenses for each year, if the year element exists. */
-                amount = getValueByID(doc, categoryID + "-" +
-                        convertToLocalDate(cal.time).toString().substringBefore("-") + "-t")
+                /* Retrieve the total amount of expenses for each year,
+                * if the year element exists. */
+                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
+                            cal.time).toString().substringBefore("-") + "-t")
                 if (amount != null) {
                     yearsOfDecade[i] = amount.toDouble()
                 }

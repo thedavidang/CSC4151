@@ -28,7 +28,7 @@
     <EditText
         android:id="@+id/category1Edit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:autofillHints="@android:string/autofill"
         android:ems="14"
         android:inputType="textCapWords"
@@ -59,7 +59,7 @@
     <EditText
         android:id="@+id/category2Edit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:autofillHints="@android:string/autofill"
         android:ems="14"
         android:inputType="textCapWords"
@@ -90,7 +90,7 @@
     <EditText
         android:id="@+id/category3Edit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:autofillHints="@android:string/autofill"
         android:ems="14"
         android:inputType="textCapWords"

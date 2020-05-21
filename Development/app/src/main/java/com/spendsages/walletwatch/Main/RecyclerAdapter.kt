@@ -3,7 +3,10 @@ package com.spendsages.walletwatch
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
 import org.w3c.dom.Document
 import java.text.DecimalFormat
@@ -92,6 +95,18 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             entryViewHolder.date.text = entries!![i].timestamp.toString().substring(0, 10)
 
             entryViewHolder.category.text = entries!![i].category
+
+            /* Add a unique content description for the checkbox. */
+            entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
+                R.id.deleteCheckbox).contentDescription =
+                "Select Expense " + entryViewHolder.description.text + " " +
+            entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
+
+            /* Add a unique content description for the edit button. */
+            entryViewHolder.itemView.findViewById<AppCompatImageButton>(
+                R.id.editButton).contentDescription =
+                "Edit Expense " + entryViewHolder.description.text + " " +
+                        entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
         }
     }
 }

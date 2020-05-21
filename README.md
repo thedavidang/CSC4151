@@ -24,17 +24,17 @@ WalletWatch© is an app designed for budget-minded individuals that are unwillin
 Not only is WalletWatch© securely offline, but it is also extremely quick and easy to use! A simplicity-driven design and intuitive user interface allow you the capability to rapidly add purchases and visualize charts of your aggregated expenses. This app is excellent for those who are juggling multiple bank accounts, want to discover how much money they spend in a particular category, or who simply want to keep their financial information more private.
 
 ## Latest Stable Version
-- 0.1.0 (Beta)
+- 0.1.1 (Beta)
 
 ## Minimum System Requirements
 - Android 9 (Pie) or up
 
 ## Installation Instructions
-1. Download WalletWatch 0.1.0 (Beta) using this link:
-- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-v0.1.0-Installer.apk
+1. Download WalletWatch 0.1.1 (Beta) using this link:
+- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-0.1.1-Installer.apk
 2. Navigate to the downloaded APK file on your Android device using the _Files_ app.
 - Typically located in the _Downloads_ folder.
-3. Tap the _WalletWatch-v0.1.0-Installer.apk_ file.
+3. Tap the _WalletWatch-0.1.1-Installer.apk_ file.
 - If asked which app to open with, tap _Just Once_ under _Open with Package Installer_.
 4. Your device will display a prompt stating that it currently cannot install unknown apps from the app you used to downloaded the APK. 
 

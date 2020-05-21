@@ -8,16 +8,27 @@
     <string name="amountHintString">$ 0.00</string>
     <string name="descriptionString">Description:</string>
     <string name="dateString">Date:</string>
-    <string name="calendarString">Date Selector Button</string>
+    <string name="calendarString">Date Selector</string>
     <string name="categoryString">Category:</string>
-    <string name="addedEntryString">Entry Added</string>
+    <string name="addedEntryString">Expense Added</string>
+
+    <string name="category1LabelString">Category 1 Label</string>
+    <string name="category2LabelString">Category 2 Label</string>
+    <string name="category3LabelString">Category 3 Label</string>
+    <string name="allLabelString">All Categories Label</string>
+    <string name="category1TotalString">Category 1 Total</string>
+    <string name="category2TotalString">Category 2 Total</string>
+    <string name="category3TotalString">Category 3 Total</string>
+    <string name="allTotalString">All Categories Total</string>
 
     <string name="deleteString">Delete Selected</string>
-    <string name="changedEntryString">Entry Edited</string>
+    <string name="changedEntryString">Expense Edited</string>
     <string name="deletedEntriesString">Selection Deleted</string>
-    <string name="editString">Edit Entry Button</string>
+    <string name="editString">Edit Expense</string>
+    <string name="listString">List of Submitted Expenses</string>
 
-    <string name="settingsString">Settings Button</string>
+    <string name="settingsString">Settings</string>
+    <string name="settingsHeadingString">WalletWatch© Settings</string>
 
     <string name="category1String">Category 1:</string>
     <string name="category2String">Category 2:</string>
@@ -65,7 +76,7 @@
     <string name="mottoString">
         Self-discover your spending habits with this simple, secure, and offline Android app.
     </string>
-    <string name="versionString">Version 0.1.0 (Beta)</string>
+    <string name="versionString">Version 0.1.1 (Beta)</string>
     <string name="githubString">https://github.com/thedavidang/CSC4151</string>
     <string name="copyrightString">© Copyright 2020 SpendSages</string>
     <string name="logoString">Logo of a watch wrapped around a wallet.</string>
