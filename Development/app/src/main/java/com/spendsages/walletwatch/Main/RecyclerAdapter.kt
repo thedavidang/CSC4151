@@ -1,5 +1,6 @@
 package com.spendsages.walletwatch
 
+import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.w3c.dom.Document
 import java.text.DecimalFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 /* This class provides support for the scrollable RecyclerView cardRecycler. */
@@ -53,11 +55,15 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
     * Upon instantiation, the card is immediately added to the RecyclerView cardRecycler. */
     class EntryViewHolder internal constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+
         var amount: TextView = itemView.findViewById(R.id.amountText)
         var description: TextView = itemView.findViewById(R.id.descriptionText)
         var date: TextView = itemView.findViewById(R.id.dateText)
         var category: TextView = itemView.findViewById(R.id.categoryText)
+
+
     }
+
 
     /* Purpose: Creates an individual expense entry card using layout_card.xml.
     *
@@ -89,7 +95,8 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             entryViewHolder.description.text = entries!![i].description
 
             /* Extract the date from the timestamp member of the entry. */
-            entryViewHolder.date.text = entries!![i].timestamp.toString().substring(0, 10)
+           /* Reformat the date in tab 3 to be in months/day/year */
+           entryViewHolder.date.text = SimpleDateFormat("M/d/yyyy", Locale.US).format(SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(entries!![i].timestamp.toString().substring(0, 10)))
 
             entryViewHolder.category.text = entries!![i].category
         }
