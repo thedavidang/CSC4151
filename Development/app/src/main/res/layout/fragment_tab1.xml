@@ -27,10 +27,10 @@
 
     <me.abhinay.input.CurrencyEditText
         android:id="@+id/amountField"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:hint="@string/amountHintString"
-        android:maxLength="15"
+        android:maxLength="23"
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="24sp"
@@ -42,7 +42,7 @@
     <Space
         android:id="@+id/amountSpacing"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/amountField" />
 
@@ -57,25 +57,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amountSpacing" />
 
-    <EditText
-        android:id="@+id/descriptionField"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descriptionHolder"
         android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:autofillHints="@android:string/autofill"
-        android:ems="10"
-        android:inputType="textCapWords"
-        android:maxLength="50"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/descriptionField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="@android:string/autofill"
+            android:inputType="textCapWords"
+            android:maxLength="50" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Space
         android:id="@+id/descriptionSpacing"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionField" />
+        app:layout_constraintTop_toBottomOf="@id/descriptionHolder" />
 
     <TextView
         android:id="@+id/dateLabel"
@@ -102,18 +109,18 @@
 
     <ImageButton
         android:id="@+id/dateButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="85dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/calendarString"
         android:src="@android:drawable/ic_menu_my_calendar"
         app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
         app:layout_constraintStart_toEndOf="@+id/dateField"
-        app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
 
     <Space
         android:id="@+id/dateSpacing"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dateField" />
 
@@ -130,7 +137,7 @@
     <Space
         android:id="@+id/category1Spacing"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
 
@@ -138,8 +145,8 @@
         android:id="@+id/category1Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="14"
-        android:paddingVertical="20dp"
+        android:ems="17"
+        android:paddingVertical="25dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -157,8 +164,8 @@
         android:id="@+id/category2Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="14"
-        android:paddingVertical="20dp"
+        android:ems="17"
+        android:paddingVertical="25dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -176,8 +183,8 @@
         android:id="@+id/category3Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="14"
-        android:paddingVertical="20dp"
+        android:ems="17"
+        android:paddingVertical="25dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

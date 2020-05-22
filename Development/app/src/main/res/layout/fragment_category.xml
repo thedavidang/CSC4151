@@ -25,25 +25,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuSpacing"/>
 
-    <EditText
-        android:id="@+id/category1Edit"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/category1Holder"
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:autofillHints="@android:string/autofill"
-        android:ems="14"
-        android:inputType="textCapWords"
-        android:textAlignment="viewStart"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category1Text" />
+        app:layout_constraintTop_toBottomOf="@+id/category1Text" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/category1Edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="14"
+            android:autofillHints="@android:string/autofill"
+            android:inputType="textCapWords"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Space
         android:id="@+id/category1Spacing"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category1Edit" />
+        app:layout_constraintTop_toBottomOf="@+id/category1Holder" />
 
     <TextView
         android:id="@+id/category2Text"
@@ -56,25 +64,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/category1Spacing"/>
 
-    <EditText
-        android:id="@+id/category2Edit"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/category2Holder"
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:autofillHints="@android:string/autofill"
-        android:ems="14"
-        android:inputType="textCapWords"
-        android:textAlignment="viewStart"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category2Text" />
+        app:layout_constraintTop_toBottomOf="@+id/category2Text" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/category2Edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="14"
+            android:autofillHints="@android:string/autofill"
+            android:inputType="textCapWords"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Space
         android:id="@+id/category2Spacing"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category2Edit" />
+        app:layout_constraintTop_toBottomOf="@+id/category2Holder" />
 
     <TextView
         android:id="@+id/category3Text"
@@ -87,25 +103,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/category2Spacing"/>
 
-    <EditText
-        android:id="@+id/category3Edit"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/category3Holder"
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:autofillHints="@android:string/autofill"
-        android:ems="14"
-        android:inputType="textCapWords"
-        android:textAlignment="viewStart"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category3Text" />
+        app:layout_constraintTop_toBottomOf="@+id/category3Text" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/category3Edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="14"
+            android:autofillHints="@android:string/autofill"
+            android:inputType="textCapWords"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Space
         android:id="@+id/category3Spacing"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category3Edit" />
+        app:layout_constraintTop_toBottomOf="@+id/category3Holder" />
 
     <Button
         android:id="@+id/saveButton"

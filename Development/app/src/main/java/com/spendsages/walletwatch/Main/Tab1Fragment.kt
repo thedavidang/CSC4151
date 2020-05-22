@@ -8,6 +8,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputEditText
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
 import java.lang.Exception
@@ -35,7 +36,7 @@ class Tab1Fragment : Fragment() {
     private lateinit var amountInput : CurrencyEditText
     private var validAmount = false
 
-    private lateinit var descriptionInput : EditText
+    private lateinit var descriptionInput : TextInputEditText
 
     private lateinit var dateInput : EditText
     private var validDate = true
@@ -207,7 +208,7 @@ class Tab1Fragment : Fragment() {
 
             /* Do not bother checking the date input since only the amount was just changed. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            if(validateAmountInput() && validDate) {
+            if (validateAmountInput() && validDate) {
                 toggleCategoryButtons(true)
             }
             else {
@@ -251,6 +252,9 @@ class Tab1Fragment : Fragment() {
             toggleDateSelector(false)
             val dateString = (month + 1).toString() + "/$day/$year"
             dateInput.setText(dateString)
+
+            /* Re-enable category buttons, if necessary. */
+            toggleCategoryButtons(validAmount && validDate)
         }
 
         dateOverlay = rootView.findViewById(R.id.dateOverlay)
@@ -261,10 +265,15 @@ class Tab1Fragment : Fragment() {
         dateButton = rootView.findViewById(R.id.dateButton)
         /* Set the listener to reveal the CalendarView and its background. */
         dateButton.setOnClickListener {
-            toggleDateSelector(true)
             /* Hide the keyboard. */
             (main.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(amountInput.windowToken, 0)
+
+            /* Temporarily disable category buttons. */
+            toggleCategoryButtons(false)
+
+            /* Open CalendarView. */
+            toggleDateSelector(true)
         }
 
         rootView.setOnTouchListener { _: View, _: MotionEvent ->

@@ -1,5 +1,6 @@
 package com.spendsages.walletwatch
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -129,42 +130,58 @@ class Tab2Fragment : Fragment() {
     * or 1-3) a specific Category.
     *
     * Returns: Nothing. */
-    fun updateLineChart(total: DoubleArray, timeSpan: Int, colorPosition: Int) {
+    fun updateLineChart(dataPoints: DoubleArray, timeSpan: Int, colorPosition: Int) {
         /* Initialize a Calender object. */
         val cal: Calendar = Calendar.getInstance()
 
+        /* Initialize counter to based on selected time interval. */
+        var counter =
+            when (timeSpan) {
+                /* Last 12 Months. */
+                1 -> {
+                    11
+                }
+                /* All Time (in this case it is actually last 10 years). */
+                2 -> {
+                    9
+                }
+                /* Last 7 Days. */
+                else -> {
+                    6
+                }
+            }
+
+        /* Initialize minimum and maximum axis values. */
+        val minX = 0.0f
+        val maxX = counter.toFloat()
+
+        var minY = -1.0f
+        var maxY = -1.0f
+
+        /* Initialize array of data points. */
+        val values = ArrayList<PointValue>(counter)
+
         /* Populate the coordinates for each data point. */
-        val values = ArrayList<PointValue>()
-        /* Initialize counter to six, which acts as a default to 0) Last 7 Days. */
-        var h = 6
-        /* Check which time interval to use. */
-        when (timeSpan) {
-            /* Last 12 Months. */
-            1 -> {
-                /* Populate a data point for each of the 12 months. */
-                h = 11
-                for (i in 0..11) {
-                    values.add(PointValue(i.toFloat(), total[h].toFloat()))
-                    h--
-                }
+        for (i in 0..counter) {
+            val x = i.toFloat()
+            val y = dataPoints[counter].toFloat()
+
+            values.add(PointValue(x, y))
+
+            /* Update Y-axis minimum and maximum values. */
+            if (minY == -1.0f) {
+                minY = y
+                maxY = y
             }
-            /* All Time (in this case it is actually last 10 years). */
-            2 -> {
-                /* Populate a data point for each of the 10 years. */
-                h = 9
-                for (i in 0..9) {
-                    values.add(PointValue(i.toFloat(), total[h].toFloat()))
-                    h--
-                }
+            else if (y < minY) {
+                minY = y
             }
-            /* Last 7 Days. */
-            else -> {
-                /* Populate a data point for each of the 7 days. */
-                for (i in 0..6) {
-                    values.add(PointValue(i.toFloat(), total[h].toFloat()))
-                    h--
-                }
+            else if (y > maxY) {
+                maxY = y
             }
+
+            /* Decrement "counter". For loop uses "i" as its counter. */
+            counter--
         }
 
         /* Create a line object and color it according to the selected category. */
@@ -315,27 +332,23 @@ class Tab2Fragment : Fragment() {
         /* Populate the X-axis with labels. */
         val axisX = Axis(xAxisValues).setHasLines(true)
         axisX.maxLabelChars = 4
+        axisX.textColor = Color.BLACK
         data.axisXBottom = axisX
 
         /* Adjust the dimensions of the line chart to fit the highest Y-value data point. */
-        val view = Viewport(lineChart.maximumViewport)
-        val highestYValue = view.top
-        val lowestYValue = view.bottom
-        val padding = view.height() * 0.05f
-        view.top = view.top + padding
-        view.bottom = view.bottom - padding
-        lineChart.maximumViewport = view
+        maxY *= 1.1f
+        val view = Viewport(minX, maxY, maxX, minY)
         lineChart.currentViewport = view
 
-        /* Populate the Y-axis with values and labels. */
-        val yAxisValues = ArrayList<AxisValue>()
-        /* Setup step value such that there will be evenly spaced Y-axis labels. */
-        val step = (highestYValue - lowestYValue) / 10
+        /* Populate the Y-axis with eleven values and labels. */
+        val yAxisValues = ArrayList<AxisValue>(11)
+        /* Setup step value such that there will be eleven evenly spaced Y-axis labels. */
+        val step = (maxY - minY) / 10
         /* Initialize the bottom Y-axis value and label.*/
-        var yValue = lowestYValue
+        var yValue = minY
         var yLabel : String
-        /* Iterate to create evenly spaced Y-axis values with labels. */
-        for (i in 0..10) {
+        /* Iterate to create eleven evenly spaced Y-axis values with labels. */
+        for (i in 1..11) {
             /* Calculate the scientific notation exponent of the Y-value by
             * taking the floor of the base 10 logarithm of the Y-axis value. */
             val yValExponent = kotlin.math.floor(kotlin.math.log10(yValue))
@@ -371,6 +384,7 @@ class Tab2Fragment : Fragment() {
         val axisY = Axis(yAxisValues).setHasLines(true)
         /* Limit Y-axis labels to five characters. */
         axisY.maxLabelChars = 5
+        axisY.textColor = Color.BLACK
         data.axisYLeft = axisY
 
         /* Populate the line with the data points. */
@@ -549,17 +563,32 @@ class Tab2Fragment : Fragment() {
 
         /* Set the total and label for Category 1 over the Last 7 Days. */
         category1Text = rootView.findViewById(R.id.category1Text)
-        category1Text.text = categories[1]
+        var category1Label = categories[1]!!
+        /* Slice label to be at most 11 characters long. */
+        if (category1Label.length > 11) {
+            category1Label = category1Label.substring(0, 10) + "."
+        }
+        category1Text.text = category1Label
         category1Total = rootView.findViewById(R.id.category1Total)
 
         /* Set the total and label for Category 2 over the Last 7 Days. */
         category2Text = rootView.findViewById(R.id.category2Text)
-        category2Text.text = categories[2]
+        var category2Label = categories[2]!!
+        /* Slice label to be at most 11 characters long. */
+        if (category2Label.length > 11) {
+            category2Label = category2Label.substring(0, 10) + "."
+        }
+        category2Text.text = category2Label
         category2Total = rootView.findViewById(R.id.category2Total)
 
         /* Set the total and label for Category 3 over the Last 7 Days. */
         category3Text = rootView.findViewById(R.id.category3Text)
-        category3Text.text = categories[3]
+        var category3Label = categories[3]!!
+        /* Slice label to be at most 11 characters long. */
+        if (category3Label.length > 11) {
+            category3Label = category3Label.substring(0, 10) + "."
+        }
+        category3Text.text = category3Label
         category3Total = rootView.findViewById(R.id.category3Total)
 
         /* Set the total for All Categories over the Last 7 Days. */

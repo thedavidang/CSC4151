@@ -18,46 +18,46 @@
             <CheckBox
                 android:id="@+id/deleteCheckbox"
                 android:layout_width="48dp"
-                android:layout_height="48dp" />
+                android:layout_height="84dp" />
 
             <TextView
                 android:id="@+id/amountText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="26dp"
                 android:layout_toEndOf="@id/deleteCheckbox"
-                android:ems="8"
+                android:layout_toStartOf="@id/descriptionText"
                 android:textAlignment="viewStart" />
 
             <TextView
                 android:id="@+id/categoryText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/editButton"
-                android:layout_toStartOf="@id/dateText"
-                android:layout_toEndOf="@id/deleteCheckbox"
+                android:layout_height="26dp"
+                android:layout_below="@+id/amountText"
+                android:layout_toEndOf="@+id/deleteCheckbox"
+                android:layout_toStartOf="@id/descriptionText"
                 android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/descriptionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/editButton"
-                android:layout_toEndOf="@id/amountText"
-                android:textAlignment="viewEnd" />
 
             <TextView
                 android:id="@+id/dateText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="26dp"
+                android:layout_below="@+id/categoryText"
+                android:layout_toEndOf="@+id/deleteCheckbox"
                 android:layout_alignBottom="@id/editButton"
+                android:layout_toStartOf="@id/descriptionText"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/descriptionText"
+                android:layout_width="135dp"
+                android:layout_height="85dp"
                 android:layout_toStartOf="@id/editButton"
-                android:ems="6"
                 android:textAlignment="viewEnd" />
 
             <ImageButton
                 android:id="@+id/editButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="84dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="2dp"
                 android:contentDescription="@string/editString"

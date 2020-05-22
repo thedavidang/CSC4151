@@ -98,7 +98,12 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
                "yyyy-MM-dd", Locale.US).parse(
                entries!![i].timestamp.toString().substring(0, 10)))
 
-            entryViewHolder.category.text = entries!![i].category
+            var categoryLabel = entries!![i].category
+            /* Slice label to be at most 13 characters long. */
+            if (categoryLabel.length > 13) {
+                categoryLabel = categoryLabel.substring(0, 12) + "."
+            }
+            entryViewHolder.category.text = categoryLabel
 
             /* Add a unique content description for the checkbox. */
             entryViewHolder.itemView.findViewById<AppCompatCheckBox>(

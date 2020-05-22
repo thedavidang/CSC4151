@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.EditText
+import com.google.android.material.textfield.TextInputEditText
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,7 +36,7 @@ class CategoryFragment : Fragment() {
 
     private lateinit var saveButton : Button
 
-    private val categoryTextboxes = Array<EditText?>(3) { null }
+    private val categoryTextboxes = Array<TextInputEditText?>(3) { null }
 
     /* Purpose: Controller method that disables and greys-out Save Changes button or
     * enables and reveals the Save Changes button.
