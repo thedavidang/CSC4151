@@ -35,6 +35,9 @@ class Tab2Fragment : Fragment() {
     private lateinit var lineChart : LineChartView
     private lateinit var pieChart : PieChartView
 
+    /* Setup metric prefixes for one thousand and above. */
+    private val metric = arrayListOf("k", "M", "G", "T", "P", "E", "Z", "Y")
+
     private lateinit var categories : MutableList<String?>
 
     private lateinit var category1Text : TextView
@@ -126,7 +129,7 @@ class Tab2Fragment : Fragment() {
     * or 1-3) a specific Category.
     *
     * Returns: Nothing. */
-    fun displayLineChart(total: DoubleArray, timeSpan: Int, colorPosition: Int) {
+    fun updateLineChart(total: DoubleArray, timeSpan: Int, colorPosition: Int) {
         /* Initialize a Calender object. */
         val cal: Calendar = Calendar.getInstance()
 
@@ -326,8 +329,6 @@ class Tab2Fragment : Fragment() {
 
         /* Populate the Y-axis with values and labels. */
         val yAxisValues = ArrayList<AxisValue>()
-        /* Setup metric prefixes for one thousand and above. */
-        val metric = arrayListOf("k", "M", "G", "T", "P", "E", "Z", "Y")
         /* Setup step value such that there will be evenly spaced Y-axis labels. */
         val step = (highestYValue - lowestYValue) / 10
         /* Initialize the bottom Y-axis value and label.*/
@@ -356,7 +357,7 @@ class Tab2Fragment : Fragment() {
                 * Determine the metric prefix by
                 * subtracting one from the floor of the exponent divided by three. */
                 yLabel = yValue.toLong().toString().substring(0, ((yValExponent % 3) + 1).toInt()) +
-                        " " + (metric[((yValExponent / 3) - 1).toInt()])
+                        " " + metric[((yValExponent / 3) - 1).toInt()]
             }
 
             /* Add the Y-axis value and label to the Y-axis object. */
@@ -382,7 +383,7 @@ class Tab2Fragment : Fragment() {
     * or 2) All Time.
     *
     * Returns: Nothing. */
-    fun displayPieChart(timeSpan: Int) {
+    fun updatePieChart(timeSpan: Int) {
         /* Initialize value variables used to populate the pie chart. */
         val values = ArrayList<SliceValue>(3)
         val category1Amount : Float
@@ -418,22 +419,108 @@ class Tab2Fragment : Fragment() {
 
         /* Set the colors and percentage labels for each of the category data set slices. */
         val category1Slice = SliceValue(category1Amount, resources.getColor(R.color.colorCategory1))
-        category1Slice.setLabel(
-            ((category1Amount / total) * 100).toString().substringBefore(".") + " %")
+        if (category1Amount > 0) {
+            category1Slice.setLabel(
+                ((category1Amount / total) * 100).toString().substringBefore(".") + " %")
+        }
+        else {
+            category1Slice.setLabel("")
+        }
         values.add(category1Slice)
 
         val category2Slice = SliceValue(category2Amount, resources.getColor(R.color.colorCategory2))
-        category2Slice.setLabel(
-            ((category2Amount / total) * 100).toString().substringBefore(".") + " %")
+        if (category2Amount > 0) {
+            category2Slice.setLabel(
+                ((category2Amount / total) * 100).toString().substringBefore(".") + " %")
+        }
+        else {
+            category2Slice.setLabel("")
+        }
         values.add(category2Slice)
 
         val category3Slice = SliceValue(category3Amount, resources.getColor(R.color.colorCategory3))
-        category3Slice.setLabel(
-            ((category3Amount / total) * 100).toString().substringBefore(".") + " %")
+        if (category3Amount > 0) {
+            category3Slice.setLabel(
+                ((category3Amount / total) * 100).toString().substringBefore(".") + " %")
+        }
+        else {
+            category3Slice.setLabel("")
+        }
         values.add(category3Slice)
 
         /* Populate the pie chart with the colored slices. */
         pieChart.pieChartData = PieChartData(values).setHasLabels(true)
+    }
+
+    /* Purpose: Private helper method that formats a total to be displayed below the chart.
+    *
+    * Parameters: total represents the total amount to format.
+    *
+    * Returns: Nothing. */
+    private fun formatTotal(total: Double) : String {
+        /* Compute base 10 exponent of total. */
+        val exponent = kotlin.math.floor(kotlin.math.log10(total))
+
+        /* Check if total is less than one billion. */
+        return if (exponent < 9) {
+            /* Format total with dollar sign and thousand separator commas. */
+            "$ " + DecimalFormat("#,##0.00").format(total)
+        }
+        /* Otherwise, total is one billion or more. */
+        else {
+            var totalString = total.toLong().toString()
+            /* Slice total to the first nine digits. */
+            if (totalString.length > 9) {
+                totalString = totalString.substring(0, 9)
+            }
+            /* Determine the position of where the first thousand separator would be. */
+            val firstThousandSeparatorIndex = ((exponent % 3) + 1).toInt()
+            /* Format total with dollar sign and metric prefix. */
+            "$ " + totalString.substring(0, firstThousandSeparatorIndex) + "." +
+                    totalString.substring(firstThousandSeparatorIndex) + " " +
+                    metric[((exponent / 3) - 1).toInt()]
+        }
+    }
+
+    /* Purpose: Controller method that populates the totals below the chart.
+    *
+    * Parameters: timeSpan represents whether the user selected 0) Last 7 Days, 1) Last 12 Months,
+    * or 2) All Time.
+    *
+    * Returns: Nothing. */
+    fun updateTotals(timeSpan: Int) {
+        val category1Amount : Double
+        val category2Amount : Double
+        val category3Amount : Double
+
+        /* Check which time span the user selected. */
+        when (timeSpan) {
+            /* Update the totals to use the Last 12 Months totals. */
+            1 -> {
+                category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
+                category2Amount = DataManager.last12MonthsTotal(model.get(), "c-2")
+                category3Amount = DataManager.last12MonthsTotal(model.get(), "c-3")
+            }
+            /* Update the totals to use the All Time totals. */
+            2 -> {
+                category1Amount = DataManager.getValueByID(model.get(), "c-1-t")!!.toDouble()
+                category2Amount = DataManager.getValueByID(model.get(), "c-2-t")!!.toDouble()
+                category3Amount = DataManager.getValueByID(model.get(), "c-3-t")!!.toDouble()
+            }
+            /* Update the totals to use the Last 7 Days totals. */
+            else -> {
+                category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
+                category2Amount = DataManager.last7DaysTotal(model.get(), "c-2")
+                category3Amount = DataManager.last7DaysTotal(model.get(), "c-3")
+            }
+        }
+
+        /* Format totals of each category for display. */
+        category1Total.text = formatTotal(category1Amount)
+        category2Total.text = formatTotal(category2Amount)
+        category3Total.text = formatTotal(category3Amount)
+        /* Format total of the sum of all categories. */
+        allTotal.text = formatTotal(category1Amount + category2Amount + category3Amount)
     }
 
     override fun onCreateView(
@@ -451,11 +538,11 @@ class Tab2Fragment : Fragment() {
         pieChart = rootView.findViewById(R.id.pieView) as PieChartView
 
         /* Populate the line chart with Last 7 Days for All Categories. */
-        displayLineChart(DataManager.last7Days(model.get(), "all"),
+        updateLineChart(DataManager.last7Days(model.get(), "all"),
             0, 0)
 
         /* Populate pie chart with Last 7 Days. */
-        displayPieChart(0)
+        updatePieChart(0)
 
         /* Show the line chart and hide the pie chart. */
         showLineChart()
@@ -464,37 +551,24 @@ class Tab2Fragment : Fragment() {
         category1Text = rootView.findViewById(R.id.category1Text)
         category1Text.text = categories[1]
         category1Total = rootView.findViewById(R.id.category1Total)
-        var category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
-        var category1TotalString = "$ " +
-                DecimalFormat("#,##0.00").format(category1Amount)
-        category1Total.text = category1TotalString
 
         /* Set the total and label for Category 2 over the Last 7 Days. */
         category2Text = rootView.findViewById(R.id.category2Text)
         category2Text.text = categories[2]
         category2Total = rootView.findViewById(R.id.category2Total)
-        var category2Amount = DataManager.last7DaysTotal(model.get(), "c-2")
-        var category2TotalString = "$ " +
-                DecimalFormat("#,##0.00").format(category2Amount)
-        category2Total.text = category2TotalString
 
         /* Set the total and label for Category 3 over the Last 7 Days. */
         category3Text = rootView.findViewById(R.id.category3Text)
         category3Text.text = categories[3]
         category3Total = rootView.findViewById(R.id.category3Total)
-        var category3Amount = DataManager.last7DaysTotal(model.get(), "c-3")
-        var category3TotalString = "$ " +
-                DecimalFormat("#,##0.00").format(category3Amount)
-        category3Total.text = category3TotalString
 
         /* Set the total for All Categories over the Last 7 Days. */
         allText = rootView.findViewById(R.id.allText)
         allText.text = categories[0]
         allTotal = rootView.findViewById(R.id.allTotal)
-        var allAmount = category1Amount + category2Amount + category3Amount
-        var allTotalString = "$ " +
-                DecimalFormat("#,##0.00").format(allAmount)
-        allTotal.text = allTotalString
+
+        /* Update the totals with the Last 7 Days of entries. */
+        updateTotals(0)
 
         /* Populate the Chart selector with "Line" and "Pie". */
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
@@ -547,107 +621,48 @@ class Tab2Fragment : Fragment() {
                         data =
                             if (spinChartCategory.selectedItemPosition == 0) {
                                 DataManager.last12Months(model.get(), "all")
-                            } else {
+                            }
+                            else {
                                 DataManager.last12Months(model.get(), "c-" +
                                         spinChartCategory.selectedItemPosition.toString())
                             }
-
-                        /* Update the totals to use the Last 12 Months totals. */
-                        category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
-                        category1TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category1Amount)
-                        category1Total.text = category1TotalString
-
-                        category2Amount = DataManager.last12MonthsTotal(model.get(), "c-2")
-                        category2TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category2Amount)
-                        category2Total.text = category2TotalString
-
-                        category3Amount = DataManager.last12MonthsTotal(model.get(), "c-3")
-                        category3TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category3Amount)
-                        category3Total.text = category3TotalString
-
-                        allAmount = category1Amount + category2Amount + category3Amount
-                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
-                        allTotal.text = allTotalString
                     }
                     /* All Time. */
                     2 -> {
                         /* Grab the Last 10 Years of data points from
                         * whichever category the user selected. */
                         data =
-                            if(spinChartCategory.selectedItemPosition == 0) {
+                            if (spinChartCategory.selectedItemPosition == 0) {
                                 DataManager.last10Years(model.get(), "all")
-                            } else {
+                            }
+                            else {
                                 DataManager.last10Years(model.get(), "c-" +
                                         spinChartCategory.selectedItemPosition.toString())
                             }
-
-                        /* Update the totals to use the All Time totals. */
-                        category1Amount = DataManager.getValueByID(
-                            model.get(), "c-1-t")!!.toDouble()
-                        category1TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category1Amount)
-                        category1Total.text = category1TotalString
-
-                        category2Amount = DataManager.getValueByID(
-                            model.get(), "c-2-t")!!.toDouble()
-                        category2TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category2Amount)
-                        category2Total.text = category2TotalString
-
-                        category3Amount = DataManager.getValueByID(
-                            model.get(), "c-3-t")!!.toDouble()
-                        category3TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category3Amount)
-                        category3Total.text = category3TotalString
-
-                        allAmount = DataManager.getValueByID(
-                            model.get(), "t")!!.toDouble()
-                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
-                        allTotal.text = allTotalString
                     }
                     /* Last 7 days. */
                     else -> {
                         /* Grab the Last 7 Days of data points from
                         * whichever category the user selected. */
                         data =
-                            if(spinChartCategory.selectedItemPosition == 0) {
+                            if (spinChartCategory.selectedItemPosition == 0) {
                                 DataManager.last7Days(model.get(), "all")
-                            } else {
+                            }
+                            else {
                                 DataManager.last7Days(model.get(), "c-" +
                                         spinChartCategory.selectedItemPosition.toString())
                             }
-
-                        /* Update the totals to use the Last 7 Days totals. */
-                        category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
-                        category1TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category1Amount)
-                        category1Total.text = category1TotalString
-
-                        category2Amount = DataManager.last7DaysTotal(model.get(), "c-2")
-                        category2TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category2Amount)
-                        category2Total.text = category2TotalString
-
-                        category3Amount = DataManager.last7DaysTotal(model.get(), "c-3")
-                        category3TotalString = "$ " +
-                                DecimalFormat("#,##0.00").format(category3Amount)
-                        category3Total.text = category3TotalString
-
-                        allAmount = category1Amount + category2Amount + category3Amount
-                        allTotalString = "$ " + DecimalFormat("#,##0.00").format(allAmount)
-                        allTotal.text = allTotalString
                     }
                 }
 
                 /* Update the line chart with the new time interval data set. */
-                displayLineChart(data, position,
-                    spinChartCategory.selectedItemPosition)
+                updateLineChart(data, position, spinChartCategory.selectedItemPosition)
 
                 /* Update the pie chart with the new time interval data set. */
-                displayPieChart(position)
+                updatePieChart(position)
+
+                /* Update the totals with the new time interval data set. */
+                updateTotals(position)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
@@ -705,7 +720,7 @@ class Tab2Fragment : Fragment() {
                 }
 
                 /* Update the line chart with the update category selection. */
-                displayLineChart(data, timeSpan, position)
+                updateLineChart(data, timeSpan, position)
             }
 
 
