@@ -27,9 +27,13 @@ Not only is WalletWatch© securely offline, but it is also extremely quick and e
 - 0.1.1 (Beta)
 
 ## Minimum System Requirements
-- Android 9 (Pie) or up
+- Android 9 (Pie) or Android 10 (Q)
 
 ## Installation Instructions
+### Available on the Google Play store:
+- https://play.google.com/store/apps/details?id=com.spendsages.walletwatch
+
+Alternatively, download directly from this repo:
 1. Download WalletWatch 0.1.1 (Beta) using this link:
 - https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-0.1.1-Installer.apk
 2. Navigate to the downloaded APK file on your Android device using the _Files_ app.
