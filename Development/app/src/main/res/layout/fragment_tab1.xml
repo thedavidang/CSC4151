@@ -30,7 +30,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:hint="@string/amountHintString"
-        android:maxLength="23"
+        android:maxLength="20"
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="24sp"

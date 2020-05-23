@@ -336,14 +336,13 @@ class Tab2Fragment : Fragment() {
         data.axisXBottom = axisX
 
         /* Adjust the dimensions of the line chart to fit the highest Y-value data point. */
-        maxY *= 1.1f
         val view = Viewport(minX, maxY, maxX, minY)
         lineChart.currentViewport = view
 
         /* Populate the Y-axis with eleven values and labels. */
         val yAxisValues = ArrayList<AxisValue>(11)
         /* Setup step value such that there will be eleven evenly spaced Y-axis labels. */
-        val step = (maxY - minY) / 10
+        val step = (maxY - minY) / 9
         /* Initialize the bottom Y-axis value and label.*/
         var yValue = minY
         var yLabel : String
@@ -352,15 +351,22 @@ class Tab2Fragment : Fragment() {
             /* Calculate the scientific notation exponent of the Y-value by
             * taking the floor of the base 10 logarithm of the Y-axis value. */
             val yValExponent = kotlin.math.floor(kotlin.math.log10(yValue))
-            /* Check if the Y-axis value is less than 10. */
-            if (yValExponent < 1) {
+            /* Check if the Y-axis value is less than 100. */
+            if (yValExponent < 2) {
                 /* Display cents with two decimal places. */
                 yLabel = DecimalFormat("0.00").format(yValue)
             }
-            /* Check if the Y-axis value is from 10 to 1,000. */
+            /* Check if the Y-axis value is from 100 to 1,000. */
             else if (yValExponent < 3) {
                 /* Display dollars without cents with no decimal places. */
                 yLabel = yValue.toString().substringBefore(".")
+            }
+            /* Check if Y-axis value needs to have at least 2 significant digits. */
+            else if ((yValExponent % 3) == 0.0f) {
+                /* Add one decimal as to have 2 significant digits. */
+                val yString = yValue.toLong().toString()
+                yLabel = yString.substring(0, 1) + "." + yString.substring(1, 2) +
+                        " " + metric[((yValExponent / 3) - 1).toInt()]
             }
             /* Otherwise, the Y-axis value is 1,000 or more. */
             else {
@@ -470,7 +476,7 @@ class Tab2Fragment : Fragment() {
     *
     * Parameters: total represents the total amount to format.
     *
-    * Returns: Nothing. */
+    * Returns: String of the formatted total. */
     private fun formatTotal(total: Double) : String {
         /* Compute base 10 exponent of total. */
         val exponent = kotlin.math.floor(kotlin.math.log10(total))
@@ -564,9 +570,9 @@ class Tab2Fragment : Fragment() {
         /* Set the total and label for Category 1 over the Last 7 Days. */
         category1Text = rootView.findViewById(R.id.category1Text)
         var category1Label = categories[1]!!
-        /* Slice label to be at most 11 characters long. */
-        if (category1Label.length > 11) {
-            category1Label = category1Label.substring(0, 10) + "."
+        /* Slice label to be at most 10 characters long. */
+        if (category1Label.length > 10) {
+            category1Label = category1Label.substring(0, 9) + "."
         }
         category1Text.text = category1Label
         category1Total = rootView.findViewById(R.id.category1Total)
@@ -574,9 +580,9 @@ class Tab2Fragment : Fragment() {
         /* Set the total and label for Category 2 over the Last 7 Days. */
         category2Text = rootView.findViewById(R.id.category2Text)
         var category2Label = categories[2]!!
-        /* Slice label to be at most 11 characters long. */
-        if (category2Label.length > 11) {
-            category2Label = category2Label.substring(0, 10) + "."
+        /* Slice label to be at most 10 characters long. */
+        if (category2Label.length > 10) {
+            category2Label = category2Label.substring(0, 9) + "."
         }
         category2Text.text = category2Label
         category2Total = rootView.findViewById(R.id.category2Total)
@@ -584,9 +590,9 @@ class Tab2Fragment : Fragment() {
         /* Set the total and label for Category 3 over the Last 7 Days. */
         category3Text = rootView.findViewById(R.id.category3Text)
         var category3Label = categories[3]!!
-        /* Slice label to be at most 11 characters long. */
-        if (category3Label.length > 11) {
-            category3Label = category3Label.substring(0, 10) + "."
+        /* Slice label to be at most 10 characters long. */
+        if (category3Label.length > 10) {
+            category3Label = category3Label.substring(0, 9) + "."
         }
         category3Text.text = category3Label
         category3Total = rootView.findViewById(R.id.category3Total)

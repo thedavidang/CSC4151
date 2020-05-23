@@ -33,7 +33,7 @@ Not only is WalletWatch© securely offline, but it is also extremely quick and e
 ### Available on the Google Play store:
 - https://play.google.com/store/apps/details?id=com.spendsages.walletwatch
 
-Alternatively, download directly from this repo:
+### Alternative 1 - Download APK directly from this repo:
 1. Download WalletWatch 0.1.1 (Beta) using this link:
 - https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-0.1.1-Installer.apk
 2. Navigate to the downloaded APK file on your Android device using the _Files_ app.
@@ -57,6 +57,13 @@ Alternatively, download directly from this repo:
 6. It is recommended that you revert installation of unknown apps back to disabled. Navigate to your Android _Settings_, then to _Apps & notifications_, and locate the download source app. Tap the _Advanced_ drop-down. Scroll down and tap _Install Unknown Apps_. Tap _Allow from this source_ to set the toggle switch back to the disabled position. 
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/disable.png "Do Not Allow Installation from Unknown Source")
+
+### Alternative 2 - Download repo and run in Android Studio:
+1. Download this repo by clicking _Download Zip_.
+2. Extract all files out of the zip file.
+3. Inside the _Development_ folder, delete the _.idea_ folder and the _local.properties_ file.
+4. Open the extracted project folder in Android Studio.
+5. Run on a device or emulator with Android 9 or 10.
 
 ## Application Usage
 ### Main Window
