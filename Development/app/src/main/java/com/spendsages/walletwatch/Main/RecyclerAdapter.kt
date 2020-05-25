@@ -32,6 +32,18 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
         this.editListener = listener
     }
 
+    /* Purpose: Update the list of entries.
+    *
+    * Parameters: doc represents the Document of the local repo XML file.
+    *
+    * Returns: Nothing. */
+    fun updateData(doc: Document) {
+        /* Retrieve the list of all entries in the local repo XML file. */
+        entriesRaw = getEntries(doc)
+        /* Create a list of those entries that are sorted by date from newest to oldest. */
+        entries = sortByDateDescending(entriesRaw)
+    }
+
     /* Purpose: Getter/Accessor that returns the total number of  filtered entries to display.
     *
     * Parameters: None

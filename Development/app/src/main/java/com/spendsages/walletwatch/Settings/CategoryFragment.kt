@@ -78,19 +78,25 @@ class CategoryFragment : Fragment() {
         * since the user has not made any changes yet. */
         toggleSaveButton(false)
 
-        /* This listener for the Save Change button simply opens the Confirmation alert. */
+        /* This listener for the Save Change button saves the changed category,
+        * displays the Toast message, and disables the Save Changes button. */
         saveButton.setOnClickListener {
-            if(DataManager.changeCategories(settings, model.get(), changed)) {
+            /* A category was changed without any restoration. */
+            if (DataManager.changeCategories(settings, model.get(), changed)) {
                 success = Toast.makeText(context, R.string.changedCategoryString, Toast.LENGTH_LONG)
-                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
+                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL,
+                    0, 0)
             }
+            /* A category was restored from the Archive.xml. */
             else {
                 success = Toast.makeText(context, R.string.restoredCategoryString, Toast.LENGTH_LONG)
-                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
+                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL,
+                    0, 0)
             }
+
             model.save(settings)
-            toggleSaveButton(false)
             success.show()
+            toggleSaveButton(false)
         }
 
         /* Populate the array of category textboxes. */

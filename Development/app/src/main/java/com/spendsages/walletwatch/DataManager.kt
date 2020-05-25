@@ -42,7 +42,7 @@ object DataManager {
     *
     * Returns: A string representing the value of the target element or
     * null if the target element id was not found. */
-    fun getValueByXPath(doc: Document, xpath: String) : String {
+    private fun getValueByXPath(doc: Document, xpath: String) : String {
         return XPathFactory.newInstance().newXPath().evaluate(xpath, doc)
     }
 
@@ -456,7 +456,7 @@ object DataManager {
     * entryID represents the id of the entry that will be deleted.
     *
     * Returns: Nothing. */
-    fun deleteEmptyTags(doc: Document, entryID: String) {
+    private fun deleteEmptyTags(doc: Document, entryID: String) {
         val entryTag = doc.getElementById(entryID)
         val entryAmount = getValueByID(doc, "$entryID-a")!!
 
@@ -471,7 +471,7 @@ object DataManager {
         val yearTotal = yearTag.firstChild as Element
 
         val categoryTag = yearTag.parentNode
-        val categoryTotal = categoryTag.firstChild as Element
+        val categoryTotal = categoryTag.childNodes.item(1) as Element
       
         val total = doc.getElementById("t")
 
@@ -725,36 +725,22 @@ object DataManager {
         /* Close the buffer. */
         outputWriter.close()
 
+        /* Return a Boolean representing if there was no category restored. */
         return (restoreCategory == null)
     }
 
     /* TODO (SPEN-32): Implement this back-end function.
-    *   Feel free to include parameters as needed and/or include a return data type if needed.
-    *   1. The selectedEntries parameter should contain the id string
-    *      for each entry selected for deletion.
-    *     (Each Entry object displayed on Tab 3 has a member variable called "id".)
-    *   2. Remove each Entry element node by iterating through selectedEntries and
-    *      calling the deleteEmptyTags function, which has an Entry id string as a parameter.*/
+    *   Remove each Entry element node by iterating through "selectedEntries" and
+    *      calling the "deleteEmptyTags" function, which has an Entry id string as a parameter. */
     fun deleteEntries(doc: Document, selectedEntries: MutableList<String>) {
 
     }
 
     /* TODO (SPEN-33): Implement this back-end function.
-    *   Feel free to include parameters as needed and/or include a return data type if needed.
-    *   Determine which fields were modified.
-    *    1. If only the description was changed, simply edit the text content
-    *       of the Description child of the Entry element.
-    *    2. If the amount was changed, then determine the difference between the current amount
-    *       and the new amount: (difference = new amount - current amount)
-    *       Then, increment all ancestor totals by the difference. Lastly, edit the text content
-    *       of the Amount child of the Entry element to the new amount.
-    *    3. If the category was changed, then call the addEntry function with the new date.
-    *       Lastly, call deleteEmptyTags using the id of the original Entry element.
-    *    4. If the category was changed, then call the addEntry function with the
-    *       new category number. Lastly, call deleteEmptyTags using the id of
-    *       the original Entry element. */
-    fun editEntry(doc: Document, entryID: String,
-                  amount: String, description: String, date: String, category: String) {
+    *   1. Call "deleteEmptyTags" with the "entryID" parameter.
+    *   2. Then, call the "addEntry" function with the other parameters. */
+    fun editEntry(doc: Document, entryID: String, amountRaw : String, description : String,
+                  date: String, category: String) {
       
     }
 }
