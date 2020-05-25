@@ -73,4 +73,221 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/editWindow"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuSpacing">
+
+        <View
+            android:id="@+id/editOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/amountLabelEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/amountFieldEdit"
+            android:text="@string/amountString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <me.abhinay.input.CurrencyEditText
+            android:id="@+id/amountFieldEdit"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/amountHintString"
+            android:inputType="number"
+            android:maxLength="20"
+            android:textAlignment="textEnd"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/amountLabelEdit" />
+
+        <Space
+            android:id="@+id/amountSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/amountFieldEdit" />
+
+        <TextView
+            android:id="@+id/descriptionLabelEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/descriptionHolder"
+            android:text="@string/descriptionString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/amountSpacing" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/descriptionHolder"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionLabelEdit">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descriptionFieldEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@android:string/autofill"
+                android:inputType="textCapWords"
+                android:maxLength="50" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:id="@+id/descriptionSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionHolder" />
+
+        <TextView
+            android:id="@+id/dateLabelEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/dateFieldEdit"
+            android:text="@string/dateString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
+
+        <EditText
+            android:id="@+id/dateFieldEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:autofillHints=""
+            android:ems="6"
+            android:inputType="date"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateLabelEdit" />
+
+        <ImageButton
+            android:id="@+id/dateButtonEdit"
+            android:layout_width="85dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/calendarString"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
+            app:layout_constraintStart_toEndOf="@id/dateFieldEdit"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
+
+        <Space
+            android:id="@+id/dateSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateFieldEdit" />
+
+        <TextView
+            android:id="@+id/categoryLabelEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/categoryString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateSpacing" />
+
+        <RadioGroup
+            android:id="@+id/categoryGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryLabelEdit">
+
+            <RadioButton
+                android:id="@+id/category1ButtonEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="17"
+                android:paddingVertical="15dp"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/category2ButtonEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="17"
+                android:paddingVertical="15dp"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/category3ButtonEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="17"
+                android:paddingVertical="15dp"
+                android:textSize="18sp" />
+        </RadioGroup>
+
+        <Space
+            android:id="@+id/categorySpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryGroup" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:ems="10"
+            android:text="@string/cancelString"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categorySpacing" />
+
+        <Button
+            android:id="@+id/saveEditsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:ems="10"
+            android:text="@string/saveString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categorySpacing" />
+
+        <View
+            android:id="@+id/dateOverlayEdit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CalendarView
+            android:id="@+id/dateSelectorEdit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#FFFFFF"
+            android:contentDescription="@string/calendarString"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

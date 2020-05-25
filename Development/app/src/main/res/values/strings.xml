@@ -21,8 +21,9 @@
     <string name="category3TotalString">Category 3 Total</string>
     <string name="allTotalString">All Categories Total</string>
 
+    <string name="cancelString">Cancel</string>
     <string name="deleteString">Delete Selected</string>
-    <string name="changedEntryString">Expense Edited</string>
+    <string name="changedEntryString">Expense Modified</string>
     <string name="deletedEntriesString">Selection Deleted</string>
     <string name="editString">Edit Expense</string>
     <string name="listString">List of Submitted Expenses</string>
