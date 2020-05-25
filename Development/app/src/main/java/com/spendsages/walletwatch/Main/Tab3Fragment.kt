@@ -1,6 +1,8 @@
 package com.spendsages.walletwatch
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,10 +18,11 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.layout_card.view.*
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
-import java.lang.Exception
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,6 +58,9 @@ class Tab3Fragment : Fragment() {
 
     private lateinit var entryID : String
 
+    private val originalInputs = Array<String?>(4) { null }
+    private val changedInputs = Array<String?>(4) { null }
+
     private lateinit var amountInput : CurrencyEditText
     private var validAmount = false
 
@@ -71,6 +77,7 @@ class Tab3Fragment : Fragment() {
     private lateinit var dateButton : ImageButton
 
     private lateinit var categoryGroup : RadioGroup
+    private var selectedCategory: Int = 0
     private val categoryButtons = Array<RadioButton?>(3) { null }
 
     private lateinit var cancelButton : Button
@@ -93,6 +100,16 @@ class Tab3Fragment : Fragment() {
         }
         /* Update the model, so that the changes are immediately displayed in the app. */
         adapterRecycler.notifyDataSetChanged()
+    }
+
+    private fun checkChanges() {
+        for (i in 0..3) {
+            if(changedInputs[i] != originalInputs[i]) {
+                toggleButton(saveButton, true)
+                return
+            }
+        }
+        toggleButton(saveButton, false)
     }
 
     /* Purpose: Controller method that disables and hides Edit Entry window or
@@ -197,7 +214,7 @@ class Tab3Fragment : Fragment() {
         val description = descriptionInput.text.toString()
         /* Convert date input into "yyyy-MM-dd" format. */
         val date = modelDateFormat.format(userDateFormat.parse(dateInput.text.toString())!!)
-        val category = categoryGroup.checkedRadioButtonId + 1
+        val category = selectedCategory + 1
 
         /* Add the entry to the local repo. */
         DataManager.editEntry(model.get(), entryID, amount, description, date, category.toString())
@@ -262,17 +279,30 @@ class Tab3Fragment : Fragment() {
                     /* Retrieve the id, amount, description, date, and category of the entry. */
                     entryID = entry.id
                     amountInput.setText(viewHolder.amount.text)
+                    originalInputs[0] = viewHolder.amount.text.toString()
+                    changedInputs[0] = viewHolder.amount.text.toString()
+
                     descriptionInput.setText(viewHolder.description.text)
+                    originalInputs[1] = viewHolder.description.text.toString()
+                    changedInputs[1] = viewHolder.description.text.toString()
+
                     dateInput.setText(viewHolder.date.text)
+                    originalInputs[2] = viewHolder.date.text.toString()
+                    changedInputs[2] = viewHolder.date.text.toString()
+
                     /* Set the CalendarView to the entry date. */
                     dateSelector.setDate(userDateFormat.parse(dateInput.text.toString())!!.time,
                         true, true)
                     /* Make the correct category RadioButton checked. */
                     val category = entryID.substring(2, 3).toInt() - 1
                     categoryGroup.check(category)
+                    selectedCategory = category
                     categoryButtons[category]?.isChecked = true
+                    originalInputs[3] = category.toString()
+                    changedInputs[3] = category.toString()
 
-                    toggleButton(saveButton, true)
+                    toggleButton(saveButton, false)
+                    toggleButton(deleteButton, false)
                     /* Display the Edit Entry window. */
                     toggleEditWindow(true)
                 }
@@ -287,15 +317,38 @@ class Tab3Fragment : Fragment() {
         deleteButton.isClickable = false
         deleteButton.alpha = 0.5F
 
-        /* TODO (SPEN-8): Display Confirmation alert that confirms that the user would like
-        *   to delete X entries and that it cannot be undone. */
+        deleteButton.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                val dialogClickListener: DialogInterface.OnClickListener =
+                    DialogInterface.OnClickListener { dialog, which ->
+                        when (which) {
+                            DialogInterface.BUTTON_POSITIVE -> {
+                                /* TODO (SPEN-32): If the user taps "Yes", then call the back-end function that
+                                *   deletes a given list of selected entries.
+                                *   Then disable the "Delete Selected" button.
+                                *   Save the changes using: model.save(main)
+                                *   The deleted entries should now no longer appear in Tab 3 whatsoever.
+                                *   If the user taps "No", then simply close the Confirmation alert. */
+                            }
+                            DialogInterface.BUTTON_NEGATIVE -> {
+                                dialog.dismiss()
+                            }
+                        }
+                    }
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+                    var message = "Are you sure you want to delete " +
+                            DecimalFormat("#,###").format(selectedEntries.size.toString()) +
+                            " expense"
+                    if(selectedEntries.size > 1) {
+                        message += "s"
+                    }
+                    message += "? This cannot be undone."
+                    builder.setMessage(message)
+                        .setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show()
+            }
+        })
 
-        /* TODO (SPEN-32): If the user taps "Yes", then call the back-end function that
-        *   deletes a given list of selected entries.
-        *   Then disable the "Delete Selected" button.
-        *   Save the changes using: model.save(main)
-        *   The deleted entries should now no longer appear in Tab 3 whatsoever.
-        *   If the user taps "No", then simply close the Confirmation alert. */
 
         /* Set the possible options for the sorting Spinbox. */
         spinSorting = rootView.findViewById(R.id.sortingSpinner)
@@ -340,6 +393,18 @@ class Tab3Fragment : Fragment() {
 
         descriptionInput = rootView.findViewById(R.id.descriptionFieldEdit)
 
+        descriptionInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            /* Do not bother checking the amount input since only the date was just changed. */
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                changedInputs[1] = s.toString()
+                checkChanges()
+            }
+
+            override fun afterTextChanged(s: Editable) {}
+        })
+
         /* Set Toast to "Expense Modified".
         * Ignore the warning since the Toast is shown in submitEdit. */
         success = Toast.makeText(context, R.string.changedEntryString, Toast.LENGTH_LONG)
@@ -348,6 +413,21 @@ class Tab3Fragment : Fragment() {
 
         /* Populate the Radio Button Group of category radio buttons. */
         categoryGroup = rootView.findViewById(R.id.categoryGroup)
+        categoryGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(categoryGroup.checkedRadioButtonId) {
+                R.id.category1ButtonEdit -> {
+                    selectedCategory = 0
+                }
+                R.id.category2ButtonEdit -> {
+                    selectedCategory = 1
+                }
+                R.id.category3ButtonEdit -> {
+                    selectedCategory = 2
+                }
+            }
+            changedInputs[3] = selectedCategory.toString()
+            checkChanges()
+        }
         categoryButtons[0] = rootView.findViewById(R.id.category1ButtonEdit)
         categoryButtons[1] = rootView.findViewById(R.id.category2ButtonEdit)
         categoryButtons[2] = rootView.findViewById(R.id.category3ButtonEdit)
@@ -362,12 +442,20 @@ class Tab3Fragment : Fragment() {
         cancelButton = rootView.findViewById(R.id.cancelButton)
         cancelButton.setOnClickListener {
             toggleEditWindow(false)
+            if(selectedEntries.size > 0) {
+                toggleButton(deleteButton, true)
+            }
+
         }
 
         /* Set the save button to call the submitEdit function. */
         saveButton = rootView.findViewById(R.id.saveEditsButton)
+
         saveButton.setOnClickListener {
             submitEdit()
+            if(selectedEntries.size > 0) {
+                toggleButton(deleteButton, true)
+            }
         }
 
         amountInput = rootView.findViewById(R.id.amountFieldEdit)
@@ -382,7 +470,8 @@ class Tab3Fragment : Fragment() {
             /* Do not bother checking the date input since only the amount was just changed. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (validateAmountInput() && validDate) {
-                    toggleButton(saveButton, true)
+                    changedInputs[0] = s.toString()
+                    checkChanges()
                 }
                 else {
                     toggleButton(saveButton, false)
@@ -402,7 +491,8 @@ class Tab3Fragment : Fragment() {
             /* Do not bother checking the amount input since only the date was just changed. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (validAmount && validateDateInput()) {
-                    toggleButton(saveButton, true)
+                    changedInputs[2] = s.toString()
+                    checkChanges()
                     dateSelector.setDate(userDateFormat.parse(dateInput.text.toString())!!.time,
                         true, true)
                 }
