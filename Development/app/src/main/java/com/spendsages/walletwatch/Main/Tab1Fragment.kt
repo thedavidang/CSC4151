@@ -147,10 +147,10 @@ class Tab1Fragment : Fragment() {
         /* Update the data model. */
         model.save(main)
 
-        /* Display the Toast message "Entry Added". */
+        /* Display the Toast message "Expense Added". */
         success.show()
 
-        /* Reset Tab 1 screen. */
+        /* Reset screen. */
         amountInput.setText("")
         descriptionInput.setText("")
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
@@ -173,10 +173,10 @@ class Tab1Fragment : Fragment() {
 
         descriptionInput = rootView.findViewById(R.id.descriptionField)
 
-        /* Set Toast to "Entry Added".
+        /* Set Toast to "Expense Added".
         * Ignore the warning since the Toast is shown in submitEntry. */
         success = Toast.makeText(context, R.string.addedEntryString, Toast.LENGTH_LONG)
-        /* Center the "Entry Added" Toast and position it at the top. */
+        /* Center the "Expense Added" Toast and position it at the top. */
         success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
 
         /* Populate the fixed array of category buttons. */
@@ -230,6 +230,8 @@ class Tab1Fragment : Fragment() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (validAmount && validateDateInput()) {
                     toggleCategoryButtons(true)
+                    dateSelector.setDate(userDateFormat.parse(dateInput.text.toString())!!.time,
+                        true, true)
                 }
                 else {
                     toggleCategoryButtons(false)

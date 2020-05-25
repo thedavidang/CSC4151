@@ -749,7 +749,8 @@ object DataManager {
     *    4. If the category was changed, then call the addEntry function with the
     *       new category number. Lastly, call deleteEmptyTags using the id of
     *       the original Entry element. */
-    fun editEntry(doc: Document, entryID: String) {
+    fun editEntry(doc: Document, entryID: String,
+                  amount: String, description: String, date: String, category: String) {
       
     }
 }

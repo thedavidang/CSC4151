@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.layout_card.view.*
 import org.w3c.dom.Document
 import java.text.DecimalFormat
 import java.util.*
@@ -19,6 +20,17 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
     var entriesRaw = getEntries(doc)
     /* Create a list of those entries that are sorted by date from newest to oldest. */
     var entries = sortByDateDescending(entriesRaw)
+
+    private var selectListener: OnClickListener? = null
+    private var editListener: OnClickListener? = null
+
+    fun setSelectListener(listener: OnClickListener) {
+        this.selectListener = listener
+    }
+
+    fun setEditListener(listener: OnClickListener) {
+        this.editListener = listener
+    }
 
     /* Purpose: Getter/Accessor that returns the total number of  filtered entries to display.
     *
@@ -92,8 +104,7 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             entryViewHolder.description.text = entries!![i].description
 
             /* Extract the date from the timestamp member of the entry. */
-           /* Reformat the date in tab 3 to be in months/day/year */
-           entryViewHolder.date.text = SimpleDateFormat(
+            entryViewHolder.date.text = SimpleDateFormat(
                "M/d/yyyy", Locale.US).format(SimpleDateFormat(
                "yyyy-MM-dd", Locale.US).parse(
                entries!![i].timestamp.toString().substring(0, 10)))
@@ -116,6 +127,18 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
                 R.id.editButton).contentDescription =
                 "Edit Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
+
+            entryViewHolder.itemView.deleteCheckbox.setOnClickListener {
+                selectListener?.onButtonClick(entries!![i], entryViewHolder)
+            }
+
+            entryViewHolder.itemView.editButton.setOnClickListener {
+                editListener?.onButtonClick(entries!![i], entryViewHolder)
+            }
         }
     }
+}
+
+interface OnClickListener {
+    fun onButtonClick(entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder)
 }
