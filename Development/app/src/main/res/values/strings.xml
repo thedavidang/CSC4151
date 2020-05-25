@@ -36,6 +36,7 @@
     <string name="category3String">Category 3:</string>
     <string name="saveString">Save Changes</string>
     <string name="changedCategoryString">Category Changed</string>
+    <string name="restoredCategoryString">Category Restored</string>
 
     <string-array name="chartTypes">
         <item>Line</item>

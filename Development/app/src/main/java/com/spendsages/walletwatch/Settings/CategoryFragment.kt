@@ -4,13 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,6 +35,8 @@ class CategoryFragment : Fragment() {
     private lateinit var saveButton : Button
 
     private val categoryTextboxes = Array<TextInputEditText?>(3) { null }
+
+    private lateinit var success : Toast
 
     /* Purpose: Controller method that disables and greys-out Save Changes button or
     * enables and reveals the Save Changes button.
@@ -80,15 +80,17 @@ class CategoryFragment : Fragment() {
 
         /* This listener for the Save Change button simply opens the Confirmation alert. */
         saveButton.setOnClickListener {
-            /* TODO (SPEN-37): Simply open the Confirmation alert inside this listener,
-            *   which likely will be the only line in this function. */
-
-            /* TODO (SPEN-11): Move below code out of this listener and into the code for
-            *   the Confirmation alert. This, of course, first requires creating the UI widget for
-            *   the Confirmation alert first and writing the setup code for it. */
-            DataManager.changeCategories(settings, model.get(), changed)
+            if(DataManager.changeCategories(settings, model.get(), changed)) {
+                success = Toast.makeText(context, R.string.changedCategoryString, Toast.LENGTH_LONG)
+                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
+            }
+            else {
+                success = Toast.makeText(context, R.string.restoredCategoryString, Toast.LENGTH_LONG)
+                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
+            }
             model.save(settings)
             toggleSaveButton(false)
+            success.show()
         }
 
         /* Populate the array of category textboxes. */

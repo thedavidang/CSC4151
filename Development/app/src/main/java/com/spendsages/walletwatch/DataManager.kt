@@ -575,8 +575,8 @@ object DataManager {
     * doc represents the Document of the local repo XML file.
     * labels represent an array of which categories to overwrite
     *
-    * Returns: Nothing. */
-    fun changeCategories(activity : Activity, doc : Document, labels : Array<String?>) {
+    * Returns: Boolean of whether or not a category was restored. */
+    fun changeCategories(activity : Activity, doc : Document, labels : Array<String?>): Boolean {
         /* Locate archive XML file in Android Internal Storage */
         var archiveFile = activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
 
@@ -606,14 +606,16 @@ object DataManager {
         val archive = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder().parse(archiveFile)
 
+        /* Initialize archived category node to restore and set to null. */
+        var restoreCategory : Node? = null
+
         /* Iterate through each label in the array. */
         for ((index, label) in labels.withIndex()) {
             /* Check if this label was actually changed. */
             if (label != null) {
                 /* Retrieve list of all label nodes in the Archive.xml. */
                 val archivedLabels = archive.getElementsByTagName("label")
-                /* Initialize archived category node to restore and set to null. */
-                var restoreCategory : Node? = null
+
 
                 /* Iterate through archived label nodes until finding a match. */
                 var labelIndex = 0
@@ -722,6 +724,8 @@ object DataManager {
 
         /* Close the buffer. */
         outputWriter.close()
+
+        return (restoreCategory == null)
     }
 
     /* TODO (SPEN-32): Implement this back-end function.
