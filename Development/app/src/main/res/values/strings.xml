@@ -78,7 +78,7 @@
     <string name="mottoString">
         Self-discover your spending habits with this simple, secure, and offline Android app.
     </string>
-    <string name="versionString">Version 0.1.1 (Beta)</string>
+    <string name="versionString">Version 0.1.2 (Beta)</string>
     <string name="githubString">https://github.com/thedavidang/CSC4151</string>
     <string name="copyrightString">© Copyright 2020 SpendSages</string>
     <string name="logoString">Logo of a watch wrapped around a wallet.</string>

@@ -10,7 +10,7 @@
     <Space
         android:id="@+id/menuSpacing"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,13 +46,6 @@
             android:maxLength="20" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Space
-        android:id="@+id/category1Spacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category1Holder" />
-
     <TextView
         android:id="@+id/category2Text"
         android:layout_width="wrap_content"
@@ -62,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category1Spacing"/>
+        app:layout_constraintTop_toBottomOf="@+id/category1Holder"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/category2Holder"
@@ -85,13 +78,6 @@
             android:maxLength="20" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Space
-        android:id="@+id/category2Spacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category2Holder" />
-
     <TextView
         android:id="@+id/category3Text"
         android:layout_width="wrap_content"
@@ -101,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category2Spacing"/>
+        app:layout_constraintTop_toBottomOf="@+id/category2Holder"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/category3Holder"

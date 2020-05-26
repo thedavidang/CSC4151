@@ -14,12 +14,16 @@
         <activity
             android:name="com.spendsages.walletwatch.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            tools:ignore="LockedOrientationActivity"></activity>
         <activity
             android:name="com.spendsages.walletwatch.MainActivity"
             android:label="@string/nameString"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
