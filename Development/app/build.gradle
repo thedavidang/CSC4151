@@ -12,7 +12,7 @@ android {
         targetSdkVersion 29
         versionCode 4
         versionName "0.1.2 (Beta)"
-        setProperty("archivesBaseName", "WalletWatch-0.1.2-Installer")
+        setProperty("archivesBaseName", "WalletWatch-Installer")
     }
 
     buildTypes {

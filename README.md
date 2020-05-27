@@ -37,11 +37,11 @@ Not only is WalletWatch© securely offline, but it is also extremely quick and e
 - https://play.google.com/store/apps/details?id=com.spendsages.walletwatch
 
 ### Alternative 1 - Download APK directly from this repo:
-1. Download WalletWatch 0.1.2 (Beta) using this link:
-- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-0.1.2-Installer.apk
+1. Download WalletWatch using this link:
+- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-Installer.apk
 2. Navigate to the downloaded APK file on your Android device using the _Files_ app.
 - Typically located in the _Downloads_ folder.
-3. Tap the _WalletWatch-0.1.2-Installer.apk_ file.
+3. Tap the _WalletWatch-Installer.apk_ file.
 - If asked which app to open with, tap _Just Once_ under _Open with Package Installer_.
 4. Your device will display a prompt stating that it currently cannot install unknown apps from the app you used to downloaded the APK. 
 

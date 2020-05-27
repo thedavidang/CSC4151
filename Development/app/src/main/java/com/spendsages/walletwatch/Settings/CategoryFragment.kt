@@ -26,7 +26,8 @@ class CategoryFragment : Fragment() {
     private lateinit var settings : SettingsActivity
     private lateinit var model : SharedViewModel
 
-    private lateinit var categories : MutableList<String?>
+    private var categories = arrayOfNulls<String?>(3)
+    private var categoryInputs = arrayOfNulls<String?>(3)
 
     /* Array that holds the new label for each category that the user changes.
     * If there is no change to a category, that index MUST be null. */
@@ -37,8 +38,6 @@ class CategoryFragment : Fragment() {
     private val categoryTextboxes = Array<TextInputEditText?>(3) { null }
 
     private lateinit var success : Toast
-
-    private var text = arrayOfNulls<String?>(3)
 
     /* Purpose: Controller method that disables and greys-out Save Changes button or
     * enables and reveals the Save Changes button.
@@ -64,49 +63,62 @@ class CategoryFragment : Fragment() {
         }
     }
 
+    /* Purpose: Controller method that checks if the user entered in
+    * at least one truly new category label, but with no duplicated labels.
+    *
+    * Parameters: None.
+    *
+    * Returns: Nothing. */
+    private fun checkInputs() {
+        /* Reset changed array. */
+        changed[0] = ""
+        changed[1] = ""
+        changed[2] = ""
 
-    private fun checkInput(){
-        changed[0] = "";
-        changed[1] = "";
-        changed[2] = "";
-
-
-
-        for ((index,category) in categoryTextboxes.withIndex()){
-            if (category != null)
-            text[index] = category.text.toString()
-
+        /* Grab user input values. */
+        for ((index, categoryTextbox) in categoryTextboxes.withIndex()) {
+            categoryInputs[index] = categoryTextbox!!.text.toString().split(
+                " ").joinToString(" ") { it.capitalize() }
         }
 
-        if ((text.groupingBy { it }.eachCount().filter { it.value > 1 }).isNotEmpty() ||
-                (text.sortedBy { it } == categories.sortedBy { it })){
-            toggleSaveButton(false)
+        /* Check for duplicate inputs or if there are no new categories. */
+        val duplicatesFound = (categoryInputs.groupingBy { it }.eachCount()
+            .filter { it.value > 1 }).isNotEmpty()
+        val noNewLabels = categoryInputs.sortedBy { it } == categories.sortedBy { it }
 
+        if (duplicatesFound || noNewLabels) {
+            toggleSaveButton(false)
             return
         }
-        else{
-            toggleSaveButton(true)
-        }
 
+        /* Make temporary, mutable copy of user inputs. */
+        val tempCategoryInputs = categoryInputs.clone()
 
-
-
-
-
-        for ((index,category) in categories.withIndex()){
-            if (category in text){
+        /* Set any existing categories to null in their same position as to ignore reordering. */
+        for ((index, category) in categories.withIndex()) {
+            if (category in categoryInputs) {
                 changed[index] = null
+                tempCategoryInputs[categoryInputs.indexOf(category)] = null
             }
         }
 
-        for (category in text){
-            if (category !in categories){
-                changed[changed.indexOf("")] = category
+        /* Place the new category label(s) in any open slots,
+        * preferring the textbox index if possible */
+        for ((index, category) in tempCategoryInputs.withIndex()) {
+            if (category != null) {
+                if (changed[index] == "") {
+                    /* Forcibly capitalize each word in new category label. */
+                    changed[index] = category.split(
+                        " ").joinToString(" ") { it.capitalize() }
+                }
+                else {
+                    changed[changed.indexOf("")] = category
+                }
             }
-
         }
 
-
+        /* Enable Save Changes button. */
+        toggleSaveButton(true)
     }
 
     override fun onCreateView(
@@ -118,9 +130,7 @@ class CategoryFragment : Fragment() {
         model = settings.model
 
         /* Grab the labels of the categories as they currently are in the XML file. */
-        categories = DataManager.getCategories(model.get()).slice(1..3) as MutableList<String?>
-
-
+        categories = DataManager.getCategories(model.get()).slice(1..3).toTypedArray()
 
         saveButton = rootView.findViewById(R.id.saveButton)
         /* Disable and grey-out the Save Changes button,
@@ -157,48 +167,26 @@ class CategoryFragment : Fragment() {
         for ((index, textbox) in categoryTextboxes.withIndex()) {
             /* Set the label for each category textbox as they currently are in the XML file. */
             textbox!!.setText(categories[index])
+            categoryInputs[index] = categories[index]
 
             /* Listener that checks if the user changed the category textbox content. */
             textbox.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
-                    s: CharSequence, start: Int, count: Int, after: Int) {
-
-                   /* if (after == 0)
-                        toggleSaveButton(false);
-                    */
-
-                }
-
-                /* TODO (SPEN-37): Modify this listener such that the Save Changes button
-                *   is enabled if and only if all three category textboxes actually have
-                *   word(s) in them AND at least one of them has a category label that is
-                *   not in the "categories" array.
-                *   In addition, make sure to update the "changed" array accordingly,
-                *   such that new category labels are placed in the correct position in the
-                *   "changed" array, but the position of an existing category label is "null". */
-
-
+                    s: CharSequence, start: Int, count: Int, after: Int) {}
 
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     /* Remove all whitespace from user input in category textbox. */
                     val trimmed = s.toString().trim { it <= ' ' }
 
                     /* Check if the user did not enter any word(s) into the category textbox. */
-
-
                     if (trimmed.isEmpty()) {
                         /* Disable and grey-out the Save Changes button. */
                         toggleSaveButton(false)
-
-
-
                     }
                     else {
-                        /* Enable and reveal the Save Changes button. */
-
-                        checkInput()
-
-
+                        /* Check if at least one new category has been entered.
+                        * If so, the Save Changes button will be enabled.*/
+                        checkInputs()
                     }
                 }
 

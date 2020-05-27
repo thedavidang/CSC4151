@@ -118,7 +118,7 @@ object DataManager {
                     /* Retrieve the total amount of expenses for each day,
                     * if the Day element exists. */
                     amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
-                                cal.time).toString() + "-t")
+                        cal.time).toString() + "-t")
                     if (amount != null) {
                         daySum += amount.toDouble()
                     }
@@ -204,7 +204,7 @@ object DataManager {
                 /* Retrieve the total amount of expenses for each month,
                 * if the month element exists. */
                 amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
-                            cal.time).toString().substringBeforeLast("-") + "-t")
+                    cal.time).toString().substringBeforeLast("-") + "-t")
                 if (amount != null) {
                     monthsOfYear[i] = amount.toDouble()
                 }
@@ -232,7 +232,7 @@ object DataManager {
                     /* Retrieve the total amount of expenses for each year,
                     * if the year element exists for the past decade. */
                     amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
-                                cal.time).toString().substringBefore("-") + "-t")
+                        cal.time).toString().substringBefore("-") + "-t")
                     if (amount != null) {
                         yearSum += amount.toDouble()
                     }
@@ -248,7 +248,7 @@ object DataManager {
                 /* Retrieve the total amount of expenses for each year,
                 * if the year element exists. */
                 amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
-                            cal.time).toString().substringBefore("-") + "-t")
+                    cal.time).toString().substringBefore("-") + "-t")
                 if (amount != null) {
                     yearsOfDecade[i] = amount.toDouble()
                 }
@@ -472,7 +472,7 @@ object DataManager {
 
         val categoryTag = yearTag.parentNode
         val categoryTotal = categoryTag.childNodes.item(1) as Element
-      
+
         val total = doc.getElementById("t")
 
         /* Subtract entry amount from the totals of its ancestors. */
@@ -503,7 +503,7 @@ object DataManager {
             }
         }
     }
-  
+
     /* Purpose: Converts the contents of the archive into a string.
     *
     * Parameters: archive represents the Document of the archive XML file.
@@ -573,7 +573,7 @@ object DataManager {
     *
     * Parameters: activity represents the activity that called this function.
     * doc represents the Document of the local repo XML file.
-    * labels represent an array of which categories to overwrite
+    * labels represent an array of which categories to overwrite.
     *
     * Returns: Boolean of whether or not a category was restored. */
     fun changeCategories(activity : Activity, doc : Document, labels : Array<String?>): Boolean {
@@ -615,7 +615,6 @@ object DataManager {
             if (label != null) {
                 /* Retrieve list of all label nodes in the Archive.xml. */
                 val archivedLabels = archive.getElementsByTagName("label")
-
 
                 /* Iterate through archived label nodes until finding a match. */
                 var labelIndex = 0
@@ -736,11 +735,20 @@ object DataManager {
 
     }
 
-    /* TODO (SPEN-33): Implement this back-end function.
-    *   1. Call "deleteEmptyTags" with the "entryID" parameter.
-    *   2. Then, call the "addEntry" function with the other parameters. */
+    /* Purpose: Edit an entry in the local repo XML file.
+    *
+    * Parameters: doc represents the Document of the local repo XML file.
+    * amountRaw represents the string of the raw dollar amount input.
+    * description represents the string of the optional expense description.
+    * date represents the string of the date of the expense.
+    * category represents the string of the selected category of the expense.
+    *
+    * Returns: Nothing. */
     fun editEntry(doc: Document, entryID: String, amountRaw : String, description : String,
                   date: String, category: String) {
-      
+        /* Add a new entry with the updated attributes. */
+        addEntry(doc, amountRaw, description, date, category)
+        /* Remove the old entry. */
+        deleteEmptyTags(doc, entryID)
     }
 }
