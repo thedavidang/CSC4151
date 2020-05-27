@@ -219,8 +219,10 @@ class Tab3Fragment : Fragment() {
     * Returns: Nothing. */
     private fun submitEdit() {
         /* Add the entry to the local repo. */
+        val date = modelDateFormat.format(userDateFormat.parse(changedInputs[2]!!)!!)
+        val category = (changedInputs[3]!!.toInt() + 1).toString()
         DataManager.editEntry(model.get(), entryID,
-            changedInputs[0]!!, changedInputs[1]!!, changedInputs[2]!!, changedInputs[3]!!)
+            changedInputs[0]!!, changedInputs[1]!!, date, category)
 
         /* Update the data model. */
         model.save(main)
