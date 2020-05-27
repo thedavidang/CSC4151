@@ -38,6 +38,8 @@ class CategoryFragment : Fragment() {
 
     private lateinit var success : Toast
 
+    private var text = arrayOfNulls<String?>(3)
+
     /* Purpose: Controller method that disables and greys-out Save Changes button or
     * enables and reveals the Save Changes button.
     *
@@ -62,6 +64,51 @@ class CategoryFragment : Fragment() {
         }
     }
 
+
+    private fun checkInput(){
+        changed[0] = "";
+        changed[1] = "";
+        changed[2] = "";
+
+
+
+        for ((index,category) in categoryTextboxes.withIndex()){
+            if (category != null)
+            text[index] = category.text.toString()
+
+        }
+
+        if ((text.groupingBy { it }.eachCount().filter { it.value > 1 }).isNotEmpty() ||
+                (text.sortedBy { it } == categories.sortedBy { it })){
+            toggleSaveButton(false)
+
+            return
+        }
+        else{
+            toggleSaveButton(true)
+        }
+
+
+
+
+
+
+        for ((index,category) in categories.withIndex()){
+            if (category in text){
+                changed[index] = null
+            }
+        }
+
+        for (category in text){
+            if (category !in categories){
+                changed[changed.indexOf("")] = category
+            }
+
+        }
+
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,7 +118,9 @@ class CategoryFragment : Fragment() {
         model = settings.model
 
         /* Grab the labels of the categories as they currently are in the XML file. */
-        categories = DataManager.getCategories(model.get())
+        categories = DataManager.getCategories(model.get()).slice(1..3) as MutableList<String?>
+
+
 
         saveButton = rootView.findViewById(R.id.saveButton)
         /* Disable and grey-out the Save Changes button,
@@ -107,12 +156,18 @@ class CategoryFragment : Fragment() {
         /* Iterate through each category textbox. */
         for ((index, textbox) in categoryTextboxes.withIndex()) {
             /* Set the label for each category textbox as they currently are in the XML file. */
-            textbox!!.setText(categories[index + 1])
+            textbox!!.setText(categories[index])
 
             /* Listener that checks if the user changed the category textbox content. */
             textbox.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
-                    s: CharSequence, start: Int, count: Int, after: Int) {}
+                    s: CharSequence, start: Int, count: Int, after: Int) {
+
+                   /* if (after == 0)
+                        toggleSaveButton(false);
+                    */
+
+                }
 
                 /* TODO (SPEN-37): Modify this listener such that the Save Changes button
                 *   is enabled if and only if all three category textboxes actually have
@@ -121,32 +176,29 @@ class CategoryFragment : Fragment() {
                 *   In addition, make sure to update the "changed" array accordingly,
                 *   such that new category labels are placed in the correct position in the
                 *   "changed" array, but the position of an existing category label is "null". */
+
+
+
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     /* Remove all whitespace from user input in category textbox. */
                     val trimmed = s.toString().trim { it <= ' ' }
 
                     /* Check if the user did not enter any word(s) into the category textbox. */
+
+
                     if (trimmed.isEmpty()) {
                         /* Disable and grey-out the Save Changes button. */
                         toggleSaveButton(false)
 
-                        /* TODO (SPEN-37): Move/modify this line as necessary.
-                        *   This simply exists currently to serve as a demonstrable way
-                        *   to show that changing categories works, but you will
-                        *   need to implement additional code that correctly sets up
-                        *   the "changed" array as mentioned above.*/
-                        changed[index] = null
+
+
                     }
                     else {
                         /* Enable and reveal the Save Changes button. */
-                        toggleSaveButton(true)
 
-                        /* TODO (SPEN-37): Move/modify this line as necessary.
-                        *   This simply exists currently to serve as a demonstrable way
-                        *   to show that changing categories works, but you will
-                        *   need to implement additional code that correctly sets up
-                        *   the "changed" array as mentioned above.*/
-                        changed[index] = categoryTextboxes[index]!!.text.toString()
+                        checkInput()
+
+
                     }
                 }
 
