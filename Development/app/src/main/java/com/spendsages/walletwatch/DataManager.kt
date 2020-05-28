@@ -780,8 +780,6 @@ object DataManager {
             //delete the entry
             deleteEmptyTags(doc,selectedEntries)
         }
-        //Clear the array so it is empty
-        selectedEntries.clear()
     }
 
     /* Purpose: Edit an entry in the local repo XML file.
