@@ -19,7 +19,7 @@ JIRA SCRUM Board and Backlog:
 - [Application Usage](https://github.com/thedavidang/CSC4151#application-usage)
 
 ## Introduction
-WalletWatch© is an app designed for budget-minded individuals that are unwilling to compromise privacy. This app lets **you** track your expense history, so that **you** can better watch your wallet. The app never even tries to connect to the Internet, so none of your spending history will ever be sold off across cloud databases. The app never asks for sensitive information and only helps you tracks the money you spend, not the money you make.
+WalletWatch© is an app designed for budget-minded individuals that are unwilling to compromise privacy. This app lets **you** track your expense history, so that **you** can better watch your wallet. The app never even tries to connect to the Internet, so none of your spending history will ever be sold off across cloud databases. The app never asks for sensitive information and only helps you track the money you spend, not the money you make.
 
 Not only is WalletWatch© securely offline, but it is also extremely quick and easy to use! A simplicity-driven design and intuitive user interface allow you the capability to rapidly add purchases and visualize charts of your aggregated expenses. This app is excellent for those who are juggling multiple bank accounts, want to discover how much money they spend in a particular category, or who simply want to keep their financial information more private.
 

@@ -16,7 +16,7 @@ import lecho.lib.hellocharts.view.LineChartView
 import lecho.lib.hellocharts.view.PieChartView
 import java.text.DecimalFormat
 import java.util.*
-
+import kotlin.math.roundToInt
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -441,7 +441,7 @@ class Tab2Fragment : Fragment() {
         val category1Slice = SliceValue(category1Amount, resources.getColor(R.color.colorCategory1))
         if (category1Amount > 0) {
             category1Slice.setLabel(
-                ((category1Amount / total) * 100).toString().substringBefore(".") + " %")
+                ((category1Amount / total) * 100).roundToInt().toString() + " %")
         }
         else {
             category1Slice.setLabel("")
@@ -451,7 +451,7 @@ class Tab2Fragment : Fragment() {
         val category2Slice = SliceValue(category2Amount, resources.getColor(R.color.colorCategory2))
         if (category2Amount > 0) {
             category2Slice.setLabel(
-                ((category2Amount / total) * 100).toString().substringBefore(".") + " %")
+                ((category2Amount / total) * 100).roundToInt().toString() + " %")
         }
         else {
             category2Slice.setLabel("")
@@ -461,7 +461,7 @@ class Tab2Fragment : Fragment() {
         val category3Slice = SliceValue(category3Amount, resources.getColor(R.color.colorCategory3))
         if (category3Amount > 0) {
             category3Slice.setLabel(
-                ((category3Amount / total) * 100).toString().substringBefore(".") + " %")
+                ((category3Amount / total) * 100).roundToInt().toString() + " %")
         }
         else {
             category3Slice.setLabel("")
