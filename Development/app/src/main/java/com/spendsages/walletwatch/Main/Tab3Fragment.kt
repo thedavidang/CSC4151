@@ -337,6 +337,8 @@ class Tab3Fragment : Fragment() {
                         * save the change, and disable the Delete Selected button. */
                         DialogInterface.BUTTON_POSITIVE -> {
                             DataManager.deleteEntries(model.get(), selectedEntries)
+                            //Clear the array so it is empty
+                            selectedEntries.clear()
                             model.save(main)
                             /* Update the model, so that the changes are
                             * immediately displayed in the app. */

@@ -26,7 +26,7 @@ object DataManager {
     *
     * Returns: A string representing the value of the target element or
     * null if the target element id was not found. */
-    fun getValueByID(doc: Document, id: String) : String? {
+    fun getValueByID(doc: Document, id: String): String? {
         val element = doc.getElementById(id)
 
         if (element != null) {
@@ -42,7 +42,7 @@ object DataManager {
     *
     * Returns: A string representing the value of the target element or
     * null if the target element id was not found. */
-    private fun getValueByXPath(doc: Document, xpath: String) : String {
+    private fun getValueByXPath(doc: Document, xpath: String): String {
         return XPathFactory.newInstance().newXPath().evaluate(xpath, doc)
     }
 
@@ -51,8 +51,8 @@ object DataManager {
     * Parameters: doc represents the Document of the local repo XML file.
     *
     * Returns: categories represents a list of the category labels. */
-    fun getCategories(doc: Document) : MutableList<String?> {
-        val categories : MutableList<String?> = arrayListOf("All")
+    fun getCategories(doc: Document): MutableList<String?> {
+        val categories: MutableList<String?> = arrayListOf("All")
         categories.add(getValueByID(doc, "c-1-l"))
         categories.add(getValueByID(doc, "c-2-l"))
         categories.add(getValueByID(doc, "c-3-l"))
@@ -75,17 +75,20 @@ object DataManager {
     * category represents the specific category to filter for.
     *
     * Returns: total represents the total amount of expenses from the last seven days. */
-    fun last7DaysTotal(doc: Document, category : String) : Double {
+    fun last7DaysTotal(doc: Document, category: String): Double {
         val cal: Calendar = Calendar.getInstance()
 
-        var amount : String?
+        var amount: String?
         var total = 0.00
 
         /* Iterate through the last seven calendar days. */
         for (i in 1..7) {
             /* Retrieve the total amount of expenses for each day, if the Day element exists. */
-            amount = getValueByID(doc, "$category-" + convertToLocalDate(
-                cal.time).toString() + "-t")
+            amount = getValueByID(
+                doc, "$category-" + convertToLocalDate(
+                    cal.time
+                ).toString() + "-t"
+            )
             if (amount != null) {
                 total += amount.toDouble()
             }
@@ -102,23 +105,26 @@ object DataManager {
     * categoryID represents the specific category to filter for.
     *
     * Returns: array holding totals for category/all categories for current day/prior 6 days */
-    fun last7Days(doc: Document, categoryID : String) : DoubleArray {
+    fun last7Days(doc: Document, categoryID: String): DoubleArray {
         val cal: Calendar = Calendar.getInstance()
         val daysOfWeek = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
-        var amount : String?
+        var amount: String?
 
         if (categoryID == "all") {
             var daySum: Double
 
-            for(i in 0..6) {
+            for (i in 0..6) {
                 daySum = 0.0
 
                 for (j in 1..3) {
                     /* Retrieve the total amount of expenses for each day,
                     * if the Day element exists. */
-                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
-                        cal.time).toString() + "-t")
+                    amount = getValueByID(
+                        doc, "c-$j-" + convertToLocalDate(
+                            cal.time
+                        ).toString() + "-t"
+                    )
                     if (amount != null) {
                         daySum += amount.toDouble()
                     }
@@ -127,13 +133,15 @@ object DataManager {
                 /* Determine the day previous to the current day. */
                 cal.add(Calendar.DAY_OF_MONTH, -1)
             }
-        }
-        else {
+        } else {
             /* Iterate through the last seven calendar days. */
             for (i in 0..6) {
                 /* Retrieve the total amount of expenses for each day, if the Day element exists. */
-                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
-                    cal.time).toString() + "-t")
+                amount = getValueByID(
+                    doc, "$categoryID-" + convertToLocalDate(
+                        cal.time
+                    ).toString() + "-t"
+                )
                 if (amount != null) {
                     daysOfWeek[i] = amount.toDouble()
                 }
@@ -150,17 +158,20 @@ object DataManager {
     * category represents the specific category to filter for.
     *
     * Returns: total represents the total amount of expenses from the last twelve months. */
-    fun last12MonthsTotal(doc: Document, category: String) : Double {
+    fun last12MonthsTotal(doc: Document, category: String): Double {
         val cal: Calendar = Calendar.getInstance()
 
-        var amount : String?
+        var amount: String?
         var total = 0.00
 
         /* Iterate through the last twelve calendar months. */
         for (i in 1..12) {
             /* Retrieve the total amount of expenses for each month, if the Month element exists. */
-            amount = getValueByID(doc, "$category-" + convertToLocalDate(
-                cal.time).toString().substring(0, 7) + "-t")
+            amount = getValueByID(
+                doc, "$category-" + convertToLocalDate(
+                    cal.time
+                ).toString().substring(0, 7) + "-t"
+            )
             if (amount != null) {
                 total += amount.toDouble()
             }
@@ -171,24 +182,28 @@ object DataManager {
         return total
     }
 
-    fun last12Months(doc: Document, categoryID : String) : DoubleArray {
+    fun last12Months(doc: Document, categoryID: String): DoubleArray {
         val cal: Calendar = Calendar.getInstance()
         val monthsOfYear = doubleArrayOf(
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+        )
 
-        var amount : String?
+        var amount: String?
 
         if (categoryID == "all") {
-            var monthSum : Double
+            var monthSum: Double
 
-            for(i in 0..11) {
+            for (i in 0..11) {
                 monthSum = 0.0
 
                 for (j in 1..3) {
                     /* Retrieve the total amount of expenses for each Month,
                     * if the Month element exists. */
-                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
-                        cal.time).toString().substringBeforeLast("-") + "-t")
+                    amount = getValueByID(
+                        doc, "c-$j-" + convertToLocalDate(
+                            cal.time
+                        ).toString().substringBeforeLast("-") + "-t"
+                    )
                     if (amount != null) {
                         monthSum += amount.toDouble()
                     }
@@ -197,14 +212,16 @@ object DataManager {
                 /* Determine the month previous to the current month. */
                 cal.add(Calendar.MONTH, -1) // Can change Calender._ to years, ect.
             }
-        }
-        else {
+        } else {
             /* Iterate through the last 12 calendar months. */
             for (i in 0..11) {
                 /* Retrieve the total amount of expenses for each month,
                 * if the month element exists. */
-                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
-                    cal.time).toString().substringBeforeLast("-") + "-t")
+                amount = getValueByID(
+                    doc, "$categoryID-" + convertToLocalDate(
+                        cal.time
+                    ).toString().substringBeforeLast("-") + "-t"
+                )
                 if (amount != null) {
                     monthsOfYear[i] = amount.toDouble()
                 }
@@ -215,24 +232,28 @@ object DataManager {
         return monthsOfYear
     }
 
-    fun last10Years(doc: Document, categoryID : String) : DoubleArray {
+    fun last10Years(doc: Document, categoryID: String): DoubleArray {
         val cal: Calendar = Calendar.getInstance()
         val yearsOfDecade = doubleArrayOf(
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+        )
 
-        var amount : String?
+        var amount: String?
 
-        if(categoryID == "all") {
+        if (categoryID == "all") {
             var yearSum: Double
 
-            for(i in 0..9) {
+            for (i in 0..9) {
                 yearSum = 0.0
 
                 for (j in 1..3) {
                     /* Retrieve the total amount of expenses for each year,
                     * if the year element exists for the past decade. */
-                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
-                        cal.time).toString().substringBefore("-") + "-t")
+                    amount = getValueByID(
+                        doc, "c-$j-" + convertToLocalDate(
+                            cal.time
+                        ).toString().substringBefore("-") + "-t"
+                    )
                     if (amount != null) {
                         yearSum += amount.toDouble()
                     }
@@ -241,14 +262,16 @@ object DataManager {
                 /* Determine the year previous to the current year. */
                 cal.add(Calendar.YEAR, -1) // Can change Calender._ to years, ect.
             }
-        }
-        else {
+        } else {
             /* Iterate through the last 10 calendar years. */
             for (i in 0..9) {
                 /* Retrieve the total amount of expenses for each year,
                 * if the year element exists. */
-                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
-                    cal.time).toString().substringBefore("-") + "-t")
+                amount = getValueByID(
+                    doc, "$categoryID-" + convertToLocalDate(
+                        cal.time
+                    ).toString().substringBefore("-") + "-t"
+                )
                 if (amount != null) {
                     yearsOfDecade[i] = amount.toDouble()
                 }
@@ -278,8 +301,10 @@ object DataManager {
     * needs to be added as a child to the existing Day element.
     * The id of the new entry will be this value minus 1.
     * For example, 3 means an id of 2 and 4 means an id of 3. */
-    private fun findExistingDateTags(doc : Document, category: String,
-                                     year : String, month : String, day : String) : Int {
+    private fun findExistingDateTags(
+        doc: Document, category: String,
+        year: String, month: String, day: String
+    ): Int {
         var id = "c-$category-$year"
         var xpath = "string(/root/category[@id=\"c-$category\"]/year[@id=\"$id\"]/month[@id=\""
         var dateExists = 0
@@ -296,7 +321,8 @@ object DataManager {
                     /* XPath to retrieve the id of the last Entry element within the Day element.
                     * New entries are appended, so the most recent entry is last. */
                     dateExists += getValueByXPath(
-                        doc, xpath).substringAfterLast('-').toInt()
+                        doc, xpath
+                    ).substringAfterLast('-').toInt()
                 }
             }
         }
@@ -323,8 +349,10 @@ object DataManager {
     * category represents the string of the selected category of the expense.
     *
     * Returns: Nothing. */
-    fun addEntry(doc : Document, amountRaw : String, description : String,
-                 date: String, category: String) {
+    fun addEntry(
+        doc: Document, amountRaw: String, description: String,
+        date: String, category: String
+    ) {
         /* Extract year, month, and day from date string. */
         val year = date.substring(0, 4)
         val month = date.substring(5, 7)
@@ -359,7 +387,7 @@ object DataManager {
 
             /* Create the Total element as a child of the Year element. */
             yearTotal = doc.createElement("total")
-            yearTotal.setAttribute("id","$id-t")
+            yearTotal.setAttribute("id", "$id-t")
             yearTotal.textContent = "0"
             yearTag.appendChild(yearTotal)
 
@@ -378,7 +406,7 @@ object DataManager {
 
             /* Create the Total element as a child of the Month element. */
             monthTotal = doc.createElement("total")
-            monthTotal.setAttribute("id","$id-t")
+            monthTotal.setAttribute("id", "$id-t")
             monthTotal.textContent = "0"
             monthTag.appendChild(monthTotal)
 
@@ -399,7 +427,7 @@ object DataManager {
 
             /* Create the Total element as a child of the Day element. */
             dayTotal = doc.createElement("total")
-            dayTotal.setAttribute("id","$id-t")
+            dayTotal.setAttribute("id", "$id-t")
             dayTotal.textContent = "0"
             dayTag.appendChild(dayTotal)
 
@@ -418,7 +446,7 @@ object DataManager {
 
         /* Create the Amount element as a child of the Entry element. */
         val amountTag = doc.createElement("amount")
-        amountTag.setAttribute("id","$id-a")
+        amountTag.setAttribute("id", "$id-a")
         amountTag.textContent = amount
         entryTag.appendChild(amountTag)
 
@@ -431,7 +459,7 @@ object DataManager {
 
         /* Create the Description element. */
         val descriptionTag = doc.createElement("description")
-        descriptionTag.setAttribute("id","$id-d")
+        descriptionTag.setAttribute("id", "$id-d")
         descriptionTag.textContent = description
         entryTag.appendChild(descriptionTag)
 
@@ -509,7 +537,7 @@ object DataManager {
     * Parameters: archive represents the Document of the archive XML file.
     *
     * Returns: String of the contents of the archive. */
-    private fun archiveString(archive : Document?) : String {
+    private fun archiveString(archive: Document?): String {
         val tf: TransformerFactory = TransformerFactory.newInstance()
         val trans: Transformer = tf.newTransformer()
         val sw = StringWriter()
@@ -555,7 +583,7 @@ object DataManager {
                     }
                 }
                 /* Simply ignore child since it does not have an id attribute. */
-                catch (e : Exception) {
+                catch (e: Exception) {
                     continue
                 }
             }
@@ -576,27 +604,34 @@ object DataManager {
     * labels represent an array of which categories to overwrite.
     *
     * Returns: Boolean of whether or not a category was restored. */
-    fun changeCategories(activity : Activity, doc : Document, labels : Array<String?>): Boolean {
+    fun changeCategories(activity: Activity, doc: Document, labels: Array<String?>): Boolean {
         /* Locate archive XML file in Android Internal Storage */
-        var archiveFile = activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
+        var archiveFile =
+            activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
 
         /* Check if archive XML file does not yet exist since
         * app has likely just now been installed on user's device. */
-        if(!archiveFile.exists()) {
+        if (!archiveFile.exists()) {
             try {
                 /* Open skeleton archive XML file from assets. */
                 val outputWriter = OutputStreamWriter(
-                    activity.openFileOutput(activity.getString(R.string.archiveFilenameString), Context.MODE_PRIVATE))
+                    activity.openFileOutput(
+                        activity.getString(R.string.archiveFilenameString),
+                        Context.MODE_PRIVATE
+                    )
+                )
 
                 /* Write the contents of the skeleton archive XML into buffer. */
                 outputWriter.write(activity.assets.open(
-                    activity.getString(R.string.archiveFilenameString)).bufferedReader().use{it.readText()})
+                    activity.getString(R.string.archiveFilenameString)
+                ).bufferedReader().use { it.readText() })
 
                 /* Close the buffer. */
                 outputWriter.close()
 
                 /* Open the newly created archive XML file in Android Internal Storage. */
-                archiveFile = activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
+                archiveFile =
+                    activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -607,7 +642,7 @@ object DataManager {
             .newDocumentBuilder().parse(archiveFile)
 
         /* Initialize archived category node to restore and set to null. */
-        var restoreCategory : Node? = null
+        var restoreCategory: Node? = null
 
         /* Iterate through each label in the array. */
         for ((index, label) in labels.withIndex()) {
@@ -636,7 +671,8 @@ object DataManager {
 
                 /* Move a cloned copy of the category data over to the Archive.xml. */
                 archive.getElementById("r").appendChild(
-                    archive.adoptNode(category.cloneNode(true)))
+                    archive.adoptNode(category.cloneNode(true))
+                )
 
                 /* Access the total amount spent in the old category. */
                 val categoryTotal = doc.getElementById("$categoryID-t")
@@ -664,7 +700,7 @@ object DataManager {
                 /* Check if a category is to be restored from the Archive.xml. */
                 if (restoreCategory != null) {
                     /* Iterate through the children of the archived category. */
-                    for(i in 0 until restoreCategory.childNodes.length) {
+                    for (i in 0 until restoreCategory.childNodes.length) {
                         val child = restoreCategory.childNodes.item(i)
                         /* If the child node is the "total" node of the archived category,
                         * grab the total and adjust the category total and data total
@@ -715,7 +751,11 @@ object DataManager {
 
         /* Open skeleton archive XML file from assets. */
         val outputWriter = OutputStreamWriter(
-            activity.openFileOutput(activity.getString(R.string.archiveFilenameString), Context.MODE_PRIVATE))
+            activity.openFileOutput(
+                activity.getString(R.string.archiveFilenameString),
+                Context.MODE_PRIVATE
+            )
+        )
 
         /* Convert the value of archive into a string and
         * write it to the now empty archive XML file */
@@ -728,11 +768,18 @@ object DataManager {
         return (restoreCategory == null)
     }
 
-    /* TODO (SPEN-32): Implement this back-end function.
-    *   Remove each Entry element node by iterating through "selectedEntries" and
-    *      calling the "deleteEmptyTags" function, which has an Entry id string as a parameter. */
+    /*Purpose: Delete an entry in the local XML repo file
+      Parameters: doc and selectedEntries
+      Doc is the document of the XML file selectedEntries is the entries the user selects
+      Returns: None
+     */
     fun deleteEntries(doc: Document, selectedEntries: MutableList<String>) {
-
+        // Iterate through the entries selected
+        for(selectedEntries in selectedEntries)
+        {
+            //delete the entry
+            deleteEmptyTags(doc,selectedEntries)
+        }
     }
 
     /* Purpose: Edit an entry in the local repo XML file.
@@ -744,11 +791,14 @@ object DataManager {
     * category represents the string of the selected category of the expense.
     *
     * Returns: Nothing. */
-    fun editEntry(doc: Document, entryID: String, amountRaw : String, description : String,
-                  date: String, category: String) {
+    fun editEntry(
+        doc: Document, entryID: String, amountRaw: String, description: String,
+        date: String, category: String
+    ) {
         /* Add a new entry with the updated attributes. */
         addEntry(doc, amountRaw, description, date, category)
         /* Remove the old entry. */
         deleteEmptyTags(doc, entryID)
     }
 }
+

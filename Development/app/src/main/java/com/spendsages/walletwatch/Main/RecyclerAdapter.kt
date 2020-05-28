@@ -139,7 +139,8 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
                 R.id.editButton).contentDescription =
                 "Edit Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
-
+            /* Make the all checkboxes to be unchecked after deletion */
+            entryViewHolder.itemView.deleteCheckbox.isChecked = false
             entryViewHolder.itemView.deleteCheckbox.setOnClickListener {
                 selectListener?.onButtonClick(entries!![i], entryViewHolder)
             }
