@@ -117,9 +117,9 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
 
             /* Extract the date from the timestamp member of the entry. */
             entryViewHolder.date.text = SimpleDateFormat(
-               "M/d/yyyy", Locale.US).format(SimpleDateFormat(
-               "yyyy-MM-dd", Locale.US).parse(
-               entries!![i].timestamp.toString().substring(0, 10)))
+                "M/d/yyyy", Locale.US).format(SimpleDateFormat(
+                "yyyy-MM-dd", Locale.US).parse(
+                entries!![i].timestamp.toString().substring(0, 10)))
 
             var categoryLabel = entries!![i].category
             /* Slice label to be at most 10 characters long. */
@@ -132,15 +132,17 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
                 R.id.deleteCheckbox).contentDescription =
                 "Select Expense " + entryViewHolder.description.text + " " +
-            entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
+                        entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
 
             /* Add a unique content description for the edit button. */
             entryViewHolder.itemView.findViewById<AppCompatImageButton>(
                 R.id.editButton).contentDescription =
                 "Edit Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
-            /* Make the all checkboxes to be unchecked after deletion */
+
+            /* Force checkbox to be initially unchecked. */
             entryViewHolder.itemView.deleteCheckbox.isChecked = false
+
             entryViewHolder.itemView.deleteCheckbox.setOnClickListener {
                 selectListener?.onButtonClick(entries!![i], entryViewHolder)
             }

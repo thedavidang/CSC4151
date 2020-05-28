@@ -24,7 +24,7 @@ WalletWatch© is an app designed for budget-minded individuals that are unwillin
 Not only is WalletWatch© securely offline, but it is also extremely quick and easy to use! A simplicity-driven design and intuitive user interface allow you the capability to rapidly add purchases and visualize charts of your aggregated expenses. This app is excellent for those who are juggling multiple bank accounts, want to discover how much money they spend in a particular category, or who simply want to keep their financial information more private.
 
 ## Latest Stable Version
-- 0.1.2 (Beta)
+- 0.1.3 (Beta)
 
 ## Minimum System Requirements
 - Android 9 (Pie) or Android 10 (Q)
