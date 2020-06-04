@@ -39,7 +39,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/category1Edit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:ems="14"
             android:autofillHints="@android:string/autofill"
             android:inputType="textCapWords"
@@ -71,7 +71,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/category2Edit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:ems="14"
             android:autofillHints="@android:string/autofill"
             android:inputType="textCapWords"
@@ -103,7 +103,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/category3Edit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:ems="14"
             android:autofillHints="@android:string/autofill"
             android:inputType="textCapWords"

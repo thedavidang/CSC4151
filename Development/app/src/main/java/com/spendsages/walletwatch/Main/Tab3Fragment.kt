@@ -417,7 +417,9 @@ class Tab3Fragment : Fragment() {
             /* Check if an actual change was made to the description. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 changedInputs[1] = s.toString()
-                checkChanges()
+                if (validAmount && validDate) {
+                    checkChanges()
+                }
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -452,7 +454,9 @@ class Tab3Fragment : Fragment() {
             }
             /* Check if an actual category change was made. */
             changedInputs[3] = selectedCategory.toString()
-            checkChanges()
+            if (validAmount && validDate) {
+                checkChanges()
+            }
         }
         categoryButtons[0] = rootView.findViewById(R.id.category1ButtonEdit)
         categoryButtons[1] = rootView.findViewById(R.id.category2ButtonEdit)
