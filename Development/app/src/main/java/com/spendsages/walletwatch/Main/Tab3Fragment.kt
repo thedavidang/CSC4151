@@ -198,8 +198,7 @@ class Tab3Fragment : Fragment() {
         validDate = try {
             /* Replace all non-numeric characters in date with slashes.
             * Consecutive non-numeric characters will be replaced with a single dash. */
-            val dateParsed = userDateFormat.parse(
-                dateInput.text.toString().replace(Regex("[^0-9]+"), "/"))
+            val dateParsed = userDateFormat.parse(dateInput.text.toString())
             /* Check if date is in MM/dd/yyyy format. */
             (dateParsed != null && !dateParsed.after(modelDateFormat.parse(today)))
         }
@@ -522,7 +521,7 @@ class Tab3Fragment : Fragment() {
             /* Do not bother checking the amount input since only the date was just changed.
             * If valid, then check if an actual date change was made. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (validAmount && validateDateInput()) {
+                if (validateDateInput() && validAmount) {
                     changedInputs[2] = s.toString()
                     checkChanges()
                     dateSelector.setDate(userDateFormat.parse(dateInput.text.toString())!!.time,
