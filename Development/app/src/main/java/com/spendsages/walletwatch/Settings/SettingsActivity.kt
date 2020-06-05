@@ -2,9 +2,11 @@ package com.spendsages.walletwatch
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_settings.*
 
 /* This is the secondary activity of the app,
@@ -22,6 +24,23 @@ class SettingsActivity : AppCompatActivity() {
         /* Setup the fragment manager, which will load the three tabs and select "Categories". */
         val fragmentAdapter = SettingsPagerAdapter(supportFragmentManager)
         settingsPager.adapter = fragmentAdapter
+        settingsPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) {}
+
+            /* Listener that will force the numpad to close. */
+            override fun onPageScrollStateChanged(state: Int) {
+                /* Wait until the Tab scrolling animation is done. */
+                if (state == ViewPager.SCROLL_STATE_IDLE)
+                {
+                    /* Hide the keyboard. */
+                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                        .hideSoftInputFromWindow(settingsPager.windowToken, 0)
+                }
+            }
+        })
 
         settingsTabs.setupWithViewPager(settingsPager)
 

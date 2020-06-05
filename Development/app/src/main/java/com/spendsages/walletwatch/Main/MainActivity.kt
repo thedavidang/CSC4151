@@ -25,13 +25,6 @@ class MainActivity : AppCompatActivity() {
             .hideSoftInputFromWindow(mainPager.windowToken, 0)
     }
 
-    override fun onPause() {
-        super.onPause()
-        /* Hide the keyboard. */
-        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-            .hideSoftInputFromWindow(mainPager.windowToken, 0)
-    }
-
     /* Overwritten function that performs tasks immediately upon app launch. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
