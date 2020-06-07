@@ -228,7 +228,8 @@ class Tab3Fragment : Fragment() {
         model.save(main)
 
         /* Update the model, so that the changes are immediately displayed in the app. */
-        adapterRecycler.updateData(model.get())
+        adapterRecycler.updateData(model.get(), spinSorting.selectedItemPosition,
+            spinFiltering.selectedItem.toString())
         adapterRecycler.notifyDataSetChanged()
 
         /* Display the Toast message "Expense Modified". */
@@ -322,51 +323,6 @@ class Tab3Fragment : Fragment() {
         /* Attach the adapter to the RecyclerView. */
         recycler.adapter = adapterRecycler
 
-        /* Initially set the "Delete Selected" button to be disabled and greyed-out. */
-        deleteButton = rootView.findViewById(R.id.deleteButton)
-        deleteButton.isEnabled = false
-        deleteButton.isClickable = false
-        deleteButton.alpha = 0.5F
-        /* Listener for the Delete Selected button. */
-        deleteButton.setOnClickListener {
-            val dialogClickListener: DialogInterface.OnClickListener =
-                DialogInterface.OnClickListener { dialog, which ->
-                    when (which) {
-                        /* If user taps "Yes", then call the back-end function,
-                        * save the change, and disable the Delete Selected button. */
-                        DialogInterface.BUTTON_POSITIVE -> {
-                            DataManager.deleteEntries(model.get(), selectedEntries)
-                            /* Clear the array, so that it is empty. */
-                            selectedEntries.clear()
-                            model.save(main)
-                            /* Update the model, so that the changes are
-                            * immediately displayed in the app. */
-                            adapterRecycler.updateData(model.get())
-                            adapterRecycler.notifyDataSetChanged()
-                            toggleButton(deleteButton, false)
-                            delete.show()
-                        }
-                        /* If the user taps "No", then simply close the confirmation alert. */
-                        DialogInterface.BUTTON_NEGATIVE -> {
-                            dialog.dismiss()
-                        }
-                    }
-                }
-            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-            /* Create the message to display on the confirmation alert. */
-            var message = "Are you sure you want to delete " +
-                    DecimalFormat("#,###").format(selectedEntries.size) + " expense"
-            /* Check for plural expenses. */
-            if (selectedEntries.size > 1) {
-                message += "s"
-            }
-            message += "? This cannot be undone."
-            /* Display the confirmation alert. */
-            builder.setMessage(message)
-                .setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show()
-        }
-
         /* Set the possible options for the sorting Spinbox. */
         spinSorting = rootView.findViewById(R.id.sortingSpinner)
         spinSorting.adapter = ArrayAdapter(requireActivity(),
@@ -394,13 +350,64 @@ class Tab3Fragment : Fragment() {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 when (position) {
-                    0 -> adapterRecycler.entries = adapterRecycler.entriesRaw
-                    else -> adapterRecycler.filter(spinFiltering.selectedItem.toString())
+                    0 -> {
+                        adapterRecycler.entries = adapterRecycler.entriesRaw
+                    }
+                    else -> {
+                        adapterRecycler.filter(spinFiltering.selectedItem.toString())
+                    }
                 }
                 sortEntries(spinSorting.selectedItemPosition)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
+        }
+
+        /* Initially set the "Delete Selected" button to be disabled and greyed-out. */
+        deleteButton = rootView.findViewById(R.id.deleteButton)
+        deleteButton.isEnabled = false
+        deleteButton.isClickable = false
+        deleteButton.alpha = 0.5F
+        /* Listener for the Delete Selected button. */
+        deleteButton.setOnClickListener {
+            val dialogClickListener: DialogInterface.OnClickListener =
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        /* If user taps "Yes", then call the back-end function,
+                        * save the change, and disable the Delete Selected button. */
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            DataManager.deleteEntries(model.get(), selectedEntries)
+                            /* Clear the array, so that it is empty. */
+                            selectedEntries.clear()
+                            model.save(main)
+                            /* Update the model, so that the changes are
+                            * immediately displayed in the app. */
+                            adapterRecycler.updateData(model.get(),
+                                spinSorting.selectedItemPosition,
+                                spinFiltering.selectedItem.toString())
+                            adapterRecycler.notifyDataSetChanged()
+                            toggleButton(deleteButton, false)
+                            delete.show()
+                        }
+                        /* If the user taps "No", then simply close the confirmation alert. */
+                        DialogInterface.BUTTON_NEGATIVE -> {
+                            dialog.dismiss()
+                        }
+                    }
+                }
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            /* Create the message to display on the confirmation alert. */
+            var message = "Are you sure you want to delete " +
+                    DecimalFormat("#,###").format(selectedEntries.size) + " expense"
+            /* Check for plural expenses. */
+            if (selectedEntries.size > 1) {
+                message += "s"
+            }
+            message += "? This cannot be undone."
+            /* Display the confirmation alert. */
+            builder.setMessage(message)
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show()
         }
 
         /* Edit Entry window code. */

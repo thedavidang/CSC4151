@@ -100,7 +100,7 @@ class Tab1Fragment : Fragment() {
     * Returns: True if amount field is not empty and not zero. */
     private fun validateAmountInput() : Boolean {
         val input = amountInput.text.toString()
-        validAmount = (input.isNotEmpty() && input != "$ 0.00")
+        validAmount = (input.isNotEmpty() && input != "$ 0.00") // TODO: ACTUALLY CHECK AMOUNT ZERO
         return validAmount
     }
 
@@ -207,12 +207,12 @@ class Tab1Fragment : Fragment() {
 
             /* Do not bother checking the date input since only the amount was just changed. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            if (validateAmountInput() && validDate) {
-                toggleCategoryButtons(true)
-            }
-            else {
-                toggleCategoryButtons(false)
-            }
+                if (validateAmountInput() && validDate) {
+                    toggleCategoryButtons(true)
+                }
+                else {
+                    toggleCategoryButtons(false)
+                }
         }
 
             override fun afterTextChanged(s: Editable) {}

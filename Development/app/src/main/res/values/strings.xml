@@ -9,7 +9,7 @@
     <string name="descriptionString">Description (Optional):</string>
     <string name="dateString">Date:</string>
     <string name="calendarString">Date Selector</string>
-    <string name="categoryString">Category:</string>
+    <string name="categoryString">Submit the Expense by tapping a Category:</string>
     <string name="addedEntryString">Expense Added</string>
 
     <string name="category1LabelString">Category 1 Label</string>

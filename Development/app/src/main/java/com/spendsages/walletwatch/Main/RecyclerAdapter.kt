@@ -37,11 +37,38 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
     * Parameters: doc represents the Document of the local repo XML file.
     *
     * Returns: Nothing. */
-    fun updateData(doc: Document) {
+    fun updateData(doc: Document, sort: Int, category: String) {
         /* Retrieve the list of all entries in the local repo XML file. */
         entriesRaw = getEntries(doc)
-        /* Create a list of those entries that are sorted by date from newest to oldest. */
-        entries = sortByDateDescending(entriesRaw)
+
+        /* Filter the entries as necessary. */
+        if (category != "All") {
+            filter(category)
+        }
+        else {
+            entries = entriesRaw
+        }
+
+        /* Create a list of the entries and sort them correctly. */
+        entries =
+            when (sort) {
+                /* Sort by date from oldest to newest. */
+                1 -> {
+                    sortByDateAscending(entries)
+                }
+                /* Sort by price from highest to lowest. */
+                2 -> {
+                    sortByPriceDescending(entries)
+                }
+                /* Sort by price from lowest to highest. */
+                3 -> {
+                    sortByPriceAscending(entries)
+                }
+                /* Sort by date from newest to oldest. */
+                else -> {
+                    sortByDateDescending(entries)
+                }
+            }
     }
 
     /* Purpose: Getter/Accessor that returns the total number of  filtered entries to display.
