@@ -35,6 +35,7 @@ class Tab1Fragment : Fragment() {
 
     private lateinit var amountInput : CurrencyEditText
     private var validAmount = false
+    private lateinit var invalidAmount : ImageView
 
     private lateinit var descriptionInput : TextInputEditText
 
@@ -42,6 +43,7 @@ class Tab1Fragment : Fragment() {
     private var validDate = true
     private lateinit var dateSelector : CalendarView
     private lateinit var dateOverlay : View
+    private lateinit var invalidDate : ImageView
     private val modelDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val userDateFormat = SimpleDateFormat("M/d/yyyy", Locale.US)
     private val today = LocalDate.now().toString()
@@ -100,7 +102,15 @@ class Tab1Fragment : Fragment() {
     * Returns: True if amount field is not empty and not zero. */
     private fun validateAmountInput() : Boolean {
         val input = amountInput.text.toString()
-        validAmount = (input.isNotEmpty() && input != "$ 0.00") // TODO: ACTUALLY CHECK AMOUNT ZERO
+        validAmount = (input.isNotEmpty() && input != "$ 0.00")
+
+        if (validAmount) {
+            invalidAmount.visibility = View.GONE
+        }
+        else {
+            invalidAmount.visibility = View.VISIBLE
+        }
+
         return validAmount
     }
 
@@ -120,6 +130,13 @@ class Tab1Fragment : Fragment() {
         }
         catch (_ : Exception) {
             false
+        }
+
+        if (validDate) {
+            invalidDate.visibility = View.GONE
+        }
+        else {
+            invalidDate.visibility = View.VISIBLE
         }
 
         return validDate
@@ -218,6 +235,9 @@ class Tab1Fragment : Fragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
+        invalidAmount = rootView.findViewById(R.id.invalidAmount)
+        invalidAmount.visibility = View.VISIBLE
+
         dateInput = rootView.findViewById(R.id.dateField)
         /* The date should be initially set to the current date in the "MM/dd/yyyy" format. */
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
@@ -239,6 +259,9 @@ class Tab1Fragment : Fragment() {
 
             override fun afterTextChanged(s: Editable) {}
         })
+
+        invalidDate = rootView.findViewById(R.id.invalidDate)
+        invalidDate.visibility = View.GONE
 
         /* Force both date formatters to require strict pattern matching. */
         modelDateFormat.isLenient = false

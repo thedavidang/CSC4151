@@ -6,9 +6,11 @@
 
     <string name="amountString">Amount:</string>
     <string name="amountHintString">$ 0.00</string>
+    <string name="invalidAmountString">Invalid Amount</string>
     <string name="descriptionString">Description (Optional):</string>
     <string name="dateString">Date:</string>
     <string name="calendarString">Date Selector</string>
+    <string name="invalidDateString">Invalid Date</string>
     <string name="categoryString">Submit the Expense by tapping a Category:</string>
     <string name="addedEntryString">Expense Added</string>
 
