@@ -46,6 +46,7 @@ class SettingsActivity : AppCompatActivity() {
 
         /* Function that will close the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.closeSettingsButton).setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 
@@ -54,5 +55,10 @@ class SettingsActivity : AppCompatActivity() {
         model = ViewModelProviders.of(this, viewModelFactory).get(
             SharedViewModel::class.java)
         model.open(this)
+    }
+
+    override fun onBackPressed() {
+        finish()
+        startActivity(Intent(this, MainActivity::class.java))
     }
 }

@@ -1,6 +1,8 @@
 package com.spendsages.walletwatch
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
+import org.w3c.dom.Document
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +28,7 @@ class CategoryFragment : Fragment() {
     private lateinit var rootView : View
     private lateinit var settings : SettingsActivity
     private lateinit var model : SharedViewModel
+    private lateinit var archive : Document
 
     private var categories = arrayOfNulls<String?>(3)
     private var categoryInputs = arrayOfNulls<String?>(3)
@@ -140,22 +144,90 @@ class CategoryFragment : Fragment() {
         /* This listener for the Save Change button saves the changed category,
         * displays the Toast message, and disables the Save Changes button. */
         saveButton.setOnClickListener {
-            /* A category was changed without any restoration. */
-            if (DataManager.changeCategories(settings, model.get(), changed)) {
-                success = Toast.makeText(context, R.string.changedCategoryString, Toast.LENGTH_LONG)
-                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL,
-                    0, 0)
-            }
-            /* A category was restored from the Archive.xml. */
-            else {
-                success = Toast.makeText(context, R.string.restoredCategoryString, Toast.LENGTH_LONG)
-                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL,
-                    0, 0)
+            val dialogClickListener: DialogInterface.OnClickListener =
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        /* If user taps "Yes", then call the back-end function. */
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            /* A category was changed without any restoration. */
+                            if (DataManager.changeCategories(settings,
+                                    model.get(), archive, changed)) {
+                                success = Toast.makeText(
+                                    context, R.string.changedCategoryString, Toast.LENGTH_LONG)
+                                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL,
+                                    0, 0)
+                            }
+                            /* A category was restored from the Archive.xml. */
+                            else {
+                                success = Toast.makeText(
+                                    context, R.string.restoredCategoryString, Toast.LENGTH_LONG)
+                                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL,
+                                    0, 0)
+                            }
+
+                            model.save(settings)
+                            success.show()
+                            toggleSaveButton(false)
+                            /* Retrieve updated categories. */
+                            categories = DataManager.getCategories(
+                                model.get()).slice(1..3).toTypedArray()
+                        }
+                        /* If the user taps "No", then simply close the confirmation alert. */
+                        DialogInterface.BUTTON_NEGATIVE -> {
+                            dialog.dismiss()
+                        }
+                    }
+                }
+
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            /* Open Archive XML file. */
+            archive = DataManager.getArchive(settings)
+
+            val archivedLabels = DataManager.getArchivedCategories(archive)
+            val newLabels = mutableListOf<String?>()
+            val restoredLabels = mutableListOf<String?>()
+
+            /* Create the message to display on the confirmation alert. */
+            var message = "The following categories will stop being tracked " +
+                    "and will be stored in an archive:\n"
+            /* Output list of categories to stop tracking. */
+            var index = 0
+            while (index < 3) {
+                if (changed[index] != null) {
+                    message += "- " + categories[index] + "\n"
+
+                    if (changed[index] in archivedLabels) {
+                        restoredLabels.add("- " + changed[index] + "\n")
+                    }
+                    else {
+                        newLabels.add("- " + changed[index] + "\n")
+                    }
+                }
+                index++
             }
 
-            model.save(settings)
-            success.show()
-            toggleSaveButton(false)
+            /* Output list of new categories to start tracking. */
+            if (newLabels.size > 0) {
+                message += "\nThe following new categories will start being tracked:\n"
+                for (label in newLabels) {
+                    message += label
+                }
+            }
+
+            /* Output list of restored categories to start tracking. */
+            if (restoredLabels.size > 0) {
+                message += "\nThe following archived categories will " +
+                        "be restored and resume being tracked:\n"
+                for (label in restoredLabels) {
+                    message += label
+                }
+            }
+
+            message += "\nAre you sure you want to make these changes?"
+            /* Display the confirmation alert. */
+            builder.setMessage(message)
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show()
         }
 
         /* Populate the array of category textboxes. */

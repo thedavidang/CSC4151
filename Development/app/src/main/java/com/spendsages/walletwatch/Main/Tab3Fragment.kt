@@ -53,6 +53,7 @@ class Tab3Fragment : Fragment() {
     private lateinit var spinFiltering : Spinner
 
     /* Edit Entry window private member variables. */
+    private lateinit var scroll : ScrollView
     private lateinit var editWindow : ConstraintLayout
     private lateinit var editOverlay : View
 
@@ -133,10 +134,10 @@ class Tab3Fragment : Fragment() {
     * Returns: Nothing. */
     private fun toggleEditWindow(isEnabled: Boolean) {
         if (isEnabled) {
-            editWindow.visibility = View.VISIBLE
+            scroll.visibility = View.VISIBLE
         }
         else {
-            editWindow.visibility = View.GONE
+            scroll.visibility = View.GONE
         }
     }
 
@@ -434,6 +435,7 @@ class Tab3Fragment : Fragment() {
         }
 
         /* Edit Entry window code. */
+        scroll = rootView.findViewById(R.id.scroll)
         editWindow = rootView.findViewById(R.id.editWindow)
         editOverlay = rootView.findViewById(R.id.editOverlay)
         /* Initially hide the Edit Entry window. */

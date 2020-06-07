@@ -562,27 +562,18 @@ object DataManager {
         }
     }
 
-    /* Purpose: Saves each changed category data to Archive.xml and then resets for each new label.
-    * To save, first make a cloned copy of the category data and have the archive adopt the clone.
-    * Then, append that adopted clone to the root element of the archive.
-    *
-    * To reset, first subtracts category total from data total.
-    * Second, sets category total to 0.00.
-    * Third, changes category label to new label name.
-    * Finally, deletes all children of category tag, except label tag and total tag.
+    /* Purpose: Retrieve the Archive XML file.
     *
     * Parameters: activity represents the activity that called this function.
-    * doc represents the Document of the local repo XML file.
-    * labels represent an array of which categories to overwrite.
     *
-    * Returns: Boolean of whether or not a category was restored. */
-    fun changeCategories(activity : Activity, doc : Document, labels : Array<String?>): Boolean {
+    * Returns: Document of the Archive XML file. */
+    fun getArchive(activity: Activity): Document {
         /* Locate archive XML file in Android Internal Storage */
         var archiveFile = activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
 
         /* Check if archive XML file does not yet exist since
         * app has likely just now been installed on user's device. */
-        if(!archiveFile.exists()) {
+        if (!archiveFile.exists()) {
             try {
                 /* Open skeleton archive XML file from assets. */
                 val outputWriter = OutputStreamWriter(
@@ -590,7 +581,7 @@ object DataManager {
 
                 /* Write the contents of the skeleton archive XML into buffer. */
                 outputWriter.write(activity.assets.open(
-                    activity.getString(R.string.archiveFilenameString)).bufferedReader().use{it.readText()})
+                    activity.getString(R.string.archiveFilenameString)).bufferedReader().use { it.readText() })
 
                 /* Close the buffer. */
                 outputWriter.close()
@@ -603,11 +594,50 @@ object DataManager {
         }
 
         /* Load the contents of the archive XML file to the value of archive. */
-        val archive = DocumentBuilderFactory.newInstance()
-            .newDocumentBuilder().parse(archiveFile)
+        return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(archiveFile)
+    }
 
+    /* Purpose: Get list of category labels archived in the Archive XML file.
+    *
+    * Parameters: archive represents the Document of the archive XML file.
+    *
+    * Returns: Mutable list of the category label strings. */
+    fun getArchivedCategories(archive: Document): MutableList<String> {
+        /* Retrieve list of all label nodes in the Archive.xml. */
+        val archivedCategories = archive.getElementsByTagName("label")
+        val archivedLabels = mutableListOf<String>()
+
+        /* Iterate through nodes and extract labels. */
+        var index = 0
+        while (index < archivedCategories.length) {
+            archivedLabels.add(archivedCategories.item(index).textContent)
+            index++
+        }
+
+        return archivedLabels
+    }
+
+    /* Purpose: Saves each changed category data to Archive.xml and then resets for each new label.
+    * To save, first make a cloned copy of the category data and have the archive adopt the clone.
+    * Then, append that adopted clone to the root element of the archive.
+    *
+    * To reset, first subtracts category total from data total.
+    * Second, sets category total to 0.00.
+    * Third, changes category label to new label name.
+    * Finally, deletes all children of category tag, except label tag and total tag.
+    *
+    * Parameters: activity represents the activity that called this function.
+    * doc represents the Document of the local repo XML file.
+    * archive represents the Document of the Archive XML file.
+    * labels represent an array of which categories to overwrite.
+    *
+    * Returns: Boolean of whether or not a category was restored. */
+    fun changeCategories(activity : Activity, doc : Document,
+                         archive : Document, labels : Array<String?>): Boolean {
         /* Initialize archived category node to restore and set to null. */
-        var restoreCategory : Node? = null
+        var restoreCategory : Node?
+        /* Initialize Boolean result to false. */
+        var categoryRestored = false
 
         /* Iterate through each label in the array. */
         for ((index, label) in labels.withIndex()) {
@@ -618,6 +648,8 @@ object DataManager {
 
                 /* Iterate through archived label nodes until finding a match. */
                 var labelIndex = 0
+                /* Reset restored category node to null. */
+                restoreCategory = null
                 while (restoreCategory == null && labelIndex < archivedLabels.length) {
                     val archivedLabel = archivedLabels.item(labelIndex)
                     /* If the current archived label node matches the new label. */
@@ -704,6 +736,7 @@ object DataManager {
                     /* Completely delete the restored category data that is left inside
                     * the Archive.xml, since it has all been restored into the WalletWatch.xml. */
                     archive.getElementById("r").removeChild(restoreCategory)
+                    categoryRestored = true
                 }
                 /* If not restoring an archived category, simply reset the category total. */
                 else {
@@ -725,7 +758,7 @@ object DataManager {
         outputWriter.close()
 
         /* Return a Boolean representing if there was no category restored. */
-        return (restoreCategory == null)
+        return !categoryRestored
     }
 
     /* Purpose: Delete entries from the local repo XML file.

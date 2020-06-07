@@ -15,6 +15,7 @@
             android:name="com.spendsages.walletwatch.MainActivity"
             android:label="@string/nameString"
             android:screenOrientation="portrait"
+            android:noHistory="true"
             android:windowSoftInputMode="stateVisible"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">

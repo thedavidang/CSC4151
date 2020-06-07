@@ -8,9 +8,6 @@ A Software Engineering Project by the SpendSages©:
 - David Ang
 - Jason Djajasasmita
 
-JIRA SCRUM Board and Backlog:
-- [SpendSages SPEN Agile Board](https://angd.atlassian.net/secure/RapidBoard.jspa?rapidView=2&projectKey=SPEN&view=planning.nodetail&issueLimit=100)
-
 ## Table of Contents
 - [Introduction](https://github.com/thedavidang/CSC4151#introduction)
 - [Latest Stable Version](https://github.com/thedavidang/CSC4151#latest-stable-version)
@@ -19,15 +16,21 @@ JIRA SCRUM Board and Backlog:
 - [Application Usage](https://github.com/thedavidang/CSC4151#application-usage)
 
 ## Introduction
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=fnWhzOBocUw
+" target="_blank"><img src="http://img.youtube.com/vi/fnWhzOBocUw/0.jpg" 
+alt="WalletWatch by SpendSages Feature Video" width="480" height="360" border="10" /></a>
+
+https://youtu.be/fnWhzOBocUw
+
 WalletWatch© is an app designed for budget-minded individuals that are unwilling to compromise privacy. This app lets **you** track your expense history, so that **you** can better watch your wallet. The app never even tries to connect to the Internet, so none of your spending history will ever be sold off across cloud databases. The app never asks for sensitive information and only helps you track the money you spend, not the money you make.
 
 Not only is WalletWatch© securely offline, but it is also extremely quick and easy to use! A simplicity-driven design and intuitive user interface allow you the capability to rapidly add purchases and visualize charts of your aggregated expenses. This app is excellent for those who are juggling multiple bank accounts, want to discover how much money they spend in a particular category, or who simply want to keep their financial information more private.
 
 ## Latest Stable Version
-- 0.1.3 (Beta)
+- 1.0.0
 
 ## Minimum System Requirements
-- Android 9 (Pie) or Android 10 (Q)
+- Android 9 (Pie) and up
 
 ## Installation Instructions
 ### Available on the Google Play Store:
@@ -44,7 +47,7 @@ Basically, you will download and install the WalletWatch APK installer file from
 - https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-Installer.apk
 
 ### Alternative 2 - Download repo and run in Android Studio:
-If you do not have a smartphone device with Android 9 (Pie) or Android 10 (Q) installed, then follow this step-by-step walkthrough to run the WalletWatch app in an emulator on your computer:
+If you do not have an Android smartphone device or have a version of Android earlier than Android 9 (Pie) installed, then follow this step-by-step walkthrough to run the WalletWatch app in an emulator on your computer:
 - https://github.com/thedavidang/CSC4151/blob/master/DEV_SETUP.md
 
 ## Application Usage
@@ -70,6 +73,7 @@ The main window of the app is organized into three tabs:
 3. **History - For viewing, editing, and deleting existing expenses.** 
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/tab3.png "Tab 3: History")
+![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/edit.png "Edit Expense Window")
 
 - The left drop-down menu allows you to **sort** the list of expenses. You can sort by either date or purchase price and in either descending or ascending order.
 - The drop-down menu on the right allows you to **filter** the list of expenses by category. _All_ shows expenses from all three categories for a complete view of your expense history.

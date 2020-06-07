@@ -107,7 +107,7 @@ class Tab1Fragment : Fragment() {
         val input = amountInput.text.toString()
         validAmount = (input.isNotEmpty() && input != "$ 0.00")
 
-        if (validAmount) {
+        if (input != "$ 0.00") {
             invalidAmount.visibility = View.GONE
         }
         else {
@@ -177,6 +177,7 @@ class Tab1Fragment : Fragment() {
         descriptionInput.setText("")
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
         toggleCategoryButtons(false)
+        invalidAmount.visibility = View.GONE
 
         /* Reopen the numpad for next entry to add. */
         main.showKeyboard(amountInput)
