@@ -44,6 +44,7 @@ class Tab1Fragment : Fragment() {
     private lateinit var dateSelector : CalendarView
     private lateinit var dateOverlay : View
     private lateinit var invalidDate : ImageView
+    private lateinit var cancelDate : Button
     private val modelDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val userDateFormat = SimpleDateFormat("M/d/yyyy", Locale.US)
     private val today = LocalDate.now().toString()
@@ -64,10 +65,12 @@ class Tab1Fragment : Fragment() {
         if (isEnabled) {
             dateSelector.visibility = View.VISIBLE
             dateOverlay.visibility = View.VISIBLE
+            cancelDate.visibility = View.VISIBLE
         }
         else {
             dateSelector.visibility = View.GONE
             dateOverlay.visibility = View.GONE
+            cancelDate.visibility = View.GONE
         }
     }
 
@@ -269,6 +272,16 @@ class Tab1Fragment : Fragment() {
         /* Force both date formatters to require strict pattern matching. */
         modelDateFormat.isLenient = false
         userDateFormat.isLenient = false
+
+        /* The Cancel button will close the date selector. */
+        cancelDate = rootView.findViewById(R.id.cancelDateButton)
+        cancelDate.visibility = View.GONE
+        cancelDate.setOnClickListener {
+            toggleDateSelector(false)
+
+            /* Re-enable category buttons, if necessary. */
+            toggleCategoryButtons(validAmount && validDate)
+        }
 
         dateSelector = rootView.findViewById(R.id.dateSelector)
         /* Restrict the user from selecting a future date in the CalendarView. */

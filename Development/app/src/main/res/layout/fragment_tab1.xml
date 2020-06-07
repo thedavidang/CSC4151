@@ -30,8 +30,8 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:hint="@string/amountHintString"
-        android:maxLength="20"
         android:inputType="number"
+        android:maxLength="20"
         android:textAlignment="textEnd"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" >
+        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/descriptionField"
@@ -110,9 +110,9 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:autofillHints=""
-        android:maxLength="10"
         android:ems="6"
         android:inputType="date"
+        android:maxLength="10"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +148,7 @@
         android:id="@+id/categoryLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/categoryString"
+        android:text="@string/submitString"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -223,11 +223,21 @@
     <CalendarView
         android:id="@+id/dateSelector"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:contentDescription="@string/calendarString"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
+
+    <Button
+        android:id="@+id/cancelDateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:ems="9"
+        android:text="@string/cancelString"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateSelector" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

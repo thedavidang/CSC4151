@@ -46,7 +46,6 @@ class SettingsActivity : AppCompatActivity() {
 
         /* Function that will close the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.closeSettingsButton).setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 

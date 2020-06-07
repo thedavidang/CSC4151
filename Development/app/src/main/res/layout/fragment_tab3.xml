@@ -303,12 +303,22 @@
         <CalendarView
             android:id="@+id/dateSelectorEdit"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="#FFFFFF"
             android:contentDescription="@string/calendarString"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/cancelDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:ems="9"
+            android:text="@string/cancelString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateSelectorEdit" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

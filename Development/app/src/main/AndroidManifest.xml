@@ -12,18 +12,10 @@
         android:theme="@style/AppTheme"
         tools:replace="label">
         <activity
-            android:name="com.spendsages.walletwatch.SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
-            android:noHistory="true"
-            tools:ignore="LockedOrientationActivity"></activity>
-        <activity
             android:name="com.spendsages.walletwatch.MainActivity"
             android:label="@string/nameString"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible"
-            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
@@ -32,6 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.spendsages.walletwatch.SettingsActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>

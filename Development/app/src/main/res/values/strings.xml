@@ -11,7 +11,8 @@
     <string name="dateString">Date:</string>
     <string name="calendarString">Date Selector</string>
     <string name="invalidDateString">Invalid Date</string>
-    <string name="categoryString">Submit the Expense by tapping a Category:</string>
+    <string name="closeDateString">Close Date Selector</string>
+    <string name="submitString">Submit the Expense by tapping a Category:</string>
     <string name="addedEntryString">Expense Added</string>
 
     <string name="category1LabelString">Category 1 Label</string>
@@ -28,6 +29,7 @@
     <string name="changedEntryString">Expense Modified</string>
     <string name="deletedEntriesString">Selection Deleted</string>
     <string name="editString">Edit Expense</string>
+    <string name="categoryString">Category:</string>
     <string name="listString">List of Submitted Expenses</string>
 
     <string name="settingsString">Settings</string>
