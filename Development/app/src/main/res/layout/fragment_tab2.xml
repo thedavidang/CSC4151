@@ -1,267 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tab2Fragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Tab2Fragment">
-
-    <Space
-        android:id="@+id/menuSpacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/tab2Spinners"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/tab2Fragment"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuSpacing">
+        android:layout_height="wrap_content"
+        tools:context=".Tab2Fragment">
 
-        <Spinner
-            android:id="@+id/chartTypeSpinner"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:layout_constraintEnd_toStartOf="@id/lineIntervalSpinner"
+        <Space
+            android:id="@+id/menuSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/lineIntervalSpinner"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:layout_constraintEnd_toStartOf="@id/lineCategorySpinner"
-            app:layout_constraintStart_toEndOf="@id/chartTypeSpinner"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tab2Spinners"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menuSpacing">
 
-        <Spinner
-            android:id="@+id/lineCategorySpinner"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            <Spinner
+                android:id="@+id/chartTypeSpinner"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:layout_constraintEnd_toStartOf="@id/lineIntervalSpinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/lineIntervalSpinner"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:layout_constraintEnd_toStartOf="@id/lineCategorySpinner"
+                app:layout_constraintStart_toEndOf="@id/chartTypeSpinner"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/lineCategorySpinner"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lineIntervalSpinner"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/chartView"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="7dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lineIntervalSpinner"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@+id/tab2Spinners" />
 
-    <lecho.lib.hellocharts.view.LineChartView
-        android:id="@+id/chartView"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="7dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab2Spinners" />
-
-    <lecho.lib.hellocharts.view.PieChartView
-        android:id="@+id/pieView"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="7dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab2Spinners" />
-
-    <Space
-        android:id="@+id/chartSpacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chartView" />
-
-    <LinearLayout
-        android:id="@+id/totalsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chartSpacing">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/category1Layout"
-            android:layout_width="match_parent"
-            android:layout_height="39dp">
-
-            <View
-                android:id="@+id/category1Color"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@color/colorCategory1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/category1Text"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
-                android:hint="@string/category1LabelString"
-                android:paddingHorizontal="5dp"
-                android:textAlignment="viewStart"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/category1Color"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/category1Total"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:hint="@string/category1TotalString"
-                android:paddingHorizontal="10dp"
-                android:textAlignment="viewEnd"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/category1Text"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <lecho.lib.hellocharts.view.PieChartView
+            android:id="@+id/pieView"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab2Spinners" />
 
         <Space
-            android:id="@+id/category1Spacing"
+            android:id="@+id/chartSpacing"
             android:layout_width="match_parent"
-            android:layout_height="5dp" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/category2Layout"
-            android:layout_width="match_parent"
-            android:layout_height="39dp">
-
-            <View
-                android:id="@+id/category2Color"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@color/colorCategory2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/category2Text"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
-                android:hint="@string/category2LabelString"
-                android:paddingHorizontal="5dp"
-                android:textAlignment="viewStart"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/category2Color"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/category2Total"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:hint="@string/category2TotalString"
-                android:paddingHorizontal="10dp"
-                android:textAlignment="viewEnd"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/category2Text"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <Space
-            android:id="@+id/category2Spacing"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chartView" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/category3Layout"
+        <LinearLayout
+            android:id="@+id/totalsLayout"
             android:layout_width="match_parent"
-            android:layout_height="39dp">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chartSpacing">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/category1Layout"
+                android:layout_width="match_parent"
+                android:layout_height="39dp">
+
+                <View
+                    android:id="@+id/category1Color"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:background="@color/colorCategory1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/category1Text"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/category1LabelString"
+                    android:paddingHorizontal="5dp"
+                    android:textAlignment="viewStart"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/category1Color"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/category1Total"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/category1TotalString"
+                    android:paddingHorizontal="10dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/category1Text"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:id="@+id/category1Spacing"
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/category2Layout"
+                android:layout_width="match_parent"
+                android:layout_height="39dp">
+
+                <View
+                    android:id="@+id/category2Color"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:background="@color/colorCategory2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/category2Text"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/category2LabelString"
+                    android:paddingHorizontal="5dp"
+                    android:textAlignment="viewStart"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/category2Color"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/category2Total"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/category2TotalString"
+                    android:paddingHorizontal="10dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/category2Text"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:id="@+id/category2Spacing"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chartView" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/category3Layout"
+                android:layout_width="match_parent"
+                android:layout_height="39dp">
+
+                <View
+                    android:id="@+id/category3Color"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:background="@color/colorCategory3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/category3Text"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/category3LabelString"
+                    android:paddingHorizontal="5dp"
+                    android:textAlignment="viewStart"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/category3Color"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/category3Total"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/category3TotalString"
+                    android:paddingHorizontal="10dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/category3Text"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
-                android:id="@+id/category3Color"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@color/colorCategory3"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="?android:attr/listDivider" />
 
-            <TextView
-                android:id="@+id/category3Text"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
-                android:hint="@string/category3LabelString"
-                android:paddingHorizontal="5dp"
-                android:textAlignment="viewStart"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/category3Color"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/allLayout"
+                android:layout_width="match_parent"
+                android:layout_height="39dp">
 
-            <TextView
-                android:id="@+id/category3Total"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:hint="@string/category3TotalString"
-                android:paddingHorizontal="10dp"
-                android:textAlignment="viewEnd"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/category3Text"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <View
+                    android:id="@+id/allColor"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:background="@color/colorAll"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="?android:attr/listDivider" />
+                <TextView
+                    android:id="@+id/allText"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/allLabelString"
+                    android:paddingHorizontal="5dp"
+                    android:textAlignment="viewStart"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/allColor"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/allLayout"
-            android:layout_width="match_parent"
-            android:layout_height="39dp">
+                <TextView
+                    android:id="@+id/allTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/allTotalString"
+                    android:paddingHorizontal="10dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/allText"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
-                android:id="@+id/allColor"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@color/colorAll"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/allText"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
-                android:hint="@string/allLabelString"
-                android:paddingHorizontal="5dp"
-                android:textAlignment="viewStart"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/allColor"
-                app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/allTotal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:hint="@string/allTotalString"
-                android:paddingHorizontal="10dp"
-                android:textAlignment="viewEnd"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/allText"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

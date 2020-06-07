@@ -1,243 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tab1Fragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Tab1Fragment">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:fillViewport="true">
 
-    <Space
-        android:id="@+id/menuSpacing"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/tab1Fragment"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/amountLabel"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:labelFor="@id/amountField"
-        android:text="@string/amountString"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
+        tools:context=".Tab1Fragment">
 
-    <me.abhinay.input.CurrencyEditText
-        android:id="@+id/amountField"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/amountHintString"
-        android:inputType="number"
-        android:maxLength="20"
-        android:textAlignment="textEnd"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amountLabel" />
-
-    <ImageView
-        android:id="@+id/invalidAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/invalidAmountString"
-        android:src="@android:drawable/ic_delete"
-        app:layout_constraintBottom_toTopOf="@+id/amountSpacing"
-        app:layout_constraintEnd_toStartOf="@+id/amountField" />
-
-    <Space
-        android:id="@+id/amountSpacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amountField" />
-
-    <TextView
-        android:id="@+id/descriptionLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/descriptionHolder"
-        android:text="@string/descriptionString"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amountSpacing" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/descriptionHolder"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        app:counterEnabled="true"
-        app:counterMaxLength="50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/descriptionField"
+        <Space
+            android:id="@+id/menuSpacing"
             android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/amountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/amountField"
+            android:text="@string/amountString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
+
+        <me.abhinay.input.CurrencyEditText
+            android:id="@+id/amountField"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/amountHintString"
+            android:inputType="number"
+            android:maxLength="20"
+            android:textAlignment="textEnd"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/amountLabel" />
+
+        <ImageView
+            android:id="@+id/invalidAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/invalidAmountString"
+            android:src="@android:drawable/ic_delete"
+            app:layout_constraintBottom_toTopOf="@+id/amountSpacing"
+            app:layout_constraintEnd_toStartOf="@+id/amountField" />
+
+        <Space
+            android:id="@+id/amountSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/amountField" />
+
+        <TextView
+            android:id="@+id/descriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/descriptionHolder"
+            android:text="@string/descriptionString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/amountSpacing" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/descriptionHolder"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descriptionField"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:autofillHints="@android:string/autofill"
+                android:contentDescription="@string/descriptionString"
+                android:inputType="textCapWords"
+                android:maxLength="50" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:id="@+id/descriptionSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionHolder" />
+
+        <TextView
+            android:id="@+id/dateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/dateField"
+            android:text="@string/dateString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
+
+        <EditText
+            android:id="@+id/dateField"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:autofillHints="@android:string/autofill"
-            android:contentDescription="@string/descriptionString"
-            android:inputType="textCapWords"
-            android:maxLength="50" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:autofillHints=""
+            android:ems="6"
+            android:inputType="date"
+            android:maxLength="10"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
 
-    <Space
-        android:id="@+id/descriptionSpacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionHolder" />
+        <ImageButton
+            android:id="@+id/dateButton"
+            android:layout_width="85dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/calendarString"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
+            app:layout_constraintStart_toEndOf="@+id/dateField"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
 
-    <TextView
-        android:id="@+id/dateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/dateField"
-        android:text="@string/dateString"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
+        <ImageView
+            android:id="@+id/invalidDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/invalidDateString"
+            android:src="@android:drawable/ic_delete"
+            app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
+            app:layout_constraintEnd_toStartOf="@+id/dateField" />
 
-    <EditText
-        android:id="@+id/dateField"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:autofillHints=""
-        android:ems="6"
-        android:inputType="date"
-        android:maxLength="10"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
+        <Space
+            android:id="@+id/dateSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateField" />
 
-    <ImageButton
-        android:id="@+id/dateButton"
-        android:layout_width="85dp"
-        android:layout_height="0dp"
-        android:contentDescription="@string/calendarString"
-        android:src="@android:drawable/ic_menu_my_calendar"
-        app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
-        app:layout_constraintStart_toEndOf="@+id/dateField"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
+        <TextView
+            android:id="@+id/categoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submitString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateSpacing" />
 
-    <ImageView
-        android:id="@+id/invalidDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/invalidDateString"
-        android:src="@android:drawable/ic_delete"
-        app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
-        app:layout_constraintEnd_toStartOf="@+id/dateField" />
+        <Space
+            android:id="@+id/category1Spacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
 
-    <Space
-        android:id="@+id/dateSpacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateField" />
+        <Button
+            android:id="@+id/category1Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="17"
+            android:paddingVertical="25dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category1Spacing" />
 
-    <TextView
-        android:id="@+id/categoryLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/submitString"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateSpacing" />
+        <Space
+            android:id="@+id/category2Spacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/category1Button" />
 
-    <Space
-        android:id="@+id/category1Spacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
+        <Button
+            android:id="@+id/category2Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="17"
+            android:paddingVertical="25dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category2Spacing" />
 
-    <Button
-        android:id="@+id/category1Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="17"
-        android:paddingVertical="25dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category1Spacing" />
+        <Space
+            android:id="@+id/category3Spacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/category2Button" />
 
-    <Space
-        android:id="@+id/category2Spacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/category1Button" />
+        <Button
+            android:id="@+id/category3Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="17"
+            android:paddingVertical="25dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category3Spacing" />
 
-    <Button
-        android:id="@+id/category2Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="17"
-        android:paddingVertical="25dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category2Spacing" />
+        <View
+            android:id="@+id/dateOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
 
-    <Space
-        android:id="@+id/category3Spacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/category2Button" />
+        <CalendarView
+            android:id="@+id/dateSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:contentDescription="@string/calendarString"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
 
-    <Button
-        android:id="@+id/category3Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="17"
-        android:paddingVertical="25dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category3Spacing" />
+        <Button
+            android:id="@+id/cancelDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:ems="9"
+            android:text="@string/cancelString"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateSelector" />
 
-    <View
-        android:id="@+id/dateOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <CalendarView
-        android:id="@+id/dateSelector"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:contentDescription="@string/calendarString"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
-
-    <Button
-        android:id="@+id/cancelDateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:ems="9"
-        android:text="@string/cancelString"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateSelector" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
