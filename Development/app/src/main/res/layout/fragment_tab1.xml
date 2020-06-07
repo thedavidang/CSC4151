@@ -110,6 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:autofillHints=""
+        android:maxLength="10"
         android:ems="6"
         android:inputType="date"
         android:textAlignment="center"

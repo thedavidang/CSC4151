@@ -206,11 +206,14 @@ class Tab3Fragment : Fragment() {
     * Returns: True if date field is both in valid format and possible. */
     private fun validateDateInput() : Boolean {
         validDate = try {
+            val dateText = dateInput.text.toString()
             /* Replace all non-numeric characters in date with slashes.
             * Consecutive non-numeric characters will be replaced with a single dash. */
-            val dateParsed = userDateFormat.parse(dateInput.text.toString())
-            /* Check if date is in MM/dd/yyyy format. */
-            (dateParsed != null && !dateParsed.after(modelDateFormat.parse(today)))
+            val dateParsed = userDateFormat.parse(dateText)
+            /* Check if date is in M/d/yyyy format. */
+            (dateParsed != null && !dateParsed.after(modelDateFormat.parse(today)) &&
+                    dateText.matches(
+                        Regex("(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])/[0-9]+")))
         }
         catch (_ : Exception) {
             false
