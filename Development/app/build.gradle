@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdk 34
@@ -12,6 +11,10 @@ android {
         versionCode 10
         versionName '1.1.0'
         setProperty("archivesBaseName", "WalletWatch-Installer")
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {

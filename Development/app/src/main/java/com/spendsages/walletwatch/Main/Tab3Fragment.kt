@@ -10,12 +10,13 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.android.synthetic.main.layout_card.view.*
+import com.spendsages.walletwatch.databinding.FragmentTab3Binding
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
 import java.text.DecimalFormat
@@ -34,7 +35,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Tab3Fragment : Fragment() {
-    private lateinit var rootView : View
+    private var _binding: FragmentTab3Binding? = null
+    private val binding get() = _binding!!
+
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
@@ -267,10 +270,12 @@ class Tab3Fragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.fragment_tab3, container, false)
+    ): View {
+        _binding = FragmentTab3Binding.inflate(inflater, container, false)
+        val rootView = binding.root
         main = activity as MainActivity
         model = main.model
 
@@ -286,7 +291,8 @@ class Tab3Fragment : Fragment() {
                 override fun onButtonClick(
                     entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder) {
                     /* Check if the checkbox is now checked. */
-                    if (viewHolder.itemView.deleteCheckbox.isChecked) {
+                    if (viewHolder.itemView.findViewById<AppCompatCheckBox>(
+                            R.id.deleteCheckbox).isChecked) {
                         /* Add the entry id to the list of selected entries for deletion. */
                         selectedEntries.add(entry.id)
                     }
@@ -641,6 +647,11 @@ class Tab3Fragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

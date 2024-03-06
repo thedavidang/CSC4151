@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.spendsages.walletwatch.databinding.FragmentTab2Binding
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
 import lecho.lib.hellocharts.view.PieChartView
@@ -26,7 +27,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Tab2Fragment : Fragment() {
-    private lateinit var rootView : View
+    private var _binding: FragmentTab2Binding? = null
+    private val binding get() = _binding!!
+
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
@@ -543,8 +546,9 @@ class Tab2Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.fragment_tab2, container, false)
+    ): View {
+        _binding = FragmentTab2Binding.inflate(inflater, container, false)
+        val rootView = binding.root
         main = activity as MainActivity
         model = main.model
 
@@ -760,6 +764,11 @@ class Tab2Fragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

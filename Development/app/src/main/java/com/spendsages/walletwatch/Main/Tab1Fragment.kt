@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
+import com.spendsages.walletwatch.databinding.FragmentTab1Binding
 import me.abhinay.input.CurrencyEditText
 import me.abhinay.input.CurrencySymbols
 import java.lang.Exception
@@ -27,7 +28,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Tab1Fragment : Fragment() {
-    private lateinit var rootView : View
+    private var _binding: FragmentTab1Binding? = null
+    private val binding get() = _binding!!
+
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
@@ -189,8 +192,9 @@ class Tab1Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.fragment_tab1, container, false)
+    ): View {
+        _binding = FragmentTab1Binding.inflate(inflater, container, false)
+        val rootView = binding.root
         main = activity as MainActivity
         model = main.model
 
@@ -324,6 +328,11 @@ class Tab1Fragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

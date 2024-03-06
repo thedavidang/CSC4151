@@ -10,46 +10,48 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_tab1.*
+import com.spendsages.walletwatch.databinding.ActivityMainBinding
 
 /* This is the "main" of the program and is also the primary activity of the app.
 * This will immediately load upon app launch. */
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     lateinit var model : SharedViewModel
 
     override fun onDestroy() {
         super.onDestroy()
         /* Hide the keyboard. */
         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-            .hideSoftInputFromWindow(mainPager.windowToken, 0)
+            .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
     }
 
     override fun onStop() {
         super.onStop()
         /* Hide the keyboard. */
         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-            .hideSoftInputFromWindow(mainPager.windowToken, 0)
+            .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
     }
 
     override fun onPause() {
         super.onPause()
         /* Hide the keyboard. */
         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-            .hideSoftInputFromWindow(mainPager.windowToken, 0)
+            .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
     }
 
     /* Overwritten function that performs tasks immediately upon app launch. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         /* Display the activity_main.xml layout. */
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
         /* Setup the fragment manager, which will load the three tabs and select Tab 1. */
         val fragmentAdapter = MainPagerAdapter(supportFragmentManager)
-        mainPager.adapter = fragmentAdapter
-        mainPager.addOnPageChangeListener(object : OnPageChangeListener {
+        binding.mainPager.adapter = fragmentAdapter
+        binding.mainPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
@@ -62,21 +64,21 @@ class MainActivity : AppCompatActivity() {
                 if (state == ViewPager.SCROLL_STATE_IDLE)
                 {
                     /* Check if the current tab is not Tab 1. */
-                    if (mainPager.currentItem != 0)
+                    if (binding.mainPager.currentItem != 0)
                     {
                         /* Hide the keyboard. */
                         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                            .hideSoftInputFromWindow(mainPager.windowToken, 0)
+                            .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
                     }
                     /* Otherwise, open the numpad. */
                     else {
-                        showKeyboard(amountField)
+                        showKeyboard(findViewById<me.abhinay.input.CurrencyEditText>(R.id.amountField))
                     }
                 }
             }
         })
 
-        mainTabs.setupWithViewPager(mainPager)
+        binding.mainTabs.setupWithViewPager(binding.mainPager)
 
         /* Function that will open the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.openSettingsButton).setOnClickListener {

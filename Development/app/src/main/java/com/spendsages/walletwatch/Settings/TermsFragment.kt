@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.spendsages.walletwatch.databinding.FragmentTermsBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,7 +20,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class TermsFragment : Fragment() {
-    private lateinit var rootView : View
+    private var _binding: FragmentTermsBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var settings : SettingsActivity
 
     private lateinit var termsText : TextView
@@ -27,8 +30,9 @@ class TermsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.fragment_terms, container, false)
+    ): View {
+        _binding = FragmentTermsBinding.inflate(inflater, container, false)
+        val rootView = binding.root
         settings = activity as SettingsActivity
 
         /* Allow Terms of Use text to be scrollable. */
@@ -36,6 +40,11 @@ class TermsFragment : Fragment() {
         termsText.movementMethod = ScrollingMovementMethod()
 
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_card.view.*
 import org.w3c.dom.Document
 import java.text.DecimalFormat
 import java.util.*
@@ -168,13 +167,16 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
 
             /* Force checkbox to be initially unchecked. */
-            entryViewHolder.itemView.deleteCheckbox.isChecked = false
+            entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
+                R.id.deleteCheckbox).isChecked = false
 
-            entryViewHolder.itemView.deleteCheckbox.setOnClickListener {
+            entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
+                R.id.deleteCheckbox).setOnClickListener {
                 selectListener?.onButtonClick(entries!![i], entryViewHolder)
             }
 
-            entryViewHolder.itemView.editButton.setOnClickListener {
+            entryViewHolder.itemView.findViewById<AppCompatImageButton>(
+                R.id.editButton).setOnClickListener {
                 editListener?.onButtonClick(entries!![i], entryViewHolder)
             }
         }

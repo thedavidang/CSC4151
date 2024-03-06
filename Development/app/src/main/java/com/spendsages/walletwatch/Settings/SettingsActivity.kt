@@ -7,24 +7,27 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.activity_settings.*
+import com.spendsages.walletwatch.databinding.ActivitySettingsBinding
 
 /* This is the secondary activity of the app,
 * which allows the user to view and modify various settings. */
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingsBinding
+
     lateinit var model : SharedViewModel
 
     /* Overwritten function that performs tasks immediately upon opening Settings. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
 
         /* Display the activity_settings.xml layout. */
-        setContentView(R.layout.activity_settings)
+        setContentView(binding.root)
 
         /* Setup the fragment manager, which will load the three tabs and select "Categories". */
         val fragmentAdapter = SettingsPagerAdapter(supportFragmentManager)
-        settingsPager.adapter = fragmentAdapter
-        settingsPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        binding.settingsPager.adapter = fragmentAdapter
+        binding.settingsPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
@@ -37,12 +40,12 @@ class SettingsActivity : AppCompatActivity() {
                 {
                     /* Hide the keyboard. */
                     (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                        .hideSoftInputFromWindow(settingsPager.windowToken, 0)
+                        .hideSoftInputFromWindow(binding.settingsPager.windowToken, 0)
                 }
             }
         })
 
-        settingsTabs.setupWithViewPager(settingsPager)
+        binding.settingsTabs.setupWithViewPager(binding.settingsPager)
 
         /* Function that will close the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.closeSettingsButton).setOnClickListener {

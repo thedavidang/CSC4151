@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
+import com.spendsages.walletwatch.databinding.FragmentCategoryBinding
 import org.w3c.dom.Document
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,7 +26,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CategoryFragment : Fragment() {
-    private lateinit var rootView : View
+    private var _binding: FragmentCategoryBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var settings : SettingsActivity
     private lateinit var model : SharedViewModel
     private lateinit var archive : Document
@@ -128,8 +131,9 @@ class CategoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.fragment_category, container, false)
+    ): View {
+        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        val rootView = binding.root
         settings = activity as SettingsActivity
         model = settings.model
 
@@ -273,6 +277,11 @@ class CategoryFragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

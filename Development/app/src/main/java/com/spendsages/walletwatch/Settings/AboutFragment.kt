@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.spendsages.walletwatch.databinding.FragmentAboutBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,15 +18,22 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class AboutFragment : Fragment() {
-    private lateinit var rootView : View
+    private var _binding: FragmentAboutBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.fragment_about, container, false)
+    ): View {
+        _binding = FragmentAboutBinding.inflate(inflater, container, false)
+        val rootView = binding.root
 
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
