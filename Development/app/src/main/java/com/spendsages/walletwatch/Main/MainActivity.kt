@@ -105,8 +105,7 @@ class MainActivity : AppCompatActivity() {
             * For example, if it is a numerical textbox, such as amountField,
             * it will open the numpad. */
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .toggleSoftInput(
-                    InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+                .showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
     }
 }
