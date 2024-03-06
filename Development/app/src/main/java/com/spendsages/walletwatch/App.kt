@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 * they can all reference the same data,
 * even as changes occur on that data. */
 class ViewModelFactory() : ViewModelProvider.Factory {
-    override fun <T: ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T: ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SharedViewModel::class.java)) {
             val key = "SharedViewModel"
             return if(hashMapViewModel.containsKey(key)){
