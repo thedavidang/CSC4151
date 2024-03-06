@@ -7,7 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.spendsages.walletwatch.databinding.ActivityMainBinding
@@ -88,8 +88,7 @@ class MainActivity : AppCompatActivity() {
 
         /* Setup the shared view model, so that all fragments can access the same live data. */
         val viewModelFactory = Injection.provideViewModelFactory(this)
-        model = ViewModelProviders.of(this, viewModelFactory).get(
-            SharedViewModel::class.java)
+        model = ViewModelProvider(this, viewModelFactory)[SharedViewModel::class.java]
         model.open(this)
     }
 
