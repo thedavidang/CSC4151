@@ -85,7 +85,7 @@ class CategoryFragment : Fragment() {
         /* Grab user input values. */
         for ((index, categoryTextbox) in categoryTextboxes.withIndex()) {
             categoryInputs[index] = categoryTextbox!!.text.toString().split(
-                " ").joinToString(" ") { it.capitalize() }
+                " ").joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
         }
 
         /* Check for duplicate inputs or if there are no new categories. */
@@ -116,7 +116,7 @@ class CategoryFragment : Fragment() {
                 if (changed[index] == "") {
                     /* Forcibly capitalize each word in new category label. */
                     changed[index] = category.split(
-                        " ").joinToString(" ") { it.capitalize() }
+                        " ").joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
                 }
                 else {
                     changed[changed.indexOf("")] = category
