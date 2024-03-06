@@ -12,7 +12,6 @@
         tools:replace="label">
         <activity
             android:name="com.spendsages.walletwatch.MainActivity"
-            android:label="@string/nameString"
             android:screenOrientation="portrait"
             android:noHistory="true"
             android:windowSoftInputMode="stateVisible"
