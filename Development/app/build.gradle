@@ -10,7 +10,10 @@ android {
         targetSdk 34
         versionCode 10
         versionName '1.1.0'
-        setProperty("archivesBaseName", "WalletWatch-Installer")
+    }
+
+    base {
+        archivesName = "WalletWatch-Installer"
     }
 
     buildFeatures {
