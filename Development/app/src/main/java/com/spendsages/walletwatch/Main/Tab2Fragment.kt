@@ -188,19 +188,19 @@ class Tab2Fragment : Fragment() {
         when (colorPosition) {
             /* Set line to red for Category 1. */
             1 -> {
-                line.color = this.resources.getColor(R.color.colorCategory1)
+                line.color = this.resources.getColor(R.color.colorCategory1, context?.theme)
             }
             /* Set line to green for Category 2. */
             2 -> {
-                line.color = this.resources.getColor(R.color.colorCategory2)
+                line.color = this.resources.getColor(R.color.colorCategory2, context?.theme)
             }
             /* Set line to blue for Category 3. */
             3 -> {
-                line.color = this.resources.getColor(R.color.colorCategory3)
+                line.color = this.resources.getColor(R.color.colorCategory3, context?.theme)
             }
             /* Set line to black for All Categories. */
             else -> {
-                line.color = this.resources.getColor(R.color.colorAll)
+                line.color = this.resources.getColor(R.color.colorAll, context?.theme)
             }
         }
 
@@ -436,7 +436,9 @@ class Tab2Fragment : Fragment() {
         val total = category1Amount + category2Amount + category3Amount
 
         /* Set the colors and percentage labels for each of the category data set slices. */
-        val category1Slice = SliceValue(category1Amount, resources.getColor(R.color.colorCategory1))
+        val category1Slice = SliceValue(
+            category1Amount, resources.getColor(R.color.colorCategory1, context?.theme)
+        )
         if (category1Amount > 0) {
             category1Slice.setLabel(
                 ((category1Amount / total) * 100).roundToInt().toString() + " %")
@@ -446,7 +448,9 @@ class Tab2Fragment : Fragment() {
         }
         values.add(category1Slice)
 
-        val category2Slice = SliceValue(category2Amount, resources.getColor(R.color.colorCategory2))
+        val category2Slice = SliceValue(
+            category2Amount, resources.getColor(R.color.colorCategory2, context?.theme)
+        )
         if (category2Amount > 0) {
             category2Slice.setLabel(
                 ((category2Amount / total) * 100).roundToInt().toString() + " %")
@@ -456,7 +460,9 @@ class Tab2Fragment : Fragment() {
         }
         values.add(category2Slice)
 
-        val category3Slice = SliceValue(category3Amount, resources.getColor(R.color.colorCategory3))
+        val category3Slice = SliceValue(
+            category3Amount, resources.getColor(R.color.colorCategory3, context?.theme)
+        )
         if (category3Amount > 0) {
             category3Slice.setLabel(
                 ((category3Amount / total) * 100).roundToInt().toString() + " %")
