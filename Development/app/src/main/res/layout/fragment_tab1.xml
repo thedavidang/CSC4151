@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
 
-        <me.abhinay.input.CurrencyEditText
+        <com.cottacush.android.currencyedittext.CurrencyEditText
             android:id="@+id/amountField"
             android:layout_width="300dp"
             android:layout_height="wrap_content"

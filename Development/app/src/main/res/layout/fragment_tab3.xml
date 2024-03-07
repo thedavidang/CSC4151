@@ -110,7 +110,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <me.abhinay.input.CurrencyEditText
+            <com.cottacush.android.currencyedittext.CurrencyEditText
                 android:id="@+id/amountFieldEdit"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"

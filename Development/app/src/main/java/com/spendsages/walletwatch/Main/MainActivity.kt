@@ -72,7 +72,11 @@ class MainActivity : AppCompatActivity() {
                     }
                     /* Otherwise, open the numpad. */
                     else {
-                        showKeyboard(findViewById<me.abhinay.input.CurrencyEditText>(R.id.amountField))
+                        showKeyboard(
+                            findViewById<com.cottacush.android.currencyedittext.CurrencyEditText>(
+                                R.id.amountField
+                            )
+                        )
                     }
                 }
             }

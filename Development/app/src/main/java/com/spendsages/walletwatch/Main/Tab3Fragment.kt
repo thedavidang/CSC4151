@@ -17,8 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.spendsages.walletwatch.databinding.FragmentTab3Binding
-import me.abhinay.input.CurrencyEditText
-import me.abhinay.input.CurrencySymbols
+import com.cottacush.android.currencyedittext.CurrencyEditText
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -527,9 +526,7 @@ class Tab3Fragment : Fragment() {
 
         amountInput = rootView.findViewById(R.id.amountFieldEdit)
         /* Use the dollar sign "$". */
-        amountInput.setCurrency(CurrencySymbols.USA)
-        /* Add a space after the dollar sign. */
-        amountInput.setSpacing(true)
+        amountInput.setCurrencySymbol("$ ", useCurrencySymbolAsHint = true)
         /* Set listener to enable category buttons if both inputs are valid. */
         amountInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
