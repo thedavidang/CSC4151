@@ -8,14 +8,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.spendsages.walletwatch.databinding.ActivityMainBinding
 
 /* This is the "main" of the program and is also the primary activity of the app.
 * This will immediately load upon app launch. */
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var tabLayout: TabLayout
 
     lateinit var model : SharedViewModel
 
@@ -48,41 +49,36 @@ class MainActivity : AppCompatActivity() {
         /* Display the activity_main.xml layout. */
         setContentView(binding.root)
 
-        /* Setup the fragment manager, which will load the three tabs and select Tab 1. */
-        val fragmentAdapter = MainPagerAdapter(supportFragmentManager)
-        binding.mainPager.adapter = fragmentAdapter
-        binding.mainPager.addOnPageChangeListener(object : OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-            override fun onPageSelected(position: Int) {}
-
-            /* Listener that will force the numpad to open on Tab 1
-            * and force the numpad to close when not on Tab 1. */
-            override fun onPageScrollStateChanged(state: Int) {
-                /* Wait until the Tab scrolling animation is done. */
-                if (state == ViewPager.SCROLL_STATE_IDLE)
-                {
-                    /* Check if the current tab is not Tab 1. */
-                    if (binding.mainPager.currentItem != 0)
-                    {
-                        /* Hide the keyboard. */
-                        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                            .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
-                    }
-                    /* Otherwise, open the numpad. */
-                    else {
-                        showKeyboard(
-                            findViewById<com.cottacush.android.currencyedittext.CurrencyEditText>(
-                                R.id.amountField
-                            )
+        /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
+        tabLayout = findViewById(R.id.mainTabs)
+        TabLayoutMediator(tabLayout, binding.mainPager) { tab, position ->
+            when (position) {
+                1 -> {
+                    /* Set tab title. */
+                    tab.text = "Analytics"
+                    /* Hide the numpad. */
+                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                        .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
+                }
+                2 -> {
+                    /* Set tab title. */
+                    tab.text = "History"
+                    /* Hide the numpad. */
+                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                        .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
+                }
+                else -> {
+                    /* Set tab title. */
+                    tab.text = "Add"
+                    /* Open the numpad. */
+                    showKeyboard(
+                        findViewById<com.cottacush.android.currencyedittext.CurrencyEditText>(
+                            R.id.amountField
                         )
-                    }
+                    )
                 }
             }
-        })
-
-        binding.mainTabs.setupWithViewPager(binding.mainPager)
+        }.attach()
 
         /* Function that will open the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.openSettingsButton).setOnClickListener {

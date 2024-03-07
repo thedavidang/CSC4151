@@ -6,13 +6,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.spendsages.walletwatch.databinding.ActivitySettingsBinding
 
 /* This is the secondary activity of the app,
 * which allows the user to view and modify various settings. */
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
+    private lateinit var tabLayout: TabLayout
 
     lateinit var model : SharedViewModel
 
@@ -24,28 +26,28 @@ class SettingsActivity : AppCompatActivity() {
         /* Display the activity_settings.xml layout. */
         setContentView(binding.root)
 
-        /* Setup the fragment manager, which will load the three tabs and select "Categories". */
-        val fragmentAdapter = SettingsPagerAdapter(supportFragmentManager)
-        binding.settingsPager.adapter = fragmentAdapter
-        binding.settingsPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-            override fun onPageSelected(position: Int) {}
-
-            /* Listener that will force the numpad to close. */
-            override fun onPageScrollStateChanged(state: Int) {
-                /* Wait until the Tab scrolling animation is done. */
-                if (state == ViewPager.SCROLL_STATE_IDLE)
-                {
-                    /* Hide the keyboard. */
-                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                        .hideSoftInputFromWindow(binding.settingsPager.windowToken, 0)
+        /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
+        tabLayout = findViewById(R.id.settingsTabs)
+        TabLayoutMediator(tabLayout, binding.settingsPager) { tab, position ->
+            when (position) {
+                1 -> {
+                    /* Set tab title. */
+                    tab.text = "Terms"
+                }
+                2 -> {
+                    /* Set tab title. */
+                    tab.text = "About"
+                }
+                else -> {
+                    /* Set tab title. */
+                    tab.text = "Categories"
                 }
             }
-        })
 
-        binding.settingsTabs.setupWithViewPager(binding.settingsPager)
+            /* Hide the keyboard. */
+            (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(binding.settingsPager.windowToken, 0)
+        }.attach()
 
         /* Function that will close the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.closeSettingsButton).setOnClickListener {
