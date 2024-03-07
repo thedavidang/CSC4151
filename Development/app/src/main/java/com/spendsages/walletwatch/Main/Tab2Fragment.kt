@@ -72,9 +72,7 @@ class Tab2Fragment : Fragment() {
             /* Try to detach and attach the Tab 2 fragment. */
             val ft = fragmentManager!!.beginTransaction()
 
-            if (Build.VERSION.SDK_INT >= 26) {
-                ft.setReorderingAllowed(false)
-            }
+            ft.setReorderingAllowed(false)
 
             ft.detach(this).attach(this).commit()
         }
