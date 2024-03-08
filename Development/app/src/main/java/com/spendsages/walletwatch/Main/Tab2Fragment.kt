@@ -571,8 +571,8 @@ class Tab2Fragment : Fragment() {
         /* Grab category labels as they currently exist in the local XML repo file. */
         categories = DataManager.getCategories(model.get())
 
-        lineChart = rootView.findViewById(R.id.chartView) as LineChartView
-        pieChart = rootView.findViewById(R.id.pieView) as PieChartView
+        lineChart = rootView.findViewById(R.id.chartView)!!
+        pieChart = rootView.findViewById(R.id.pieView)!!
 
         /* Populate the line chart with Last 7 Days for All Categories. */
         updateLineChart(DataManager.last7Days(model.get(), "all"),
