@@ -154,29 +154,30 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             }
             entryViewHolder.category.text = categoryLabel
 
+            val editButton = entryViewHolder.itemView.findViewById<AppCompatImageButton>(
+                R.id.editButton)
+
+            val deleteCheckbox = entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
+                R.id.deleteCheckbox)
+
             /* Add a unique content description for the checkbox. */
-            entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
-                R.id.deleteCheckbox).contentDescription =
+            deleteCheckbox.contentDescription =
                 "Select Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
 
             /* Add a unique content description for the edit button. */
-            entryViewHolder.itemView.findViewById<AppCompatImageButton>(
-                R.id.editButton).contentDescription =
+            editButton.contentDescription =
                 "Edit Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
 
             /* Force checkbox to be initially unchecked. */
-            entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
-                R.id.deleteCheckbox).isChecked = false
+            deleteCheckbox.isChecked = false
 
-            entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
-                R.id.deleteCheckbox).setOnClickListener {
+            deleteCheckbox.setOnClickListener {
                 selectListener?.onButtonClick(entries!![i], entryViewHolder)
             }
 
-            entryViewHolder.itemView.findViewById<AppCompatImageButton>(
-                R.id.editButton).setOnClickListener {
+            editButton.setOnClickListener {
                 editListener?.onButtonClick(entries!![i], entryViewHolder)
             }
         }
