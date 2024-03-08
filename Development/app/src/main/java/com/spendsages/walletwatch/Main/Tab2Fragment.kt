@@ -262,7 +262,9 @@ class Tab2Fragment : Fragment() {
                         }
                     }
                     /* Add the abbreviation to the X-axis labels array. */
-                    xAxisValues.add(AxisValue(j.toFloat(), currentMonthString.toCharArray()))
+                    val xAxisValue = AxisValue(j.toFloat())
+                    xAxisValue.setLabel(currentMonthString)
+                    xAxisValues.add(xAxisValue)
                     currentMonth -= 1
                     /* Account for rollover into December of the previous year. */
                     if (currentMonth == -1) {
@@ -279,7 +281,9 @@ class Tab2Fragment : Fragment() {
                 /* Grab the last 10 years. */
                 for (i in 1..10) {
                     /* Add the year to the X-axis labels array. */
-                    xAxisValues.add(AxisValue(j.toFloat(), currentYear.toString().toCharArray()))
+                    val xAxisValue = AxisValue(j.toFloat())
+                    xAxisValue.setLabel(currentYear.toString())
+                    xAxisValues.add(xAxisValue)
                     currentYear -= 1
                     j--
                 }
@@ -316,7 +320,9 @@ class Tab2Fragment : Fragment() {
                         }
                     }
                     /* Add the abbreviation to the X-axis labels array. */
-                    xAxisValues.add(AxisValue(j.toFloat(), currentDayString.toCharArray()))
+                    val xAxisValue = AxisValue(j.toFloat())
+                    xAxisValue.setLabel(currentDayString)
+                    xAxisValues.add(xAxisValue)
                     currentDay -= 1
                     /* Account for rollover into Sunday of the previous week. */
                     if (currentDay == 0) {
@@ -377,8 +383,10 @@ class Tab2Fragment : Fragment() {
                         " " + metric[((yValExponent / 3) - 1).toInt()]
             }
 
+            val yAxisValue = AxisValue(yValue)
+            yAxisValue.setLabel(yLabel)
             /* Add the Y-axis value and label to the Y-axis object. */
-            yAxisValues.add(AxisValue(yValue, yLabel.toCharArray()))
+            yAxisValues.add(yAxisValue)
 
             /* Increment the yValue by the step. */
             yValue += step
