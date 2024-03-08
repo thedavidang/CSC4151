@@ -30,6 +30,7 @@
             android:noHistory="true"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false"
             tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
     </application>
 
