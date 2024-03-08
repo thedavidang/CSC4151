@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.spendsages.walletwatch.databinding.FragmentTab2Binding
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
@@ -29,6 +30,9 @@ private const val ARG_PARAM2 = "param2"
 class Tab2Fragment : Fragment() {
     private var _binding: FragmentTab2Binding? = null
     private val binding get() = _binding!!
+
+    private lateinit var mainPagerAdapter: MainPagerAdapter
+    private lateinit var viewPager: ViewPager2
 
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
@@ -776,6 +780,12 @@ class Tab2Fragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        mainPagerAdapter = MainPagerAdapter(this)
+        viewPager = view.findViewById(R.id.mainPager)
+        viewPager.adapter = mainPagerAdapter
     }
 
     override fun onDestroyView() {
