@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Tab3Fragment">
 
-    <Space
+    <View
         android:id="@+id/menuSpacing"
         android:layout_width="match_parent"
         android:layout_height="10dp"
@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tab2Spinners" />
 
-    <Space
+    <View
         android:id="@+id/buttonSpacing"
         android:layout_width="match_parent"
         android:layout_height="10dp"
@@ -66,7 +66,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Space
+    <View
         android:id="@+id/footerSpacing"
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -133,7 +133,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/amountSpacing"
                 app:layout_constraintEnd_toStartOf="@+id/amountFieldEdit" />
 
-            <Space
+            <View
                 android:id="@+id/amountSpacing"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
@@ -173,7 +173,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Space
+            <View
                 android:id="@+id/descriptionSpacing"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
@@ -223,7 +223,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
                 app:layout_constraintEnd_toStartOf="@+id/dateFieldEdit" />
 
-            <Space
+            <View
                 android:id="@+id/dateSpacing"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
@@ -274,7 +274,7 @@
                     android:textSize="18sp" />
             </RadioGroup>
 
-            <Space
+            <View
                 android:id="@+id/categorySpacing"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"

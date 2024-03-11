@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         tools:context=".Tab2Fragment">
 
-        <Space
+        <View
             android:id="@+id/menuSpacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -73,7 +73,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tab2Spinners" />
 
-        <Space
+        <View
             android:id="@+id/chartSpacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -129,7 +129,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Space
+            <View
                 android:id="@+id/category1Spacing"
                 android:layout_width="match_parent"
                 android:layout_height="5dp" />
@@ -174,7 +174,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Space
+            <View
                 android:id="@+id/category2Spacing"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"

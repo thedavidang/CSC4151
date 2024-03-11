@@ -68,7 +68,7 @@
 
     </androidx.cardview.widget.CardView>
 
-    <Space
+    <View
         android:id="@+id/cardSpacing"
         android:layout_width="match_parent"
         android:layout_height="10dp" />

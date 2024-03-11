@@ -13,7 +13,7 @@
     android:layout_height="wrap_content"
     tools:context=".CategoryFragment">
 
-    <Space
+    <View
         android:id="@+id/menuSpacing"
         android:layout_width="match_parent"
         android:layout_height="10dp"
@@ -116,7 +116,7 @@
             android:maxLength="20" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Space
+    <View
         android:id="@+id/category3Spacing"
         android:layout_width="match_parent"
         android:layout_height="30dp"

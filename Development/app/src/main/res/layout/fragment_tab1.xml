@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         tools:context=".Tab1Fragment">
 
-        <Space
+        <View
             android:id="@+id/menuSpacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -54,7 +54,7 @@
             app:layout_constraintBottom_toTopOf="@+id/amountSpacing"
             app:layout_constraintEnd_toStartOf="@+id/amountField" />
 
-        <Space
+        <View
             android:id="@+id/amountSpacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -93,7 +93,7 @@
                 android:maxLength="50" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
+        <View
             android:id="@+id/descriptionSpacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -143,7 +143,7 @@
             app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
             app:layout_constraintEnd_toStartOf="@+id/dateField" />
 
-        <Space
+        <View
             android:id="@+id/dateSpacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -160,7 +160,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateSpacing" />
 
-        <Space
+        <View
             android:id="@+id/category1Spacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -179,7 +179,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category1Spacing" />
 
-        <Space
+        <View
             android:id="@+id/category2Spacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -198,7 +198,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category2Spacing" />
 
-        <Space
+        <View
             android:id="@+id/category3Spacing"
             android:layout_width="match_parent"
             android:layout_height="10dp"
