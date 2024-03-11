@@ -30,7 +30,8 @@
                 android:minHeight="?actionBarSize"
                 android:padding="@dimen/appbar_padding"
                 android:text="@string/headingString"
-                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                tools:ignore="RelativeOverlap" />
 
             <ImageButton
                 android:id="@+id/closeSettingsButton"
