@@ -95,6 +95,23 @@ class Tab3Fragment : Fragment() {
     private lateinit var success : Toast
     private lateinit var delete : Toast
 
+    /* Purpose: Helper method that will find the index/position of the Entry
+    * that has a matching id string.
+    *
+    * Parameters: id represents the numerical id of the target element.
+    *
+    * Returns: An integer representing the index/position of the target element or
+    * -1 if the target element id was not found. */
+    private fun findEntryById(id : String) : Int {
+        return if (!adapterRecycler.entries.isNullOrEmpty()) {
+            adapterRecycler.entries!!.indexOfFirst{
+                it.id == id
+            }
+        } else {
+            -1
+        }
+    }
+
     /* Purpose: Controller method that will update the RecyclerView after the back-end sorts
     * the list of entries.
     *
@@ -102,14 +119,16 @@ class Tab3Fragment : Fragment() {
     *
     * Returns: Nothing. */
     fun sortEntries(position : Int) {
-        when (position) {
-            1 -> adapterRecycler.entries = sortByDateAscending(adapterRecycler.entries)
-            2 -> adapterRecycler.entries = sortByPriceDescending(adapterRecycler.entries)
-            3 -> adapterRecycler.entries = sortByPriceAscending(adapterRecycler.entries)
-            else -> adapterRecycler.entries = sortByDateDescending(adapterRecycler.entries)
+        if (!adapterRecycler.entries.isNullOrEmpty()) {
+            when (position) {
+                1 -> adapterRecycler.entries = sortByDateAscending(adapterRecycler.entries)
+                2 -> adapterRecycler.entries = sortByPriceDescending(adapterRecycler.entries)
+                3 -> adapterRecycler.entries = sortByPriceAscending(adapterRecycler.entries)
+                else -> adapterRecycler.entries = sortByDateDescending(adapterRecycler.entries)
+            }
+            /* Update the model, so that the changes are immediately displayed in the app. */
+            adapterRecycler.notifyItemRangeChanged(0, adapterRecycler.entries!!.size)
         }
-        /* Update the model, so that the changes are immediately displayed in the app. */
-        adapterRecycler.notifyDataSetChanged()
     }
 
     /* Purpose: Controller method that disables the Save Changes button
@@ -260,7 +279,7 @@ class Tab3Fragment : Fragment() {
         /* Update the model, so that the changes are immediately displayed in the app. */
         adapterRecycler.updateData(model.get(), spinSorting.selectedItemPosition,
             spinFiltering.selectedItem.toString())
-        adapterRecycler.notifyDataSetChanged()
+        adapterRecycler.notifyItemChanged(findEntryById(entryID))
 
         /* Display the Toast message "Expense Modified". */
         success.show()
@@ -410,6 +429,9 @@ class Tab3Fragment : Fragment() {
                         * save the change, and disable the Delete Selected button. */
                         DialogInterface.BUTTON_POSITIVE -> {
                             DataManager.deleteEntries(model.get(), selectedEntries)
+                            for (entryId in selectedEntries) {
+                                adapterRecycler.notifyItemRemoved(findEntryById(entryId))
+                            }
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
                             model.save(main)
@@ -418,7 +440,6 @@ class Tab3Fragment : Fragment() {
                             adapterRecycler.updateData(model.get(),
                                 spinSorting.selectedItemPosition,
                                 spinFiltering.selectedItem.toString())
-                            adapterRecycler.notifyDataSetChanged()
                             toggleButton(deleteButton, false)
                             delete.show()
                         }
