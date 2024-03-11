@@ -489,14 +489,10 @@ class Tab3Fragment : Fragment() {
         /* Set Toast to "Expense Modified".
         * Ignore the warning since the Toast is shown in submitEdit. */
         success = Toast.makeText(context, R.string.changedEntryString, Toast.LENGTH_LONG)
-        /* Center the "Expense Modified" Toast and position it at the top. */
-        success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
 
         /* Set Toast to "Selection Deleted".
         * Ignore the warning since the Toast is shown in deleteButton listener. */
         delete = Toast.makeText(context, R.string.deletedEntriesString, Toast.LENGTH_LONG)
-        /* Center the "Selection Deleted" Toast and position it at the top. */
-        delete.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
 
         /* Populate the Radio Button Group of category radio buttons. */
         categoryGroup = rootView.findViewById(R.id.categoryGroup)

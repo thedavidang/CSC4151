@@ -206,8 +206,6 @@ class Tab1Fragment : Fragment() {
         /* Set Toast to "Expense Added".
         * Ignore the warning since the Toast is shown in submitEntry. */
         success = Toast.makeText(context, R.string.addedEntryString, Toast.LENGTH_LONG)
-        /* Center the "Expense Added" Toast and position it at the top. */
-        success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL, 0, 0)
 
         /* Populate the fixed array of category buttons. */
         categoryButtons[0] = rootView.findViewById(R.id.category1Button)

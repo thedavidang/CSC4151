@@ -162,15 +162,11 @@ class CategoryFragment : Fragment() {
                                     model.get(), archive, changed)) {
                                 success = Toast.makeText(
                                     context, R.string.changedCategoryString, Toast.LENGTH_LONG)
-                                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL,
-                                    0, 0)
                             }
                             /* A category was restored from the Archive.xml. */
                             else {
                                 success = Toast.makeText(
                                     context, R.string.restoredCategoryString, Toast.LENGTH_LONG)
-                                success.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL,
-                                    0, 0)
                             }
 
                             model.save(settings)
