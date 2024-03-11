@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
 import com.spendsages.walletwatch.databinding.FragmentTermsBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,9 +22,6 @@ private const val ARG_PARAM2 = "param2"
 class TermsFragment : Fragment() {
     private var _binding: FragmentTermsBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var settingsPagerAdapter: SettingsPagerAdapter
-    private lateinit var viewPager: ViewPager2
 
     private lateinit var settings : SettingsActivity
 
@@ -44,12 +40,6 @@ class TermsFragment : Fragment() {
         termsText.movementMethod = ScrollingMovementMethod()
 
         return rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        settingsPagerAdapter = SettingsPagerAdapter(this)
-        viewPager = view.findViewById(R.id.settingsPager)
-        viewPager.adapter = settingsPagerAdapter
     }
 
     override fun onDestroyView() {

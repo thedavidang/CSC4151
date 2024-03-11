@@ -1,10 +1,13 @@
 package com.spendsages.walletwatch
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 /* This class provides support for creating and switching between the three tabs. */
-class MainPagerAdapter(f: Fragment) : FragmentStateAdapter(f) {
+class MainPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+    FragmentStateAdapter(fragmentManager, lifecycle) {
     /* Purpose: Getter/Accessor that opens the corresponding fragment
     * based on the index of the target tab to now display.
     *

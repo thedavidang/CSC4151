@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
 import com.spendsages.walletwatch.databinding.FragmentCategoryBinding
 import org.w3c.dom.Document
@@ -29,9 +28,6 @@ private const val ARG_PARAM2 = "param2"
 class CategoryFragment : Fragment() {
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var settingsPagerAdapter: SettingsPagerAdapter
-    private lateinit var viewPager: ViewPager2
 
     private lateinit var settings : SettingsActivity
     private lateinit var model : SharedViewModel
@@ -277,12 +273,6 @@ class CategoryFragment : Fragment() {
         }
 
         return rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        settingsPagerAdapter = SettingsPagerAdapter(this)
-        viewPager = view.findViewById(R.id.settingsPager)
-        viewPager.adapter = settingsPagerAdapter
     }
 
     override fun onDestroyView() {

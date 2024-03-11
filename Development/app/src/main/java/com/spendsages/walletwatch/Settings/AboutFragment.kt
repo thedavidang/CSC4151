@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager2.widget.ViewPager2
 import com.spendsages.walletwatch.databinding.FragmentAboutBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,9 +21,6 @@ class AboutFragment : Fragment() {
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var settingsPagerAdapter: SettingsPagerAdapter
-    private lateinit var viewPager: ViewPager2
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,12 +29,6 @@ class AboutFragment : Fragment() {
         val rootView = binding.root
 
         return rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        settingsPagerAdapter = SettingsPagerAdapter(this)
-        viewPager = view.findViewById(R.id.settingsPager)
-        viewPager.adapter = settingsPagerAdapter
     }
 
     override fun onDestroyView() {

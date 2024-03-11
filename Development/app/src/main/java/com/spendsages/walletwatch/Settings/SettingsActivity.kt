@@ -28,6 +28,7 @@ class SettingsActivity : AppCompatActivity() {
 
         /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
         tabLayout = findViewById(R.id.settingsTabs)
+        binding.settingsPager.adapter = SettingsPagerAdapter(supportFragmentManager, lifecycle)
         TabLayoutMediator(tabLayout, binding.settingsPager) { tab, position ->
             when (position) {
                 1 -> {

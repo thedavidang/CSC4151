@@ -8,7 +8,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
 import com.spendsages.walletwatch.databinding.FragmentTab1Binding
 import com.cottacush.android.currencyedittext.CurrencyEditText
@@ -30,9 +29,6 @@ private const val ARG_PARAM2 = "param2"
 class Tab1Fragment : Fragment() {
     private var _binding: FragmentTab1Binding? = null
     private val binding get() = _binding!!
-
-    private lateinit var mainPagerAdapter: MainPagerAdapter
-    private lateinit var viewPager: ViewPager2
 
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
@@ -327,12 +323,6 @@ class Tab1Fragment : Fragment() {
         }
 
         return rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mainPagerAdapter = MainPagerAdapter(this)
-        viewPager = view.findViewById(R.id.mainPager)
-        viewPager.adapter = mainPagerAdapter
     }
 
     override fun onDestroyView() {

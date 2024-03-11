@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
         tabLayout = findViewById(R.id.mainTabs)
+        binding.mainPager.adapter = MainPagerAdapter(supportFragmentManager, lifecycle)
         TabLayoutMediator(tabLayout, binding.mainPager) { tab, position ->
             when (position) {
                 1 -> {
