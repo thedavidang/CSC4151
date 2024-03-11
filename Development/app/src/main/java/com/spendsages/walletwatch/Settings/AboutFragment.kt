@@ -26,9 +26,8 @@ class AboutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAboutBinding.inflate(inflater, container, false)
-        val rootView = binding.root
 
-        return rootView
+        return binding.root
     }
 
     override fun onDestroyView() {

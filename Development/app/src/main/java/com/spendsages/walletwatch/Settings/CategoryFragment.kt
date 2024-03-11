@@ -154,14 +154,14 @@ class CategoryFragment : Fragment() {
                         /* If user taps "Yes", then call the back-end function. */
                         DialogInterface.BUTTON_POSITIVE -> {
                             /* A category was changed without any restoration. */
-                            if (DataManager.changeCategories(settings,
+                            success = if (DataManager.changeCategories(settings,
                                     model.get(), archive, changed)) {
-                                success = Toast.makeText(
+                                Toast.makeText(
                                     context, R.string.changedCategoryString, Toast.LENGTH_LONG)
                             }
                             /* A category was restored from the Archive.xml. */
                             else {
-                                success = Toast.makeText(
+                                Toast.makeText(
                                     context, R.string.restoredCategoryString, Toast.LENGTH_LONG)
                             }
 
