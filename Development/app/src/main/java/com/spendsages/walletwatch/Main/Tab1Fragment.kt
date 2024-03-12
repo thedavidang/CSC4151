@@ -325,6 +325,14 @@ class Tab1Fragment : Fragment() {
         return rootView
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (main.launched) {
+            amountInput.requestFocus()
+            main.showKeyboard(amountInput)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

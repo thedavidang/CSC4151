@@ -8,6 +8,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
+import com.cottacush.android.currencyedittext.CurrencyEditText
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.spendsages.walletwatch.databinding.ActivityMainBinding
@@ -19,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
 
     lateinit var model : SharedViewModel
+
+    var launched: Boolean = false
 
     override fun onDestroy() {
         super.onDestroy()
@@ -53,33 +57,31 @@ class MainActivity : AppCompatActivity() {
         tabLayout = findViewById(R.id.mainTabs)
         binding.mainPager.adapter = MainPagerAdapter(supportFragmentManager, lifecycle)
         TabLayoutMediator(tabLayout, binding.mainPager) { tab, position ->
-            when (position) {
-                1 -> {
-                    /* Set tab title. */
-                    tab.text = "Analytics"
-                    /* Hide the numpad. */
-                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                        .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
-                }
-                2 -> {
-                    /* Set tab title. */
-                    tab.text = "History"
-                    /* Hide the numpad. */
-                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                        .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
-                }
-                else -> {
-                    /* Set tab title. */
-                    tab.text = "Add"
-                    /* Open the numpad. */
-                    showKeyboard(
-                        findViewById<com.cottacush.android.currencyedittext.CurrencyEditText>(
-                            R.id.amountField
-                        )
-                    )
-                }
+            /* Set tab title. */
+            tab.text = when (position) {
+                1 -> { "Analytics" }
+                2 -> { "History" }
+                else -> { "Add" }
             }
         }.attach()
+
+        binding.mainPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                /* Check if the current tab is not Tab 1. */
+                if (position != 0)
+                {
+                    /* Hide the keyboard. */
+                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                        .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
+                }
+                /* Otherwise, open the numpad. */
+                else if (!launched) {
+                    showKeyboard(findViewById<CurrencyEditText>(R.id.amountField))
+                    launched = true
+                }
+            }
+        })
 
         /* Function that will open the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.openSettingsButton).setOnClickListener {
