@@ -61,8 +61,8 @@
     </string-array>
 
     <string name="termsString">
-        MIT License\n\nCopyright © 2020 SpendSages\n\nPermission is hereby granted, free of charge,
-        to any person obtaining a copy
+        MIT License\n\nCopyright © 2020–2024 SpendSages\n\nPermission is hereby granted,
+        free of charge, to any person obtaining a copy
         of this software and associated documentation files (the "Software"), to deal
         in the Software without restriction, including without limitation the rights
         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -84,6 +84,6 @@
     </string>
     <string name="versionString">Version 1.1.0</string>
     <string name="githubString">https://github.com/thedavidang/CSC4151</string>
-    <string name="copyrightString">© Copyright 2020 SpendSages</string>
+    <string name="copyrightString">Copyright © 2020–2024 SpendSages</string>
     <string name="logoString">Logo of a watch wrapped around a wallet.</string>
 </resources>
