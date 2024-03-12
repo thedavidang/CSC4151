@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         /* Function that will open the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.openSettingsButton).setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
-            finish()
         }
 
         /* Setup the shared view model, so that all fragments can access the same live data. */

@@ -1,6 +1,5 @@
 package com.spendsages.walletwatch
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
@@ -52,7 +51,6 @@ class SettingsActivity : AppCompatActivity() {
 
         /* Function that will close the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.closeSettingsButton).setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 
@@ -60,10 +58,5 @@ class SettingsActivity : AppCompatActivity() {
         val viewModelFactory = Injection.provideViewModelFactory(this)
         model = ViewModelProvider(this, viewModelFactory)[SharedViewModel::class.java]
         model.open(this)
-    }
-
-    override fun onBackPressed() {
-        finish()
-        startActivity(Intent(this, MainActivity::class.java))
     }
 }
