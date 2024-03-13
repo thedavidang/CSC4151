@@ -3,13 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/nameString"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:appCategory="productivity"
+        android:allowBackup="true"
+        android:hasFragileUserData="true"
+        android:restoreAnyVersion="true"
+        android:rollbackDataPolicy="restore"
+        android:backupInForeground="false"
+        android:allowClearUserData="true"
+        android:directBootAware="false"
+        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme"
-        tools:replace="label">
+        tools:replace="label"
+        tools:targetApi="s">
         <activity
             android:name="com.spendsages.walletwatch.MainActivity"
             android:screenOrientation="portrait"
@@ -17,6 +26,9 @@
             android:windowSoftInputMode="stateVisible"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true"
+            android:showForAllUsers="false"
+            android:showWhenLocked="false"
+            android:turnScreenOn="false"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +43,9 @@
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="false"
+            android:showForAllUsers="false"
+            android:showWhenLocked="false"
+            android:turnScreenOn="false"
             tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
     </application>
 
