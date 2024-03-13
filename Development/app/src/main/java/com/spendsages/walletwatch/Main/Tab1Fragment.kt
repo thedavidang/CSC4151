@@ -218,7 +218,7 @@ class Tab1Fragment : Fragment() {
         /* Set focus to amountField and open the numpad. */
         amountInput.requestFocus()
         /* Use the dollar sign "$". */
-        amountInput.setCurrencySymbol("$ ", useCurrencySymbolAsHint = true)
+        amountInput.setCurrencySymbol("$", useCurrencySymbolAsHint = true)
         /* Set listener to enable category buttons if both inputs are valid. */
         amountInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
