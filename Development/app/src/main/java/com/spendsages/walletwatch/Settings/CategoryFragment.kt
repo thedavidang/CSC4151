@@ -7,10 +7,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.spendsages.walletwatch.databinding.FragmentCategoryBinding
 import org.w3c.dom.Document
@@ -132,7 +132,7 @@ class CategoryFragment : Fragment() {
         settings = activity as SettingsActivity
         model = settings.model
 
-        /* Grab the labels of the categories as they currently are in the XML file. */
+        /* Grab the labels of the categories as they currently are in the XML data file. */
         categories = DataManager.getCategories(model.get()).slice(1..3).toTypedArray()
 
         saveButton = rootView.findViewById(R.id.saveButton)
@@ -148,9 +148,10 @@ class CategoryFragment : Fragment() {
                     when (which) {
                         /* If user taps "Yes", then call the back-end function. */
                         DialogInterface.BUTTON_POSITIVE -> {
+                            val doc = model.get()
                             /* A category was changed without any restoration. */
-                            success = if (DataManager.changeCategories(settings,
-                                    model.get(), archive, changed)) {
+                            success = if (
+                                DataManager.changeCategories(settings, doc, archive, changed)) {
                                 Toast.makeText(
                                     context, R.string.changedCategoryString, Toast.LENGTH_LONG)
                             }
@@ -160,12 +161,12 @@ class CategoryFragment : Fragment() {
                                     context, R.string.restoredCategoryString, Toast.LENGTH_LONG)
                             }
 
-                            model.save(settings)
+                            model.save()
                             success.show()
                             toggleSaveButton(false)
                             /* Retrieve updated categories. */
                             categories = DataManager.getCategories(
-                                model.get()).slice(1..3).toTypedArray()
+                                doc).slice(1..3).toTypedArray()
                         }
                         /* If the user taps "No", then simply close the confirmation alert. */
                         DialogInterface.BUTTON_NEGATIVE -> {
@@ -232,7 +233,8 @@ class CategoryFragment : Fragment() {
 
         /* Iterate through each category textbox. */
         for ((index, textbox) in categoryTextboxes.withIndex()) {
-            /* Set the label for each category textbox as they currently are in the XML file. */
+            /* Set the label for each category textbox
+            as they currently are in the XML data file. */
             textbox!!.setText(categories[index])
             categoryInputs[index] = categories[index]
 
@@ -241,9 +243,15 @@ class CategoryFragment : Fragment() {
                 override fun beforeTextChanged(
                     s: CharSequence, start: Int, count: Int, after: Int) {}
 
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable) {
                     /* Remove all whitespace from user input in category textbox. */
                     val trimmed = s.toString().trim { it <= ' ' }
+                    if (s.toString() != trimmed) {
+                        textbox.setText(trimmed)
+                        textbox.setSelection(trimmed.length)
+                    }
 
                     /* Check if the user did not enter any word(s) into the category textbox. */
                     if (trimmed.isEmpty()) {
@@ -256,8 +264,6 @@ class CategoryFragment : Fragment() {
                         checkInputs()
                     }
                 }
-
-                override fun afterTextChanged(s: Editable) {}
             })
         }
 

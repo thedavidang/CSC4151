@@ -19,9 +19,9 @@ import javax.xml.transform.stream.StreamResult
 import javax.xml.xpath.XPathFactory
 
 object DataManager {
-    /* Purpose: Retrieve a value from an element in the local repo using an id.
+    /* Purpose: Retrieve a value from an element in the XML data file using an id.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * id represents the numerical id of the target element.
     *
     * Returns: A string representing the value of the target element or
@@ -35,9 +35,9 @@ object DataManager {
         return null
     }
 
-    /* Purpose: Retrieve a value from an element in the local repo using an XPath expression.
+    /* Purpose: Retrieve a value from an element in the XML data file using an XPath expression.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * xpath represents the XPath expression query.
     *
     * Returns: A string representing the value of the target element or
@@ -48,7 +48,7 @@ object DataManager {
 
     /* Purpose: Retrieves the labels of each of the three categories.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     *
     * Returns: categories represents a list of the category labels. */
     fun getCategories(doc: Document) : MutableList<String?> {
@@ -71,7 +71,7 @@ object DataManager {
 
     /* Purpose: Retrieves the total amount of expenses from the last seven days.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * category represents the specific category to filter for.
     *
     * Returns: total represents the total amount of expenses from the last seven days. */
@@ -98,7 +98,7 @@ object DataManager {
 
     /* Purpose: Grabs last 7 days for one or all categories
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * categoryID represents the specific category to filter for.
     *
     * Returns: array holding totals for category/all categories for current day/prior 6 days */
@@ -146,7 +146,7 @@ object DataManager {
 
     /* Purpose: Retrieves the total amount of expenses from the last twelve months.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * category represents the specific category to filter for.
     *
     * Returns: total represents the total amount of expenses from the last twelve months. */
@@ -261,7 +261,7 @@ object DataManager {
 
     /* Purpose: Determine how much of the date XML tree hierarchy already exists.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * category represents the number of the target category.
     * year represents the numerical year of the target date.
     * month represents the numerical month of the target date.
@@ -304,7 +304,7 @@ object DataManager {
         return dateExists
     }
 
-    /* Purpose: Increment the amount of a total element in the local repo.
+    /* Purpose: Increment the amount of a total element in the XML data file.
     *
     * Parameters: element represents the total Element to increment.
     * amount represents the amount to increment element by.
@@ -314,9 +314,9 @@ object DataManager {
         element.textContent = (element.textContent.toDouble() + amount.toDouble()).toString()
     }
 
-    /* Purpose: Add an entry to the local repo XML file.
+    /* Purpose: Add an entry to the XML data file.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * amountRaw represents the string of the raw dollar amount input.
     * description represents the string of the optional expense description.
     * date represents the string of the date of the expense.
@@ -450,9 +450,9 @@ object DataManager {
     }
 
     /* Purpose: Check how much of a date tree hierarchy will be "empty" after removing a
-    * particular Entry tag. Any "empty" date tags will be deleted from the local repo XML file.
+    * particular Entry tag. Any "empty" date tags will be deleted from the XML data file.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * entryID represents the id of the entry that will be deleted.
     *
     * Returns: Nothing. */
@@ -506,7 +506,7 @@ object DataManager {
 
     /* Purpose: Converts the contents of the archive into a string.
     *
-    * Parameters: archive represents the Document of the archive XML file.
+    * Parameters: archive represents the Document of the Archive XML file.
     *
     * Returns: String of the contents of the archive. */
     private fun archiveString(archive : Document?) : String {
@@ -568,38 +568,38 @@ object DataManager {
     *
     * Returns: Document of the Archive XML file. */
     fun getArchive(activity: Activity): Document {
-        /* Locate archive XML file in Android Internal Storage */
+        /* Locate Archive XML file in Android Internal Storage */
         var archiveFile = activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
 
-        /* Check if archive XML file does not yet exist since
+        /* Check if Archive XML file does not yet exist since
         * app has likely just now been installed on user's device. */
         if (!archiveFile.exists()) {
             try {
-                /* Open skeleton archive XML file from assets. */
+                /* Open skeleton Archive XML file from assets. */
                 val outputWriter = OutputStreamWriter(
                     activity.openFileOutput(activity.getString(R.string.archiveFilenameString), Context.MODE_PRIVATE))
 
-                /* Write the contents of the skeleton archive XML into buffer. */
+                /* Write the contents of the skeleton Archive XML into buffer. */
                 outputWriter.write(activity.assets.open(
                     activity.getString(R.string.archiveFilenameString)).bufferedReader().use { it.readText() })
 
                 /* Close the buffer. */
                 outputWriter.close()
 
-                /* Open the newly created archive XML file in Android Internal Storage. */
+                /* Open the newly created Archive XML file in Android Internal Storage. */
                 archiveFile = activity.getFileStreamPath(activity.getString(R.string.archiveFilenameString))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
 
-        /* Load the contents of the archive XML file to the value of archive. */
+        /* Load the contents of the Archive XML file to the value of archive. */
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(archiveFile)
     }
 
     /* Purpose: Get list of category labels archived in the Archive XML file.
     *
-    * Parameters: archive represents the Document of the archive XML file.
+    * Parameters: archive represents the Document of the Archive XML file.
     *
     * Returns: Mutable list of the category label strings. */
     fun getArchivedCategories(archive: Document): MutableList<String> {
@@ -627,7 +627,7 @@ object DataManager {
     * Finally, deletes all children of category tag, except label tag and total tag.
     *
     * Parameters: activity represents the activity that called this function.
-    * doc represents the Document of the local repo XML file.
+    * doc represents the Document of the XML data file.
     * archive represents the Document of the Archive XML file.
     * labels represent an array of which categories to overwrite.
     *
@@ -746,12 +746,12 @@ object DataManager {
             }
         }
 
-        /* Open skeleton archive XML file from assets. */
+        /* Open skeleton Archive XML file from assets. */
         val outputWriter = OutputStreamWriter(
             activity.openFileOutput(activity.getString(R.string.archiveFilenameString), Context.MODE_PRIVATE))
 
         /* Convert the value of archive into a string and
-        * write it to the now empty archive XML file */
+        * write it to the now empty Archive XML file */
         outputWriter.write(archiveString(archive))
 
         /* Close the buffer. */
@@ -761,9 +761,9 @@ object DataManager {
         return !categoryRestored
     }
 
-    /* Purpose: Delete entries from the local repo XML file.
+    /* Purpose: Delete entries from the XML data file.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * selectedEntries represents the list of strings of the ID of each selected entry.
     *
     * Returns: Nothing. */
@@ -774,9 +774,9 @@ object DataManager {
         }
     }
 
-    /* Purpose: Edit an entry in the local repo XML file.
+    /* Purpose: Edit an entry in the XML data file.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     * amountRaw represents the string of the raw dollar amount input.
     * description represents the string of the optional expense description.
     * date represents the string of the date of the expense.

@@ -250,7 +250,7 @@ class Tab3Fragment : Fragment() {
     }
 
     /* Purpose: Controller method that retrieves and validates user input,
-    * then calls DataManager method editEntry to modify entry in local repo
+    * then calls DataManager method editEntry to modify entry in XML data file
     * and closes the Edit Entry window.
     *
     * Parameters: None
@@ -260,12 +260,12 @@ class Tab3Fragment : Fragment() {
         val date = modelDateFormat.format(userDateFormat.parse(changedInputs[2]!!)!!)
         val category = (changedInputs[3]!!.toInt() + 1).toString()
 
-        /* Add the entry to the local repo. */
+        /* Add the entry to the XML data file. */
         DataManager.editEntry(model.get(), entryID,
             changedInputs[0]!!, changedInputs[1]!!, date, category)
 
         /* Update the data model. */
-        model.save(main)
+        model.save()
 
         /* Update the model, so that the changes are immediately displayed in the app. */
         adapterRecycler.updateData(model.get(), spinSorting.selectedItemPosition,
@@ -289,82 +289,13 @@ class Tab3Fragment : Fragment() {
     ): View {
         _binding = FragmentTab3Binding.inflate(inflater, container, false)
         val rootView = binding.root
-        main = activity as MainActivity
+        main = requireActivity() as MainActivity
         model = main.model
 
         /* Setup the RecyclerView, which will dynamically load entry cards as the user scrolls. */
         recycler = rootView.findViewById(R.id.cardRecycler)
         /* Set the RecyclerView to have a vertical layout. */
         recycler.layoutManager = LinearLayoutManager(context)
-        /* Connect the RecyclerView to the data model using the RecyclerAdapter. */
-        adapterRecycler = RecyclerAdapter(model.get())
-        /* Create a listener for the checkbox of each entry. */
-        adapterRecycler.setSelectListener(
-            object : OnClickListener {
-                override fun onButtonClick(
-                    entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder) {
-                    /* Check if the checkbox is now checked. */
-                    if (viewHolder.itemView.findViewById<AppCompatCheckBox>(
-                            R.id.deleteCheckbox).isChecked) {
-                        /* Add the entry id to the list of selected entries for deletion. */
-                        selectedEntries.add(entry.id)
-                    }
-                    /* Otherwise, the checkbox is now unchecked. */
-                    else {
-                        /* Remove the entry id from the list of selected entries for deletion. */
-                        selectedEntries.remove(entry.id)
-                    }
-
-                    /* Toggle the delete button depending on whether or not
-                    * any entries are selected. */
-                    when (selectedEntries.size) {
-                        1 -> toggleButton(deleteButton, true)
-                        0 -> toggleButton(deleteButton, false)
-                    }
-                }
-            }
-        )
-        /* Create a listener for the edit button of each entry. */
-        adapterRecycler.setEditListener(
-            object : OnClickListener {
-                override fun onButtonClick(
-                    entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder) {
-                    /* Retrieve the id, amount, description, date, and category of the entry. */
-                    entryID = entry.id
-                    amountInput.setText(viewHolder.amount.text)
-                    originalInputs[0] = viewHolder.amount.text.toString()
-                    changedInputs[0] = viewHolder.amount.text.toString()
-
-                    descriptionInput.setText(viewHolder.description.text)
-                    originalInputs[1] = viewHolder.description.text.toString()
-                    changedInputs[1] = viewHolder.description.text.toString()
-
-                    dateInput.setText(viewHolder.date.text)
-                    originalInputs[2] = viewHolder.date.text.toString()
-                    changedInputs[2] = viewHolder.date.text.toString()
-                    /* Set the CalendarView to the entry date. */
-                    dateSelector.setDate(userDateFormat.parse(dateInput.text.toString())!!.time,
-                        true, true)
-
-                    /* Make the correct category RadioButton checked. */
-                    val category = entryID.substring(2, 3).toInt() - 1
-                    categoryGroup.check(category)
-                    selectedCategory = category
-                    categoryButtons[category]?.isChecked = true
-                    originalInputs[3] = category.toString()
-                    changedInputs[3] = category.toString()
-
-                    /* Disable the Save Changes button since no changes have been made yet. */
-                    toggleButton(saveButton, false)
-                    /* Temporarily disable the Delete Selected button as to hide it. */
-                    toggleButton(deleteButton, false)
-                    /* Display the Edit Entry window. */
-                    toggleEditWindow(true)
-                }
-            }
-        )
-        /* Attach the adapter to the RecyclerView. */
-        recycler.adapter = adapterRecycler
 
         /* Set the possible options for the sorting Spinbox. */
         spinSorting = rootView.findViewById(R.id.sortingSpinner)
@@ -384,21 +315,14 @@ class Tab3Fragment : Fragment() {
 
         /* Set the possible options for the filtering Spinbox. */
         spinFiltering = rootView.findViewById(R.id.filteringSpinner)
-        spinFiltering.adapter = ArrayAdapter<String?>(requireActivity(),
-            R.layout.support_simple_spinner_dropdown_item,
-            DataManager.getCategories(model.get()))
         /* Set the listener that will filter the entries down
         * to only those of the category chosen. If the user taps "All", then clear any filtering. */
         spinFiltering.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 when (position) {
-                    0 -> {
-                        adapterRecycler.entries = adapterRecycler.entriesRaw
-                    }
-                    else -> {
-                        adapterRecycler.filter(spinFiltering.selectedItem.toString())
-                    }
+                    0 -> { adapterRecycler.entries = adapterRecycler.entriesRaw }
+                    else -> { adapterRecycler.filter(spinFiltering.selectedItem.toString()) }
                 }
                 sortEntries(spinSorting.selectedItemPosition)
             }
@@ -425,7 +349,7 @@ class Tab3Fragment : Fragment() {
                             }
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
-                            model.save(main)
+                            model.save()
                             /* Update the model, so that the changes are
                             * immediately displayed in the app. */
                             adapterRecycler.updateData(model.get(),
@@ -490,15 +414,9 @@ class Tab3Fragment : Fragment() {
         categoryGroup.setOnCheckedChangeListener { _, _ ->
             /* Select the correct category RadioButton. */
             when(categoryGroup.checkedRadioButtonId) {
-                R.id.category1ButtonEdit -> {
-                    selectedCategory = 0
-                }
-                R.id.category2ButtonEdit -> {
-                    selectedCategory = 1
-                }
-                R.id.category3ButtonEdit -> {
-                    selectedCategory = 2
-                }
+                R.id.category1ButtonEdit -> { selectedCategory = 0 }
+                R.id.category2ButtonEdit -> { selectedCategory = 1 }
+                R.id.category3ButtonEdit -> { selectedCategory = 2 }
             }
             /* Check if an actual category change was made. */
             changedInputs[3] = selectedCategory.toString()
@@ -509,12 +427,6 @@ class Tab3Fragment : Fragment() {
         categoryButtons[0] = rootView.findViewById(R.id.category1ButtonEdit)
         categoryButtons[1] = rootView.findViewById(R.id.category2ButtonEdit)
         categoryButtons[2] = rootView.findViewById(R.id.category3ButtonEdit)
-        /* Retrieve the labels for each category. */
-        categories = DataManager.getCategories(model.get())
-        /* Set the category label and submit listener for each corresponding category button. */
-        for ((index, button) in categoryButtons.withIndex()) {
-            button?.text = categories[index + 1]
-        }
 
         /* Set the cancel button to hide the Edit Entry window. */
         cancelButton = rootView.findViewById(R.id.cancelButton)
@@ -538,7 +450,7 @@ class Tab3Fragment : Fragment() {
 
         amountInput = rootView.findViewById(R.id.amountFieldEdit)
         /* Use the dollar sign "$". */
-        amountInput.setCurrencySymbol("$", useCurrencySymbolAsHint = true)
+        amountInput.setCurrencySymbol("$", useCurrencySymbolAsHint = false)
         /* Set listener to enable category buttons if both inputs are valid. */
         amountInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -656,6 +568,96 @@ class Tab3Fragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Observe the LiveData objects from SharedViewModel.
+        model.getLive().observe(viewLifecycleOwner) { doc ->
+            /* Refresh the RecyclerAdapter. */
+            adapterRecycler = RecyclerAdapter(doc)
+            /* Refresh the RecyclerView. */
+            recycler.adapter = adapterRecycler
+
+            /* Create a listener for the checkbox of each entry. */
+            adapterRecycler.setSelectListener(
+                object : OnClickListener {
+                    override fun onButtonClick(
+                        entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder) {
+                        /* Check if the checkbox is now checked. */
+                        if (viewHolder.itemView.findViewById<AppCompatCheckBox>(
+                                R.id.deleteCheckbox).isChecked) {
+                            /* Add the entry id to the list of selected entries for deletion. */
+                            selectedEntries.add(entry.id)
+                        }
+                        /* Otherwise, the checkbox is now unchecked. */
+                        else {
+                            /* Remove the entry id from the list of selected entries for deletion. */
+                            selectedEntries.remove(entry.id)
+                        }
+
+                        /* Toggle the delete button depending on whether or not
+                        * any entries are selected. */
+                        when (selectedEntries.size) {
+                            1 -> { toggleButton(deleteButton, true) }
+                            0 -> { toggleButton(deleteButton, false) }
+                        }
+                    }
+                }
+            )
+
+            /* Create a listener for the edit button of each entry. */
+            adapterRecycler.setEditListener(
+                object : OnClickListener {
+                    override fun onButtonClick(
+                        entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder) {
+                        /* Retrieve the id, amount, description, date, and category of the entry. */
+                        entryID = entry.id
+                        amountInput.setText(viewHolder.amount.text)
+                        originalInputs[0] = viewHolder.amount.text.toString()
+                        changedInputs[0] = viewHolder.amount.text.toString()
+
+                        descriptionInput.setText(viewHolder.description.text)
+                        originalInputs[1] = viewHolder.description.text.toString()
+                        changedInputs[1] = viewHolder.description.text.toString()
+
+                        dateInput.setText(viewHolder.date.text)
+                        originalInputs[2] = viewHolder.date.text.toString()
+                        changedInputs[2] = viewHolder.date.text.toString()
+                        /* Set the CalendarView to the entry date. */
+                        dateSelector.setDate(userDateFormat.parse(dateInput.text.toString())!!.time,
+                            true, true)
+
+                        /* Make the correct category RadioButton checked. */
+                        val category = entryID.substring(2, 3).toInt() - 1
+                        categoryGroup.check(category)
+                        selectedCategory = category
+                        categoryButtons[category]?.isChecked = true
+                        originalInputs[3] = category.toString()
+                        changedInputs[3] = category.toString()
+
+                        /* Disable the Save Changes button since no changes have been made yet. */
+                        toggleButton(saveButton, false)
+                        /* Temporarily disable the Delete Selected button as to hide it. */
+                        toggleButton(deleteButton, false)
+                        /* Display the Edit Entry window. */
+                        toggleEditWindow(true)
+                    }
+                }
+            )
+
+            /* Refresh the categories. */
+            categories = DataManager.getCategories(doc)
+            /* Refresh the category label for each category button. */
+            for ((index, button) in categoryButtons.withIndex()) {
+                button?.text = categories[index + 1]
+            }
+
+            /* Refresh the possible options for the filtering Spinbox. */
+            spinFiltering.adapter = ArrayAdapter<String?>(requireActivity(),
+                R.layout.support_simple_spinner_dropdown_item, categories)
+        }
     }
 
     override fun onDestroyView() {

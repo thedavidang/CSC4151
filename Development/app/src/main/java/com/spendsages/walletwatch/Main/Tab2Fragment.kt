@@ -11,8 +11,9 @@ import com.spendsages.walletwatch.databinding.FragmentTab2Binding
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
 import lecho.lib.hellocharts.view.PieChartView
+import org.w3c.dom.Document
 import java.text.DecimalFormat
-import java.util.*
+import java.util.Calendar
 import kotlin.math.roundToInt
 
 /**
@@ -35,12 +36,15 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var categories : MutableList<String?>
 
+    private lateinit var category1Label : String
     private lateinit var category1Text : TextView
     private lateinit var category1Total : TextView
 
+    private lateinit var category2Label : String
     private lateinit var category2Text : TextView
     private lateinit var category2Total : TextView
 
+    private lateinit var category3Label : String
     private lateinit var category3Text : TextView
     private lateinit var category3Total : TextView
 
@@ -64,7 +68,7 @@ class Tab2Fragment : Fragment() {
         /* Check if Tab 2 is currently visible to the user. */
         if (isVisibleToUser) {
             /* Try to detach and attach the Tab 2 fragment. */
-            val ft = fragmentManager!!.beginTransaction()
+            val ft = requireFragmentManager().beginTransaction()
 
             ft.setReorderingAllowed(false)
 
@@ -118,29 +122,23 @@ class Tab2Fragment : Fragment() {
     * Parameters: total represents the array of doubles for each data point.
     * timeSpan represents whether the user selected 0) Last 7 Days, 1) Last 12 Months,
     * or 2) All Time (All Time will only display the last 10 years).
-    * colorPosition represent whether the user selected 0) All categories
+    * categoryPosition represent whether the user selected 0) All categories
     * or 1-3) a specific Category.
     *
     * Returns: Nothing. */
-    fun updateLineChart(dataPoints: DoubleArray, timeSpan: Int, colorPosition: Int) {
+    fun updateLineChart(dataPoints: DoubleArray, timeSpan: Int, category: Int) {
         /* Initialize a Calender object. */
         val cal: Calendar = Calendar.getInstance()
 
-        /* Initialize counter to based on selected time interval. */
+        /* Initialize 0-based counter for the selected time interval. */
         var counter =
             when (timeSpan) {
                 /* Last 12 Months. */
-                1 -> {
-                    11
-                }
+                1 -> { 11 }
                 /* All Time (in this case it is actually last 10 years). */
-                2 -> {
-                    9
-                }
+                2 -> { 9 }
                 /* Last 7 Days. */
-                else -> {
-                    6
-                }
+                else -> { 6 }
             }
 
         /* Initialize minimum and maximum axis values. */
@@ -179,23 +177,15 @@ class Tab2Fragment : Fragment() {
         /* Create a line object and color it according to the selected category. */
         val line = Line(values)
         /* Check which category the user selected. */
-        when (colorPosition) {
+        when (category) {
             /* Set line to red for Category 1. */
-            1 -> {
-                line.color = this.resources.getColor(R.color.colorCategory1, context?.theme)
-            }
+            1 -> { line.color = this.resources.getColor(R.color.colorCategory1, context?.theme) }
             /* Set line to green for Category 2. */
-            2 -> {
-                line.color = this.resources.getColor(R.color.colorCategory2, context?.theme)
-            }
+            2 -> { line.color = this.resources.getColor(R.color.colorCategory2, context?.theme) }
             /* Set line to blue for Category 3. */
-            3 -> {
-                line.color = this.resources.getColor(R.color.colorCategory3, context?.theme)
-            }
+            3 -> { line.color = this.resources.getColor(R.color.colorCategory3, context?.theme) }
             /* Set line to black for All Categories. */
-            else -> {
-                line.color = this.resources.getColor(R.color.colorAll, context?.theme)
-            }
+            else -> { line.color = this.resources.getColor(R.color.colorAll, context?.theme) }
         }
 
         /* Initialize the lines array such that the line can be added to the LineChartData. */
@@ -218,42 +208,18 @@ class Tab2Fragment : Fragment() {
                 var j = 11
                 for (i in 1..12) {
                     when (currentMonth) {
-                        0 -> {
-                            currentMonthString = "Jan"
-                        }
-                        1 -> {
-                            currentMonthString = "Feb"
-                        }
-                        2 -> {
-                            currentMonthString = "Mar"
-                        }
-                        3 -> {
-                            currentMonthString = "Apr"
-                        }
-                        4 -> {
-                            currentMonthString = "May"
-                        }
-                        5 -> {
-                            currentMonthString = "Jun"
-                        }
-                        6 -> {
-                            currentMonthString = "Jul"
-                        }
-                        7 -> {
-                            currentMonthString = "Aug"
-                        }
-                        8 -> {
-                            currentMonthString = "Sep"
-                        }
-                        9 -> {
-                            currentMonthString = "Oct"
-                        }
-                        10 -> {
-                            currentMonthString = "Nov"
-                        }
-                        11 -> {
-                            currentMonthString = "Dec"
-                        }
+                        0 -> { currentMonthString = "Jan" }
+                        1 -> { currentMonthString = "Feb" }
+                        2 -> { currentMonthString = "Mar" }
+                        3 -> { currentMonthString = "Apr" }
+                        4 -> { currentMonthString = "May" }
+                        5 -> { currentMonthString = "Jun" }
+                        6 -> { currentMonthString = "Jul" }
+                        7 -> { currentMonthString = "Aug" }
+                        8 -> { currentMonthString = "Sep" }
+                        9 -> { currentMonthString = "Oct" }
+                        10 -> { currentMonthString = "Nov" }
+                        11 -> { currentMonthString = "Dec" }
                     }
                     /* Add the abbreviation to the X-axis labels array. */
                     val xAxisValue = AxisValue(j.toFloat())
@@ -291,27 +257,13 @@ class Tab2Fragment : Fragment() {
                 var j = 6
                 for (i in 1..7) {
                     when (currentDay) {
-                        1 -> {
-                            currentDayString = "Sun"
-                        }
-                        2 -> {
-                            currentDayString = "Mon"
-                        }
-                        3 -> {
-                            currentDayString = "Tue"
-                        }
-                        4 -> {
-                            currentDayString = "Wed"
-                        }
-                        5 -> {
-                            currentDayString = "Thu"
-                        }
-                        6 -> {
-                            currentDayString = "Fri"
-                        }
-                        7 -> {
-                            currentDayString = "Sat"
-                        }
+                        1 -> { currentDayString = "Sun" }
+                        2 -> { currentDayString = "Mon" }
+                        3 -> { currentDayString = "Tue" }
+                        4 -> { currentDayString = "Wed" }
+                        5 -> { currentDayString = "Thu" }
+                        6 -> { currentDayString = "Fri" }
+                        7 -> { currentDayString = "Sat" }
                     }
                     /* Add the abbreviation to the X-axis labels array. */
                     val xAxisValue = AxisValue(j.toFloat())
@@ -403,7 +355,7 @@ class Tab2Fragment : Fragment() {
     * or 2) All Time.
     *
     * Returns: Nothing. */
-    fun updatePieChart(timeSpan: Int) {
+    fun updatePieChart(doc: Document, timeSpan: Int) {
         /* Initialize value variables used to populate the pie chart. */
         val values = ArrayList<SliceValue>(3)
         val category1Amount : Float
@@ -414,24 +366,21 @@ class Tab2Fragment : Fragment() {
         when (timeSpan) {
             /* Last 12 Months. */
             1 -> {
-                category1Amount = DataManager.last12MonthsTotal(
-                    model.get(), "c-1").toFloat()
-                category2Amount = DataManager.last12MonthsTotal(
-                    model.get(), "c-2").toFloat()
-                category3Amount = DataManager.last12MonthsTotal(
-                    model.get(), "c-3").toFloat()
+                category1Amount = DataManager.last12MonthsTotal(doc, "c-1").toFloat()
+                category2Amount = DataManager.last12MonthsTotal(doc, "c-2").toFloat()
+                category3Amount = DataManager.last12MonthsTotal(doc, "c-3").toFloat()
             }
             /* All Time. */
             2 -> {
-                category1Amount = DataManager.getValueByID(model.get(), "c-1-t")!!.toFloat()
-                category2Amount = DataManager.getValueByID(model.get(), "c-2-t")!!.toFloat()
-                category3Amount = DataManager.getValueByID(model.get(), "c-3-t")!!.toFloat()
+                category1Amount = DataManager.getValueByID(doc, "c-1-t")!!.toFloat()
+                category2Amount = DataManager.getValueByID(doc, "c-2-t")!!.toFloat()
+                category3Amount = DataManager.getValueByID(doc, "c-3-t")!!.toFloat()
             }
             /* Last 7 Days. */
             else -> {
-                category1Amount = DataManager.last7DaysTotal(model.get(), "c-1").toFloat()
-                category2Amount = DataManager.last7DaysTotal(model.get(), "c-2").toFloat()
-                category3Amount = DataManager.last7DaysTotal(model.get(), "c-3").toFloat()
+                category1Amount = DataManager.last7DaysTotal(doc, "c-1").toFloat()
+                category2Amount = DataManager.last7DaysTotal(doc, "c-2").toFloat()
+                category3Amount = DataManager.last7DaysTotal(doc, "c-3").toFloat()
             }
         }
 
@@ -514,7 +463,7 @@ class Tab2Fragment : Fragment() {
     * or 2) All Time.
     *
     * Returns: Nothing. */
-    fun updateTotals(timeSpan: Int) {
+    fun updateTotals(doc: Document, timeSpan: Int) {
         val category1Amount : Double
         val category2Amount : Double
         val category3Amount : Double
@@ -523,21 +472,21 @@ class Tab2Fragment : Fragment() {
         when (timeSpan) {
             /* Update the totals to use the Last 12 Months totals. */
             1 -> {
-                category1Amount = DataManager.last12MonthsTotal(model.get(), "c-1")
-                category2Amount = DataManager.last12MonthsTotal(model.get(), "c-2")
-                category3Amount = DataManager.last12MonthsTotal(model.get(), "c-3")
+                category1Amount = DataManager.last12MonthsTotal(doc, "c-1")
+                category2Amount = DataManager.last12MonthsTotal(doc, "c-2")
+                category3Amount = DataManager.last12MonthsTotal(doc, "c-3")
             }
             /* Update the totals to use the All Time totals. */
             2 -> {
-                category1Amount = DataManager.getValueByID(model.get(), "c-1-t")!!.toDouble()
-                category2Amount = DataManager.getValueByID(model.get(), "c-2-t")!!.toDouble()
-                category3Amount = DataManager.getValueByID(model.get(), "c-3-t")!!.toDouble()
+                category1Amount = DataManager.getValueByID(doc, "c-1-t")!!.toDouble()
+                category2Amount = DataManager.getValueByID(doc, "c-2-t")!!.toDouble()
+                category3Amount = DataManager.getValueByID(doc, "c-3-t")!!.toDouble()
             }
             /* Update the totals to use the Last 7 Days totals. */
             else -> {
-                category1Amount = DataManager.last7DaysTotal(model.get(), "c-1")
-                category2Amount = DataManager.last7DaysTotal(model.get(), "c-2")
-                category3Amount = DataManager.last7DaysTotal(model.get(), "c-3")
+                category1Amount = DataManager.last7DaysTotal(doc, "c-1")
+                category2Amount = DataManager.last7DaysTotal(doc, "c-2")
+                category3Amount = DataManager.last7DaysTotal(doc, "c-3")
             }
         }
 
@@ -555,28 +504,21 @@ class Tab2Fragment : Fragment() {
     ): View {
         _binding = FragmentTab2Binding.inflate(inflater, container, false)
         val rootView = binding.root
-        main = activity as MainActivity
+        main = requireActivity() as MainActivity
         model = main.model
 
-        /* Grab category labels as they currently exist in the local XML repo file. */
+        /* Grab category labels as they currently exist in the XML data file. */
         categories = DataManager.getCategories(model.get())
 
         lineChart = rootView.findViewById(R.id.chartView)!!
         pieChart = rootView.findViewById(R.id.pieView)!!
-
-        /* Populate the line chart with Last 7 Days for All Categories. */
-        updateLineChart(DataManager.last7Days(model.get(), "all"),
-            0, 0)
-
-        /* Populate pie chart with Last 7 Days. */
-        updatePieChart(0)
 
         /* Show the line chart and hide the pie chart. */
         showLineChart()
 
         /* Set the total and label for Category 1 over the Last 7 Days. */
         category1Text = rootView.findViewById(R.id.category1Text)
-        var category1Label = categories[1]!!
+        category1Label = categories[1]!!
         /* Slice label to be at most 10 characters long. */
         if (category1Label.length > 10) {
             category1Label = category1Label.substring(0, 9) + "."
@@ -586,7 +528,7 @@ class Tab2Fragment : Fragment() {
 
         /* Set the total and label for Category 2 over the Last 7 Days. */
         category2Text = rootView.findViewById(R.id.category2Text)
-        var category2Label = categories[2]!!
+        category2Label = categories[2]!!
         /* Slice label to be at most 10 characters long. */
         if (category2Label.length > 10) {
             category2Label = category2Label.substring(0, 9) + "."
@@ -596,7 +538,7 @@ class Tab2Fragment : Fragment() {
 
         /* Set the total and label for Category 3 over the Last 7 Days. */
         category3Text = rootView.findViewById(R.id.category3Text)
-        var category3Label = categories[3]!!
+        category3Label = categories[3]!!
         /* Slice label to be at most 10 characters long. */
         if (category3Label.length > 10) {
             category3Label = category3Label.substring(0, 9) + "."
@@ -608,9 +550,6 @@ class Tab2Fragment : Fragment() {
         allText = rootView.findViewById(R.id.allText)
         allText.text = categories[0]
         allTotal = rootView.findViewById(R.id.allTotal)
-
-        /* Update the totals with the Last 7 Days of entries. */
-        updateTotals(0)
 
         /* Populate the Chart selector with "Line" and "Pie". */
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
@@ -651,6 +590,7 @@ class Tab2Fragment : Fragment() {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long
             ) {
+                val doc = model.get()
                 /* Initialize array to store data points for line chart. */
                 val data : DoubleArray
 
@@ -662,10 +602,10 @@ class Tab2Fragment : Fragment() {
                         * whichever category the user selected. */
                         data =
                             if (spinChartCategory.selectedItemPosition == 0) {
-                                DataManager.last12Months(model.get(), "all")
+                                DataManager.last12Months(doc, "all")
                             }
                             else {
-                                DataManager.last12Months(model.get(), "c-" +
+                                DataManager.last12Months(doc, "c-" +
                                         spinChartCategory.selectedItemPosition.toString())
                             }
                     }
@@ -675,10 +615,10 @@ class Tab2Fragment : Fragment() {
                         * whichever category the user selected. */
                         data =
                             if (spinChartCategory.selectedItemPosition == 0) {
-                                DataManager.last10Years(model.get(), "all")
+                                DataManager.last10Years(doc, "all")
                             }
                             else {
-                                DataManager.last10Years(model.get(), "c-" +
+                                DataManager.last10Years(doc, "c-" +
                                         spinChartCategory.selectedItemPosition.toString())
                             }
                     }
@@ -688,10 +628,10 @@ class Tab2Fragment : Fragment() {
                         * whichever category the user selected. */
                         data =
                             if (spinChartCategory.selectedItemPosition == 0) {
-                                DataManager.last7Days(model.get(), "all")
+                                DataManager.last7Days(doc, "all")
                             }
                             else {
-                                DataManager.last7Days(model.get(), "c-" +
+                                DataManager.last7Days(doc, "c-" +
                                         spinChartCategory.selectedItemPosition.toString())
                             }
                     }
@@ -701,18 +641,17 @@ class Tab2Fragment : Fragment() {
                 updateLineChart(data, position, spinChartCategory.selectedItemPosition)
 
                 /* Update the pie chart with the new time interval data set. */
-                updatePieChart(position)
+                updatePieChart(doc, position)
 
                 /* Update the totals with the new time interval data set. */
-                updateTotals(position)
+                updateTotals(doc, position)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
         }
 
-        /* Populate the Category selector with "All" and the current category labels. */
+        /* Populate the Category selector with "All" and the current category names. */
         spinChartCategory = rootView.findViewById(R.id.lineCategorySpinner)
-        /* Focus on category Spinner as to prevent any of the totals from displaying blank. */
         spinChartCategory.adapter = ArrayAdapter<String?>(main,
             R.layout.support_simple_spinner_dropdown_item, categories)
         /* Enable the category selector drop-down menu. */
@@ -722,41 +661,32 @@ class Tab2Fragment : Fragment() {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long
             ) {
+                val doc = model.get()
                 /* Initialize the array of data points for the line chart. */
                 val data : DoubleArray
                 /* Grab the selected time interval. */
                 val timeSpan = spinTimeInterval.selectedItemPosition
 
-                /* Check if the user selected a specific category. */
-                if (position != 0) {
-                    /* Grab the data set from whichever time interval
-                    * and category the user selected. */
-                    data = when (timeSpan) {
-                        0 -> {
-                            DataManager.last7Days(model.get(), "c-$position")
-
-                        }
-                        1 -> {
-                            DataManager.last12Months(model.get(), "c-$position")
-                        }
-                        else -> {
-                            DataManager.last10Years(model.get(), "c-$position")
+                /* Check which category the user selected. */
+                when (position) {
+                    /* All Categories. */
+                    0 -> {
+                        /* Grab the data set from whichever time interval
+                        * the user selected. */
+                        data = when (timeSpan) {
+                            0 -> { DataManager.last7Days(doc, "all") }
+                            1 -> { DataManager.last12Months(doc, "all") }
+                            else -> { DataManager.last10Years(doc, "all") }
                         }
                     }
-                }
-                /* Otherwise, the use selected All Categories. */
-                else {
-                    /* Grab the data set from whichever time interval
-                    * the user selected. */
-                    data = when (timeSpan) {
-                        0 -> {
-                            DataManager.last7Days(model.get(), "all")
-                        }
-                        1 -> {
-                            DataManager.last12Months(model.get(), "all")
-                        }
-                        else -> {
-                            DataManager.last10Years(model.get(), "all")
+                    /* A specific category. */
+                    else -> {
+                        /* Grab the data set from whichever time interval
+                        * and category the user selected. */
+                        data = when (timeSpan) {
+                            0 -> { DataManager.last7Days(doc, "c-$position") }
+                            1 -> { DataManager.last12Months(doc, "c-$position") }
+                            else -> { DataManager.last10Years(doc, "c-$position") }
                         }
                     }
                 }
@@ -765,11 +695,99 @@ class Tab2Fragment : Fragment() {
                 updateLineChart(data, timeSpan, position)
             }
 
-
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
         }
 
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Observe the LiveData objects from SharedViewModel
+        model.getLive().observe(viewLifecycleOwner) { doc ->
+            /* Refresh the categories. */
+            categories = DataManager.getCategories(doc)
+
+            /* Refresh the label for Category 1. */
+            category1Label = categories[1]!!
+            /* Slice label to be at most 10 characters long. */
+            if (category1Label.length > 10) {
+                category1Label = category1Label.substring(0, 9) + "."
+            }
+            category1Text.text = category1Label
+
+            /* Refresh the label for Category 2. */
+            category2Label = categories[2]!!
+            /* Slice label to be at most 10 characters long. */
+            if (category2Label.length > 10) {
+                category2Label = category2Label.substring(0, 9) + "."
+            }
+            category2Text.text = category2Label
+
+            /* Refresh the label for Category 3. */
+            category3Label = categories[3]!!
+            /* Slice label to be at most 10 characters long. */
+            if (category3Label.length > 10) {
+                category3Label = category3Label.substring(0, 9) + "."
+            }
+            category3Text.text = category3Label
+
+            /* Refresh the category names in the Category selector. */
+            spinChartCategory.adapter = ArrayAdapter<String?>(main,
+                R.layout.support_simple_spinner_dropdown_item, categories)
+
+            /* Grab the selected chart type. */
+            val chartType = spinChartType.selectedItemPosition
+            /* Grab the selected time interval. */
+            val timeSpan = spinTimeInterval.selectedItemPosition
+
+            when (chartType) {
+                /* If "Pie" is selected. */
+                1 -> {
+                    /* Refresh the pie chart. */
+                    updatePieChart(doc, timeSpan)
+                }
+                /* If "Line" is selected. */
+                else -> {
+                    /* Grab the selected category. */
+                    val category = spinTimeInterval.selectedItemPosition
+
+                    /* Initialize the array of data points for the line chart. */
+                    val data: DoubleArray
+
+                    /* Check which category the user selected. */
+                    when (category) {
+                        /* All Categories. */
+                        0 -> {
+                            /* Grab the data set from whichever time interval
+                            * the user selected. */
+                            data = when (timeSpan) {
+                                0 -> { DataManager.last7Days(doc, "all") }
+                                1 -> { DataManager.last12Months(doc, "all") }
+                                else -> { DataManager.last10Years(doc, "all") }
+                            }
+                        }
+                        /* A specific category. */
+                        else -> {
+                            /* Grab the data set from whichever time interval
+                            * and category the user selected. */
+                            data = when (timeSpan) {
+                                0 -> { DataManager.last7Days(doc, "c-$category") }
+                                1 -> { DataManager.last12Months(doc, "c-$category") }
+                                else -> { DataManager.last10Years(doc, "c-$category") }
+                            }
+                        }
+                    }
+
+                    /* Refresh the line chart. */
+                    updateLineChart(data, timeSpan, category)
+                }
+            }
+
+            /* Refresh the totals. */
+            updateTotals(doc, timeSpan)
+        }
     }
 
     override fun onDestroyView() {

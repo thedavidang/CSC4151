@@ -79,9 +79,9 @@ fun sortByPriceAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
 }
 
 /* Purpose: Static method that retrieves a list of all entries
-* from the local repo XML file as Entry objects.
+* from the XML data file as Entry objects.
 *
-* Parameters: doc represents the Document of the local repo XML file.
+* Parameters: doc represents the Document of the XML data file.
 *
 * Returns: entries represent the list of Entry objects. */
 fun getEntries(doc : Document) : MutableList<Entry>? {
@@ -95,7 +95,7 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
     var timestamp : Instant
     var category: String
 
-    /* Iterate through the Entry elements in the XML file  */
+    /* Iterate through the Entry elements in the XML data file  */
     for (index in 0 until entryNodes.length) {
         node = entryNodes.item(index)
         /* Grab the values from the children nodes of the current Entry element. */

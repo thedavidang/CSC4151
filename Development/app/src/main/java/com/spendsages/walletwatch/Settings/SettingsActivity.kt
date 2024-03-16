@@ -1,5 +1,6 @@
 package com.spendsages.walletwatch
 
+import SharedViewModelFactory
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
@@ -14,12 +15,19 @@ import com.spendsages.walletwatch.databinding.ActivitySettingsBinding
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var tabLayout: TabLayout
+    private lateinit var app: App
 
-    lateinit var model : SharedViewModel
+    lateinit var model: SharedViewModel
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.viewModelStore.clear()
+    }
 
     /* Overwritten function that performs tasks immediately upon opening Settings. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        app = (application as App)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
 
         /* Display the activity_settings.xml layout. */
@@ -49,14 +57,13 @@ class SettingsActivity : AppCompatActivity() {
                 .hideSoftInputFromWindow(binding.settingsPager.windowToken, 0)
         }.attach()
 
+        /* Setup the shared view model, so that all fragments can access the same live data. */
+        model = ViewModelProvider(app,
+            SharedViewModelFactory(app.applicationContext))[SharedViewModel::class.java]
+
         /* Function that will close the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.closeSettingsButton).setOnClickListener {
             finish()
         }
-
-        /* Setup the shared view model, so that all fragments can access the same live data. */
-        val viewModelFactory = Injection.provideViewModelFactory(this)
-        model = ViewModelProvider(this, viewModelFactory)[SharedViewModel::class.java]
-        model.open(this)
     }
 }

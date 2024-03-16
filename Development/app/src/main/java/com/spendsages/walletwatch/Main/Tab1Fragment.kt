@@ -4,17 +4,24 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Button
+import android.widget.CalendarView
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.cottacush.android.currencyedittext.CurrencyEditText
 import com.google.android.material.textfield.TextInputEditText
 import com.spendsages.walletwatch.databinding.FragmentTab1Binding
-import com.cottacush.android.currencyedittext.CurrencyEditText
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.*
+import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
@@ -146,7 +153,7 @@ class Tab1Fragment : Fragment() {
     }
 
     /* Purpose: Controller method that retrieves and validates user input,
-    * then calls DataManager method addEntry to store entry in local repo
+    * then calls DataManager method addEntry to store entry in XML data file
     * and resets the Tab 1 screen.
     *
     * Parameters: category is an integer that represents the number of the
@@ -160,11 +167,11 @@ class Tab1Fragment : Fragment() {
         /* Convert date input into "yyyy-MM-dd" format. */
         val date = modelDateFormat.format(userDateFormat.parse(dateInput.text.toString())!!)
 
-        /* Add the entry to the local repo. */
+        /* Add the entry to the XML data file. */
         DataManager.addEntry(model.get(), amount, description, date, category.toString())
 
         /* Update the data model. */
-        model.save(main)
+        model.save()
 
         /* Display the Toast message "Expense Added". */
         success.show()
@@ -189,7 +196,7 @@ class Tab1Fragment : Fragment() {
     ): View {
         _binding = FragmentTab1Binding.inflate(inflater, container, false)
         val rootView = binding.root
-        main = activity as MainActivity
+        main = requireActivity() as MainActivity
         model = main.model
 
         descriptionInput = rootView.findViewById(R.id.descriptionField)
@@ -204,11 +211,8 @@ class Tab1Fragment : Fragment() {
         categoryButtons[2] = rootView.findViewById(R.id.category3Button)
         /* The category buttons should initially be disabled. */
         toggleCategoryButtons(false)
-        /* Retrieve the labels for each category. */
-        categories = DataManager.getCategories(model.get())
-        /* Set the category label and submit listener for each corresponding category button. */
+        /* Setup the submit listener for each corresponding category button. */
         for ((index, button) in categoryButtons.withIndex()) {
-            button?.text = categories[index + 1]
             button?.setOnClickListener {
                 submitEntry(index + 1)
             }
@@ -218,7 +222,7 @@ class Tab1Fragment : Fragment() {
         /* Set focus to amountField and open the numpad. */
         amountInput.requestFocus()
         /* Use the dollar sign "$". */
-        amountInput.setCurrencySymbol("$", useCurrencySymbolAsHint = true)
+        amountInput.setCurrencySymbol("$", useCurrencySymbolAsHint = false)
         /* Set listener to enable category buttons if both inputs are valid. */
         amountInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -320,10 +324,23 @@ class Tab1Fragment : Fragment() {
         return rootView
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Observe the LiveData objects from SharedViewModel.
+        model.getLive().observe(viewLifecycleOwner) { doc ->
+            /* Refresh the labels for each category. */
+            categories = DataManager.getCategories(doc)
+            /* Refresh the category label for each corresponding category button. */
+            for ((index, button) in categoryButtons.withIndex()) {
+                button?.text = categories[index + 1]
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         if (main.launched) {
-            amountInput.requestFocus()
             main.showKeyboard(amountInput)
         }
     }

@@ -1,5 +1,6 @@
 package com.spendsages.walletwatch
 
+import SharedViewModelFactory
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -19,8 +20,9 @@ import com.spendsages.walletwatch.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var tabLayout: TabLayout
+    private lateinit var app: App
 
-    lateinit var model : SharedViewModel
+    lateinit var model: SharedViewModel
 
     var launched: Boolean = false
 
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         /* Hide the keyboard. */
         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
             .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
+        app.viewModelStore.clear()
     }
 
     override fun onStop() {
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     /* Overwritten function that performs tasks immediately upon app launch. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        app = (application as App)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         /* Display the activity_main.xml layout. */
@@ -89,9 +93,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         /* Setup the shared view model, so that all fragments can access the same live data. */
-        val viewModelFactory = Injection.provideViewModelFactory(this)
-        model = ViewModelProvider(this, viewModelFactory)[SharedViewModel::class.java]
-        model.open(this)
+        model = ViewModelProvider(app,
+            SharedViewModelFactory(app.applicationContext))[SharedViewModel::class.java]
     }
 
     /* Purpose: Force the focus on the given UI object and

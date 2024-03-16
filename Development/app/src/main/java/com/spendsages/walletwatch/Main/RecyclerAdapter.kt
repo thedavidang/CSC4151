@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 
 /* This class provides support for the scrollable RecyclerView cardRecycler. */
 class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.EntryViewHolder?>() {
-    /* Retrieve the list of all entries in the local repo XML file. */
+    /* Retrieve the list of all entries in the XML data file. */
     var entriesRaw = getEntries(doc)
     /* Create a list of those entries that are sorted by date from newest to oldest. */
     var entries = sortByDateDescending(entriesRaw)
@@ -33,11 +33,11 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
 
     /* Purpose: Update the list of entries.
     *
-    * Parameters: doc represents the Document of the local repo XML file.
+    * Parameters: doc represents the Document of the XML data file.
     *
     * Returns: Nothing. */
     fun updateData(doc: Document, sort: Int, category: String) {
-        /* Retrieve the list of all entries in the local repo XML file. */
+        /* Retrieve the list of all entries in the XML data file. */
         entriesRaw = getEntries(doc)
 
         /* Filter the entries as necessary. */

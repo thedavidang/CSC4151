@@ -18,8 +18,6 @@ class TermsFragment : Fragment() {
     private var _binding: FragmentTermsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var settings : SettingsActivity
-
     private lateinit var termsText : TextView
 
     override fun onCreateView(
@@ -28,7 +26,6 @@ class TermsFragment : Fragment() {
     ): View {
         _binding = FragmentTermsBinding.inflate(inflater, container, false)
         val rootView = binding.root
-        settings = activity as SettingsActivity
 
         /* Allow Terms of Use text to be scrollable. */
         termsText = rootView.findViewById(R.id.termsText)
