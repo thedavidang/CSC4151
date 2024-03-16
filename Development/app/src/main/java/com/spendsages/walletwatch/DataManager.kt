@@ -195,7 +195,7 @@ object DataManager {
                 }
                 monthsOfYear[i] = monthSum
                 /* Determine the month previous to the current month. */
-                cal.add(Calendar.MONTH, -1) // Can change Calender._ to years, ect.
+                cal.add(Calendar.MONTH, -1)
             }
         }
         else {
@@ -239,7 +239,7 @@ object DataManager {
                 }
                 yearsOfDecade[i] = yearSum
                 /* Determine the year previous to the current year. */
-                cal.add(Calendar.YEAR, -1) // Can change Calender._ to years, ect.
+                cal.add(Calendar.YEAR, -1)
             }
         }
         else {

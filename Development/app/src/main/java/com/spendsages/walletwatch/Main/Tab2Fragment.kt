@@ -704,7 +704,7 @@ class Tab2Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observe the LiveData objects from SharedViewModel
+        /* Observe the LiveData objects from SharedViewModel. */
         model.getLive().observe(viewLifecycleOwner) { doc ->
             /* Refresh the categories. */
             categories = DataManager.getCategories(doc)

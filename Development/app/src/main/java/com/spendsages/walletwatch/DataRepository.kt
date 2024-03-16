@@ -13,7 +13,7 @@ import javax.xml.transform.stream.StreamResult
 
 /* This class provides support for opening and saving the XML data file. */
 class DataRepository(private val context: Context) {
-    // doc is a modifiable MutableLiveData object whose value is a Document object.
+    /* doc is a modifiable MutableLiveData object whose value is a Document object. */
     val doc: MutableLiveData<Document> by lazy {
         open()
     }

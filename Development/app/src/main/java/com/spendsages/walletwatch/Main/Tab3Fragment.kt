@@ -573,7 +573,7 @@ class Tab3Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observe the LiveData objects from SharedViewModel.
+        /* Observe the LiveData objects from SharedViewModel. */
         model.getLive().observe(viewLifecycleOwner) { doc ->
             /* Refresh the RecyclerAdapter. */
             adapterRecycler = RecyclerAdapter(doc)
