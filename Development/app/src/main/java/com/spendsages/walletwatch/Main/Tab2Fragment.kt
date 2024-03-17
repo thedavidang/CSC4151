@@ -742,48 +742,41 @@ class Tab2Fragment : Fragment() {
             /* Grab the selected time interval. */
             val timeSpan = spinTimeInterval.selectedItemPosition
 
-            when (chartType) {
-                /* If "Pie" is selected. */
-                1 -> {
-                    /* Refresh the pie chart. */
-                    updatePieChart(doc, timeSpan)
-                }
-                /* If "Line" is selected. */
-                else -> {
-                    /* Grab the selected category. */
-                    val category = spinTimeInterval.selectedItemPosition
+            /* Refresh the pie chart. */
+            updatePieChart(doc, timeSpan)
 
-                    /* Initialize the array of data points for the line chart. */
-                    val data: DoubleArray
+            /* Grab the selected category. */
+            val category = spinTimeInterval.selectedItemPosition
 
-                    /* Check which category the user selected. */
-                    when (category) {
-                        /* All Categories. */
-                        0 -> {
-                            /* Grab the data set from whichever time interval
-                            * the user selected. */
-                            data = when (timeSpan) {
-                                0 -> { DataManager.last7Days(doc, "all") }
-                                1 -> { DataManager.last12Months(doc, "all") }
-                                else -> { DataManager.last10Years(doc, "all") }
-                            }
-                        }
-                        /* A specific category. */
-                        else -> {
-                            /* Grab the data set from whichever time interval
-                            * and category the user selected. */
-                            data = when (timeSpan) {
-                                0 -> { DataManager.last7Days(doc, "c-$category") }
-                                1 -> { DataManager.last12Months(doc, "c-$category") }
-                                else -> { DataManager.last10Years(doc, "c-$category") }
-                            }
-                        }
+            /* Initialize the array of data points for the line chart. */
+            val data: DoubleArray
+
+            /* Check which category the user selected. */
+            when (category) {
+                /* All Categories. */
+                0 -> {
+                    /* Grab the data set from whichever time interval
+                    * the user selected. */
+                    data = when (timeSpan) {
+                        0 -> { DataManager.last7Days(doc, "all") }
+                        1 -> { DataManager.last12Months(doc, "all") }
+                        else -> { DataManager.last10Years(doc, "all") }
                     }
-
-                    /* Refresh the line chart. */
-                    updateLineChart(data, timeSpan, category)
+                }
+                /* A specific category. */
+                else -> {
+                    /* Grab the data set from whichever time interval
+                    * and category the user selected. */
+                    data = when (timeSpan) {
+                        0 -> { DataManager.last7Days(doc, "c-$category") }
+                        1 -> { DataManager.last12Months(doc, "c-$category") }
+                        else -> { DataManager.last10Years(doc, "c-$category") }
+                    }
                 }
             }
+
+            /* Refresh the line chart. */
+            updateLineChart(data, timeSpan, category)
 
             /* Refresh the totals. */
             updateTotals(doc, timeSpan)
