@@ -246,14 +246,18 @@ class CategoryFragment : Fragment() {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(s: Editable) {
-                    /* We don't need to re-validate our own input manipulation. */
-                    textbox.removeTextChangedListener(this)
-
                     /* Remove all whitespace from user input in category textbox. */
                     val trimmed = s.toString().trim { it <= ' ' }
                     if (s.toString() != trimmed) {
+                        /* Temporarily disable this text change listener to
+                        * prevent multiple triggering events be fired. */
+                        textbox.removeTextChangedListener(this)
+                        /* Forcibly update the text displayed in the textbox. */
                         textbox.setText(trimmed)
+                        /* Set cursor position. */
                         textbox.setSelection(trimmed.length)
+                        /* Restore the text change listener. */
+                        textbox.addTextChangedListener(this)
                     }
 
                     /* Check if the user did not enter any word(s) into the category textbox. */
@@ -266,9 +270,6 @@ class CategoryFragment : Fragment() {
                         * If so, the Save Changes button will be enabled.*/
                         checkInputs()
                     }
-
-                    /* Restore the onTextChanged listener. */
-                    textbox.addTextChangedListener(this)
                 }
             })
         }

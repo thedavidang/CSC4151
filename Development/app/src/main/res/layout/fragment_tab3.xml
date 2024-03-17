@@ -110,15 +110,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.cottacush.android.currencyedittext.CurrencyEditText
+            <EditText
                 android:id="@+id/amountFieldEdit"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/amountHintString"
-                android:inputType="number"
-                android:maxLength="20"
-                android:textAlignment="textEnd"
                 android:textSize="24sp"
+                android:textAlignment="textEnd"
+                android:inputType="numberDecimal"
+                android:digits="0123456789."
+                android:autofillHints="@string/amountHintString"
+                android:maxLength="20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"

@@ -6,11 +6,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.cottacush.android.currencyedittext.CurrencyEditText
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.spendsages.walletwatch.databinding.ActivityMainBinding
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 /* Otherwise, open the numpad. */
                 else if (!launched) {
-                    showKeyboard(findViewById<CurrencyEditText>(R.id.amountField))
+                    showKeyboard(findViewById<EditText>(R.id.amountField))
                     launched = true
                 }
             }

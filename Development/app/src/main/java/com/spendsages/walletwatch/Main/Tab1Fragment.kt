@@ -16,9 +16,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.cottacush.android.currencyedittext.CurrencyEditText
 import com.google.android.material.textfield.TextInputEditText
 import com.spendsages.walletwatch.databinding.FragmentTab1Binding
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Locale
@@ -37,7 +38,7 @@ class Tab1Fragment : Fragment() {
 
     private lateinit var categories : MutableList<String?>
 
-    private lateinit var amountInput : CurrencyEditText
+    private lateinit var amountInput : EditText
     private var validAmount = false
     private lateinit var invalidAmount : ImageView
 
@@ -177,7 +178,8 @@ class Tab1Fragment : Fragment() {
         success.show()
 
         /* Reset screen. */
-        amountInput.setText("")
+        amountInput.setText(R.string.amountHintString)
+        amountInput.setSelection(resources.getString(R.string.amountHintString).length)
         descriptionInput.setText("")
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
         toggleCategoryButtons(false)
@@ -219,25 +221,54 @@ class Tab1Fragment : Fragment() {
         }
 
         amountInput = rootView.findViewById(R.id.amountField)
-        /* Set focus to amountField and open the numpad. */
-        amountInput.requestFocus()
-        /* Use the dollar sign "$". */
-        amountInput.setCurrencySymbol("$", useCurrencySymbolAsHint = false)
+        amountInput.setText(R.string.amountHintString)
+        amountInput.setSelection(resources.getString(R.string.amountHintString).length)
         /* Set listener to enable category buttons if both inputs are valid. */
         amountInput.addTextChangedListener(object : TextWatcher {
+            /* Format the amount input into a defined, safe, and consistent format. */
+            private val decimalFormat: DecimalFormat =
+                NumberFormat.getCurrencyInstance() as DecimalFormat
+            init {
+                decimalFormat.applyPattern("$ ###,###,###,##0.00")
+            }
+
+            /* Extract the significant digits from tha amount input
+            * and return a Long integer without the decimal point. */
+            private fun parseAmount(text: String): Long {
+                val digits = text.replace(Regex("[^0-9]"), "")
+                return if (digits.isEmpty()) {
+                    0L
+                } else {
+                    digits.toLong()
+                }
+            }
+
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
             /* Do not bother checking the date input since only the amount was just changed. */
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            override fun afterTextChanged(s: Editable) {
+                /* Forcibly format the amount input into the desired format. */
+                val amount = parseAmount(s.toString())
+                val formattedAmount = decimalFormat.format(amount / 100.00)
+
+                /* Temporarily disable this text change listener to
+                * prevent multiple triggering events be fired. */
+                amountInput.removeTextChangedListener(this)
+                /* Forcibly update the text displayed in the textbox. */
+                amountInput.setText(formattedAmount)
+                /* Set cursor position. */
+                amountInput.setSelection(formattedAmount.length)
+                /* Restore the text change listener. */
+                amountInput.addTextChangedListener(this)
+
                 if (validateAmountInput() && validDate) {
                     toggleCategoryButtons(true)
-                }
-                else {
+                } else {
                     toggleCategoryButtons(false)
                 }
-        }
-
-            override fun afterTextChanged(s: Editable) {}
+            }
         })
 
         invalidAmount = rootView.findViewById(R.id.invalidAmount)
