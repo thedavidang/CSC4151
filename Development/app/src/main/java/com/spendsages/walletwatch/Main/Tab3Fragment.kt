@@ -577,7 +577,7 @@ class Tab3Fragment : Fragment() {
                 amountInput.addTextChangedListener(this)
 
                 if (validateAmountInput() && validDate) {
-                    changedInputs[0] = s.toString()
+                    changedInputs[0] = formattedAmount
                     checkChanges()
                 }
                 else {
