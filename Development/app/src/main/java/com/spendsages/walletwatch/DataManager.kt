@@ -695,24 +695,49 @@ object DataManager {
 
                 /* Check if a category is to be restored from the Archive.xml. */
                 if (restoreCategory != null) {
-                    /* Iterate through the children of the archived category. */
+                    /* Make a deep copy list of the archive category's children,
+                    * to avoid IndexOutOfBounds exceptions caused by moving children
+                    * to a new parent. */
+                    val restoreCategoryList = mutableListOf<Node>()
                     for(i in 0 until restoreCategory.childNodes.length) {
                         val child = restoreCategory.childNodes.item(i)
-                        /* If the child node is the "total" node of the archived category,
+                        val clone = child.cloneNode(true)
+                        restoreCategoryList.add(clone)
+                    }
+                    /* Iterate through the cloned children inside the archived category list. */
+                    for(clone in restoreCategoryList) {
+                        /* If the clone node is the "total" node of the archived category list,
                         * grab the total and adjust the category total and data total
                         * in the WalletWatch.xml. */
-                        if (child.nodeName == "total") {
+                        if (clone.nodeName == "total") {
                             /* Restore the total amount of the category. */
-                            categoryTotal.textContent = child.textContent
+                            categoryTotal.textContent = clone.textContent
 
                             /* Increment the total of all data by the
                             * total spent in the restored category. */
-                            incrementTotal(total, child.textContent)
+                            incrementTotal(total, clone.textContent)
                         }
-                        /* Check if the child node is one of the
-                        * "year" nodes of the archived category. */
-                        else if (child.nodeName == "year") {
-                            /* Move the category data out of the archive and
+                        /* Check if the clone node is one of the
+                        * "year" nodes of the archived category list. */
+                        else if (clone.nodeName == "year") {
+                            /* Grab the id of the clone node, so that we can find
+                            * the corresponding non-clone child node. */
+                            val cloneYearID = clone.attributes.getNamedItem("id").textContent
+                            /* Grab the non-clone child node that matches the year id. */
+                            val child: Node? = run {
+                                for(i in 0 until restoreCategory.childNodes.length) {
+                                    val childNode = restoreCategory.childNodes.item(i)
+                                    val childYearID = childNode.attributes.getNamedItem(
+                                        "id").textContent
+                                    if (childYearID == cloneYearID)
+                                    {
+                                        return@run childNode
+                                    }
+                                }
+                                return@run null
+                            }
+
+                            /* Move the non-clone child category data out of the the archive and
                             * paste it into the category in the WalletWatch.xml. */
                             val year = doc.adoptNode(child)
                             category.appendChild(year)
