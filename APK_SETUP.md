@@ -1,5 +1,5 @@
 # APK Installation
-- If you would prefer not to install WalletWatch from the Google Play Store, then you may follow these steps to get WalletWatch directly installed on your Android 9 (Pie) or Android 10 (Q) device.
+- If you would prefer not to install WalletWatch from the Google Play Store, then you may follow these steps to get WalletWatch directly installed on your Android 9 (Pie) or up device.
 
 ## Step-By-Step Walkthrough
 1. On your Android Device, download WalletWatch using this link:

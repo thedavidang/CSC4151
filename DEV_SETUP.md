@@ -1,5 +1,5 @@
 # Beta Testing/Development Setup
-- If you are a Beta-tester that does not have a smartphone device with Android 9 (Pie) or Android 10 (Q) installed, then you can follow these steps to run the WalletWatch app in an emulator on your computer.
+- If you are a Beta-tester that does not have a smartphone device with Android 9 (Pie) or up installed, then you can follow these steps to run the WalletWatch app in an emulator on your computer.
 - If you would like to contribute to this open-source project, then these steps will get you setup in the development environment.
 
 ## Step-By-Step Walkthrough
@@ -93,15 +93,15 @@
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/21.png "Open AVD Manager")
 
-24. The AVD Manager wizard will popup, which lets you create an emulator of an Android 10 (Q) smartphone device, which acts as a virtual machine within Android Studio. Click _+ Create Virtual Device..._.
+24. The AVD Manager wizard will popup, which lets you create an emulator of an Android smartphone device, which acts as a virtual machine within Android Studio. Click _+ Create Virtual Device..._.
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/22.png "Click Create Virtual Device")
 
-25. Select a Phone that supports Android 10 (Q), such as the _Pixel 3_. Then, click _Next_.
+25. Select a Phone that supports Android 9 (Pie) or up, such as the _Pixel 3_. Then, click _Next_.
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/23.png "Click Pixel 3 and Then Click Next")
 
-26. Click _Download_ next to _Q_ as to download Android 10 (Q) on to the virtual device.
+26. Click _Download_ next to the desired Android 9+ version, such as Android 10 _Q_, to download the Android SDK on to the virtual device.
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/24.png "Download Android 10 (Q)")
 
@@ -113,7 +113,7 @@
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/26.png "Click Next")
 
-29. Wait for the installation of the virtual device and Android 10 (Q) to  finish. This will take several minutes. Then, click _Finish_.
+29. Wait for the installation of the virtual device and Android SDK to finish. This will take several minutes. Then, click _Finish_.
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/27.png "Click Finish")
 
