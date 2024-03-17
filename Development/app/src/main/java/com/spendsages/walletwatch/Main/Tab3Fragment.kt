@@ -460,18 +460,32 @@ class Tab3Fragment : Fragment() {
         toggleEditWindow(false)
 
         descriptionInput = rootView.findViewById(R.id.descriptionFieldEdit)
+        /* Set listener to remove trailing whitespace and check if Description changed. */
         descriptionInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            /* Check if an actual change was made to the description. */
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable) {
+                /* Remove all whitespace from user input in category textbox. */
+                val trimmed = s.toString().trim { it <= ' ' }
+                if (s.toString() != trimmed) {
+                    /* Temporarily disable this text change listener to
+                    * prevent multiple triggering events be fired. */
+                    descriptionInput.removeTextChangedListener(this)
+                    /* Forcibly update the text displayed in the textbox. */
+                    descriptionInput.setText(trimmed)
+                    /* Set cursor position. */
+                    descriptionInput.setSelection(trimmed.length)
+                    /* Restore the text change listener. */
+                    descriptionInput.addTextChangedListener(this)
+                }
+
                 changedInputs[1] = s.toString()
                 if (validAmount && validDate) {
                     checkChanges()
                 }
             }
-
-            override fun afterTextChanged(s: Editable) {}
         })
 
         /* Set Toast to "Expense Modified".
