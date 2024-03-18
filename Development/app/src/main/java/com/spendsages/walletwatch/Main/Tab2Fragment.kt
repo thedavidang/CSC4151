@@ -737,8 +737,6 @@ class Tab2Fragment : Fragment() {
             spinChartCategory.adapter = ArrayAdapter<String?>(main,
                 R.layout.support_simple_spinner_dropdown_item, categories)
 
-            /* Grab the selected chart type. */
-            val chartType = spinChartType.selectedItemPosition
             /* Grab the selected time interval. */
             val timeSpan = spinTimeInterval.selectedItemPosition
 
