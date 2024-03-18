@@ -47,7 +47,7 @@ If you prefer not to install WalletWatch from the Google Play Store, then you ma
 - https://github.com/thedavidang/CSC4151/blob/master/APK_SETUP.md
 
 Basically, you will download and install the WalletWatch APK installer file from this link:
-- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-Installer.apk
+- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-v1.1.0-Installer.apk
 
 ### Alternative 2 - Download repo and run in Android Studio:
 If you do not have an Android smartphone device or have a version of Android earlier than Android 9 (Pie) installed, then follow this step-by-step walkthrough to run the WalletWatch app in an emulator on your computer:
@@ -91,7 +91,7 @@ The settings window can be accessed and exited by tapping the wrench icon in the
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/categories.png "Categories")
 
 - Simply type a new category label into one of the three textboxes to stop tracking one category of expenses and start tracking a new one. The old category and all of its data will be archived on to your Android device. If you change a category to a category that you used to be tracking, all the archived data of that category will be restored.
-2. **Terms - For viewing the MIT License associated with this free, open-source app.** 
+2. **Terms - For viewing the Privacy Policy, Terms & Conditions, and MIT License associated with this free, open-source app.** 
 
 ![alt text](https://github.com/thedavidang/CSC4151/blob/master/images/terms.png "Terms")
 
