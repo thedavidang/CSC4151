@@ -6,6 +6,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.spendsages.walletwatch.databinding.ActivitySettingsBinding
@@ -36,6 +38,7 @@ class SettingsActivity : AppCompatActivity() {
         /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
         tabLayout = findViewById(R.id.settingsTabs)
         binding.settingsPager.adapter = SettingsPagerAdapter(supportFragmentManager, lifecycle)
+        binding.settingsPager.reduceDragSensitivity()
         TabLayoutMediator(tabLayout, binding.settingsPager) { tab, position ->
             when (position) {
                 1 -> {
@@ -65,5 +68,17 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.closeSettingsButton).setOnClickListener {
             finish()
         }
+    }
+
+    /* Reduces drag sensitivity of [ViewPager2] widget. */
+    private fun ViewPager2.reduceDragSensitivity() {
+        val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+        recyclerViewField.isAccessible = true
+        val recyclerView = recyclerViewField.get(this) as RecyclerView
+
+        val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+        touchSlopField.isAccessible = true
+        val touchSlop = touchSlopField.get(recyclerView) as Int
+        touchSlopField.set(recyclerView, touchSlop * 8)
     }
 }
