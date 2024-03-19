@@ -21,6 +21,10 @@ class SharedViewModel(context: Context) : ViewModel() {
         return repository.doc.value!!
     }
 
+    fun getString(doc: Document): CharSequence {
+        return repository.docString(doc)
+    }
+
     fun save() {
         repository.save()
     }

@@ -22,7 +22,7 @@ class DataRepository(private val context: Context) {
     *
     * Parameters: None.
     *
-    * Returns: Nothing. */
+    * Returns: MutableLiveData<Document> that represents the data in the XML data file. */
     private fun open() : MutableLiveData<Document> {
         /* Locate XML data file in Android Internal Storage. */
         var file = context.getFileStreamPath(context.getString(R.string.docFilenameString))
@@ -63,7 +63,7 @@ class DataRepository(private val context: Context) {
     * Parameters: doc represents the Document of the XML data file.
     *
     * Returns: String of the contents of the value of doc. */
-    private fun docString(doc : Document?) : String {
+    fun docString(doc : Document?) : String {
         val tf: TransformerFactory = TransformerFactory.newInstance()
         val trans: Transformer = tf.newTransformer()
         val sw = StringWriter()

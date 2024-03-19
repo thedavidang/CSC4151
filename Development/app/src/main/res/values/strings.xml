@@ -41,6 +41,9 @@
     <string name="saveString">Save Changes</string>
     <string name="changedCategoryString">Category Changed</string>
     <string name="restoredCategoryString">Category Restored</string>
+    <string name="dataString">Backup and Restore:</string>
+    <string name="exportString">Copy Data to Clipboard</string>
+    <string name="importString">Paste Data from Clipboard</string>
 
     <string-array name="chartTypes">
         <item>Line</item>

@@ -1,6 +1,8 @@
 package com.spendsages.walletwatch
 
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -9,11 +11,15 @@ import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.spendsages.walletwatch.databinding.FragmentCategoryBinding
 import org.w3c.dom.Document
+import java.io.OutputStreamWriter
+import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * A simple [Fragment] subclass.
@@ -36,6 +42,9 @@ class CategoryFragment : Fragment() {
     private var changed = arrayOfNulls<String?>(3)
 
     private lateinit var saveButton : Button
+
+    private lateinit var exportButton : Button
+    private lateinit var importButton : Button
 
     private val categoryTextboxes = Array<TextInputEditText?>(3) { null }
 
@@ -272,6 +281,132 @@ class CategoryFragment : Fragment() {
                     }
                 }
             })
+        }
+
+        exportButton = rootView.findViewById(R.id.exportButton)
+        /* Listener that copies content of XML file to the clipboard. */
+        exportButton.setOnClickListener {
+            /* Present dialog to user for selecting which XML file to copy. */
+            val builder = AlertDialog.Builder(context)
+            builder.apply {
+                setTitle("Backup")
+                setMessage("Which data set do you want to copy?\n\n" +
+                        "\"Active\" corresponds to the data stored for the current " +
+                        "categories.\n\n" +
+                        "\"Inactive\" corresponds to the data stored for archived categories.")
+                setNeutralButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                setNegativeButton("Active") { _, _ ->
+                    /* Grab the text content of the XML data file. */
+                    val text: CharSequence = model.getString(model.get())
+                    /* Get a handle to the system clipboard service. */
+                    val clipboardManager = getSystemService(context, ClipboardManager::class.java)
+                    /* Create a ClipData object to hold the data to be copied. */
+                    val clipData = ClipData.newPlainText(
+                        getString(R.string.docFilenameString), text)
+                    /* Set the data to the clipboard. */
+                    clipboardManager?.setPrimaryClip(clipData)
+                    /* Let user know that copy succeeded. */
+                    Toast.makeText(context,
+                        "Active data copied to clipboard", Toast.LENGTH_LONG).show()
+                }
+                setPositiveButton("Inactive") { _, _ ->
+                    /* Open Archive XML file. */
+                    archive = DataManager.getArchive(settings)
+                    /* Grab the text content of the XML archive file. */
+                    val text: CharSequence = model.getString(archive)
+                    /* Get a handle to the system clipboard service. */
+                    val clipboardManager = getSystemService(context, ClipboardManager::class.java)
+                    /* Create a ClipData object to hold the data to be copied. */
+                    val clipData = ClipData.newPlainText(
+                        getString(R.string.docFilenameString), text)
+                    /* Set the data to the clipboard. */
+                    clipboardManager?.setPrimaryClip(clipData)
+                    /* Let user know that copy succeeded. */
+                    Toast.makeText(context,
+                        "Inactive data copied to clipboard", Toast.LENGTH_LONG).show()
+                }
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }
+
+        importButton = rootView.findViewById(R.id.importButton)
+        /* Listener that lets user add content to Archive XML file. */
+        importButton.setOnClickListener {
+            /* Open Archive XML file. */
+            archive = DataManager.getArchive(settings)
+            /* Grab the text content of the XML archive file. */
+            val text: CharSequence = model.getString(archive)
+            /* Populate textbox with content of the XML archive file. */
+            val editText = EditText(context)
+            editText.setText(text)
+
+            /* Present dialog to user for editing the date XML file to copy. */
+            val builder = AlertDialog.Builder(context)
+            builder.apply {
+                setTitle("Edit Archived Data of Inactive Categories")
+                setView(editText)
+                setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                setPositiveButton("Save") { _, _ ->
+                    val confirmation = AlertDialog.Builder(context)
+                    confirmation.apply {
+                        setTitle("Confirm")
+                        setMessage("Are you sure you want to overwrite the archived data?\n\n" +
+                                "This cannot be undone.")
+                        setNegativeButton("Yes") { _, _ ->
+                            /* Grab the user's input. */
+                            val inputText = editText.text.toString()
+
+                            /* Validate the user's text input by first saving to a temp file. */
+                            val tempWriter = OutputStreamWriter(settings.openFileOutput(
+                                "TEMP.XML", Context.MODE_PRIVATE))
+                            tempWriter.write(inputText)
+                            tempWriter.close()
+                            /* Open the newly created TEMP XML file. */
+                            val tempFile = settings.getFileStreamPath("TEMP.XML")
+
+                            try {
+                                /* Attempt to read the TEMP XML file into a Document object. */
+                                val tempDoc = DocumentBuilderFactory.newInstance()
+                                    .newDocumentBuilder().parse(tempFile)
+                                if (tempDoc.getElementById("r") == null) {
+                                    throw Exception("No root id 'r' was found.")
+                                }
+                                /* Clean up TEMP XML file. */
+                                tempFile.delete()
+
+                                /* Overwrite the Archive XML file with the user's text input. */
+                                val outputWriter = OutputStreamWriter(settings.openFileOutput(
+                                    settings.getString(R.string.archiveFilenameString),
+                                    Context.MODE_PRIVATE))
+                                outputWriter.write(inputText)
+                                outputWriter.close()
+
+                                /* Let user know that restore succeeded. */
+                                Toast.makeText(context, "Saved changes to archived data",
+                                    Toast.LENGTH_LONG).show()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                /* Let user know that restore failed. */
+                                Toast.makeText(context,
+                                    "ERROR: Invalid input! Please try again.",
+                                    Toast.LENGTH_LONG).show()
+                            }
+                        }
+                        setPositiveButton("No") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                    }
+                    val confirm = confirmation.create()
+                    confirm.show()
+                }
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
 
         rootView.setOnTouchListener { _: View, _: MotionEvent ->
