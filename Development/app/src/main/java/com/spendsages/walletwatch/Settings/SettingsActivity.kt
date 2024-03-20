@@ -79,6 +79,6 @@ class SettingsActivity : AppCompatActivity() {
         val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
         touchSlopField.isAccessible = true
         val touchSlop = touchSlopField.get(recyclerView) as Int
-        touchSlopField.set(recyclerView, touchSlop * 8)
+        touchSlopField.set(recyclerView, touchSlop * 4)
     }
 }
