@@ -12,6 +12,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
@@ -342,12 +343,14 @@ class CategoryFragment : Fragment() {
             /* Populate textbox with content of the XML archive file. */
             val editText = EditText(context)
             editText.setText(text)
+            val scrollView = ScrollView(context)
+            scrollView.addView(editText)
 
             /* Present dialog to user for editing the date XML file to copy. */
             val builder = AlertDialog.Builder(context)
             builder.apply {
                 setTitle("Edit Archived Data of Inactive Categories")
-                setView(editText)
+                setView(scrollView)
                 setNegativeButton("Cancel") { dialog, _ ->
                     dialog.dismiss()
                 }

@@ -12,7 +12,7 @@
     <string name="calendarString">Date Selector</string>
     <string name="invalidDateString">Invalid Date</string>
     <string name="closeDateString">Close Date Selector</string>
-    <string name="submitString">Submit the Expense by tapping a Category:</string>
+    <string name="submitString">Submit the Expense by Tapping a Category:</string>
     <string name="addedEntryString">Expense Added</string>
 
     <string name="category1LabelString">Category 1 Label</string>
@@ -43,7 +43,7 @@
     <string name="restoredCategoryString">Category Restored</string>
     <string name="dataString">Backup and Restore:</string>
     <string name="exportString">Copy Data to Clipboard</string>
-    <string name="importString">Paste Data from Clipboard</string>
+    <string name="importString">Paste Data from Clipboard into Archive</string>
 
     <string-array name="chartTypes">
         <item>Line</item>
