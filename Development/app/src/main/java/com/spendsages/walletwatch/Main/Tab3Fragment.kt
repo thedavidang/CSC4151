@@ -460,28 +460,20 @@ class Tab3Fragment : Fragment() {
         toggleEditWindow(false)
 
         descriptionInput = rootView.findViewById(R.id.descriptionFieldEdit)
-        /* Set listener to remove trailing whitespace and check if Description changed. */
+        /* Set listener to check if Description changed. */
         descriptionInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable) {
-                /* Remove all whitespace from user input in category textbox. */
-                val trimmed = s.toString().trim { it <= ' ' }
-                if (s.toString() != trimmed) {
-                    /* Temporarily disable this text change listener to
-                    * prevent multiple triggering events be fired. */
-                    descriptionInput.removeTextChangedListener(this)
-                    /* Forcibly update the text displayed in the textbox. */
-                    descriptionInput.setText(trimmed)
-                    /* Set cursor position. */
-                    descriptionInput.setSelection(trimmed.length)
-                    /* Restore the text change listener. */
-                    descriptionInput.addTextChangedListener(this)
-                }
-
-                changedInputs[1] = s.toString()
+                /* Trim off leading and trailing whitespace and truncate multiple whitespaces in
+                * between words into a single space each from user input in description textbox. */
+                changedInputs[1] = s.toString().trim().replace(
+                    Regex("\\s+"), " "
+                )
+                /* Check if the trimmed Description is actually different
+                * from the currently saved Description. */
                 if (validAmount && validDate) {
                     checkChanges()
                 }

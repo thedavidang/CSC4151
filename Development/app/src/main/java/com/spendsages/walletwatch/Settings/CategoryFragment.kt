@@ -36,7 +36,6 @@ class CategoryFragment : Fragment() {
     private lateinit var archive : Document
 
     private var categories = arrayOfNulls<String?>(3)
-    private var categoryInputs = arrayOfNulls<String?>(3)
 
     /* Array that holds the new label for each category that the user changes.
     * If there is no change to a category, that index MUST be null. */
@@ -76,7 +75,7 @@ class CategoryFragment : Fragment() {
     }
 
     /* Purpose: Controller method that checks if the user entered in
-    * at least one truly new category label, but with no duplicated labels.
+    * at least one truly different category label, but without any duplicated labels.
     *
     * Parameters: None.
     *
@@ -87,50 +86,61 @@ class CategoryFragment : Fragment() {
         changed[1] = ""
         changed[2] = ""
 
-        /* Grab user input values. */
-        for ((index, categoryTextbox) in categoryTextboxes.withIndex()) {
-            categoryInputs[index] = categoryTextbox!!.text.toString().split(
-                " ").joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
-        }
+        /* Grab user input values and sanitize whitespaces. */
+        for ((indexTextbox, categoryTextbox) in categoryTextboxes.withIndex()) {
+            /* First, trim off any leading and trailing whitespaces.
+            *    (e.g. " Test Category   #1 " -> "Test Category   #1"
+            * Then, truncate multiple whitespaces in between words into a single space each.
+            *    (e.g. "Test Category   #1" -> "Test Category #1"). */
+            val categoryInput = categoryTextbox!!.text.toString().trim().replace(
+                Regex("\\s+"), " ")
 
-        /* Check for duplicate inputs or if there are no new categories. */
-        val duplicatesFound = (categoryInputs.groupingBy { it }.eachCount()
-            .filter { it.value > 1 }).isNotEmpty()
-        val noNewLabels = categoryInputs.sortedBy { it } == categories.sortedBy { it }
+            /* Immediately disable the Save Changes button and return
+            * since there are duplicate user inputs. */
+            if (categoryInput in changed) {
+                toggleSaveButton(false)
+                return
+            } else {
+                /* Otherwise, check if the user input is
+                * an already existing, saved category label.
+                * If so, then set a null in the same position as the existing
+                * category label as to ignore reordering. */
+                var categoryChanged = true
+                for ((index, category) in categories.withIndex()) {
+                    /* Just to be extra cautious, trim and truncate whitespaces on
+                    * the saved "categories" strings and force both strings to be fully lowercase
+                    * as to guarantee consistent style while comparing. */
+                    val categoryFormatted = category!!.trim().replace(
+                        Regex("\\s+"), " "
+                    ).lowercase()
+                    if (categoryFormatted == categoryInput.lowercase()) {
+                        /* Set the null and move on to the next category textbox input. */
+                        changed[index] = null
+                        categoryChanged = false
+                        break
+                    }
+                }
 
-        if (duplicatesFound || noNewLabels) {
-            toggleSaveButton(false)
-            return
-        }
-
-        /* Make temporary, mutable copy of user inputs. */
-        val tempCategoryInputs = categoryInputs.clone()
-
-        /* Set any existing categories to null in their same position as to ignore reordering. */
-        for ((index, category) in categories.withIndex()) {
-            if (category in categoryInputs) {
-                changed[index] = null
-                tempCategoryInputs[categoryInputs.indexOf(category)] = null
+                /* Getting here indicates that the user input is not a duplicate user input
+                * and is not an already existing, saved category label. */
+                if (categoryChanged) {
+                    /* So, place the new category label in an open slot,
+                    * preferably the textbox index, if possible.
+                    * Otherwise, just stick it in the first available slot. */
+                    val openSlotIndex = if (changed[indexTextbox] == "") {
+                        indexTextbox
+                    } else {
+                        changed.indexOf("")
+                    }
+                    changed[openSlotIndex] = categoryInput
+                }
             }
         }
 
-        /* Place the new category label(s) in any open slots,
-        * preferring the textbox index if possible */
-        for ((index, category) in tempCategoryInputs.withIndex()) {
-            if (category != null) {
-                if (changed[index] == "") {
-                    /* Forcibly capitalize each word in new category label. */
-                    changed[index] = category.split(
-                        " ").joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
-                }
-                else {
-                    changed[changed.indexOf("")] = category
-                }
-            }
-        }
-
-        /* Enable Save Changes button. */
-        toggleSaveButton(true)
+        /* Disable Save Changes button if at least one element is non-null.
+        * Otherwise, disable the Save Changes button, since the user did not input
+        * anything that was actually any different from what was already there. */
+        toggleSaveButton(changed.any { it != null })
     }
 
     override fun onCreateView(
@@ -246,7 +256,6 @@ class CategoryFragment : Fragment() {
             /* Set the label for each category textbox
             as they currently are in the XML data file. */
             textbox!!.setText(categories[index])
-            categoryInputs[index] = categories[index]
 
             /* Listener that checks if the user changed the category textbox content. */
             textbox.addTextChangedListener(object : TextWatcher {
@@ -256,26 +265,11 @@ class CategoryFragment : Fragment() {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(s: Editable) {
-                    /* Remove all whitespace from user input in category textbox. */
-                    val trimmed = s.toString().trim { it <= ' ' }
-                    if (s.toString() != trimmed) {
-                        /* Temporarily disable this text change listener to
-                        * prevent multiple triggering events be fired. */
-                        textbox.removeTextChangedListener(this)
-                        /* Forcibly update the text displayed in the textbox. */
-                        textbox.setText(trimmed)
-                        /* Set cursor position. */
-                        textbox.setSelection(trimmed.length)
-                        /* Restore the text change listener. */
-                        textbox.addTextChangedListener(this)
-                    }
-
                     /* Check if the user did not enter any word(s) into the category textbox. */
-                    if (trimmed.isEmpty()) {
+                    if (s.toString().isBlank()) {
                         /* Disable and grey-out the Save Changes button. */
                         toggleSaveButton(false)
-                    }
-                    else {
+                    } else {
                         /* Check if at least one new category has been entered.
                         * If so, the Save Changes button will be enabled.*/
                         checkInputs()

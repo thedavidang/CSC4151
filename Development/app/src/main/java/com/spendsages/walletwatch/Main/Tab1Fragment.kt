@@ -164,7 +164,11 @@ class Tab1Fragment : Fragment() {
     private fun submitEntry(category : Int) {
         /* Retrieve user inputs and convert each to string */
         val amount = amountInput.text.toString()
-        val description = descriptionInput.text.toString()
+        /* Trim off leading and trailing whitespace and truncate multiple whitespaces in
+        * between words into a single space each from user input in description textbox. */
+        val description = descriptionInput.text.toString().trim().replace(
+            Regex("\\s+"), " "
+        )
         /* Convert date input into "yyyy-MM-dd" format. */
         val date = modelDateFormat.format(userDateFormat.parse(dateInput.text.toString())!!)
 
@@ -202,28 +206,6 @@ class Tab1Fragment : Fragment() {
         model = main.model
 
         descriptionInput = rootView.findViewById(R.id.descriptionField)
-        /* Set listener to remove trailing whitespace. */
-        descriptionInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable) {
-                /* Remove all whitespace from user input in category textbox. */
-                val trimmed = s.toString().trim { it <= ' ' }
-                if (s.toString() != trimmed) {
-                    /* Temporarily disable this text change listener to
-                    * prevent multiple triggering events be fired. */
-                    descriptionInput.removeTextChangedListener(this)
-                    /* Forcibly update the text displayed in the textbox. */
-                    descriptionInput.setText(trimmed)
-                    /* Set cursor position. */
-                    descriptionInput.setSelection(trimmed.length)
-                    /* Restore the text change listener. */
-                    descriptionInput.addTextChangedListener(this)
-                }
-            }
-        })
 
         /* Set Toast to "Expense Added".
         * Ignore the warning since the Toast is shown in submitEntry. */
