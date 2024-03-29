@@ -35700,9 +35700,9 @@ com.spendsages.walletwatch.SettingsPagerAdapter
 com.spendsages.walletwatch.SharedViewModel:
     public static androidx.lifecycle.MutableLiveData getLive()
     public final java.lang.String getString(org.w3c.dom.Document)
-com.spendsages.walletwatch.Tab1Fragment$$InternalSyntheticLambda$2$9590797d025cc61abf2c1caadd64a87657bdb78394894ffb60af62134d8a6868$3
 com.spendsages.walletwatch.Tab1Fragment$$InternalSyntheticLambda$2$9590797d025cc61abf2c1caadd64a87657bdb78394894ffb60af62134d8a6868$4
-com.spendsages.walletwatch.Tab1Fragment$onCreateView$3
+com.spendsages.walletwatch.Tab1Fragment$$InternalSyntheticLambda$2$9590797d025cc61abf2c1caadd64a87657bdb78394894ffb60af62134d8a6868$5
+com.spendsages.walletwatch.Tab1Fragment$onCreateView$4
 com.spendsages.walletwatch.Tab1Fragment$sam$androidx_lifecycle_Observer$0:
     public final kotlin.jvm.functions.Function1 getFunctionDelegate()
 com.spendsages.walletwatch.Tab1Fragment:
