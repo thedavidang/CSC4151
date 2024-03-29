@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.CalendarView
@@ -274,6 +275,15 @@ class Tab1Fragment : Fragment() {
                 }
             }
         })
+        /* Set listener to directly move focus when tapping the Next key on the numpad. */
+        amountInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                /* Explicitly set focus to the Description field. */
+                descriptionInput.requestFocus()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
 
         invalidAmount = rootView.findViewById(R.id.invalidAmount)
         invalidAmount.visibility = View.GONE
