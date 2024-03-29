@@ -3,7 +3,7 @@
 
 ## Step-By-Step Walkthrough
 1. On your Android Device, download WalletWatch using this link:
-- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-v1.1.0-Installer.apk
+- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-v1.1.1-Installer.apk
 2. Navigate to the downloaded APK file on your Android device using the _Files_ app.
 - Typically located in the _Downloads_ folder.
 3. Tap the _WalletWatch-Installer.apk_ file.
