@@ -19,3 +19,17 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-optimizationpasses 5
+-dontpreverify
+-repackageclasses ''
+-allowaccessmodification
+-optimizations !code/simplification/arithmetic
+-keepattributes *Annotation*
+
+-verbose
+
+-dump obfuscation/class_files.txt
+-printseeds obfuscation/seeds.txt
+-printusage obfuscation/unused.txt
+-printmapping obfuscation/mapping.txt
