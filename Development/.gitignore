@@ -148,6 +148,8 @@ obj/
 .idea/navEditor.xml
 .idea/deploymentTargetDropDown.xml
 .idea/appInsightsSettings.xml
+.idea/runConfigurations.xml
+.idea/deploymentTargetSelector.xml
 
 # Legacy Eclipse project files
 .cproject
