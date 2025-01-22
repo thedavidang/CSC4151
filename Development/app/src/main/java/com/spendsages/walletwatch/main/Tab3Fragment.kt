@@ -677,6 +677,7 @@ class Tab3Fragment : Fragment() {
             toggleDateSelector(true)
         }
 
+        @Suppress("ClickableViewAccessibility")
         editOverlay.setOnTouchListener { _: View, _: MotionEvent ->
             /* Hide the keyboard. */
             (main.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)

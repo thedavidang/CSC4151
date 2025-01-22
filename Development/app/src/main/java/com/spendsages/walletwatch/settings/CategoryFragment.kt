@@ -409,6 +409,7 @@ class CategoryFragment : Fragment() {
             dialog.show()
         }
 
+        @Suppress("ClickableViewAccessibility")
         rootView.setOnTouchListener { _: View, _: MotionEvent ->
             /* Hide the keyboard. */
             (settings.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
