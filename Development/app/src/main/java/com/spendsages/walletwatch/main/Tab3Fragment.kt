@@ -1,6 +1,5 @@
 package com.spendsages.walletwatch.main
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -118,7 +117,7 @@ class Tab3Fragment : Fragment() {
     * Parameters: position represents the position of the sortingSpinner Spinbox.
     *
     * Returns: Nothing. */
-    @SuppressLint("NotifyDataSetChanged")
+    @Suppress("NotifyDataSetChanged")
     fun sortEntries(position : Int) {
         if (!adapterRecycler.entries.isNullOrEmpty()) {
             when (position) {
@@ -687,7 +686,7 @@ class Tab3Fragment : Fragment() {
         return rootView
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @Suppress("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
