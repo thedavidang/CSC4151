@@ -66,7 +66,8 @@ class SettingsActivity : AppCompatActivity() {
 
         /* Setup the shared view model, so that all fragments can access the same live data. */
         model = ViewModelProvider(app,
-            SharedViewModelFactory(app.applicationContext))[SharedViewModel::class.java]
+            SharedViewModelFactory(app.applicationContext)
+        )[SharedViewModel::class.java]
 
         /* Function that will close the Settings activity when the user taps the Settings button. */
         findViewById<ImageButton>(R.id.closeSettingsButton).setOnClickListener {

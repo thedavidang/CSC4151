@@ -162,10 +162,12 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             entryViewHolder.category.text = categoryLabel
 
             val editButton = entryViewHolder.itemView.findViewById<AppCompatImageButton>(
-                R.id.editButton)
+                R.id.editButton
+            )
 
             val deleteCheckbox = entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
-                R.id.deleteCheckbox)
+                R.id.deleteCheckbox
+            )
 
             /* Add a unique content description for the checkbox. */
             deleteCheckbox.contentDescription =

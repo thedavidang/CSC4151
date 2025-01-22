@@ -270,8 +270,10 @@ class Tab3Fragment : Fragment() {
         val category = (changedInputs[3]!!.toInt() + 1).toString()
 
         /* Add the entry to the XML data file. */
-        DataManager.editEntry(model.get(), entryID,
-            changedInputs[0]!!, changedInputs[1]!!, date, category)
+        DataManager.editEntry(
+            model.get(), entryID,
+            changedInputs[0]!!, changedInputs[1]!!, date, category
+        )
 
         /* Update the data model. */
         model.save()
@@ -314,10 +316,12 @@ class Tab3Fragment : Fragment() {
         adapterRecycler.setSelectListener(
             object : OnClickListener {
                 override fun onButtonClick(
-                    entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder) {
+                    entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder
+                ) {
                     /* Check if the checkbox is now checked. */
                     if (viewHolder.itemView.findViewById<AppCompatCheckBox>(
-                            R.id.deleteCheckbox).isChecked) {
+                            R.id.deleteCheckbox
+                        ).isChecked) {
                         /* Add the entry id to the list of selected entries for deletion. */
                         selectedEntries.add(entry.id)
                     }
@@ -341,7 +345,8 @@ class Tab3Fragment : Fragment() {
         adapterRecycler.setEditListener(
             object : OnClickListener {
                 override fun onButtonClick(
-                    entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder) {
+                    entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder
+                ) {
                     /* Retrieve the id, amount, description, date, and category of the entry. */
                     entryID = entry.id
                     amountInput.setText(viewHolder.amount.text)

@@ -609,8 +609,10 @@ class Tab2Fragment : Fragment() {
                                 DataManager.last12Months(doc, "all")
                             }
                             else {
-                                DataManager.last12Months(doc, "c-" +
-                                        spinChartCategory.selectedItemPosition.toString())
+                                DataManager.last12Months(
+                                    doc, "c-" +
+                                            spinChartCategory.selectedItemPosition.toString()
+                                )
                             }
                     }
                     /* All Time. */
@@ -622,8 +624,10 @@ class Tab2Fragment : Fragment() {
                                 DataManager.last10Years(doc, "all")
                             }
                             else {
-                                DataManager.last10Years(doc, "c-" +
-                                        spinChartCategory.selectedItemPosition.toString())
+                                DataManager.last10Years(
+                                    doc, "c-" +
+                                            spinChartCategory.selectedItemPosition.toString()
+                                )
                             }
                     }
                     /* Last 7 days. */
@@ -635,8 +639,10 @@ class Tab2Fragment : Fragment() {
                                 DataManager.last7Days(doc, "all")
                             }
                             else {
-                                DataManager.last7Days(doc, "c-" +
-                                        spinChartCategory.selectedItemPosition.toString())
+                                DataManager.last7Days(
+                                    doc, "c-" +
+                                            spinChartCategory.selectedItemPosition.toString()
+                                )
                             }
                     }
                 }
@@ -678,9 +684,15 @@ class Tab2Fragment : Fragment() {
                         /* Grab the data set from whichever time interval
                         * the user selected. */
                         data = when (timeSpan) {
-                            0 -> { DataManager.last7Days(doc, "all") }
-                            1 -> { DataManager.last12Months(doc, "all") }
-                            else -> { DataManager.last10Years(doc, "all") }
+                            0 -> {
+                                DataManager.last7Days(doc, "all")
+                            }
+                            1 -> {
+                                DataManager.last12Months(doc, "all")
+                            }
+                            else -> {
+                                DataManager.last10Years(doc, "all")
+                            }
                         }
                     }
                     /* A specific category. */
@@ -688,9 +700,15 @@ class Tab2Fragment : Fragment() {
                         /* Grab the data set from whichever time interval
                         * and category the user selected. */
                         data = when (timeSpan) {
-                            0 -> { DataManager.last7Days(doc, "c-$position") }
-                            1 -> { DataManager.last12Months(doc, "c-$position") }
-                            else -> { DataManager.last10Years(doc, "c-$position") }
+                            0 -> {
+                                DataManager.last7Days(doc, "c-$position")
+                            }
+                            1 -> {
+                                DataManager.last12Months(doc, "c-$position")
+                            }
+                            else -> {
+                                DataManager.last10Years(doc, "c-$position")
+                            }
                         }
                     }
                 }
@@ -760,9 +778,15 @@ class Tab2Fragment : Fragment() {
                     /* Grab the data set from whichever time interval
                     * the user selected. */
                     data = when (timeSpan) {
-                        0 -> { DataManager.last7Days(doc, "all") }
-                        1 -> { DataManager.last12Months(doc, "all") }
-                        else -> { DataManager.last10Years(doc, "all") }
+                        0 -> {
+                            DataManager.last7Days(doc, "all")
+                        }
+                        1 -> {
+                            DataManager.last12Months(doc, "all")
+                        }
+                        else -> {
+                            DataManager.last10Years(doc, "all")
+                        }
                     }
                 }
                 /* A specific category. */
@@ -770,9 +794,15 @@ class Tab2Fragment : Fragment() {
                     /* Grab the data set from whichever time interval
                     * and category the user selected. */
                     data = when (timeSpan) {
-                        0 -> { DataManager.last7Days(doc, "c-$category") }
-                        1 -> { DataManager.last12Months(doc, "c-$category") }
-                        else -> { DataManager.last10Years(doc, "c-$category") }
+                        0 -> {
+                            DataManager.last7Days(doc, "c-$category")
+                        }
+                        1 -> {
+                            DataManager.last12Months(doc, "c-$category")
+                        }
+                        else -> {
+                            DataManager.last10Years(doc, "c-$category")
+                        }
                     }
                 }
             }

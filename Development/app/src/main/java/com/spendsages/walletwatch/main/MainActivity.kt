@@ -98,7 +98,8 @@ class MainActivity : AppCompatActivity() {
 
         /* Setup the shared view model, so that all fragments can access the same live data. */
         model = ViewModelProvider(app,
-            SharedViewModelFactory(app.applicationContext))[SharedViewModel::class.java]
+            SharedViewModelFactory(app.applicationContext)
+        )[SharedViewModel::class.java]
     }
 
     /* Purpose: Force the focus on the given UI object and

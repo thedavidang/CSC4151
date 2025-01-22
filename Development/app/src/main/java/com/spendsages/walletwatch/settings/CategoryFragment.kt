@@ -189,7 +189,8 @@ class CategoryFragment : Fragment() {
                             toggleSaveButton(false)
                             /* Retrieve updated categories. */
                             categories = DataManager.getCategories(
-                                doc).slice(1..3).toTypedArray()
+                                doc
+                            ).slice(1..3).toTypedArray()
                         }
                         /* If the user taps "No", then simply close the confirmation alert. */
                         DialogInterface.BUTTON_NEGATIVE -> {
