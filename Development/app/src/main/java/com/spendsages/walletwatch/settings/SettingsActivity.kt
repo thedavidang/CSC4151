@@ -1,6 +1,5 @@
 package com.spendsages.walletwatch.settings
 
-import SharedViewModelFactory
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
