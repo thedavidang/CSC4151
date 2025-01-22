@@ -60,28 +60,6 @@ class Tab2Fragment : Fragment() {
 
     private lateinit var spinChartCategory : Spinner
 
-    /* Purpose: Refresh Tab 2 so that the live data is updated on the chart and totals.
-    *
-    * Parameters: isVisibleToUser represents whether Tab 2 is currently visible to the user.
-    *
-    * Returns: Nothing. */
-    @Deprecated("setUserVisibleHint is deprecated.")
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(true)
-
-        /* Check if Tab 2 is currently visible to the user. */
-        if (isVisibleToUser) {
-            /* Try to detach and attach the Tab 2 fragment. */
-            val ftDetach = getParentFragmentManager().beginTransaction()
-            ftDetach.setReorderingAllowed(false)
-            ftDetach.detach(this).commit()
-
-            val ftAttach = getParentFragmentManager().beginTransaction()
-            ftAttach.setReorderingAllowed(false)
-            ftAttach.attach(this).commit()
-        }
-    }
-
     /* Purpose: Controller method that reveals the line chart and hides the pie chart.
     *
     * Parameters: None.
@@ -815,6 +793,24 @@ class Tab2Fragment : Fragment() {
             /* Refresh the totals. */
             updateTotals(doc, timeSpan)
         }
+    }
+
+    /* Purpose: Refresh Tab 2 so that the live data is updated on the chart and totals.
+    *
+    * Parameters: None.
+    *
+    * Returns: Nothing. */
+    override fun onResume() {
+        super.onResume()
+        /* Tab 2 is currently visible to the user,
+        * so try to detach and attach the Tab 2 fragment. */
+        val ftDetach = getParentFragmentManager().beginTransaction()
+        ftDetach.setReorderingAllowed(false)
+        ftDetach.detach(this).commit()
+
+        val ftAttach = getParentFragmentManager().beginTransaction()
+        ftAttach.setReorderingAllowed(false)
+        ftAttach.attach(this).commit()
     }
 
     override fun onDestroyView() {
