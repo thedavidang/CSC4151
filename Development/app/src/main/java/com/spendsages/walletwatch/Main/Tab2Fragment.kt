@@ -62,6 +62,7 @@ class Tab2Fragment : Fragment() {
     * Parameters: isVisibleToUser represents whether Tab 2 is currently visible to the user.
     *
     * Returns: Nothing. */
+    @Deprecated("setUserVisibleHint is deprecated.")
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(true)
 
