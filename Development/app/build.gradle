@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.spendsages.walletwatch"
         minSdkVersion 28
-        targetSdk 34
+        targetSdk 35
         versionCode 13
         versionName '1.2.0'
     }
