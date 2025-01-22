@@ -72,11 +72,13 @@ class Tab2Fragment : Fragment() {
         /* Check if Tab 2 is currently visible to the user. */
         if (isVisibleToUser) {
             /* Try to detach and attach the Tab 2 fragment. */
-            val ft = requireFragmentManager().beginTransaction()
+            val ftDetach = getParentFragmentManager().beginTransaction()
+            ftDetach.setReorderingAllowed(false)
+            ftDetach.detach(this).commit()
 
-            ft.setReorderingAllowed(false)
-
-            ft.detach(this).attach(this).commit()
+            val ftAttach = getParentFragmentManager().beginTransaction()
+            ftAttach.setReorderingAllowed(false)
+            ftAttach.attach(this).commit()
         }
     }
 
