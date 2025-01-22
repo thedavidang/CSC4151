@@ -7,11 +7,7 @@ import org.w3c.dom.Document
 
 /* This class provides support for sharing live data amongst different views. */
 class SharedViewModel(context: Context) : ViewModel() {
-    private val repository: DataRepository
-
-    init {
-        repository = DataRepository(context)
-    }
+    private val repository: DataRepository = DataRepository(context)
 
     fun getLive(): MutableLiveData<Document> {
         return repository.doc
