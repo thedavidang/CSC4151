@@ -5,7 +5,7 @@
     android:id="@+id/tab3Fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Tab3Fragment">
+    tools:context=".main.Tab3Fragment">
 
     <View
         android:id="@+id/menuSpacing"

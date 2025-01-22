@@ -1,4 +1,4 @@
-package com.spendsages.walletwatch
+package com.spendsages.walletwatch.settings
 
 import android.app.AlertDialog
 import android.content.ClipData
@@ -17,6 +17,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
+import com.spendsages.walletwatch.DataManager
+import com.spendsages.walletwatch.R
+import com.spendsages.walletwatch.SharedViewModel
 import com.spendsages.walletwatch.databinding.FragmentCategoryBinding
 import org.w3c.dom.Document
 import java.io.OutputStreamWriter

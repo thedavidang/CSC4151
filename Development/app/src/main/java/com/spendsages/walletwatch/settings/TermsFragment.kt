@@ -1,4 +1,4 @@
-package com.spendsages.walletwatch
+package com.spendsages.walletwatch.settings
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.spendsages.walletwatch.R
 import com.spendsages.walletwatch.databinding.FragmentTermsBinding
 
 /**

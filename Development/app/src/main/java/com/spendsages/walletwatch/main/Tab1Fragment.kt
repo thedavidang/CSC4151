@@ -1,4 +1,4 @@
-package com.spendsages.walletwatch
+package com.spendsages.walletwatch.main
 
 import android.content.Context
 import android.os.Bundle
@@ -18,6 +18,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
+import com.spendsages.walletwatch.DataManager
+import com.spendsages.walletwatch.R
+import com.spendsages.walletwatch.SharedViewModel
 import com.spendsages.walletwatch.databinding.FragmentTab1Binding
 import java.text.DecimalFormat
 import java.text.NumberFormat

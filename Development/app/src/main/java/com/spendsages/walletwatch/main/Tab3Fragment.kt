@@ -1,4 +1,4 @@
-package com.spendsages.walletwatch
+package com.spendsages.walletwatch.main
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -17,7 +17,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.spendsages.walletwatch.DataManager
+import com.spendsages.walletwatch.Entry
+import com.spendsages.walletwatch.R
+import com.spendsages.walletwatch.SharedViewModel
 import com.spendsages.walletwatch.databinding.FragmentTab3Binding
+import com.spendsages.walletwatch.sortByDateAscending
+import com.spendsages.walletwatch.sortByDateDescending
+import com.spendsages.walletwatch.sortByPriceAscending
+import com.spendsages.walletwatch.sortByPriceDescending
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat

@@ -1,4 +1,4 @@
-package com.spendsages.walletwatch
+package com.spendsages.walletwatch.settings
 
 import SharedViewModelFactory
 import android.os.Bundle
@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.spendsages.walletwatch.App
+import com.spendsages.walletwatch.R
+import com.spendsages.walletwatch.SharedViewModel
+import com.spendsages.walletwatch.SharedViewModelFactory
 import com.spendsages.walletwatch.databinding.ActivitySettingsBinding
 
 /* This is the secondary activity of the app,

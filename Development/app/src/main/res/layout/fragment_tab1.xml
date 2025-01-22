@@ -11,7 +11,7 @@
         android:id="@+id/tab1Fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".Tab1Fragment">
+        tools:context=".main.Tab1Fragment">
 
         <View
             android:id="@+id/menuSpacing"

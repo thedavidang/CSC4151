@@ -6,8 +6,8 @@ com.google.android.material.sidesheet.SideSheetBehavior
 androidx.media.AudioAttributesCompat
 com.google.android.material.internal.BaselineLayout
 androidx.lifecycle.CompositeGeneratedAdaptersObserver
-com.spendsages.walletwatch.Tab2Fragment
-com.spendsages.walletwatch.MainActivity
+com.spendsages.walletwatch.main.Tab2Fragment
+com.spendsages.walletwatch.main.MainActivity
 com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 androidx.fragment.app.FragmentContainerView
 android.support.v4.media.session.MediaSessionCompat$Token
@@ -18,7 +18,7 @@ androidx.lifecycle.SavedStateHandleController
 com.google.android.material.theme.MaterialComponentsViewInflater
 androidx.media.AudioAttributesImpl
 com.google.android.material.bottomappbar.BottomAppBar$Behavior
-com.spendsages.walletwatch.Tab3Fragment
+com.spendsages.walletwatch.main.Tab3Fragment
 com.google.android.material.carousel.CarouselLayoutManager
 com.google.android.material.transformation.FabTransformationScrimBehavior
 androidx.appcompat.view.menu.ExpandedMenuView
@@ -35,8 +35,8 @@ androidx.core.graphics.drawable.IconCompat
 androidx.appcompat.widget.ActivityChooserView$InnerLayout
 com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior
 androidx.activity.ComponentActivity$2
-com.spendsages.walletwatch.AboutFragment
-com.spendsages.walletwatch.Tab1Fragment
+com.spendsages.walletwatch.settings.AboutFragment
+com.spendsages.walletwatch.main.Tab1Fragment
 androidx.appcompat.widget.SearchView$SearchAutoComplete
 com.google.android.material.timepicker.ChipTextInputComboView
 com.google.android.material.snackbar.SnackbarContentLayout
@@ -65,7 +65,7 @@ androidx.recyclerview.widget.LinearLayoutManager
 androidx.core.graphics.drawable.IconCompatParcelizer
 androidx.appcompat.app.AlertController$RecycleListView
 com.google.android.material.search.SearchBar$ScrollingViewBehavior
-com.spendsages.walletwatch.SettingsActivity
+com.spendsages.walletwatch.settings.SettingsActivity
 androidx.appcompat.widget.ActionBarContainer
 androidx.emoji2.text.EmojiCompatInitializer$1
 androidx.appcompat.view.menu.ActionMenuItemView
@@ -94,14 +94,14 @@ androidx.appcompat.widget.FitWindowsLinearLayout
 androidx.lifecycle.ReflectiveGenericLifecycleObserver
 androidx.viewpager2.adapter.FragmentStateAdapter$5
 androidx.transition.FragmentTransitionSupport
-com.spendsages.walletwatch.CategoryFragment
+com.spendsages.walletwatch.settings.CategoryFragment
 com.google.android.material.internal.NavigationMenuView
 com.google.android.material.timepicker.ClockHandView
 androidx.recyclerview.widget.RecyclerView
 com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior
 com.google.android.material.timepicker.ClockFaceView
 android.support.v4.media.MediaDescriptionCompat
-com.spendsages.walletwatch.TermsFragment
+com.spendsages.walletwatch.settings.TermsFragment
 androidx.appcompat.widget.ActionBarContextView
 androidx.lifecycle.LiveData$LifecycleBoundObserver
 com.google.android.material.transformation.ExpandableBehavior
@@ -1187,7 +1187,7 @@ com.google.android.material.textfield.MaterialAutoCompleteTextView: android.cont
 androidx.appcompat.widget.AppCompatCheckBox: android.content.res.ColorStateList getSupportCompoundDrawablesTintList()
 com.google.android.material.textfield.TextInputLayout: void setCounterTextAppearance(int)
 com.google.android.material.chip.Chip: float getChipMinHeight()
-com.spendsages.walletwatch.CategoryFragment: CategoryFragment()
+com.spendsages.walletwatch.settings.CategoryFragment: CategoryFragment()
 lecho.lib.hellocharts.view.PieChartView: int getChartRotation()
 androidx.appcompat.widget.AppCompatTextView: int getAutoSizeTextType()
 androidx.appcompat.widget.AppCompatCheckedTextView: void setSupportBackgroundTintMode(android.graphics.PorterDuff$Mode)
@@ -1409,7 +1409,7 @@ androidx.constraintlayout.widget.ConstraintHelper: int[] getReferencedIds()
 androidx.core.widget.PopupWindowCompat$Api23Impl: void setOverlapAnchor(android.widget.PopupWindow,boolean)
 androidx.activity.Api34Impl: android.window.BackEvent createOnBackEvent(float,float,float,int)
 androidx.appcompat.widget.AppCompatRadioButton: android.graphics.PorterDuff$Mode getSupportCompoundDrawablesTintMode()
-com.spendsages.walletwatch.AboutFragment: AboutFragment()
+com.spendsages.walletwatch.settings.AboutFragment: AboutFragment()
 com.google.android.material.chip.Chip: void setIconEndPadding(float)
 androidx.appcompat.widget.AppCompatEditText: void setSupportBackgroundTintList(android.content.res.ColorStateList)
 androidx.appcompat.widget.AppCompatCheckBox: void setEmojiCompatEnabled(boolean)
@@ -1480,7 +1480,7 @@ androidx.appcompat.resources.Compatibility$Api18Impl: void setAutoCancel(android
 androidx.core.app.ActivityCompat$Api16Impl: void startActivityForResult(android.app.Activity,android.content.Intent,int,android.os.Bundle)
 androidx.appcompat.widget.AppCompatAutoCompleteTextView: void setCustomSelectionActionModeCallback(android.view.ActionMode$Callback)
 lecho.lib.hellocharts.view.AbstractChartView: void setZoomType(lecho.lib.hellocharts.gesture.ZoomType)
-com.spendsages.walletwatch.MainActivity: void showKeyboard(android.view.View)
+com.spendsages.walletwatch.main.MainActivity: void showKeyboard(android.view.View)
 androidx.core.view.ViewCompat$Api17Impl: int getLabelFor(android.view.View)
 com.google.android.material.textfield.TextInputLayout: void setEndIconVisible(boolean)
 androidx.appcompat.widget.AppCompatSpinner: void setSupportBackgroundTintList(android.content.res.ColorStateList)
@@ -1608,8 +1608,8 @@ androidx.appcompat.widget.AppCompatImageView: android.graphics.PorterDuff$Mode g
 androidx.core.view.ViewCompat$Api28Impl: void removeOnUnhandledKeyEventListener(android.view.View,androidx.core.view.ViewCompat$OnUnhandledKeyEventListenerCompat)
 androidx.appcompat.widget.AppCompatCheckedTextView: void setAllCaps(boolean)
 androidx.constraintlayout.helper.widget.Flow: void setWrapMode(int)
-com.spendsages.walletwatch.Tab1Fragment: Tab1Fragment()
-com.spendsages.walletwatch.SettingsActivity: SettingsActivity()
+com.spendsages.walletwatch.main.Tab1Fragment: Tab1Fragment()
+com.spendsages.walletwatch.settings.SettingsActivity: SettingsActivity()
 androidx.appcompat.widget.Toolbar: void setTitle(java.lang.CharSequence)
 androidx.core.view.WindowInsetsCompat$Impl: androidx.core.graphics.Insets getTappableElementInsets()
 androidx.appcompat.widget.DropDownListView: void setListSelectionHidden(boolean)
@@ -1686,7 +1686,7 @@ androidx.appcompat.widget.AppCompatCheckedTextView: android.content.res.ColorSta
 androidx.appcompat.widget.AppCompatRadioButton: void setSupportBackgroundTintList(android.content.res.ColorStateList)
 androidx.recyclerview.widget.RecyclerView: void setEdgeEffectFactory(androidx.recyclerview.widget.RecyclerView$EdgeEffectFactory)
 com.google.android.material.chip.Chip: void setChipIconVisible(boolean)
-com.spendsages.walletwatch.Tab3Fragment: Tab3Fragment()
+com.spendsages.walletwatch.main.Tab3Fragment: Tab3Fragment()
 androidx.core.view.WindowInsetsCompat$Impl: boolean isConsumed()
 androidx.core.os.TraceCompat$Api18Impl: void endSection()
 com.google.android.material.chip.Chip: void setTextAppearance(com.google.android.material.resources.TextAppearance)
@@ -2034,7 +2034,7 @@ com.google.android.material.chip.Chip: void setBackground(android.graphics.drawa
 com.google.android.material.textfield.TextInputLayout: void setPasswordVisibilityToggleTintList(android.content.res.ColorStateList)
 androidx.core.view.WindowInsetsCompat$Impl: void copyRootViewBounds(android.view.View)
 androidx.core.view.ViewParentCompat$Api21Impl: void onNestedScrollAccepted(android.view.ViewParent,android.view.View,android.view.View,int)
-com.spendsages.walletwatch.Tab2Fragment: Tab2Fragment()
+com.spendsages.walletwatch.main.Tab2Fragment: Tab2Fragment()
 androidx.appcompat.widget.AppCompatAutoCompleteTextView: android.content.res.ColorStateList getSupportBackgroundTintList()
 com.google.android.material.chip.Chip: void setTextStartPaddingResource(int)
 androidx.appcompat.widget.AppCompatTextViewAutoSizeHelper$Api16Impl: android.text.StaticLayout createStaticLayoutForMeasuring(java.lang.CharSequence,android.text.Layout$Alignment,int,android.widget.TextView,android.text.TextPaint)
@@ -2084,7 +2084,7 @@ androidx.core.view.WindowInsetsCompat$BuilderImpl20: void setSystemWindowInsets(
 androidx.appcompat.widget.Toolbar: int getContentInsetRight()
 com.google.android.material.textfield.TextInputEditText: java.lang.CharSequence getHintFromLayout()
 androidx.appcompat.widget.AppCompatCheckedTextView: void setSupportCompoundDrawablesTintList(android.content.res.ColorStateList)
-com.spendsages.walletwatch.TermsFragment: TermsFragment()
+com.spendsages.walletwatch.settings.TermsFragment: TermsFragment()
 androidx.appcompat.widget.AppCompatReceiveContentHelper$OnDropApi24Impl: boolean onDropForTextView(android.view.DragEvent,android.widget.TextView,android.app.Activity)
 com.google.android.material.textfield.TextInputLayout: android.graphics.drawable.Drawable getOrCreateFilledDropDownMenuBackground()
 androidx.core.view.ViewCompat$Api15Impl: boolean hasOnClickListeners(android.view.View)
@@ -2139,7 +2139,7 @@ androidx.core.view.ViewCompat$Api16Impl: void removeOnGlobalLayoutListener(andro
 androidx.core.content.res.ResourcesCompat$ThemeCompat$Api29Impl: void rebase(android.content.res.Resources$Theme)
 androidx.lifecycle.ReportFragment: ReportFragment()
 androidx.core.app.AppOpsManagerCompat$Api29Impl: java.lang.String getOpPackageName(android.content.Context)
-com.spendsages.walletwatch.MainActivity: MainActivity()
+com.spendsages.walletwatch.main.MainActivity: MainActivity()
 com.google.android.material.tabs.TabLayout: void setSelectedTabIndicatorGravity(int)
 com.google.android.material.internal.NavigationMenuItemView: void setMaxLines(int)
 androidx.appcompat.widget.Toolbar: void setSubtitleTextColor(android.content.res.ColorStateList)

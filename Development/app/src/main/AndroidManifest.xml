@@ -21,7 +21,7 @@
         tools:replace="label"
         tools:targetApi="s">
         <activity
-            android:name="com.spendsages.walletwatch.MainActivity"
+            android:name="com.spendsages.walletwatch.main.MainActivity"
             android:screenOrientation="portrait"
             android:noHistory="false"
             android:windowSoftInputMode="stateVisible"
@@ -37,8 +37,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.spendsages.walletwatch.SettingsActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.spendsages.walletwatch.settings.SettingsActivity"
+            android:parentActivityName=".main.MainActivity"
             android:screenOrientation="portrait"
             android:noHistory="true"
             android:windowSoftInputMode="stateHidden"

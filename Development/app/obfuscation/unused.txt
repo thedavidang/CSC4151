@@ -20443,14 +20443,14 @@ com.spendsages.walletwatch.R$string
 com.spendsages.walletwatch.R$style
 com.spendsages.walletwatch.R$styleable
 com.spendsages.walletwatch.R
-com.spendsages.walletwatch.RecyclerAdapter$EntryViewHolder:
+com.spendsages.walletwatch.main.RecyclerAdapter$EntryViewHolder:
     public final void setAmount(android.widget.TextView)
     public final void setCategory(android.widget.TextView)
     public final void setDate(android.widget.TextView)
     public final void setDescription(android.widget.TextView)
-com.spendsages.walletwatch.RecyclerAdapter:
+com.spendsages.walletwatch.main.RecyclerAdapter:
     public final void setEntriesRaw(java.util.List)
-com.spendsages.walletwatch.Tab2Fragment:
+com.spendsages.walletwatch.main.Tab2Fragment:
     public void setUserVisibleHint(boolean)
 com.spendsages.walletwatch.databinding.ActivityMainBinding:
     public synthetic bridge android.view.View getRoot()
@@ -35618,22 +35618,22 @@ com.google.android.material.transformation.FabTransformationSheetBehavior:
 com.google.android.material.transformation.TransformationChildCard
 com.google.android.material.transformation.TransformationChildLayout
 com.google.common.util.concurrent.ListenableFuture
-com.spendsages.walletwatch.AboutFragment:
+com.spendsages.walletwatch.settings.AboutFragment:
     public com.spendsages.walletwatch.databinding.FragmentAboutBinding _binding
     public static com.spendsages.walletwatch.databinding.FragmentAboutBinding getBinding()
 com.spendsages.walletwatch.App$appViewModelStore$2:
     public static androidx.lifecycle.ViewModelStore invoke()
 com.spendsages.walletwatch.App:
     public static androidx.lifecycle.ViewModelStore getAppViewModelStore()
-com.spendsages.walletwatch.CategoryFragment$$InternalSyntheticLambda$2$f70f2c85fb82b57907c95b776faa23d9f86170a9d8f564bb2bfce56a68bceeb8$1
-com.spendsages.walletwatch.CategoryFragment$$InternalSyntheticLambda$2$f70f2c85fb82b57907c95b776faa23d9f86170a9d8f564bb2bfce56a68bceeb8$2
-com.spendsages.walletwatch.CategoryFragment$$InternalSyntheticLambda$2$f70f2c85fb82b57907c95b776faa23d9f86170a9d8f564bb2bfce56a68bceeb8$3
-com.spendsages.walletwatch.CategoryFragment$$InternalSyntheticLambda$3$98b9f21994f1802406499463eae7a52405e3d0ba5f1b7c61aa2d02b80dfea23c$0
-com.spendsages.walletwatch.CategoryFragment$$InternalSyntheticLambda$3$98b9f21994f1802406499463eae7a52405e3d0ba5f1b7c61aa2d02b80dfea23c$2
-com.spendsages.walletwatch.CategoryFragment$$InternalSyntheticLambda$4$0dfc16aee41fd8cbfa61224500eeecf82ac4428a68be95b4a495409267f34561$0
-com.spendsages.walletwatch.CategoryFragment$$InternalSyntheticLambda$4$0dfc16aee41fd8cbfa61224500eeecf82ac4428a68be95b4a495409267f34561$1
-com.spendsages.walletwatch.CategoryFragment$onCreateView$2
-com.spendsages.walletwatch.CategoryFragment:
+com.spendsages.walletwatch.settings.CategoryFragment$$InternalSyntheticLambda$2$f70f2c85fb82b57907c95b776faa23d9f86170a9d8f564bb2bfce56a68bceeb8$1
+com.spendsages.walletwatch.settings.CategoryFragment$$InternalSyntheticLambda$2$f70f2c85fb82b57907c95b776faa23d9f86170a9d8f564bb2bfce56a68bceeb8$2
+com.spendsages.walletwatch.settings.CategoryFragment$$InternalSyntheticLambda$2$f70f2c85fb82b57907c95b776faa23d9f86170a9d8f564bb2bfce56a68bceeb8$3
+com.spendsages.walletwatch.settings.CategoryFragment$$InternalSyntheticLambda$3$98b9f21994f1802406499463eae7a52405e3d0ba5f1b7c61aa2d02b80dfea23c$0
+com.spendsages.walletwatch.settings.CategoryFragment$$InternalSyntheticLambda$3$98b9f21994f1802406499463eae7a52405e3d0ba5f1b7c61aa2d02b80dfea23c$2
+com.spendsages.walletwatch.settings.CategoryFragment$$InternalSyntheticLambda$4$0dfc16aee41fd8cbfa61224500eeecf82ac4428a68be95b4a495409267f34561$0
+com.spendsages.walletwatch.settings.CategoryFragment$$InternalSyntheticLambda$4$0dfc16aee41fd8cbfa61224500eeecf82ac4428a68be95b4a495409267f34561$1
+com.spendsages.walletwatch.settings.CategoryFragment$onCreateView$2
+com.spendsages.walletwatch.settings.CategoryFragment:
     public com.spendsages.walletwatch.databinding.FragmentCategoryBinding _binding
     public android.widget.Button exportButton
     public android.widget.Button importButton
@@ -35662,80 +35662,80 @@ com.spendsages.walletwatch.EntryKt$sortByDateDescending$$inlined$compareByDescen
 com.spendsages.walletwatch.EntryKt$sortByPriceAscending$$inlined$compareBy$1
 com.spendsages.walletwatch.EntryKt$sortByPriceDescending$$inlined$compareByDescending$1
 com.spendsages.walletwatch.EntryKt
-com.spendsages.walletwatch.MainActivity$$InternalSyntheticLambda$1$7adac7e70023d6722aaa5bce911a472d71f62e89371f15fe60147bf9320c6551$0
-com.spendsages.walletwatch.MainActivity$$InternalSyntheticLambda$1$7adac7e70023d6722aaa5bce911a472d71f62e89371f15fe60147bf9320c6551$1
-com.spendsages.walletwatch.MainActivity$onCreate$2
-com.spendsages.walletwatch.MainActivity:
+com.spendsages.walletwatch.main.MainActivity$$InternalSyntheticLambda$1$7adac7e70023d6722aaa5bce911a472d71f62e89371f15fe60147bf9320c6551$0
+com.spendsages.walletwatch.main.MainActivity$$InternalSyntheticLambda$1$7adac7e70023d6722aaa5bce911a472d71f62e89371f15fe60147bf9320c6551$1
+com.spendsages.walletwatch.main.MainActivity$onCreate$2
+com.spendsages.walletwatch.main.MainActivity:
     public static boolean getLaunched()
     public final com.spendsages.walletwatch.SharedViewModel getModel()
     public static void setLaunched()
     public final void setModel()
-com.spendsages.walletwatch.MainPagerAdapter:
+com.spendsages.walletwatch.main.MainPagerAdapter:
     public final androidx.fragment.app.Fragment createFragment()
     private static int getItemCount$com$spendsages$walletwatch$MainPagerAdapter()
     private static int getItemCount$com$spendsages$walletwatch$SettingsPagerAdapter()
-com.spendsages.walletwatch.OnClickListener:
-    public abstract void onButtonClick(com.spendsages.walletwatch.Entry,com.spendsages.walletwatch.RecyclerAdapter$EntryViewHolder)
-com.spendsages.walletwatch.RecyclerAdapter$$InternalSyntheticLambda$3$5efc5aaa74ffad3032b137bddf57a20c0d6737239f18674d0bb585f364701761$1
-com.spendsages.walletwatch.RecyclerAdapter$EntryViewHolder:
+com.spendsages.walletwatch.main.OnClickListener:
+    public abstract void onButtonClick(com.spendsages.walletwatch.Entry,com.spendsages.walletwatch.main.RecyclerAdapter$EntryViewHolder)
+com.spendsages.walletwatch.main.RecyclerAdapter$$InternalSyntheticLambda$3$5efc5aaa74ffad3032b137bddf57a20c0d6737239f18674d0bb585f364701761$1
+com.spendsages.walletwatch.main.RecyclerAdapter$EntryViewHolder:
     public static android.widget.TextView getAmount()
     public static android.widget.TextView getCategory()
     public static android.widget.TextView getDate()
     public static android.widget.TextView getDescription()
-com.spendsages.walletwatch.RecyclerAdapter:
+com.spendsages.walletwatch.main.RecyclerAdapter:
     public static java.util.List getEntries()
     public static java.util.List getEntriesRaw()
     public static void onBindViewHolder$4()
-    public static com.spendsages.walletwatch.RecyclerAdapter$EntryViewHolder onCreateViewHolder()
+    public static com.spendsages.walletwatch.main.RecyclerAdapter$EntryViewHolder onCreateViewHolder()
     public static void setEditListener()
     public static void setEntries()
     public static void setSelectListener()
-com.spendsages.walletwatch.SettingsActivity$$InternalSyntheticLambda$1$1f2d9e87e823e7d778c40d8ea86d06980a43c74991a650446e542b2934b98d93$0
-com.spendsages.walletwatch.SettingsActivity$$InternalSyntheticLambda$1$1f2d9e87e823e7d778c40d8ea86d06980a43c74991a650446e542b2934b98d93$1
-com.spendsages.walletwatch.SettingsActivity:
+com.spendsages.walletwatch.settings.SettingsActivity$$InternalSyntheticLambda$1$1f2d9e87e823e7d778c40d8ea86d06980a43c74991a650446e542b2934b98d93$0
+com.spendsages.walletwatch.settings.SettingsActivity$$InternalSyntheticLambda$1$1f2d9e87e823e7d778c40d8ea86d06980a43c74991a650446e542b2934b98d93$1
+com.spendsages.walletwatch.settings.SettingsActivity:
     public final com.spendsages.walletwatch.SharedViewModel getModel()
     public static void reduceDragSensitivity()
     public final void setModel()
-com.spendsages.walletwatch.SettingsPagerAdapter
+com.spendsages.walletwatch.settings.SettingsPagerAdapter
 com.spendsages.walletwatch.SharedViewModel:
     public static androidx.lifecycle.MutableLiveData getLive()
     public final java.lang.String getString(org.w3c.dom.Document)
-com.spendsages.walletwatch.Tab1Fragment$$InternalSyntheticLambda$2$9590797d025cc61abf2c1caadd64a87657bdb78394894ffb60af62134d8a6868$4
-com.spendsages.walletwatch.Tab1Fragment$$InternalSyntheticLambda$2$9590797d025cc61abf2c1caadd64a87657bdb78394894ffb60af62134d8a6868$5
-com.spendsages.walletwatch.Tab1Fragment$onCreateView$4
-com.spendsages.walletwatch.Tab1Fragment$sam$androidx_lifecycle_Observer$0:
+com.spendsages.walletwatch.main.Tab1Fragment$$InternalSyntheticLambda$2$9590797d025cc61abf2c1caadd64a87657bdb78394894ffb60af62134d8a6868$4
+com.spendsages.walletwatch.main.Tab1Fragment$$InternalSyntheticLambda$2$9590797d025cc61abf2c1caadd64a87657bdb78394894ffb60af62134d8a6868$5
+com.spendsages.walletwatch.main.Tab1Fragment$onCreateView$4
+com.spendsages.walletwatch.main.Tab1Fragment$sam$androidx_lifecycle_Observer$0:
     public final kotlin.jvm.functions.Function1 getFunctionDelegate()
-com.spendsages.walletwatch.Tab1Fragment:
+com.spendsages.walletwatch.main.Tab1Fragment:
     public com.spendsages.walletwatch.databinding.FragmentTab1Binding _binding
     public android.widget.ImageButton dateButton
     public static com.spendsages.walletwatch.databinding.FragmentTab1Binding getBinding()
     public static void submitEntry()
     public static boolean validateAmountInput()
     public static boolean validateDateInput()
-com.spendsages.walletwatch.Tab2Fragment$onCreateView$2
-com.spendsages.walletwatch.Tab2Fragment$onCreateView$3
-com.spendsages.walletwatch.Tab2Fragment$onViewCreated$1
-com.spendsages.walletwatch.Tab2Fragment$sam$androidx_lifecycle_Observer$0
-com.spendsages.walletwatch.Tab2Fragment:
+com.spendsages.walletwatch.main.Tab2Fragment$onCreateView$2
+com.spendsages.walletwatch.main.Tab2Fragment$onCreateView$3
+com.spendsages.walletwatch.main.Tab2Fragment$onViewCreated$1
+com.spendsages.walletwatch.main.Tab2Fragment$sam$androidx_lifecycle_Observer$0
+com.spendsages.walletwatch.main.Tab2Fragment:
     public com.spendsages.walletwatch.databinding.FragmentTab2Binding _binding
     public android.widget.TextView allText
     public static com.spendsages.walletwatch.databinding.FragmentTab2Binding getBinding()
     public final void showLineChart()
     public static void showPieChart()
-com.spendsages.walletwatch.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$2
-com.spendsages.walletwatch.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$3
-com.spendsages.walletwatch.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$4
-com.spendsages.walletwatch.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$5
-com.spendsages.walletwatch.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$6
-com.spendsages.walletwatch.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$7
-com.spendsages.walletwatch.Tab3Fragment$$InternalSyntheticLambda$3$bce05cc35ab805a4f4c2f371812c0196b130ba8ce5ab86d6a7b1c0977a4b6ef2$0
-com.spendsages.walletwatch.Tab3Fragment$onCreateView$10
-com.spendsages.walletwatch.Tab3Fragment$onCreateView$2
-com.spendsages.walletwatch.Tab3Fragment$onCreateView$4
-com.spendsages.walletwatch.Tab3Fragment$onCreateView$6
-com.spendsages.walletwatch.Tab3Fragment$onViewCreated$1
-com.spendsages.walletwatch.Tab3Fragment$sam$androidx_lifecycle_Observer$0
-com.spendsages.walletwatch.Tab3Fragment:
+com.spendsages.walletwatch.main.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$2
+com.spendsages.walletwatch.main.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$3
+com.spendsages.walletwatch.main.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$4
+com.spendsages.walletwatch.main.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$5
+com.spendsages.walletwatch.main.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$6
+com.spendsages.walletwatch.main.Tab3Fragment$$InternalSyntheticLambda$2$fe027de732fbcfc67c7498c7f91a766d32b353b28681571924f54faae135b878$7
+com.spendsages.walletwatch.main.Tab3Fragment$$InternalSyntheticLambda$3$bce05cc35ab805a4f4c2f371812c0196b130ba8ce5ab86d6a7b1c0977a4b6ef2$0
+com.spendsages.walletwatch.main.Tab3Fragment$onCreateView$10
+com.spendsages.walletwatch.main.Tab3Fragment$onCreateView$2
+com.spendsages.walletwatch.main.Tab3Fragment$onCreateView$4
+com.spendsages.walletwatch.main.Tab3Fragment$onCreateView$6
+com.spendsages.walletwatch.main.Tab3Fragment$onViewCreated$1
+com.spendsages.walletwatch.main.Tab3Fragment$sam$androidx_lifecycle_Observer$0
+com.spendsages.walletwatch.main.Tab3Fragment:
     public com.spendsages.walletwatch.databinding.FragmentTab3Binding _binding
     public android.widget.ImageButton dateButton
     public androidx.constraintlayout.widget.ConstraintLayout editWindow
@@ -35743,7 +35743,7 @@ com.spendsages.walletwatch.Tab3Fragment:
     public static void submitEdit()
     public static boolean validateAmountInput$1()
     public static boolean validateDateInput$1()
-com.spendsages.walletwatch.TermsFragment:
+com.spendsages.walletwatch.settings.TermsFragment:
     public androidx.appcompat.view.SupportActionModeWrapper$CallbackWrapper _binding
     public android.widget.TextView termsText
     public static androidx.appcompat.view.SupportActionModeWrapper$CallbackWrapper getBinding()

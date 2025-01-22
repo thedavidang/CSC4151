@@ -1,6 +1,5 @@
-package com.spendsages.walletwatch
+package com.spendsages.walletwatch.main
 
-import SharedViewModelFactory
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.spendsages.walletwatch.App
+import com.spendsages.walletwatch.R
+import com.spendsages.walletwatch.SharedViewModel
+import com.spendsages.walletwatch.SharedViewModelFactory
 import com.spendsages.walletwatch.databinding.ActivityMainBinding
+import com.spendsages.walletwatch.settings.SettingsActivity
 
 /* This is the "main" of the program and is also the primary activity of the app.
 * This will immediately load upon app launch. */

@@ -1,4 +1,4 @@
-package com.spendsages.walletwatch
+package com.spendsages.walletwatch.main
 
 import android.graphics.Color
 import android.os.Bundle
@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.spendsages.walletwatch.DataManager
+import com.spendsages.walletwatch.R
+import com.spendsages.walletwatch.SharedViewModel
 import com.spendsages.walletwatch.databinding.FragmentTab2Binding
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView

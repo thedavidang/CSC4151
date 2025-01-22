@@ -11,7 +11,7 @@
     android:id="@+id/termsFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".TermsFragment" >
+    tools:context=".settings.TermsFragment" >
 
     <View
         android:id="@+id/menuSpacing"

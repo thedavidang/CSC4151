@@ -1,4 +1,4 @@
-package com.spendsages.walletwatch
+package com.spendsages.walletwatch.main
 
 import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
@@ -8,6 +8,13 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
+import com.spendsages.walletwatch.Entry
+import com.spendsages.walletwatch.R
+import com.spendsages.walletwatch.getEntries
+import com.spendsages.walletwatch.sortByDateAscending
+import com.spendsages.walletwatch.sortByDateDescending
+import com.spendsages.walletwatch.sortByPriceAscending
+import com.spendsages.walletwatch.sortByPriceDescending
 import org.w3c.dom.Document
 import java.text.DecimalFormat
 import java.util.*
