@@ -109,14 +109,16 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
     }
 
     /* This Internal Class is an object that represents an individual expense entry card,
-    * which has a displayed dollar amount, possibly a description of the purchase,
-    * the date of purchase, and the category in which the expense falls under.
+    * which has a delete checkbox, displayed dollar amount, possibly a description of the purchase,
+    * the date of purchase, the category in which the expense falls under, and an edit button.
     * Upon instantiation, the card is immediately added to the RecyclerView cardRecycler. */
     class EntryViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var deleteCheckbox: AppCompatCheckBox = itemView.findViewById(R.id.deleteCheckbox)
         var amount: TextView = itemView.findViewById(R.id.amountText)
         var description: TextView = itemView.findViewById(R.id.descriptionText)
         var date: TextView = itemView.findViewById(R.id.dateText)
         var category: TextView = itemView.findViewById(R.id.categoryText)
+        val editButton: AppCompatImageButton = itemView.findViewById(R.id.editButton)
     }
 
     /* Purpose: Creates an individual expense entry card using layout_card.xml.
@@ -161,32 +163,24 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             }
             entryViewHolder.category.text = categoryLabel
 
-            val editButton = entryViewHolder.itemView.findViewById<AppCompatImageButton>(
-                R.id.editButton
-            )
-
-            val deleteCheckbox = entryViewHolder.itemView.findViewById<AppCompatCheckBox>(
-                R.id.deleteCheckbox
-            )
-
             /* Add a unique content description for the checkbox. */
-            deleteCheckbox.contentDescription =
+            entryViewHolder.deleteCheckbox.contentDescription =
                 "Select Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
 
             /* Add a unique content description for the edit button. */
-            editButton.contentDescription =
+            entryViewHolder.editButton.contentDescription =
                 "Edit Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
 
             /* Force checkbox to be initially unchecked. */
-            deleteCheckbox.isChecked = false
+            entryViewHolder.deleteCheckbox.isChecked = false
 
-            deleteCheckbox.setOnClickListener {
+            entryViewHolder.deleteCheckbox.setOnClickListener {
                 selectListener?.onButtonClick(entries!![i], entryViewHolder)
             }
 
-            editButton.setOnClickListener {
+            entryViewHolder.editButton.setOnClickListener {
                 editListener?.onButtonClick(entries!![i], entryViewHolder)
             }
         }
