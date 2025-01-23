@@ -52,19 +52,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/deleteButton"/>
 
+    <CheckBox
+        android:id="@+id/deselectAllCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="#2196F3"
+        android:ems="11"
+        android:enabled="false"
+        android:checked="false"
+        android:text="@string/deselectAllString"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/footerSpacing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:background="#F44336"
-        android:ems="10"
+        android:ems="9"
         android:enabled="false"
         android:checked="false"
         android:text="@string/deleteString"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/footerSpacing"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent" />
 
     <View

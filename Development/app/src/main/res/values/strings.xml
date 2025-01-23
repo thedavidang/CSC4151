@@ -25,6 +25,7 @@
     <string name="allTotalString">All Categories Total</string>
 
     <string name="cancelString">Cancel</string>
+    <string name="deselectAllString">0 Selected\n$ 0.00</string>
     <string name="deleteString">Delete Selected</string>
     <string name="changedEntryString">Expense Modified</string>
     <string name="deletedEntriesString">Selection Deleted</string>
