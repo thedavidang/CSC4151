@@ -28,6 +28,7 @@
     <string name="deselectAllString">0 Selected\n$ 0.00</string>
     <string name="deleteString">Delete Selected</string>
     <string name="changedEntryString">Expense Modified</string>
+    <string name="deselectedEntriesString">Unchecked All Selected Entries</string>
     <string name="deletedEntriesString">Selection Deleted</string>
     <string name="editString">Edit Expense</string>
     <string name="categoryString">Category:</string>

@@ -50,6 +50,10 @@ class Tab3Fragment : Fragment() {
 
     /* List of entries selected for deletion. */
     private val selectedEntries = mutableListOf<String>()
+    /* Total dollar sum of entries selected for deletion. */
+    private var selectedSum : Int = 0
+
+    private lateinit var deselectAllCheckBox : CheckBox
 
     private lateinit var deleteButton : Button
 
@@ -92,6 +96,7 @@ class Tab3Fragment : Fragment() {
     private lateinit var saveButton : Button
 
     private lateinit var success : Toast
+    private lateinit var deselect : Toast
     private lateinit var delete : Toast
 
     /* Purpose: Helper method that will find the index/position of the Entry
@@ -331,11 +336,21 @@ class Tab3Fragment : Fragment() {
                         selectedEntries.remove(entry.id)
                     }
 
-                    /* Toggle the delete button depending on whether or not
-                    * any entries are selected. */
+                    // TODO Add logic to update the text of the deselectAllCheckbox to the new count (selectedEntries.size) and sum (selectedSum)
+
+                    /* Toggle the deselect all checkbox and delete button
+                    * depending on whether or not any entries are selected. */
                     when (selectedEntries.size) {
-                        1 -> { toggleButton(deleteButton, true) }
-                        0 -> { toggleButton(deleteButton, false) }
+                        1 -> {
+                            toggleButton(deselectAllCheckBox, true)
+                            deselectAllCheckBox.isChecked = true
+                            toggleButton(deleteButton, true)
+                        }
+                        0 -> {
+                            toggleButton(deselectAllCheckBox, false)
+                            deselectAllCheckBox.isChecked = false
+                            toggleButton(deleteButton, false)
+                        }
                     }
                 }
             }
@@ -374,6 +389,8 @@ class Tab3Fragment : Fragment() {
 
                     /* Disable the Save Changes button since no changes have been made yet. */
                     toggleButton(saveButton, false)
+                    /* Temporarily disable the deselect all checkbox as to hide it. */
+                    toggleButton(deselectAllCheckBox, false)
                     /* Temporarily disable the Delete Selected button as to hide it. */
                     toggleButton(deleteButton, false)
                     /* Display the Edit Entry window. */
@@ -415,11 +432,53 @@ class Tab3Fragment : Fragment() {
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
         }
 
+        /* Initially set the deselect all checkbox to be disabled and greyed-out. */
+        deselectAllCheckBox = rootView.findViewById(R.id.deselectAllCheckBox)
+        toggleButton(deselectAllCheckBox, false)
+        /* Listener for the deselect all checkbox. */
+        deselectAllCheckBox.setOnClickListener {
+            val dialogClickListener: DialogInterface.OnClickListener =
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        /* If user taps "Yes", then uncheck all entry checkboxes,
+                        * disable the deselect all checkbox, and disable the
+                        * "Delete Selected" button. */
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            for (entryId in selectedEntries) {
+                                val entryIndex = findEntryById(entryId)
+
+                                // TODO Call adapterRecycler method that unchecks the entry's delete checkbox
+
+                                adapterRecycler.notifyItemChanged(entryIndex)
+                            }
+                            /* Clear the array, so that it is empty. */
+                            selectedEntries.clear()
+                            selectedSum = 0
+                            /* Immediately display the changes in the app. */
+                            deselectAllCheckBox.text = getString(R.string.deselectAllString)
+                            toggleButton(deselectAllCheckBox, false)
+                            deselectAllCheckBox.isChecked = false
+                            toggleButton(deleteButton, false)
+                            deselect.show()
+                        }
+                        /* If the user taps "No", then simply close the confirmation alert. */
+                        DialogInterface.BUTTON_NEGATIVE -> {
+                            dialog.dismiss()
+                        }
+                    }
+                }
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            /* Create the message to display on the confirmation alert. */
+            val message = "Are you sure you want to deselect all entries?"
+            /* Display the confirmation alert. */
+            builder.setMessage(message)
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show()
+        }
+
         /* Initially set the "Delete Selected" button to be disabled and greyed-out. */
         deleteButton = rootView.findViewById(R.id.deleteButton)
-        deleteButton.isEnabled = false
-        deleteButton.isClickable = false
-        deleteButton.alpha = 0.5F
+        toggleButton(deleteButton, false)
         /* Listener for the Delete Selected button. */
         deleteButton.setOnClickListener {
             val dialogClickListener: DialogInterface.OnClickListener =
@@ -434,12 +493,16 @@ class Tab3Fragment : Fragment() {
                             }
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
+                            selectedSum = 0
                             model.save()
                             /* Update the model, so that the changes are
                             * immediately displayed in the app. */
                             adapterRecycler.updateData(model.get(),
                                 spinSorting.selectedItemPosition,
                                 spinFiltering.selectedItem.toString())
+                            deselectAllCheckBox.text = getString(R.string.deselectAllString)
+                            toggleButton(deselectAllCheckBox, false)
+                            deselectAllCheckBox.isChecked = false
                             toggleButton(deleteButton, false)
                             delete.show()
                         }
@@ -496,6 +559,10 @@ class Tab3Fragment : Fragment() {
         * Ignore the warning since the Toast is shown in submitEdit. */
         success = Toast.makeText(context, R.string.changedEntryString, Toast.LENGTH_LONG)
 
+        /* Set Toast to "Unchecked All Selected Entries".
+        * Ignore the warning since the Toast is shown in deselectAllCheckBox listener. */
+        deselect = Toast.makeText(context, R.string.deselectedEntriesString, Toast.LENGTH_LONG)
+
         /* Set Toast to "Selection Deleted".
         * Ignore the warning since the Toast is shown in deleteButton listener. */
         delete = Toast.makeText(context, R.string.deletedEntriesString, Toast.LENGTH_LONG)
@@ -524,6 +591,8 @@ class Tab3Fragment : Fragment() {
         cancelButton.setOnClickListener {
             toggleEditWindow(false)
             if(selectedEntries.size > 0) {
+                toggleButton(deselectAllCheckBox, true)
+                deselectAllCheckBox.isChecked = true
                 toggleButton(deleteButton, true)
             }
 
@@ -534,7 +603,12 @@ class Tab3Fragment : Fragment() {
 
         saveButton.setOnClickListener {
             submitEdit()
+
+            // TODO Add logic to update the text of the deselectAllCheckbox to the new count (selectedEntries.size) and sum (selectedSum)
+
             if(selectedEntries.size > 0) {
+                toggleButton(deselectAllCheckBox, true)
+                deselectAllCheckBox.isChecked = true
                 toggleButton(deleteButton, true)
             }
         }
