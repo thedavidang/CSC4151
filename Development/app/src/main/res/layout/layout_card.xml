@@ -18,7 +18,8 @@
             <CheckBox
                 android:id="@+id/deleteCheckbox"
                 android:layout_width="48dp"
-                android:layout_height="84dp" />
+                android:layout_height="84dp"
+                android:checked="false" />
 
             <TextView
                 android:id="@+id/amountText"

@@ -59,6 +59,7 @@
         android:background="#F44336"
         android:ems="10"
         android:enabled="false"
+        android:checked="false"
         android:text="@string/deleteString"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/footerSpacing"
