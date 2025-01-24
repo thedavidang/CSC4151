@@ -489,7 +489,7 @@ class Tab3Fragment : Fragment() {
         /* Listener for the deselect all checkbox. */
         deselectAllCheckBox.setOnClickListener {
             val dialogClickListener: DialogInterface.OnClickListener =
-                DialogInterface.OnClickListener { dialog, which ->
+                DialogInterface.OnClickListener { _, which ->
                     when (which) {
                         /* If user taps "Yes", then uncheck all entry checkboxes,
                         * disable the deselect all checkbox, and disable the
@@ -512,7 +512,12 @@ class Tab3Fragment : Fragment() {
                         }
                         /* If the user taps "No", then simply close the confirmation alert. */
                         DialogInterface.BUTTON_NEGATIVE -> {
-                            dialog.dismiss()
+                            /* Since the user just tapped the deselect all checkbox a second ago,
+                            * the deselect all checkbox no longer as a checkmark.
+                            * We need to restore the checkmark being that user did not mean
+                            * to deselect all, thus there are still entries selected that can be
+                            * deselected later. */
+                            deselectAllCheckBox.isChecked = true
                         }
                     }
                 }
