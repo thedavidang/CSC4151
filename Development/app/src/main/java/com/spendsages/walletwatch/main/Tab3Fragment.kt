@@ -53,7 +53,7 @@ class Tab3Fragment : Fragment() {
     /* Total dollar sum of entries selected for deletion. */
     private var selectedSum : Double = 0.00
 
-    private lateinit var deselectAllCheckBox : CheckBox
+    private lateinit var deselectAllCheckBox : AppCompatCheckBox
 
     private lateinit var deleteButton : Button
 
