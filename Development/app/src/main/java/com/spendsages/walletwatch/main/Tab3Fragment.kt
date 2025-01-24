@@ -329,11 +329,15 @@ class Tab3Fragment : Fragment() {
                         ).isChecked) {
                         /* Add the entry id to the list of selected entries for deletion. */
                         selectedEntries.add(entry.id)
+                        /* Increment the total dollar sum of entries selected for deletion. */
+                        selectedSum += entry.amount
                     }
                     /* Otherwise, the checkbox is now unchecked. */
                     else {
                         /* Remove the entry id from the list of selected entries for deletion. */
                         selectedEntries.remove(entry.id)
+                        /* Decrement the total dollar sum of entries selected for deletion. */
+                        selectedSum -= entry.amount
                     }
 
                     // TODO Add logic to update the text of the deselectAllCheckbox to the new count (selectedEntries.size) and sum (selectedSum)
