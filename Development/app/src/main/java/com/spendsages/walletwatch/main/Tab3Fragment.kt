@@ -492,10 +492,8 @@ class Tab3Fragment : Fragment() {
                         * "Delete Selected" button. */
                         DialogInterface.BUTTON_POSITIVE -> {
                             for (entryId in selectedEntries) {
+                                adapterRecycler.setEntryCheckBox(entryId, false)
                                 val entryIndex = findEntryById(entryId)
-
-                                // TODO Call adapterRecycler method that unchecks the entry's delete checkbox
-
                                 adapterRecycler.notifyItemChanged(entryIndex)
                             }
                             /* Clear the array, so that it is empty. */
