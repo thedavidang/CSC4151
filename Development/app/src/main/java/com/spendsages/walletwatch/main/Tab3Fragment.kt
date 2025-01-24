@@ -368,6 +368,8 @@ class Tab3Fragment : Fragment() {
                     if (viewHolder.itemView.findViewById<AppCompatCheckBox>(
                             R.id.deleteCheckbox
                         ).isChecked) {
+                        /* Set the entry's internal boolean to true. */
+                        entry.selected = true
                         /* Add the entry id to the list of selected entries for deletion. */
                         selectedEntries.add(entry.id)
                         /* Increment the total dollar sum of entries selected for deletion. */
@@ -375,6 +377,8 @@ class Tab3Fragment : Fragment() {
                     }
                     /* Otherwise, the checkbox is now unchecked. */
                     else {
+                        /* Set the entry's internal boolean to false. */
+                        entry.selected = false
                         /* Remove the entry id from the list of selected entries for deletion. */
                         selectedEntries.remove(entry.id)
                         /* Decrement the total dollar sum of entries selected for deletion. */
