@@ -51,7 +51,7 @@ class Tab3Fragment : Fragment() {
     /* List of entries selected for deletion. */
     private val selectedEntries = mutableListOf<String>()
     /* Total dollar sum of entries selected for deletion. */
-    private var selectedSum : Int = 0
+    private var selectedSum : Double = 0.00
 
     private lateinit var deselectAllCheckBox : CheckBox
 
@@ -453,7 +453,7 @@ class Tab3Fragment : Fragment() {
                             }
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
-                            selectedSum = 0
+                            selectedSum = 0.00
                             /* Immediately display the changes in the app. */
                             deselectAllCheckBox.text = getString(R.string.deselectAllString)
                             toggleButton(deselectAllCheckBox, false)
@@ -493,7 +493,7 @@ class Tab3Fragment : Fragment() {
                             }
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
-                            selectedSum = 0
+                            selectedSum = 0.00
                             model.save()
                             /* Update the model, so that the changes are
                             * immediately displayed in the app. */
