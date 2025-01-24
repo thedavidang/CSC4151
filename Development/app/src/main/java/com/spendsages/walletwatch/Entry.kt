@@ -6,13 +6,15 @@ import java.time.Instant
 
 /* This class represents an Entry object,
 * which is an expense that has a dollar amount, possibly a description of purchase,
-* a timestamp of purchase, and the category the expense entry falls under. */
+* a timestamp of purchase, the category the expense entry falls under, and whether
+* or not the expense has been selected for deletion. */
 class Entry(
     var id: String,
     var amount: Double,
     var description: String,
     var timestamp: Instant,
-    var category: String)
+    var category: String,
+    var selected: Boolean)
 
 /* Purpose: Static method that sorts a list of Entry objects by date from newest to oldest.
 *
@@ -107,8 +109,9 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
         /* Retrieve the category label by using the id "c-x-l". */
         category = DataManager.getValueByID(doc, id.substring(0, 4) + "l")!!
 
-        /* Create an instance of the Entry class and add it to the list of entries. */
-        entries.add(Entry(id, amount, description, timestamp, category))
+        /* Create an instance of the Entry class and add it to the list of entries.
+        * By default, the entry will not be selected for deletion. */
+        entries.add(Entry(id, amount, description, timestamp, category, false))
     }
 
     /* Return the list of entries, which can safely be empty. */
