@@ -116,6 +116,47 @@ class Tab3Fragment : Fragment() {
         }
     }
 
+    /* Purpose: Helper method that will display the quantity of entries
+    * selected for deletion and the total dollar sum of those same entries
+    * on the deselect all checkbox.
+    *
+    * Parameters: None.
+    *
+    * Returns: None. */
+    private fun updateDeselectAllCheckBoxText() {
+        /* Initialize the text content string with the quantity of entries
+        * selected for deletion, a newline, a dollar sign, and a space. */
+        var textContent : String = selectedEntries.size.toString() + " Selected\n$ "
+
+        if (selectedSum >= 0.00) {
+            /* Format the total dollar sum to 2 decimals with thousand-separator commas. */
+            val textSum : String = DecimalFormat("#,##0.00").format(selectedSum)
+            /* The deselect all checkbox only has room for 20 characters on the second line.
+            * This means we can only show total dollar sums that are less than one trillion.
+            * If we use the maximum possible number as an example:
+            * $ 999,999,999,999.99         = Highest number that fits within 20 characters
+            * 12345678901234567890         = Ones digit for the 1-based position of the character
+            *          11111111112         = Tens digit for the 1 based position of the character
+            * Therefore, we have to ensure that the sum is only 18 characters, being that
+            * the first two character slots are reserved for the dollar sign and space. */
+            textContent += if (textSum.length <= 18) {
+                /* Concatenate the sum to the text content string. */
+                textSum
+            }
+            else {
+                /* If the sum ended up getting too big, display the biggest number that fits. */
+                "999,999,999,999.99"
+            }
+        }
+        else {
+            /* If the sum somehow ended up going negative, display a zero sum. */
+            textContent += "0.00"
+        }
+
+        /* Finally, update the text content of the deselect all checkbox. */
+        deselectAllCheckBox.text = textContent
+    }
+
     /* Purpose: Controller method that will update the RecyclerView after the back-end sorts
     * the list of entries.
     *
@@ -340,7 +381,9 @@ class Tab3Fragment : Fragment() {
                         selectedSum -= entry.amount
                     }
 
-                    // TODO Add logic to update the text of the deselectAllCheckbox to the new count (selectedEntries.size) and sum (selectedSum)
+                    /* Update the text of the deselectAllCheckbox to the
+                    * new count (selectedEntries.size) and sum (selectedSum). */
+                    updateDeselectAllCheckBoxText()
 
                     /* Toggle the deselect all checkbox and delete button
                     * depending on whether or not any entries are selected. */
@@ -607,9 +650,10 @@ class Tab3Fragment : Fragment() {
         saveButton.setOnClickListener {
             submitEdit()
 
-            // TODO Add logic to update the text of the deselectAllCheckbox to the new count (selectedEntries.size) and sum (selectedSum)
-
-            if(selectedEntries.size > 0) {
+            if (selectedEntries.size > 0) {
+                /* Update the text of the deselectAllCheckbox to the
+                * new count (selectedEntries.size) and sum (selectedSum). */
+                updateDeselectAllCheckBoxText()
                 toggleButton(deselectAllCheckBox, true)
                 deselectAllCheckBox.isChecked = true
                 toggleButton(deleteButton, true)
