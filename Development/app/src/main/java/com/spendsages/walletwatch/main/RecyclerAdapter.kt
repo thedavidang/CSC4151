@@ -141,7 +141,7 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
     override fun onBindViewHolder(entryViewHolder: EntryViewHolder, i: Int) {
         /* Confirm that there is at least one entry to display in the list of filtered entries. */
         if (itemCount > 0) {
-            /* Format the purchase price amount  to 2 decimals and
+            /* Format the purchase price amount to 2 decimals and
             * prepend with a dollar sign and a space with thousand-separator commas. */
             val amountText =  "$ " +
                     DecimalFormat("#,##0.00").format(entries!![i].amount)

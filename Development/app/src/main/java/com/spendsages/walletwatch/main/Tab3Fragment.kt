@@ -147,7 +147,7 @@ class Tab3Fragment : Fragment() {
         /* Iterate through and compare each input in the arrays. */
         for (i in 0..3) {
             /* If a difference was found, enable the Save Changes button. */
-            if(changedInputs[i] != originalInputs[i]) {
+            if (changedInputs[i] != originalInputs[i]) {
                 toggleButton(saveButton, true)
                 return
             }
@@ -590,12 +590,11 @@ class Tab3Fragment : Fragment() {
         cancelButton = rootView.findViewById(R.id.cancelButton)
         cancelButton.setOnClickListener {
             toggleEditWindow(false)
-            if(selectedEntries.size > 0) {
+            if (selectedEntries.size > 0) {
                 toggleButton(deselectAllCheckBox, true)
                 deselectAllCheckBox.isChecked = true
                 toggleButton(deleteButton, true)
             }
-
         }
 
         /* Set the save button to call the submitEdit function. */
