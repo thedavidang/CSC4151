@@ -77,7 +77,7 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             }
     }
 
-    /* Purpose: Getter/Accessor that returns the total number of  filtered entries to display.
+    /* Purpose: Getter/Accessor that returns the total number of filtered entries to display.
     *
     * Parameters: None
     *
@@ -173,8 +173,7 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
                 "Edit Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
 
-            /* Force checkbox to be initially unchecked. */
-            entryViewHolder.deleteCheckbox.isChecked = false
+            entryViewHolder.deleteCheckbox.isChecked = entries!![i].selected
 
             entryViewHolder.deleteCheckbox.setOnClickListener {
                 selectListener?.onButtonClick(entries!![i], entryViewHolder)
