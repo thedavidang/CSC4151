@@ -108,6 +108,20 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
         }
     }
 
+    /* Purpose: Controller method that sets the selection state of a specific Entry.
+    *
+    * Parameters: id represents the identifier string of the Entry
+    * state represents the bool value of whether or not the Entry is selected (true)
+    *
+    * Returns: Nothing. */
+    fun setEntryCheckBox(id : String, state : Boolean) {
+        for (entry in entriesRaw!!) {
+            if (entry.id == id) {
+                entry.selected = state
+            }
+        }
+    }
+
     /* This Internal Class is an object that represents an individual expense entry card,
     * which has a delete checkbox, displayed dollar amount, possibly a description of the purchase,
     * the date of purchase, the category in which the expense falls under, and an edit button.
