@@ -17,7 +17,6 @@
         android:directBootAware="false"
         android:hardwareAccelerated="true"
         android:theme="@style/AppTheme"
-        tools:replace="label"
         tools:targetApi="s">
         <activity
             android:name="com.spendsages.walletwatch.main.MainActivity"
