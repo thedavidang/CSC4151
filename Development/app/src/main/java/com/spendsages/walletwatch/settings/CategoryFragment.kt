@@ -387,8 +387,9 @@ class CategoryFragment : Fragment() {
                                 outputWriter.write(inputText)
                                 outputWriter.close()
 
-                                /* Let user know that restore succeeded. */
-                                Toast.makeText(context, "Saved changes to archived data",
+                                /* Set Toast to "Saved Changes to Archived Data".
+                                * Let user know that restore succeeded. */
+                                Toast.makeText(context, R.string.archivedString,
                                     Toast.LENGTH_LONG).show()
                             } catch (e: Exception) {
                                 e.printStackTrace()

@@ -45,6 +45,7 @@
     <string name="dataString">Backup and Restore:</string>
     <string name="exportString">Copy Data to Clipboard</string>
     <string name="importString">Paste Data from Clipboard into Archive</string>
+    <string name="archivedString">Saved Changes to Archived Data</string>
 
     <string-array name="chartTypes">
         <item>Line</item>
