@@ -609,16 +609,13 @@ class Tab3Fragment : Fragment() {
             }
         })
 
-        /* Set Toast to "Expense Modified".
-        * Ignore the warning since the Toast is shown in submitEdit. */
+        /* Set Toast to "Expense Modified". */
         success = Toast.makeText(context, R.string.changedEntryString, Toast.LENGTH_LONG)
 
-        /* Set Toast to "Unchecked All Selected Entries".
-        * Ignore the warning since the Toast is shown in deselectAllCheckBox listener. */
+        /* Set Toast to "Unchecked All Selected Entries". */
         deselect = Toast.makeText(context, R.string.deselectedEntriesString, Toast.LENGTH_LONG)
 
-        /* Set Toast to "Selection Deleted".
-        * Ignore the warning since the Toast is shown in deleteButton listener. */
+        /* Set Toast to "Selection Deleted". */
         delete = Toast.makeText(context, R.string.deletedEntriesString, Toast.LENGTH_LONG)
 
         /* Populate the Radio Button Group of category radio buttons. */

@@ -211,8 +211,7 @@ class Tab1Fragment : Fragment() {
 
         descriptionInput = rootView.findViewById(R.id.descriptionField)
 
-        /* Set Toast to "Expense Added".
-        * Ignore the warning since the Toast is shown in submitEntry. */
+        /* Set Toast to "Expense Added". */
         success = Toast.makeText(context, R.string.addedEntryString, Toast.LENGTH_LONG)
 
         /* Populate the fixed array of category buttons. */
