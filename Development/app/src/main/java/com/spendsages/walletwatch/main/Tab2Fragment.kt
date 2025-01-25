@@ -28,6 +28,8 @@ class Tab2Fragment : Fragment() {
     private var _binding: FragmentTab2Binding? = null
     private val binding get() = _binding!!
 
+    private var allowRefresh : Boolean = true
+
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
@@ -802,19 +804,31 @@ class Tab2Fragment : Fragment() {
     * Returns: Nothing. */
     override fun onResume() {
         super.onResume()
-        /* Tab 2 is currently visible to the user,
-        * so try to detach and attach the Tab 2 fragment. */
-        val ftDetach = getParentFragmentManager().beginTransaction()
-        ftDetach.setReorderingAllowed(false)
-        ftDetach.detach(this).commit()
 
-        val ftAttach = getParentFragmentManager().beginTransaction()
-        ftAttach.setReorderingAllowed(false)
-        ftAttach.attach(this).commit()
+        if (allowRefresh)
+        {
+            /* Disable view refresh when navigating away to Tab2Fragment,
+            * so that the app does not freeze. */
+            allowRefresh = false
+            /* Tab 2 is currently visible to the user,
+            * so try to detach and re-attach the Tab 2 fragment. */
+            @Suppress("DetachAndAttachSameFragment")
+            val ftDetach = getParentFragmentManager().beginTransaction()
+            ftDetach.setReorderingAllowed(false)
+            ftDetach.detach(this).attach(this).commit()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        /* Re-enable view refresh when navigating away from Tab2Fragment,
+        * so that Tab2Fragment.onResume can refresh the data in the view. */
+        allowRefresh = true
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        allowRefresh = false
         _binding = null
     }
 }
