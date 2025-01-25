@@ -511,7 +511,7 @@ class Tab2Fragment : Fragment() {
 
         /* Populate the Chart selector with "Line" and "Pie". */
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
-        spinChartType.adapter = ArrayAdapter(main, R.layout.support_simple_spinner_dropdown_item,
+        spinChartType.adapter = ArrayAdapter(main, android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartTypes))
         /* Create a listener that swaps between the line chart and pie chart. */
         spinChartType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -540,8 +540,7 @@ class Tab2Fragment : Fragment() {
 
         /* Populate Time Interval selector with "Last 7 Days", "Last 12 Months", and "All Time". */
         spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)
-        spinTimeInterval.adapter = ArrayAdapter(main,
-            R.layout.support_simple_spinner_dropdown_item,
+        spinTimeInterval.adapter = ArrayAdapter(main, android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartIntervals))
         /* Listener to switch the time interval selected. */
         spinTimeInterval.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -617,7 +616,7 @@ class Tab2Fragment : Fragment() {
         /* Populate the Category selector with "All" and the current category names. */
         spinChartCategory = rootView.findViewById(R.id.lineCategorySpinner)
         spinChartCategory.adapter = ArrayAdapter<String?>(main,
-            R.layout.support_simple_spinner_dropdown_item, categories)
+            android.R.layout.simple_spinner_dropdown_item, categories)
         /* Enable the category selector drop-down menu. */
         toggleCategorySelector(true)
         /* Listener to update the line chart based on the category selected. */
@@ -711,7 +710,7 @@ class Tab2Fragment : Fragment() {
 
             /* Refresh the category names in the Category selector. */
             spinChartCategory.adapter = ArrayAdapter<String?>(main,
-                R.layout.support_simple_spinner_dropdown_item, categories)
+                android.R.layout.simple_spinner_dropdown_item, categories)
 
             /* Grab the selected time interval. */
             val timeSpan = spinTimeInterval.selectedItemPosition

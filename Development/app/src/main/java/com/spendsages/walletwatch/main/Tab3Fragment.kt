@@ -435,8 +435,7 @@ class Tab3Fragment : Fragment() {
 
         /* Set the possible options for the sorting Spinbox. */
         spinSorting = rootView.findViewById(R.id.sortingSpinner)
-        spinSorting.adapter = ArrayAdapter(requireActivity(),
-            R.layout.support_simple_spinner_dropdown_item,
+        spinSorting.adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.sortingOptions))
         /* Set the listener that will sort the entries in a new order
         * when a new option is selected. */
@@ -813,7 +812,7 @@ class Tab3Fragment : Fragment() {
 
             /* Refresh the possible options for the filtering Spinbox. */
             spinFiltering.adapter = ArrayAdapter<String?>(requireActivity(),
-                R.layout.support_simple_spinner_dropdown_item, categories)
+                android.R.layout.simple_spinner_dropdown_item, categories)
 
             adapterRecycler.updateData(model.get(), spinSorting.selectedItemPosition,
                 spinFiltering.selectedItem.toString())
