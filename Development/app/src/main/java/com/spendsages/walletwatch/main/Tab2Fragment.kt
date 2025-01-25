@@ -283,33 +283,37 @@ class Tab2Fragment : Fragment() {
         for (i in 1..11) {
             /* Calculate the scientific notation exponent of the Y-value by
             * taking the floor of the base 10 logarithm of the Y-axis value. */
-            val yValExponent = kotlin.math.floor(kotlin.math.log10(yValue))
+            val yValExponent = kotlin.math.floor(kotlin.math.log10(yValue.toDouble()))
             /* Check if the Y-axis value is less than 100. */
-            if (yValExponent < 2) {
+            if (yValExponent < 2.0) {
                 /* Display cents with two decimal places. */
                 yLabel = DecimalFormat("0.00").format(yValue)
             }
             /* Check if the Y-axis value is from 100 to 1,000. */
-            else if (yValExponent < 3) {
+            else if (yValExponent < 3.0) {
                 /* Display dollars without cents with no decimal places. */
                 yLabel = yValue.toString().substringBefore(".")
             }
-            /* Check if Y-axis value needs to have at least 2 significant digits. */
-            else if ((yValExponent % 3) == 0.0f) {
+            /* Check if Y-axis value needs to have at least 2 significant digits (e.g. 9.0 G). */
+            else if ((yValExponent % 3.0) == 0.0) {
+                /* Determine the metric prefix by subtracting one from
+                * the floor of the exponent divided by three. */
+                val metricPrefix = main.metric[((yValExponent / 3) - 1).toInt()]
+                val yString = yValue.toDouble().toLong().toString()
                 /* Add one decimal as to have 2 significant digits. */
-                val yString = yValue.toLong().toString()
                 yLabel = yString.substring(0, 1) + "." + yString.substring(1, 2) +
-                        " " + metric[((yValExponent / 3) - 1).toInt()]
+                        " " + metricPrefix
             }
             /* Otherwise, the Y-axis value is 1,000 or more. */
             else {
+                /* Determine the metric prefix by subtracting one from
+                * the floor of the exponent divided by three. */
+                val metricPrefix = main.metric[((yValExponent / 3) - 1).toInt()]
                 /* Set the Y-axis label by consolidating the value to the digits before the
                 * thousand separator by getting the substring up to the index of
-                * one plus the remainder of the exponent divided by three.
-                * Determine the metric prefix by
-                * subtracting one from the floor of the exponent divided by three. */
-                yLabel = yValue.toLong().toString().substring(0, ((yValExponent % 3) + 1).toInt()) +
-                        " " + metric[((yValExponent / 3) - 1).toInt()]
+                * one plus the remainder of the exponent divided by three. */
+                yLabel = yValue.toLong().toString().substring(0,
+                    ((yValExponent % 3) + 1).toInt()) + " " + metricPrefix
             }
 
             val yAxisValue = AxisValue(yValue)
