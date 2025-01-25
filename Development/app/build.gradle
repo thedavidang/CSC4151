@@ -2,18 +2,18 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdk 35
+    compileSdk = 35
 
     defaultConfig {
-        applicationId "com.spendsages.walletwatch"
-        minSdkVersion 28
-        targetSdk 35
-        versionCode 13
-        versionName '1.2.0'
+        applicationId = 'com.spendsages.walletwatch'
+        minSdk = 28
+        targetSdk = 35
+        versionCode = 13
+        versionName = '1.2.0'
     }
 
     base {
-        archivesName = "WalletWatch-Installer"
+        archivesName = 'WalletWatch-Installer'
     }
 
     buildFeatures {
@@ -26,10 +26,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'com.spendsages.walletwatch'
+    namespace = 'com.spendsages.walletwatch'
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     kotlin {
