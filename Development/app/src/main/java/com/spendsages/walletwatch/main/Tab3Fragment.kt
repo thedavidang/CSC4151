@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,7 +62,6 @@ class Tab3Fragment : Fragment() {
 
     /* Edit Entry window private member variables. */
     private lateinit var scroll : ScrollView
-    private lateinit var editWindow : ConstraintLayout
     private lateinit var editOverlay : View
 
     private lateinit var entryID : String
@@ -583,7 +581,6 @@ class Tab3Fragment : Fragment() {
 
         /* Edit Entry window code. */
         scroll = rootView.findViewById(R.id.scroll)
-        editWindow = rootView.findViewById(R.id.editWindow)
         editOverlay = rootView.findViewById(R.id.editOverlay)
         /* Initially hide the Edit Entry window. */
         toggleEditWindow(false)
