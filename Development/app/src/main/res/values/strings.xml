@@ -11,7 +11,6 @@
     <string name="dateString">Date:</string>
     <string name="calendarString">Date Selector</string>
     <string name="invalidDateString">Invalid Date</string>
-    <string name="closeDateString">Close Date Selector</string>
     <string name="submitString">Submit the Expense by Tapping a Category:</string>
     <string name="addedEntryString">Expense Added</string>
 
