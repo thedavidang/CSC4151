@@ -18,6 +18,7 @@ import com.spendsages.walletwatch.SharedViewModel
 import com.spendsages.walletwatch.SharedViewModelFactory
 import com.spendsages.walletwatch.databinding.ActivityMainBinding
 import com.spendsages.walletwatch.settings.SettingsActivity
+import java.text.DecimalFormat
 
 /* This is the "main" of the program and is also the primary activity of the app.
 * This will immediately load upon app launch. */
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var model: SharedViewModel
 
     var launched: Boolean = false
+
+    /* Setup public constant for the metric prefixes corresponding to one thousand and above. */
+    val metric = arrayListOf("k", "M", "G", "T", "P", "E", "Z", "Y")
 
     override fun onDestroy() {
         super.onDestroy()
@@ -116,6 +120,38 @@ class MainActivity : AppCompatActivity() {
             * it will open the numpad. */
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }
+
+    /* Purpose: Public helper method that formats a dollar amount to 2 decimals
+    * with thousand-separator commas. If the amount is extremely large (i.e. one billion or more),
+    * then display the number with metric prefixes instead.
+    *
+    * Parameters: amount represents the dollar amount to format.
+    *
+    * Returns: String of the formatted dollar amount. */
+    fun formatDollarAmount(amount: Double) : String {
+        /* Compute base 10 exponent of dollar amount. */
+        val exponent = kotlin.math.floor(kotlin.math.log10(amount))
+
+        /* Check if dollar amount is less than one billion. */
+        return if (exponent < 9) {
+            /* Format dollar amount with dollar sign and thousand separator commas. */
+            "$ " + DecimalFormat("#,##0.00").format(amount)
+        }
+        /* Otherwise, dollar amount is extremely large (one billion or more). */
+        else {
+            var totalString = amount.toLong().toString()
+            /* Slice total to the first nine digits. */
+            if (totalString.length > 9) {
+                totalString = totalString.substring(0, 9)
+            }
+            /* Determine the position of where the first thousand separator would be. */
+            val firstThousandSeparatorIndex = ((exponent % 3) + 1).toInt()
+            /* Format extremely large dollar amount with dollar sign and metric prefix. */
+            "$ " + totalString.substring(0, firstThousandSeparatorIndex) + "." +
+                    totalString.substring(firstThousandSeparatorIndex) + " " +
+                    metric[((exponent / 3) - 1).toInt()]
         }
     }
 }

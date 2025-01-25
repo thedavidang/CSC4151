@@ -36,9 +36,6 @@ class Tab2Fragment : Fragment() {
     private lateinit var lineChart : LineChartView
     private lateinit var pieChart : PieChartView
 
-    /* Setup metric prefixes for one thousand and above. */
-    private val metric = arrayListOf("k", "M", "G", "T", "P", "E", "Z", "Y")
-
     private lateinit var categories : MutableList<String?>
 
     private lateinit var category1Label : String
@@ -413,36 +410,6 @@ class Tab2Fragment : Fragment() {
         pieChart.pieChartData = PieChartData(values).setHasLabels(true)
     }
 
-    /* Purpose: Private helper method that formats a total to be displayed below the chart.
-    *
-    * Parameters: total represents the total amount to format.
-    *
-    * Returns: String of the formatted total. */
-    private fun formatTotal(total: Double) : String {
-        /* Compute base 10 exponent of total. */
-        val exponent = kotlin.math.floor(kotlin.math.log10(total))
-
-        /* Check if total is less than one billion. */
-        return if (exponent < 9) {
-            /* Format total with dollar sign and thousand separator commas. */
-            "$ " + DecimalFormat("#,##0.00").format(total)
-        }
-        /* Otherwise, total is one billion or more. */
-        else {
-            var totalString = total.toLong().toString()
-            /* Slice total to the first nine digits. */
-            if (totalString.length > 9) {
-                totalString = totalString.substring(0, 9)
-            }
-            /* Determine the position of where the first thousand separator would be. */
-            val firstThousandSeparatorIndex = ((exponent % 3) + 1).toInt()
-            /* Format total with dollar sign and metric prefix. */
-            "$ " + totalString.substring(0, firstThousandSeparatorIndex) + "." +
-                    totalString.substring(firstThousandSeparatorIndex) + " " +
-                    metric[((exponent / 3) - 1).toInt()]
-        }
-    }
-
     /* Purpose: Controller method that populates the totals below the chart.
     *
     * Parameters: timeSpan represents whether the user selected 0) Last 7 Days, 1) Last 12 Months,
@@ -477,11 +444,12 @@ class Tab2Fragment : Fragment() {
         }
 
         /* Format totals of each category for display. */
-        category1Total.text = formatTotal(category1Amount)
-        category2Total.text = formatTotal(category2Amount)
-        category3Total.text = formatTotal(category3Amount)
+        category1Total.text = main.formatDollarAmount(category1Amount)
+        category2Total.text = main.formatDollarAmount(category2Amount)
+        category3Total.text = main.formatDollarAmount(category3Amount)
         /* Format total of the sum of all categories. */
-        allTotal.text = formatTotal(category1Amount + category2Amount + category3Amount)
+        allTotal.text = main.formatDollarAmount(
+            category1Amount + category2Amount + category3Amount)
     }
 
     override fun onCreateView(

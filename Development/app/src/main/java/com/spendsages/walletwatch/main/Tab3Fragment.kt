@@ -124,31 +124,16 @@ class Tab3Fragment : Fragment() {
     private fun updateDeselectAllCheckBoxText() {
         /* Initialize the text content string with the quantity of entries
         * selected for deletion, a newline, a dollar sign, and a space. */
-        var textContent : String = selectedEntries.size.toString() + " Selected\n$ "
+        var textContent : String = selectedEntries.size.toString() + " Selected\n"
 
-        if (selectedSum >= 0.00) {
-            /* Format the total dollar sum to 2 decimals with thousand-separator commas. */
-            val textSum : String = DecimalFormat("#,##0.00").format(selectedSum)
-            /* The deselect all checkbox only has room for 20 characters on the second line.
-            * This means we can only show total dollar sums that are less than one trillion.
-            * If we use the maximum possible number as an example:
-            * $ 999,999,999,999.99         = Highest number that fits within 20 characters
-            * 12345678901234567890         = Ones digit for the 1-based position of the character
-            *          11111111112         = Tens digit for the 1 based position of the character
-            * Therefore, we have to ensure that the sum is only 18 characters, being that
-            * the first two character slots are reserved for the dollar sign and space. */
-            textContent += if (textSum.length <= 18) {
-                /* Concatenate the sum to the text content string. */
-                textSum
-            }
-            else {
-                /* If the sum ended up getting too big, display the biggest number that fits. */
-                "999,999,999,999.99"
-            }
+        textContent += if (selectedSum >= 0.00) {
+            /* Format the total dollar sum to 2 decimals with thousand-separator commas.
+            * If the sum ended up getting too big, display the number with metric prefixes. */
+            main.formatDollarAmount(selectedSum)
         }
         else {
             /* If the sum somehow ended up going negative, display a zero sum. */
-            textContent += "0.00"
+            "$ 0.00"
         }
 
         /* Finally, update the text content of the deselect all checkbox. */
