@@ -7,9 +7,12 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
+import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.spendsages.walletwatch.App
@@ -28,8 +31,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var app: App
 
     lateinit var model: SharedViewModel
+    lateinit var loadingBar: ProgressBar
 
-    var launched: Boolean = false
+    var appLaunched: Boolean = false
+    var modelLoaded: Boolean = false
 
     /* Setup public constant for the metric prefixes corresponding to one thousand and above. */
     val metric = arrayListOf("k", "M", "G", "T", "P", "E", "Z", "Y")
@@ -65,7 +70,12 @@ class MainActivity : AppCompatActivity() {
         /* Display the activity_main.xml layout. */
         setContentView(binding.root)
 
-        /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
+        /* Setup the round progress bar circle that
+        * will be displayed while a tab is loading. */
+        loadingBar = findViewById(R.id.loadingBar)
+
+        /* Setup the tab layout mediator, which will load the three tabs
+        * and select Tab 1 at app launch. */
         tabLayout = findViewById(R.id.mainTabs)
         binding.mainPager.adapter = MainPagerAdapter(supportFragmentManager, lifecycle)
         TabLayoutMediator(tabLayout, binding.mainPager) { tab, position ->
@@ -78,19 +88,42 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         binding.mainPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                if (!modelLoaded && state == SCROLL_STATE_DRAGGING) {
+                    /* Show the loading bar while switching the tab, until the data model
+                    * gets populated after Tab3Fragment is created. */
+                    loadingBar.visibility = ProgressBar.VISIBLE
+                } else if (state == SCROLL_STATE_IDLE) {
+                    /* Hide the loading bar once tab is finished loading. */
+                    loadingBar.visibility = ProgressBar.GONE
+                }
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                if (!appLaunched) {
+                    showKeyboard(findViewById<EditText>(R.id.amountField))
+                    appLaunched = true
+                } else if (position == 2) {
+                    /* Stop showing the loading bar when the data model
+                    * is populated after Tab3Fragment is created. */
+                    modelLoaded = true
+                }
+            }
+
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                /* Check if the current tab is not Tab 1. */
-                if (position != 0)
-                {
+                /* Check if the app is past the launch stage and
+                * that current tab is not Tab 1. */
+                if (appLaunched && position != 0) {
                     /* Hide the keyboard. */
                     (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
                         .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
-                }
-                /* Otherwise, open the numpad. */
-                else if (!launched) {
-                    showKeyboard(findViewById<EditText>(R.id.amountField))
-                    launched = true
                 }
             }
         })

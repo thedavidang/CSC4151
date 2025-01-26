@@ -449,7 +449,7 @@ class Tab1Fragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (main.launched) {
+        if (main.appLaunched) {
             main.showKeyboard(amountInput)
         }
     }
