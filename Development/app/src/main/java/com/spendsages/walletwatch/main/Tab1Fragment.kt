@@ -43,13 +43,14 @@ class Tab1Fragment : Fragment() {
     private lateinit var categories : MutableList<String?>
 
     private lateinit var amountInput : EditText
-    private var validAmount = false
+    private var validAmount : Boolean = false
     private lateinit var invalidAmount : ImageView
+    private var amountInputEditedAtLeastOnce : Boolean = false
 
     private lateinit var descriptionInput : TextInputEditText
 
     private lateinit var dateInput : EditText
-    private var validDate = true
+    private var validDate : Boolean = true
     private lateinit var dateSelector : CalendarView
     private lateinit var dateOverlay : View
     private lateinit var invalidDate : ImageView
@@ -185,19 +186,29 @@ class Tab1Fragment : Fragment() {
         /* Display the Toast message "Expense Added". */
         success.show()
 
-        /* Reset screen. */
-        amountInput.setText(R.string.amountHintString)
-        amountInput.setSelection(resources.getString(R.string.amountHintString).length)
+        /* Reset description input back to empty string. */
         descriptionInput.setText("")
+
+        /* Reset date input back to today's date. */
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
+
+        /* Forcible disable the category submit buttons. */
         toggleCategoryButtons(false)
+
+        /* Reset the amount input back to the default amount of zero. */
+        amountInput.setText(R.string.amountHintString)
+        /* Ensure that the cursor is placed at the far right end of the amount input textbox. */
+        amountInput.setSelection(resources.getString(R.string.amountHintString).length)
+        /* Override the fact that the invalid amount red 'X' technically should
+        * appear being that the amount "$ 0.00" is in truth invalid.
+        * We want to forcibly hide the invalid amount red 'X', so that
+        * users have a better experience, since they won't be seeing a
+        * big red 'X' every time they launch the app. */
         invalidAmount.visibility = View.GONE
+        amountInputEditedAtLeastOnce = false
 
         /* Reopen the numpad for next entry to add. */
         main.showKeyboard(amountInput)
-
-        /* Reset CalendarView to current date. */
-        dateSelector.date = modelDateFormat.parse(today)!!.time
     }
 
     override fun onCreateView(
@@ -210,6 +221,23 @@ class Tab1Fragment : Fragment() {
         model = main.model
 
         descriptionInput = rootView.findViewById(R.id.descriptionField)
+        /* Set listener on Description textbox, so that we can check if the user
+        * is writing a description but forgot to enter in a valid amount input first. */
+        descriptionInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable) {
+                /* Check if the user completely forgot to
+                * type something in the amount input textbox first. */
+                if (!amountInputEditedAtLeastOnce) {
+                    /* If the amount input is invalid,
+                    * this helper method call will display the invalid amount red 'X'. */
+                    validateAmountInput()
+                }
+            }
+        })
 
         /* Set Toast to "Expense Added". */
         success = Toast.makeText(context, R.string.addedEntryString, Toast.LENGTH_LONG)
@@ -270,11 +298,17 @@ class Tab1Fragment : Fragment() {
                 /* Restore the text change listener. */
                 amountInput.addTextChangedListener(this)
 
-                if (validateAmountInput() && validDate) {
-                    toggleCategoryButtons(true)
-                } else {
-                    toggleCategoryButtons(false)
-                }
+                toggleCategoryButtons(validateAmountInput() && validDate)
+                /* The user just made an edit in the amount input, so make certain
+                * that the flag is set to true. This is so listeners for other inputs
+                * no longer have to check if the amount input invalid red 'x' needs
+                * to be displayed. The amount input is zero "$ 0.00" at app launch,
+                * which is technically an invalid input, but showing a red 'x' every time
+                * the user opens the app is a poor user experience. Therefore, we
+                * intentionally hide the red 'X' until the user types an invalid amount
+                * input OR forgets the amount input textbox entirely by skipping ahead
+                * to either the description input, date input, or date selector. */
+                amountInputEditedAtLeastOnce = true
             }
         })
         /* Set listener to directly move focus when tapping the Next key on the numpad. */
@@ -297,16 +331,25 @@ class Tab1Fragment : Fragment() {
         dateInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            /* Do not bother checking the amount input since only the date was just changed. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (validateDateInput() && validAmount) {
-                    toggleCategoryButtons(true)
+                if (validateDateInput()) {
+                    /* Change the selected date in the CalenderView
+                    * to the valid date input that the user just typed. */
                     dateSelector.setDate(userDateFormat.parse(dateInput.text.toString())!!.time,
                         true, true)
                 }
-                else {
-                    toggleCategoryButtons(false)
+
+                /* Check if the user completely forgot to
+                * type something in the amount input textbox first. */
+                if (!amountInputEditedAtLeastOnce) {
+                    /* If the amount input is invalid,
+                    * this helper method call will display the invalid amount red 'X'. */
+                    validateAmountInput()
                 }
+
+                /* Re-enable category submit buttons,
+                * but only if both the date and amount inputs are valid. */
+                toggleCategoryButtons(validDate && validAmount)
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -319,14 +362,23 @@ class Tab1Fragment : Fragment() {
         modelDateFormat.isLenient = false
         userDateFormat.isLenient = false
 
-        /* The Cancel button will close the date selector. */
+        /* The Cancel button will close the date selector without changing the date input. */
         cancelDate = rootView.findViewById(R.id.cancelDateButton)
         cancelDate.visibility = View.GONE
         cancelDate.setOnClickListener {
             toggleDateSelector(false)
 
-            /* Re-enable category buttons, if necessary. */
-            toggleCategoryButtons(validAmount && validDate)
+            /* Check if the user completely forgot to
+            * type something in the amount input textbox first. */
+            if (!amountInputEditedAtLeastOnce) {
+                /* If the amount input is invalid,
+                * this helper method call will display the invalid amount red 'X'. */
+                validateAmountInput()
+            }
+
+            /* Re-enable category submit buttons,
+            * but only if both the date and amount inputs are valid. */
+            toggleCategoryButtons(validDate && validAmount)
         }
 
         dateSelector = rootView.findViewById(R.id.dateSelector)
@@ -339,8 +391,17 @@ class Tab1Fragment : Fragment() {
             val dateString = (month + 1).toString() + "/$day/$year"
             dateInput.setText(dateString)
 
-            /* Re-enable category buttons, if necessary. */
-            toggleCategoryButtons(validAmount && validDate)
+            /* Check if the user completely forgot to
+            * type something in the amount input textbox first. */
+            if (!amountInputEditedAtLeastOnce) {
+                /* If the amount input is invalid,
+                * this helper method call will display the invalid amount red 'X'. */
+                validateAmountInput()
+            }
+
+            /* Re-enable category submit buttons,
+            * but only if both the date and amount inputs are valid. */
+            toggleCategoryButtons(validateDateInput() && validAmount)
         }
 
         dateOverlay = rootView.findViewById(R.id.dateOverlay)
