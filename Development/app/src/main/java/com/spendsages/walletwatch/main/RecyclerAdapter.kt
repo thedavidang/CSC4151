@@ -17,15 +17,15 @@ import com.spendsages.walletwatch.sortByPriceAscending
 import com.spendsages.walletwatch.sortByPriceDescending
 import org.w3c.dom.Document
 import java.text.DecimalFormat
-import java.util.*
+import java.util.Locale
 import kotlin.collections.ArrayList
 
 /* This class provides support for the scrollable RecyclerView cardRecycler. */
-class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.EntryViewHolder?>() {
+class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.EntryViewHolder?>() {
     /* Retrieve the list of all entries in the XML data file. */
-    var entriesRaw = getEntries(doc)
+    lateinit var entriesRaw : MutableList<Entry>
     /* Create a list of those entries that are sorted by date from newest to oldest. */
-    var entries = sortByDateDescending(entriesRaw)
+    lateinit var entries : MutableList<Entry>
 
     private var selectListener: OnClickListener? = null
     private var editListener: OnClickListener? = null
@@ -83,10 +83,7 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
     *
     * Returns: The number of filtered entries. */
     override fun getItemCount(): Int {
-        if (entries != null) {
-            return entries!!.size
-        }
-        return 0
+        return entries.size
     }
 
     /* Purpose: Filters the list of entries down to a specific category.
@@ -96,13 +93,13 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
     * Returns: Nothing. */
     fun filter(categoryLabel : String) {
         /* Do nothing if the user has not added any entries yet whatsoever. */
-        if (entriesRaw != null) {
+        if (entriesRaw.isNotEmpty()) {
             /* Empty out list of entries to display */
             entries = ArrayList()
             /* Fill in list with all entries that are part of target category. */
-            for (entry in entriesRaw!!) {
+            for (entry in entriesRaw) {
                 if (entry.category == categoryLabel) {
-                    entries!!.add(entry)
+                    entries.add(entry)
                 }
             }
         }
@@ -115,7 +112,7 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
     *
     * Returns: Nothing. */
     fun setEntryCheckBox(id : String, state : Boolean) {
-        for (entry in entriesRaw!!) {
+        for (entry in entriesRaw) {
             if (entry.id == id) {
                 entry.selected = state
             }
@@ -158,19 +155,19 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
             /* Format the purchase price amount to 2 decimals and
             * prepend with a dollar sign and a space with thousand-separator commas. */
             val amountText =  "$ " +
-                    DecimalFormat("#,##0.00").format(entries!![i].amount)
+                    DecimalFormat("#,##0.00").format(entries[i].amount)
 
             entryViewHolder.amount.text = amountText
 
-            entryViewHolder.description.text = entries!![i].description
+            entryViewHolder.description.text = entries[i].description
 
             /* Extract the date from the timestamp member of the entry. */
             entryViewHolder.date.text = SimpleDateFormat(
                 "M/d/yyyy", Locale.US).format(SimpleDateFormat(
                 "yyyy-MM-dd", Locale.US).parse(
-                entries!![i].timestamp.toString().substring(0, 10)))
+                entries[i].timestamp.toString().substring(0, 10)))
 
-            var categoryLabel = entries!![i].category
+            var categoryLabel = entries[i].category
             /* Slice label to be at most 10 characters long. */
             if (categoryLabel.length > 10) {
                 categoryLabel = categoryLabel.substring(0, 9) + "."
@@ -187,14 +184,14 @@ class RecyclerAdapter(doc: Document) : RecyclerView.Adapter<RecyclerAdapter.Entr
                 "Edit Expense " + entryViewHolder.description.text + " " +
                         entryViewHolder.category.text + " $amountText " + entryViewHolder.date.text
 
-            entryViewHolder.deleteCheckbox.isChecked = entries!![i].selected
+            entryViewHolder.deleteCheckbox.isChecked = entries[i].selected
 
             entryViewHolder.deleteCheckbox.setOnClickListener {
-                selectListener?.onButtonClick(entries!![i], entryViewHolder)
+                selectListener?.onButtonClick(entries[i], entryViewHolder)
             }
 
             entryViewHolder.editButton.setOnClickListener {
-                editListener?.onButtonClick(entries!![i], entryViewHolder)
+                editListener?.onButtonClick(entries[i], entryViewHolder)
             }
         }
     }

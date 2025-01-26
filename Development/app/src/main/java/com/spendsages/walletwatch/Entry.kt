@@ -22,14 +22,8 @@ class Entry(
 *
 * Returns: list represents the sorted list of Entry objects
 * or will return null if entries is null. */
-fun sortByDateDescending(entries : MutableList<Entry>?) : MutableList<Entry>? {
-    val list = entries?.sortedWith(compareByDescending { it.timestamp })
-
-    if (!list.isNullOrEmpty()) {
-        return list as MutableList<Entry>?
-    }
-
-    return null
+fun sortByDateDescending(entries : MutableList<Entry>) : MutableList<Entry> {
+    return entries.sortedWith(compareByDescending { it.timestamp }) as MutableList<Entry>
 }
 
 /* Purpose: Static method that sorts a list of Entry objects by date from oldest to newest.
@@ -38,14 +32,8 @@ fun sortByDateDescending(entries : MutableList<Entry>?) : MutableList<Entry>? {
 *
 * Returns: list represents the sorted list of Entry objects
 * or will return null if entries is null. */
-fun sortByDateAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
-    val list = entries?.sortedWith(compareBy { it.timestamp })
-
-    if (!list.isNullOrEmpty()) {
-        return list as MutableList<Entry>?
-    }
-
-    return null
+fun sortByDateAscending(entries : MutableList<Entry>) : MutableList<Entry> {
+    return entries.sortedWith(compareBy { it.timestamp }) as MutableList<Entry>
 }
 
 /* Purpose: Static method that sorts a list of Entry objects by price from highest to cheapest.
@@ -54,14 +42,8 @@ fun sortByDateAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
 *
 * Returns: list represents the sorted list of Entry objects
 * or will return null if entries is null. */
-fun sortByPriceDescending(entries : MutableList<Entry>?) : MutableList<Entry>? {
-    val list = entries?.sortedWith(compareByDescending { it.amount })
-
-    if (!list.isNullOrEmpty()) {
-        return list as MutableList<Entry>?
-    }
-
-    return null
+fun sortByPriceDescending(entries : MutableList<Entry>) : MutableList<Entry> {
+    return entries.sortedWith(compareByDescending { it.amount }) as MutableList<Entry>
 }
 
 /* Purpose: Static method that sorts a list of Entry objects by price from cheapest to highest.
@@ -70,14 +52,8 @@ fun sortByPriceDescending(entries : MutableList<Entry>?) : MutableList<Entry>? {
 *
 * Returns: list represents the sorted list of Entry objects
 * or will return null if entries is null. */
-fun sortByPriceAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
-    val list = entries?.sortedWith(compareBy { it.amount })
-
-    if (!list.isNullOrEmpty()) {
-        return list as MutableList<Entry>?
-    }
-
-    return null
+fun sortByPriceAscending(entries : MutableList<Entry>) : MutableList<Entry> {
+    return entries.sortedWith(compareBy { it.amount }) as MutableList<Entry>
 }
 
 /* Purpose: Static method that retrieves a list of all entries
@@ -86,7 +62,7 @@ fun sortByPriceAscending(entries : MutableList<Entry>?) : MutableList<Entry>? {
 * Parameters: doc represents the Document of the XML data file.
 *
 * Returns: entries represent the list of Entry objects. */
-fun getEntries(doc : Document) : MutableList<Entry>? {
+fun getEntries(doc : Document) : MutableList<Entry> {
     val entryNodes = doc.getElementsByTagName("entry")
     val entries = mutableListOf<Entry>()
 
@@ -115,5 +91,5 @@ fun getEntries(doc : Document) : MutableList<Entry>? {
     }
 
     /* Return the list of entries, which can safely be empty. */
-    return sortByDateDescending(entries)
+    return entries
 }

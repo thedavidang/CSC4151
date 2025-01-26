@@ -6,10 +6,24 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.CalendarView
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.ScrollView
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +42,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.*
+import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
@@ -105,13 +119,12 @@ class Tab3Fragment : Fragment() {
     * Returns: An integer representing the index/position of the target element or
     * -1 if the target element id was not found. */
     private fun findEntryById(id : String) : Int {
-        return if (!adapterRecycler.entries.isNullOrEmpty()) {
-            adapterRecycler.entries!!.indexOfFirst{
-                it.id == id
+        return if (adapterRecycler.entries.isNotEmpty()) {
+                adapterRecycler.entries.indexOfFirst{ it.id == id }
             }
-        } else {
-            -1
-        }
+            else {
+                -1
+            }
     }
 
     /* Purpose: Helper method that will display the quantity of entries
@@ -148,7 +161,7 @@ class Tab3Fragment : Fragment() {
     * Returns: Nothing. */
     @Suppress("NotifyDataSetChanged")
     fun sortEntries(position : Int) {
-        if (!adapterRecycler.entries.isNullOrEmpty()) {
+        if (adapterRecycler.entries.isNotEmpty()) {
             when (position) {
                 1 -> adapterRecycler.entries = sortByDateAscending(adapterRecycler.entries)
                 2 -> adapterRecycler.entries = sortByPriceDescending(adapterRecycler.entries)
@@ -337,7 +350,7 @@ class Tab3Fragment : Fragment() {
         /* Set the RecyclerView to have a vertical layout. */
         recycler.layoutManager = LinearLayoutManager(context)
         /* Connect the RecyclerView to the data model using the RecyclerAdapter. */
-        adapterRecycler = RecyclerAdapter(model.get())
+        adapterRecycler = RecyclerAdapter()
         /* Attach the adapter to the RecyclerView. */
         recycler.adapter = adapterRecycler
 
@@ -644,7 +657,7 @@ class Tab3Fragment : Fragment() {
         cancelButton = rootView.findViewById(R.id.cancelButton)
         cancelButton.setOnClickListener {
             toggleEditWindow(false)
-            if (selectedEntries.size > 0) {
+            if (selectedEntries.isNotEmpty()) {
                 toggleButton(deselectAllCheckBox, true)
                 deselectAllCheckBox.isChecked = true
                 toggleButton(deleteButton, true)
@@ -657,7 +670,7 @@ class Tab3Fragment : Fragment() {
         saveButton.setOnClickListener {
             submitEdit()
 
-            if (selectedEntries.size > 0) {
+            if (selectedEntries.isNotEmpty()) {
                 /* Update the text of the deselectAllCheckbox to the
                 * new count (selectedEntries.size) and sum (selectedSum). */
                 updateDeselectAllCheckBoxText()

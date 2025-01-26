@@ -8,7 +8,10 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -227,7 +230,7 @@ class CategoryFragment : Fragment() {
             }
 
             /* Output list of new categories to start tracking. */
-            if (newLabels.size > 0) {
+            if (newLabels.isNotEmpty()) {
                 message += "\nThe following new categories will start being tracked:\n"
                 for (label in newLabels) {
                     message += label
@@ -235,7 +238,7 @@ class CategoryFragment : Fragment() {
             }
 
             /* Output list of restored categories to start tracking. */
-            if (restoredLabels.size > 0) {
+            if (restoredLabels.isNotEmpty()) {
                 message += "\nThe following archived categories will " +
                         "be restored and resume being tracked:\n"
                 for (label in restoredLabels) {
@@ -275,7 +278,7 @@ class CategoryFragment : Fragment() {
                         toggleSaveButton(false)
                     } else {
                         /* Check if at least one new category has been entered.
-                        * If so, the Save Changes button will be enabled.*/
+                        * If so, the Save Changes button will be enabled. */
                         checkInputs()
                     }
                 }
