@@ -582,10 +582,21 @@ class Tab3Fragment : Fragment() {
                 changedInputs[1] = s.toString().trim().replace(
                     Regex("\\s+"), " "
                 )
-                /* Check if the trimmed Description is actually different
-                * from the currently saved Description. */
+                /* Do not bother re-validating the amount and date inputs,
+                * since only the optional description was just changed.
+                * Just simply confirm that the amount and date were valid
+                * the last time that we validated them. */
                 if (validAmount && validDate) {
+                    /* Check if the trimmed Description is actually different
+                    * from the currently saved Description.
+                    * If an actual valid change was made, then enable the
+                    * Save Changes button; otherwise, disable it. */
                     checkChanges()
+                }
+                else {
+                    /* Disable the Save Changes buttons,
+                    * since at least one user input is still invalid. */
+                    toggleButton(saveButton, false)
                 }
             }
         })
@@ -608,10 +619,21 @@ class Tab3Fragment : Fragment() {
                 R.id.category2ButtonEdit -> { selectedCategory = 1 }
                 R.id.category3ButtonEdit -> { selectedCategory = 2 }
             }
-            /* Check if an actual category change was made. */
             changedInputs[3] = selectedCategory.toString()
+            /* Do not bother re-validating the amount and date inputs,
+            * since only the category was just changed.
+            * Just simply confirm that the amount and date were valid
+            * the last time that we validated them. */
             if (validAmount && validDate) {
+                /* Check if an actual category change was made.
+                * If an actual valid change was made, then enable the
+                * Save Changes button; otherwise, disable it. */
                 checkChanges()
+            }
+            else {
+                /* Disable the Save Changes buttons,
+                * since at least one user input is now invalid. */
+                toggleButton(saveButton, false)
             }
         }
         categoryButtons[0] = rootView.findViewById(R.id.category1ButtonEdit)
@@ -686,11 +708,22 @@ class Tab3Fragment : Fragment() {
                 /* Restore the text change listener. */
                 amountInput.addTextChangedListener(this)
 
+
+                /* Do not bother re-validating the date input,
+                * since only the amount was just changed.
+                * Just simply confirm that the date was valid
+                * the last time that we validated it. */
                 if (validateAmountInput() && validDate) {
                     changedInputs[0] = formattedAmount
+                    /* Check if any actual changes were made by comparing
+                    * the new user's amount input to the original amount value.
+                    * If an actual valid change was made, then enable the
+                    * Save Changes button; otherwise, disable it. */
                     checkChanges()
                 }
                 else {
+                    /* Disable the Save Changes buttons,
+                    * since at least one user input is now invalid. */
                     toggleButton(saveButton, false)
                 }
             }
@@ -706,16 +739,32 @@ class Tab3Fragment : Fragment() {
         dateInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            /* Do not bother checking the amount input since only the date was just changed.
-            * If valid, then check if an actual date change was made. */
+            /* If the user's new date input is valid and their amount input is still valid,
+            * then check if an actual date change was made.
+            * If so, then enable the Save Changes button. */
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (validateDateInput() && validAmount) {
+                if (validateDateInput()) {
                     changedInputs[2] = s.toString()
-                    checkChanges()
+                    /* Change the selected date in the CalenderView
+                    * to the valid date input that the user just typed. */
                     dateSelector.setDate(userDateFormat.parse(dateInput.text.toString())!!.time,
                         true, true)
                 }
+
+                /* Do not bother re-validating the amount input,
+                * since only the date was just changed.
+                * Just simply confirm that the amount was valid
+                * the last time that we validated it. */
+                if (validDate && validAmount) {
+                    /* Check if any actual changes were made by comparing
+                    * the new user's date input to the original date value.
+                    * If an actual valid change was made, then enable the
+                    * Save Changes button; otherwise, disable it. */
+                    checkChanges()
+                }
                 else {
+                    /* Disable the Save Changes buttons,
+                    * since at least one user input is now invalid. */
                     toggleButton(saveButton, false)
                 }
             }
@@ -730,19 +779,34 @@ class Tab3Fragment : Fragment() {
         modelDateFormat.isLenient = false
         userDateFormat.isLenient = false
 
-        /* The Cancel button will close the date selector. */
+        /* The Cancel button will close the date selector without changing the date input. */
         cancelDate = rootView.findViewById(R.id.cancelDateButton)
         cancelDate.visibility = View.GONE
         cancelDate.setOnClickListener {
             toggleDateSelector(false)
 
-            /* Re-enable category buttons, if necessary. */
+            /* Re-enable the Cancel edit and Category buttons that
+            * we had to temporarily disable and hide while
+            * displaying the CalendarView date selector. */
             toggleButton(cancelButton, true)
             for (button in categoryButtons) {
                 toggleButton(button!!, true)
             }
-            toggleButton(saveButton, validAmount && validDate)
-            checkChanges()
+            /* Do not bother re-validating the amount and date inputs,
+            * since nothing was just changed.
+            * Just simply confirm that the amount and date were valid
+            * the last time that we validated them. */
+            if (validAmount && validDate) {
+                /* Check if any actual changes were queued up.
+                * If an actual valid change was pending, then enable the
+                * Save Changes button; otherwise, disable it. */
+                checkChanges()
+            }
+            else {
+                /* Disable the Save Changes buttons,
+                * since at least one user input is still invalid. */
+                toggleButton(saveButton, false)
+            }
         }
 
         dateSelector = rootView.findViewById(R.id.dateSelectorEdit)
@@ -752,16 +816,34 @@ class Tab3Fragment : Fragment() {
         * replace the date input with the selected date. */
         dateSelector.setOnDateChangeListener { _: CalendarView, year: Int, month: Int, day: Int ->
             toggleDateSelector(false)
+
             val dateString = (month + 1).toString() + "/$day/$year"
             dateInput.setText(dateString)
-
-            /* Re-enable category buttons, if necessary. */
-            for (button in categoryButtons) {
-                toggleButton(button!!, true)
+            /* Double-check that the CalendarView truly gave us a valid date. */
+            if (validateDateInput()) {
+                /* Re-enable the Cancel edit and Category buttons that
+                * we had to temporarily disable and hide while
+                * displaying the CalendarView date selector. */
+                toggleButton(cancelButton, true)
+                for (button in categoryButtons) {
+                    toggleButton(button!!, true)
+                }
+                /* Do not bother re-validating the amount input,
+                * since only the date was just changed.
+                * Just simply confirm that the amount was valid
+                * the last time that we validated it. */
+                if (validAmount && validDate) {
+                    /* Check if any actual changes were made by comparing
+                    * the new user's date input to the original date value.
+                    * If an actual valid change was made, then enable the
+                    * Save Changes button; otherwise, disable it. */
+                    checkChanges()
+                } else {
+                    /* Disable the Save Changes buttons,
+                    * since at least one user input is now invalid. */
+                    toggleButton(saveButton, false)
+                }
             }
-            toggleButton(cancelButton, true)
-            toggleButton(saveButton, validAmount && validDate)
-            checkChanges()
         }
 
         dateOverlay = rootView.findViewById(R.id.dateOverlayEdit)
