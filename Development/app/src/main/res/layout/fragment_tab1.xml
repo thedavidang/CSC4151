@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/tab1Fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menuSpacing" />
+            app:layout_constraintTop_toBottomOf="@+id/menuSpacing"
+            tools:ignore="TextContrastCheck,VisualLintOverlap" />
 
         <EditText
             android:id="@+id/amountField"
@@ -45,7 +46,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/amountLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/amountLabel"
+            tools:ignore="VisualLintOverlap" />
 
         <ImageView
             android:id="@+id/invalidAmount"
@@ -72,7 +74,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/amountSpacing" />
+            app:layout_constraintTop_toBottomOf="@+id/amountSpacing"
+            tools:ignore="VisualLintOverlap" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/descriptionHolder"
@@ -89,11 +92,11 @@
                 android:id="@+id/descriptionField"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:imeOptions="actionNext"
                 android:autofillHints="@android:string/autofill"
-                android:contentDescription="@string/descriptionString"
+                android:imeOptions="actionNext"
                 android:inputType="textCapWords"
-                android:maxLength="50" />
+                android:maxLength="50"
+                tools:ignore="DuplicateSpeakableTextCheck,SpeakableTextPresentCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <View
@@ -112,7 +115,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
+            app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing"
+            tools:ignore="VisualLintOverlap" />
 
         <EditText
             android:id="@+id/dateField"
@@ -126,7 +130,8 @@
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/dateLabel"
+            tools:ignore="VisualLintOverlap" />
 
         <ImageButton
             android:id="@+id/dateButton"
@@ -136,7 +141,8 @@
             android:src="@android:drawable/ic_menu_my_calendar"
             app:layout_constraintBottom_toTopOf="@+id/dateSpacing"
             app:layout_constraintStart_toEndOf="@+id/dateField"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing" />
+            app:layout_constraintTop_toBottomOf="@+id/descriptionSpacing"
+            tools:ignore="DuplicateSpeakableTextCheck" />
 
         <ImageView
             android:id="@+id/invalidDate"
@@ -162,7 +168,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateSpacing" />
+            app:layout_constraintTop_toBottomOf="@+id/dateSpacing"
+            tools:ignore="TextContrastCheck,VisualLintOverlap" />
 
         <View
             android:id="@+id/category1Spacing"
@@ -175,13 +182,15 @@
             android:id="@+id/category1Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/category1String"
             android:ems="17"
             android:paddingVertical="25dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category1Spacing" />
+            app:layout_constraintTop_toBottomOf="@+id/category1Spacing"
+            tools:ignore="VisualLintButtonSize,VisualLintOverlap" />
 
         <View
             android:id="@+id/category2Spacing"
@@ -194,13 +203,15 @@
             android:id="@+id/category2Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/category2String"
             android:ems="17"
             android:paddingVertical="25dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category2Spacing" />
+            app:layout_constraintTop_toBottomOf="@+id/category2Spacing"
+            tools:ignore="VisualLintButtonSize,VisualLintOverlap" />
 
         <View
             android:id="@+id/category3Spacing"
@@ -213,13 +224,15 @@
             android:id="@+id/category3Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/category3String"
             android:ems="17"
             android:paddingVertical="25dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category3Spacing" />
+            app:layout_constraintTop_toBottomOf="@+id/category3Spacing"
+            tools:ignore="VisualLintButtonSize,VisualLintOverlap" />
 
         <View
             android:id="@+id/dateOverlay"

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/termsFragment"
+        android:id="@+id/termsFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".settings.TermsFragment" >
@@ -29,7 +29,8 @@
         android:scrollbars="vertical"
         android:text="@string/termsString"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/menuSpacing" />
+        app:layout_constraintTop_toBottomOf="@id/menuSpacing"
+        tools:ignore="VisualLintLongText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

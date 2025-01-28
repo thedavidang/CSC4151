@@ -4,6 +4,10 @@
     <string name="docFilenameString">WalletWatch.xml</string>
     <string name="archiveFilenameString">Archive.xml</string>
 
+    <string name="mainTab1String">Add</string>
+    <string name="mainTab2String">Analytics</string>
+    <string name="mainTab3String">History</string>
+
     <string name="amountString">Amount:</string>
     <string name="amountHintString">$ 0.00</string>
     <string name="invalidAmountString">Invalid Amount</string>
@@ -35,6 +39,10 @@
 
     <string name="settingsString">Settings</string>
     <string name="settingsHeadingString">WalletWatch© Settings</string>
+
+    <string name="settingsTab1String">Categories</string>
+    <string name="settingsTab2String">Terms</string>
+    <string name="settingsTab3String">About</string>
 
     <string name="category1String">Category 1:</string>
     <string name="category2String">Category 2:</string>

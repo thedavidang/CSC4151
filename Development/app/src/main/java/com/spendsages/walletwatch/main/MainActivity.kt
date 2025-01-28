@@ -81,9 +81,9 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, binding.mainPager) { tab, position ->
             /* Set tab title. */
             tab.text = when (position) {
-                1 -> { "Analytics" }
-                2 -> { "History" }
-                else -> { "Add" }
+                1 -> { getString(R.string.mainTab2String) }
+                2 -> { getString(R.string.mainTab3String) }
+                else -> { getString(R.string.mainTab1String) }
             }
         }.attach()
 
@@ -135,8 +135,7 @@ class MainActivity : AppCompatActivity() {
 
         /* Setup the shared view model, so that all fragments can access the same live data. */
         model = ViewModelProvider(app,
-            SharedViewModelFactory(app.applicationContext)
-        )[SharedViewModel::class.java]
+            SharedViewModelFactory(app.applicationContext))[SharedViewModel::class.java]
     }
 
     /* Purpose: Force the focus on the given UI object and

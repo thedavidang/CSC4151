@@ -43,19 +43,11 @@ class SettingsActivity : AppCompatActivity() {
         binding.settingsPager.adapter = SettingsPagerAdapter(supportFragmentManager, lifecycle)
         binding.settingsPager.reduceDragSensitivity()
         TabLayoutMediator(tabLayout, binding.settingsPager) { tab, position ->
-            when (position) {
-                1 -> {
-                    /* Set tab title. */
-                    tab.text = "Terms"
-                }
-                2 -> {
-                    /* Set tab title. */
-                    tab.text = "About"
-                }
-                else -> {
-                    /* Set tab title. */
-                    tab.text = "Categories"
-                }
+            /* Set tab title. */
+            tab.text = when (position) {
+                1 -> { getString(R.string.settingsTab2String) }
+                2 -> { getString(R.string.settingsTab3String) }
+                else -> { getString(R.string.settingsTab1String) }
             }
 
             /* Hide the keyboard. */

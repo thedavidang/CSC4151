@@ -30,8 +30,9 @@
                 android:minHeight="?actionBarSize"
                 android:padding="@dimen/appbar_padding"
                 android:text="@string/headingString"
+                android:textSize="20sp"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap,TextContrastCheck" />
 
             <ImageButton
                 android:id="@+id/openSettingsButton"
@@ -49,7 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
-            app:tabTextColor="#FFFFFF" />
+            app:tabTextColor="#FFFFFF"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
