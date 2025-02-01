@@ -34,10 +34,6 @@ import com.spendsages.walletwatch.Entry
 import com.spendsages.walletwatch.R
 import com.spendsages.walletwatch.SharedViewModel
 import com.spendsages.walletwatch.databinding.FragmentTab3Binding
-import com.spendsages.walletwatch.sortByDateAscending
-import com.spendsages.walletwatch.sortByDateDescending
-import com.spendsages.walletwatch.sortByPriceAscending
-import com.spendsages.walletwatch.sortByPriceDescending
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -71,8 +67,10 @@ class Tab3Fragment : Fragment() {
     private lateinit var deleteButton : Button
 
     private lateinit var spinSorting : Spinner
+    private var spinSortingCreated : Boolean = false
 
     private lateinit var spinFiltering : Spinner
+    private var spinFilteringCreated : Boolean = false
 
     /* Edit Entry window private member variables. */
     private lateinit var scroll : ScrollView
@@ -111,22 +109,6 @@ class Tab3Fragment : Fragment() {
     private lateinit var deselect : Toast
     private lateinit var delete : Toast
 
-    /* Purpose: Helper method that will find the index/position of the Entry
-    * that has a matching id string.
-    *
-    * Parameters: id represents the numerical id of the target element.
-    *
-    * Returns: An integer representing the index/position of the target element or
-    * -1 if the target element id was not found. */
-    private fun findEntryById(id : String) : Int {
-        return if (adapterRecycler.entries.isNotEmpty()) {
-                adapterRecycler.entries.indexOfFirst{ it.id == id }
-            }
-            else {
-                -1
-            }
-    }
-
     /* Purpose: Helper method that will display the quantity of entries
     * selected for deletion and the total dollar sum of those same entries
     * on the deselect all checkbox.
@@ -151,26 +133,6 @@ class Tab3Fragment : Fragment() {
 
         /* Finally, update the text content of the deselect all checkbox. */
         deselectAllCheckBox.text = textContent
-    }
-
-    /* Purpose: Controller method that will update the RecyclerView after the back-end sorts
-    * the list of entries.
-    *
-    * Parameters: position represents the position of the sortingSpinner Spinbox.
-    *
-    * Returns: Nothing. */
-    @Suppress("NotifyDataSetChanged")
-    fun sortEntries(position : Int) {
-        if (adapterRecycler.entries.isNotEmpty()) {
-            when (position) {
-                1 -> adapterRecycler.entries = sortByDateAscending(adapterRecycler.entries)
-                2 -> adapterRecycler.entries = sortByPriceDescending(adapterRecycler.entries)
-                3 -> adapterRecycler.entries = sortByPriceAscending(adapterRecycler.entries)
-                else -> adapterRecycler.entries = sortByDateDescending(adapterRecycler.entries)
-            }
-        }
-        /* Update the model, so that the changes are immediately displayed in the app. */
-        adapterRecycler.notifyDataSetChanged()
     }
 
     /* Purpose: Controller method that disables the Save Changes button
@@ -311,19 +273,34 @@ class Tab3Fragment : Fragment() {
         val date = modelDateFormat.format(userDateFormat.parse(changedInputs[2]!!)!!)
         val category = (changedInputs[3]!!.toInt() + 1).toString()
 
-        /* Add the entry to the XML data file. */
-        DataManager.editEntry(
-            model.get(), entryID,
+        /* Edit the entry in the XML data file. */
+        val newEntryID = DataManager.editEntry(model.get(), entryID,
             changedInputs[0]!!, changedInputs[1]!!, date, category
         )
 
         /* Update the data model. */
         model.save()
 
-        /* Update the model, so that the changes are immediately displayed in the app. */
-        adapterRecycler.updateData(model.get(), spinSorting.selectedItemPosition,
-            spinFiltering.selectedItem.toString())
-        adapterRecycler.notifyItemChanged(findEntryById(entryID))
+        /* Refresh the RecyclerView as to display the changes. */
+        adapterRecycler.notifyItemChanged(adapterRecycler.findEntryById(entryID))
+        /* If the entry was selected, re-select the checkbox. */
+        val selectedEntryIndex = selectedEntries.indexOf(entryID)
+        if (-1 != selectedEntryIndex) {
+            selectedEntries[selectedEntryIndex] = newEntryID
+            adapterRecycler.setEntryCheckBox(newEntryID, true)
+            /* Re-calculate the total dollar sum of the selected entries,
+            * if there was a change in the entry's dollar amount. */
+            if (originalInputs[0]!! != changedInputs[0]!!) {
+                val originalAmount = originalInputs[0]!!.substring(2).replace(
+                    ",", "").toDouble()
+                val changedAmount = changedInputs[0]!!.substring(2).replace(
+                    ",", "").toDouble()
+                selectedSum += changedAmount - originalAmount
+                if (selectedSum < 0.00) {
+                    selectedSum = 0.00
+                }
+            }
+        }
 
         /* Display the Toast message "Expense Modified". */
         success.show()
@@ -448,14 +425,23 @@ class Tab3Fragment : Fragment() {
 
         /* Set the possible options for the sorting Spinbox. */
         spinSorting = rootView.findViewById(R.id.sortingSpinner)
-        spinSorting.adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_dropdown_item,
-            resources.getStringArray(R.array.sortingOptions))
+        spinSorting.adapter = ArrayAdapter(requireActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            resources.getStringArray(R.array.sortingOptions)
+        )
         /* Set the listener that will sort the entries in a new order
         * when a new option is selected. */
         spinSorting.onItemSelectedListener = object : OnItemSelectedListener {
+            @Suppress("NotifyDataSetChanged")
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                sortEntries(position)
+                if (spinSortingCreated) {
+                    adapterRecycler.sortEntries(spinSorting.selectedItemPosition)
+                    adapterRecycler.notifyDataSetChanged()
+                }
+                else {
+                    spinSortingCreated = true
+                }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
@@ -466,13 +452,17 @@ class Tab3Fragment : Fragment() {
         /* Set the listener that will filter the entries down
         * to only those of the category chosen. If the user taps "All", then clear any filtering. */
         spinFiltering.onItemSelectedListener = object : OnItemSelectedListener {
+            @Suppress("NotifyDataSetChanged")
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                when (position) {
-                    0 -> { adapterRecycler.entries = adapterRecycler.entriesRaw }
-                    else -> { adapterRecycler.filter(spinFiltering.selectedItem.toString()) }
+                if (spinFilteringCreated) {
+                    adapterRecycler.filterEntries(spinFiltering.selectedItem.toString())
+                    adapterRecycler.sortEntries(spinSorting.selectedItemPosition)
+                    adapterRecycler.notifyDataSetChanged()
                 }
-                sortEntries(spinSorting.selectedItemPosition)
+                else {
+                    spinFilteringCreated = true
+                }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
@@ -492,8 +482,9 @@ class Tab3Fragment : Fragment() {
                         DialogInterface.BUTTON_POSITIVE -> {
                             for (entryId in selectedEntries) {
                                 adapterRecycler.setEntryCheckBox(entryId, false)
-                                val entryIndex = findEntryById(entryId)
-                                adapterRecycler.notifyItemChanged(entryIndex)
+                                adapterRecycler.notifyItemChanged(
+                                    adapterRecycler.findEntryById(entryId)
+                                )
                             }
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
@@ -538,17 +529,14 @@ class Tab3Fragment : Fragment() {
                         DialogInterface.BUTTON_POSITIVE -> {
                             DataManager.deleteEntries(model.get(), selectedEntries)
                             for (entryId in selectedEntries) {
-                                adapterRecycler.notifyItemRemoved(findEntryById(entryId))
+                                adapterRecycler.notifyItemRemoved(
+                                    adapterRecycler.findEntryById(entryId)
+                                )
                             }
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
                             selectedSum = 0.00
                             model.save()
-                            /* Update the model, so that the changes are
-                            * immediately displayed in the app. */
-                            adapterRecycler.updateData(model.get(),
-                                spinSorting.selectedItemPosition,
-                                spinFiltering.selectedItem.toString())
                             deselectAllCheckBox.text = getString(R.string.deselectAllString)
                             toggleButton(deselectAllCheckBox, false)
                             deselectAllCheckBox.isChecked = false
@@ -898,19 +886,30 @@ class Tab3Fragment : Fragment() {
 
         /* Observe the LiveData objects from SharedViewModel. */
         model.getLive().observe(viewLifecycleOwner) { doc ->
-            /* Refresh the categories. */
-            categories = DataManager.getCategories(doc)
-            /* Refresh the category label for each category button. */
-            for ((index, button) in categoryButtons.withIndex()) {
-                button?.text = categories[index + 1]
+            /* Only refresh the category button labels
+            * if the user actually changed a category label
+            * in the SettingsActivity. */
+            if (model.getTabCategoriesNeedRefresh(2)) {
+                /* Refresh the categories. */
+                categories = DataManager.getCategories(doc)
+                /* Refresh the category label for each category button. */
+                for ((index, button) in categoryButtons.withIndex()) {
+                    button?.text = categories[index + 1]
+                }
+
+                /* Refresh the possible options for the filtering Spinbox. */
+                spinFiltering.adapter = ArrayAdapter<String?>(
+                    requireActivity(),
+                    android.R.layout.simple_spinner_dropdown_item, categories
+                )
+
+                /* Reset the tab's model boolean. */
+                model.resetTabCategoriesNeedRefresh(2)
             }
 
-            /* Refresh the possible options for the filtering Spinbox. */
-            spinFiltering.adapter = ArrayAdapter<String?>(requireActivity(),
-                android.R.layout.simple_spinner_dropdown_item, categories)
-
-            adapterRecycler.updateData(model.get(), spinSorting.selectedItemPosition,
-                spinFiltering.selectedItem.toString())
+            adapterRecycler.updateData(model.get(), spinFiltering.selectedItem.toString(),
+                spinSorting.selectedItemPosition
+            )
             adapterRecycler.notifyDataSetChanged()
         }
     }

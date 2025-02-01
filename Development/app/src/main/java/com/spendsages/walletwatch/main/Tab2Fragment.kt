@@ -692,36 +692,46 @@ class Tab2Fragment : Fragment() {
 
         /* Observe the LiveData objects from SharedViewModel. */
         model.getLive().observe(viewLifecycleOwner) { doc ->
-            /* Refresh the categories. */
-            categories = DataManager.getCategories(doc)
+            /* Only refresh the category button labels
+            * if the user actually changed a category label
+            * in the SettingsActivity. */
+            if (model.getTabCategoriesNeedRefresh(1)) {
+                /* Refresh the categories. */
+                categories = DataManager.getCategories(doc)
 
-            /* Refresh the label for Category 1. */
-            category1Label = categories[1]!!
-            /* Slice label to be at most 10 characters long. */
-            if (category1Label.length > 10) {
-                category1Label = category1Label.substring(0, 9) + "."
+                /* Refresh the label for Category 1. */
+                category1Label = categories[1]!!
+                /* Slice label to be at most 10 characters long. */
+                if (category1Label.length > 10) {
+                    category1Label = category1Label.substring(0, 9) + "."
+                }
+                category1Text.text = category1Label
+
+                /* Refresh the label for Category 2. */
+                category2Label = categories[2]!!
+                /* Slice label to be at most 10 characters long. */
+                if (category2Label.length > 10) {
+                    category2Label = category2Label.substring(0, 9) + "."
+                }
+                category2Text.text = category2Label
+
+                /* Refresh the label for Category 3. */
+                category3Label = categories[3]!!
+                /* Slice label to be at most 10 characters long. */
+                if (category3Label.length > 10) {
+                    category3Label = category3Label.substring(0, 9) + "."
+                }
+                category3Text.text = category3Label
+
+                /* Refresh the category names in the Category selector. */
+                spinChartCategory.adapter = ArrayAdapter<String?>(
+                    main,
+                    android.R.layout.simple_spinner_dropdown_item, categories
+                )
+
+                /* Reset the tab's model boolean. */
+                model.resetTabCategoriesNeedRefresh(1)
             }
-            category1Text.text = category1Label
-
-            /* Refresh the label for Category 2. */
-            category2Label = categories[2]!!
-            /* Slice label to be at most 10 characters long. */
-            if (category2Label.length > 10) {
-                category2Label = category2Label.substring(0, 9) + "."
-            }
-            category2Text.text = category2Label
-
-            /* Refresh the label for Category 3. */
-            category3Label = categories[3]!!
-            /* Slice label to be at most 10 characters long. */
-            if (category3Label.length > 10) {
-                category3Label = category3Label.substring(0, 9) + "."
-            }
-            category3Text.text = category3Label
-
-            /* Refresh the category names in the Category selector. */
-            spinChartCategory.adapter = ArrayAdapter<String?>(main,
-                android.R.layout.simple_spinner_dropdown_item, categories)
 
             /* Grab the selected time interval. */
             val timeSpan = spinTimeInterval.selectedItemPosition

@@ -323,9 +323,9 @@ object DataManager {
     * date represents the string of the date of the expense.
     * category represents the string of the selected category of the expense.
     *
-    * Returns: Nothing. */
+    * Returns: A String representing the new Entry's ID. */
     fun addEntry(doc : Document, amountRaw : String, description : String,
-                 date: String, category: String) {
+                 date: String, category: String) : String {
         /* Extract year, month, and day from date string. */
         val year = date.substring(0, 4)
         val month = date.substring(5, 7)
@@ -448,6 +448,8 @@ object DataManager {
         * If there are no Entry elements in this Day yet, it will simply add it right after the
         * Total element for that Day. */
         dayTag.appendChild(entryTag)
+
+        return id
     }
 
     /* Purpose: Check how much of a date tree hierarchy will be "empty" after removing a
@@ -808,12 +810,14 @@ object DataManager {
     * date represents the string of the date of the expense.
     * category represents the string of the selected category of the expense.
     *
-    * Returns: Nothing. */
+    * Returns: A String representing the Entry's new ID. */
     fun editEntry(doc: Document, entryID: String, amountRaw : String, description : String,
-                  date: String, category: String) {
+                  date: String, category: String) : String {
         /* Add a new entry with the updated attributes. */
-        addEntry(doc, amountRaw, description, date, category)
+        val id = addEntry(doc, amountRaw, description, date, category)
         /* Remove the old entry. */
         deleteEmptyTags(doc, entryID)
+
+        return id
     }
 }

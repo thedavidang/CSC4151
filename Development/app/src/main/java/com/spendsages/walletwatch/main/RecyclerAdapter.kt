@@ -22,59 +22,99 @@ import kotlin.collections.ArrayList
 
 /* This class provides support for the scrollable RecyclerView cardRecycler. */
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.EntryViewHolder?>() {
-    /* Retrieve the list of all entries in the XML data file. */
-    lateinit var entriesRaw : MutableList<Entry>
-    /* Create a list of those entries that are sorted by date from newest to oldest. */
-    lateinit var entries : MutableList<Entry>
+    /* Maintain a list of all raw (unfiltered and unsorted) entries from the XML data file. */
+    private lateinit var entriesRaw : MutableList<Entry>
+    /* Maintain a list of filtered and sorted entries.
+    * that are currently displayed in the RecyclerView.
+    * This member variable is directly linked to the
+    * RecyclerView items and item count. */
+    private var entries = mutableListOf<Entry>()
 
     private var selectListener: OnClickListener? = null
     private var editListener: OnClickListener? = null
 
+    /* Purpose: Sets the listener for an individual EntryViewHolder's checkbox.
+    *
+    * Parameters: listener represents the OnClickListener of a specific EntryViewHolder checkbox.
+    *
+    * Returns: Nothing. */
     fun setSelectListener(listener: OnClickListener) {
         this.selectListener = listener
     }
 
+    /* Purpose: Sets the listener for an individual EntryViewHolder's edit button.
+    *
+    * Parameters: listener represents the OnClickListener of a specific EntryViewHolder edit button.
+    *
+    * Returns: Nothing. */
     fun setEditListener(listener: OnClickListener) {
         this.editListener = listener
     }
 
-    /* Purpose: Update the list of entries.
+    /* Purpose: Filters the list of entries down to a specific category.
     *
-    * Parameters: doc represents the Document of the XML data file.
+    * Parameters: categoryLabel represents the label of the target category to filter by.
     *
     * Returns: Nothing. */
-    fun updateData(doc: Document, sort: Int, category: String) {
-        /* Retrieve the list of all entries in the XML data file. */
-        entriesRaw = getEntries(doc)
-
-        /* Filter the entries as necessary. */
-        if (category != "All") {
-            filter(category)
-        }
-        else {
-            entries = entriesRaw
-        }
-
-        /* Create a list of the entries and sort them correctly. */
-        entries =
-            when (sort) {
-                /* Sort by date from oldest to newest. */
-                1 -> {
-                    sortByDateAscending(entries)
-                }
-                /* Sort by price from highest to lowest. */
-                2 -> {
-                    sortByPriceDescending(entries)
-                }
-                /* Sort by price from lowest to highest. */
-                3 -> {
-                    sortByPriceAscending(entries)
-                }
-                /* Sort by date from newest to oldest. */
-                else -> {
-                    sortByDateDescending(entries)
+    fun filterEntries(categoryLabel : String) {
+        /* Do nothing if the user has not added any entries yet whatsoever. */
+        if (entriesRaw.isNotEmpty()) {
+            if (categoryLabel == "All") {
+                /* By default, do not filter out any entries. */
+                entries = entriesRaw
+            }
+            else {
+                /* Empty out list of filtered entries. */
+                entries = ArrayList()
+                /* Fill in list with all entries that match target category filter. */
+                for (entry in entriesRaw) {
+                    if (entry.category == categoryLabel) {
+                        entries.add(entry)
+                    }
                 }
             }
+        }
+    }
+
+    /* Purpose: Controller method that sorts the list of entries.
+    *
+    * Parameters: position represents the position of the sortingSpinner Spinbox.
+    *
+    * Returns: Nothing. */
+    fun sortEntries(position : Int) {
+        /* Do nothing if the user has not added any entries yet whatsoever. */
+        if (entries.isNotEmpty()) {
+            entries = when (position) {
+                /* Sort by date from oldest to newest. */
+                1 -> sortByDateAscending(entries)
+                /* Sort by price from highest to lowest. */
+                2 -> sortByPriceDescending(entries)
+                /* Sort by price from lowest to highest. */
+                3 -> sortByPriceAscending(entries)
+                /* Sort by date from newest to oldest (default). */
+                else -> sortByDateDescending(entries)
+            }
+        }
+    }
+
+    /* Purpose: Update the list of entries maintained in the background.
+    *
+    * Parameters: doc represents the Document of the XML data file.
+    *             category represents the nullable string of the category to filter down to.
+    *             sort represents the nullable sorting algorithm choice integer to sort by.
+    *
+    * Returns: Nothing. */
+    fun updateData(doc: Document, category: String, sort: Int) {
+        /* Retrieve the raw list of all entries in the XML data file. */
+        entriesRaw = getEntries(doc)
+
+        /* Filter the sorted entries list as necessary.
+        * If we filter first, then sorting will be faster. */
+        filterEntries(category)
+
+        /* Sort the filtered entries list.
+        * Filtering first helps the sorting algorithms go faster. */
+        sortEntries(sort)
     }
 
     /* Purpose: Getter/Accessor that returns the total number of filtered entries to display.
@@ -86,22 +126,19 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.EntryViewHolder?>()
         return entries.size
     }
 
-    /* Purpose: Filters the list of entries down to a specific category.
+    /* Purpose: Public helper method that will find the index/position of the Entry
+    * that has a matching id string.
     *
-    * Parameters: categoryLabel represents the label of the target category to filter by.
+    * Parameters: id represents the numerical id of the target element.
     *
-    * Returns: Nothing. */
-    fun filter(categoryLabel : String) {
-        /* Do nothing if the user has not added any entries yet whatsoever. */
-        if (entriesRaw.isNotEmpty()) {
-            /* Empty out list of entries to display */
-            entries = ArrayList()
-            /* Fill in list with all entries that are part of target category. */
-            for (entry in entriesRaw) {
-                if (entry.category == categoryLabel) {
-                    entries.add(entry)
-                }
-            }
+    * Returns: An integer representing the index/position of the target element or
+    * -1 if the target element id was not found. */
+    fun findEntryById(id : String) : Int {
+        return if (entries.isNotEmpty()) {
+            entries.indexOfFirst{ it.id == id }
+        }
+        else {
+            -1
         }
     }
 

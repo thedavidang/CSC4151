@@ -188,6 +188,7 @@ class CategoryFragment : Fragment() {
                             }
 
                             model.save()
+                            model.notifyTabCategoriesNeedRefresh()
                             success.show()
                             toggleSaveButton(false)
                             /* Retrieve updated categories. */

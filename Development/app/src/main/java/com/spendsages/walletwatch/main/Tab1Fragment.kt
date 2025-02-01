@@ -192,7 +192,7 @@ class Tab1Fragment : Fragment() {
         /* Reset date input back to today's date. */
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
 
-        /* Forcible disable the category submit buttons. */
+        /* Forcibly disable the category submit buttons. */
         toggleCategoryButtons(false)
 
         /* Reset the amount input back to the default amount of zero. */
@@ -438,11 +438,19 @@ class Tab1Fragment : Fragment() {
 
         /* Observe the LiveData objects from SharedViewModel. */
         model.getLive().observe(viewLifecycleOwner) { doc ->
-            /* Refresh the labels for each category. */
-            categories = DataManager.getCategories(doc)
-            /* Refresh the category label for each corresponding category button. */
-            for ((index, button) in categoryButtons.withIndex()) {
-                button?.text = categories[index + 1]
+            /* Only refresh the category button labels
+            * if the user actually changed a category label
+            * in the SettingsActivity. */
+            if (model.getTabCategoriesNeedRefresh(0)) {
+                /* Refresh the labels for each category. */
+                categories = DataManager.getCategories(doc)
+                /* Refresh the category label for each corresponding category button. */
+                for ((index, button) in categoryButtons.withIndex()) {
+                    button?.text = categories[index + 1]
+                }
+
+                /* Reset the tab's model boolean. */
+                model.resetTabCategoriesNeedRefresh(0)
             }
         }
     }
