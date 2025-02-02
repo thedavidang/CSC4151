@@ -40,7 +40,7 @@ class Tab1Fragment : Fragment() {
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
-    private lateinit var categories : MutableList<String?>
+    private lateinit var categories : MutableList<String>
 
     private lateinit var amountInput : EditText
     private var validAmount : Boolean = false
@@ -433,30 +433,22 @@ class Tab1Fragment : Fragment() {
         return rootView
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /* Observe the LiveData objects from SharedViewModel. */
-        model.getLive().observe(viewLifecycleOwner) { doc ->
-            /* Only refresh the category button labels
-            * if the user actually changed a category label
-            * in the SettingsActivity. */
-            if (model.getTabCategoriesNeedRefresh(0)) {
-                /* Refresh the labels for each category. */
-                categories = DataManager.getCategories(doc)
-                /* Refresh the category label for each corresponding category button. */
-                for ((index, button) in categoryButtons.withIndex()) {
-                    button?.text = categories[index + 1]
-                }
-
-                /* Reset the tab's model boolean. */
-                model.resetTabCategoriesNeedRefresh(0)
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
+        /* Only refresh the category button labels
+        * if the user actually changed a category label
+        * in the SettingsActivity. */
+        if (model.getTabCategoriesNeedRefresh(0)) {
+            /* Retrieve the labels for each category. */
+            categories = model.getCategoryLabels()
+            /* Refresh the category label for each corresponding category button. */
+            for ((index, button) in categoryButtons.withIndex()) {
+                button?.text = categories[index + 1]
+            }
+            /* Reset the tab's model boolean. */
+            model.resetTabCategoriesNeedRefresh(0)
+        }
+
         if (main.appLaunched) {
             main.showKeyboard(amountInput)
         }

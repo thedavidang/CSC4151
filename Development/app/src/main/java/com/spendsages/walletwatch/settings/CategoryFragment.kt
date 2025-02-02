@@ -133,7 +133,7 @@ class CategoryFragment : Fragment() {
                     /* So, place the new category label in an open slot,
                     * preferably the textbox index, if possible.
                     * Otherwise, just stick it in the first available slot. */
-                    val openSlotIndex = if (changed[indexTextbox] == "") {
+                    val openSlotIndex = if (changed[indexTextbox].isNullOrBlank()) {
                         indexTextbox
                     } else {
                         changed.indexOf("")
