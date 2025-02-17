@@ -13,7 +13,7 @@ class Entry(
     var amount: Double,
     var description: String,
     var timestamp: Instant,
-    var category: String,
+    var category: Int,
     var selected: Boolean)
 
 /* Purpose: Static method that sorts a list of Entry objects by date from newest to oldest.
@@ -71,7 +71,7 @@ fun getEntries(doc : Document) : MutableList<Entry> {
     var amount: Double
     var description: String
     var timestamp : Instant
-    var category: String
+    var category: Int
 
     /* Iterate through the Entry elements in the XML data file  */
     for (index in 0 until entryNodes.length) {
@@ -81,9 +81,9 @@ fun getEntries(doc : Document) : MutableList<Entry> {
         amount = node.firstChild.textContent.toDouble()
         description = node.childNodes.item(1).textContent
         /* Parse the timestamp string as a timestamp object known as Instant. */
-        timestamp = Instant.parse(DataManager.getValueByID(doc, "$id-s")!!)
-        /* Retrieve the category label by using the id "c-x-l". */
-        category = DataManager.getValueByID(doc, id.substring(0, 4) + "l")!!
+        timestamp = Instant.parse(node.childNodes.item(2).textContent)
+        /* Retrieve the category index by extracting the digit from the id "c-x-l". */
+        category = id[2].digitToInt()
 
         /* Create an instance of the Entry class and add it to the list of entries.
         * By default, the entry will not be selected for deletion. */
