@@ -31,7 +31,7 @@ class RecyclerAdapter(private var categories: Array<String>) :
     *
     * Returns: Nothing. */
     fun setSelectListener(listener: OnClickListener) {
-        this.selectListener = listener
+        selectListener = listener
     }
 
     /* Purpose: Sets the listener for an individual EntryViewHolder's edit button.
@@ -40,7 +40,7 @@ class RecyclerAdapter(private var categories: Array<String>) :
     *
     * Returns: Nothing. */
     fun setEditListener(listener: OnClickListener) {
-        this.editListener = listener
+        editListener = listener
     }
 
     /* Purpose: Initializes the list of entries maintained in the background.
@@ -91,9 +91,9 @@ class RecyclerAdapter(private var categories: Array<String>) :
     private fun Sequence<Entry>.filterEntries(filter: Int, sort: Int): List<Entry> {
         val filteredList = when (filter) {
             /* All categories can be displayed, so do not filter. */
-            0 -> this.asSequence()
+            0 -> asSequence()
             /* Filter down to the selected category. */
-            else -> this.asSequence().filter { it.category == filter }
+            else -> asSequence().filter { it.category == filter }
         }
         /* Sort the filtered list of entries. */
         return filteredList.sortEntries(sort)

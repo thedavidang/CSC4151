@@ -171,13 +171,13 @@ class Tab2Fragment : Fragment() {
         /* Check which category the user selected. */
         when (category) {
             /* Set line to red for Category 1. */
-            1 -> { line.color = this.resources.getColor(R.color.colorCategory1, context?.theme) }
+            1 -> { line.color = resources.getColor(R.color.colorCategory1, context?.theme) }
             /* Set line to green for Category 2. */
-            2 -> { line.color = this.resources.getColor(R.color.colorCategory2, context?.theme) }
+            2 -> { line.color = resources.getColor(R.color.colorCategory2, context?.theme) }
             /* Set line to blue for Category 3. */
-            3 -> { line.color = this.resources.getColor(R.color.colorCategory3, context?.theme) }
+            3 -> { line.color = resources.getColor(R.color.colorCategory3, context?.theme) }
             /* Set line to black for All Categories. */
-            else -> { line.color = this.resources.getColor(R.color.colorAll, context?.theme) }
+            else -> { line.color = resources.getColor(R.color.colorAll, context?.theme) }
         }
 
         /* Initialize the lines array such that the line can be added to the LineChartData. */
