@@ -47,8 +47,6 @@ class Tab2Fragment : Fragment() {
     private lateinit var lineChart : LineChartView
     private lateinit var pieChart : PieChartView
 
-    private lateinit var categories : MutableList<String?>
-
     private lateinit var category1Label : String
     private lateinit var category1Text : TextView
     private lateinit var category1Total : TextView
@@ -476,48 +474,23 @@ class Tab2Fragment : Fragment() {
         main = requireActivity() as MainActivity
         model = main.model
 
-        /* Grab category labels as they currently exist in the XML data file. */
-        categories = DataManager.getCategories(model.get())
-
         lineChart = rootView.findViewById(R.id.chartView)!!
         pieChart = rootView.findViewById(R.id.pieView)!!
 
         /* Show the line chart and hide the pie chart. */
         showLineChart()
 
-        /* Set the total and label for Category 1 over the Last 7 Days. */
         category1Text = rootView.findViewById(R.id.category1Text)
-        category1Label = categories[1]!!
-        /* Slice label to be at most 10 characters long. */
-        if (category1Label.length > 10) {
-            category1Label = category1Label.substring(0, 9) + "."
-        }
-        category1Text.text = category1Label
         category1Total = rootView.findViewById(R.id.category1Total)
 
-        /* Set the total and label for Category 2 over the Last 7 Days. */
         category2Text = rootView.findViewById(R.id.category2Text)
-        category2Label = categories[2]!!
-        /* Slice label to be at most 10 characters long. */
-        if (category2Label.length > 10) {
-            category2Label = category2Label.substring(0, 9) + "."
-        }
-        category2Text.text = category2Label
         category2Total = rootView.findViewById(R.id.category2Total)
 
-        /* Set the total and label for Category 3 over the Last 7 Days. */
         category3Text = rootView.findViewById(R.id.category3Text)
-        category3Label = categories[3]!!
-        /* Slice label to be at most 10 characters long. */
-        if (category3Label.length > 10) {
-            category3Label = category3Label.substring(0, 9) + "."
-        }
-        category3Text.text = category3Label
         category3Total = rootView.findViewById(R.id.category3Total)
 
-        /* Set the total for All Categories over the Last 7 Days. */
         allText = rootView.findViewById(R.id.allText)
-        allText.text = categories[0]
+        allText.text = model.getCategories()[0]
         allTotal = rootView.findViewById(R.id.allTotal)
 
         /* Populate the Chart selector with "Line" and "Pie". */
@@ -626,8 +599,8 @@ class Tab2Fragment : Fragment() {
 
         /* Populate the Category selector with "All" and the current category names. */
         spinChartCategory = rootView.findViewById(R.id.lineCategorySpinner)
-        spinChartCategory.adapter = ArrayAdapter<String?>(main,
-            android.R.layout.simple_spinner_dropdown_item, categories)
+        spinChartCategory.adapter = ArrayAdapter(main,
+            android.R.layout.simple_spinner_dropdown_item, model.getCategories())
         /* Enable the category selector drop-down menu. */
         toggleCategorySelector(true)
         /* Listener to update the line chart based on the category selected. */
@@ -696,11 +669,9 @@ class Tab2Fragment : Fragment() {
             * if the user actually changed a category label
             * in the SettingsActivity. */
             if (model.getTabCategoriesNeedRefresh(1)) {
-                /* Refresh the categories. */
-                categories = DataManager.getCategories(doc)
 
                 /* Refresh the label for Category 1. */
-                category1Label = categories[1]!!
+                category1Label = model.getCategories()[1]
                 /* Slice label to be at most 10 characters long. */
                 if (category1Label.length > 10) {
                     category1Label = category1Label.substring(0, 9) + "."
@@ -708,7 +679,7 @@ class Tab2Fragment : Fragment() {
                 category1Text.text = category1Label
 
                 /* Refresh the label for Category 2. */
-                category2Label = categories[2]!!
+                category2Label = model.getCategories()[2]
                 /* Slice label to be at most 10 characters long. */
                 if (category2Label.length > 10) {
                     category2Label = category2Label.substring(0, 9) + "."
@@ -716,7 +687,7 @@ class Tab2Fragment : Fragment() {
                 category2Text.text = category2Label
 
                 /* Refresh the label for Category 3. */
-                category3Label = categories[3]!!
+                category3Label = model.getCategories()[3]
                 /* Slice label to be at most 10 characters long. */
                 if (category3Label.length > 10) {
                     category3Label = category3Label.substring(0, 9) + "."
@@ -724,9 +695,8 @@ class Tab2Fragment : Fragment() {
                 category3Text.text = category3Label
 
                 /* Refresh the category names in the Category selector. */
-                spinChartCategory.adapter = ArrayAdapter<String?>(
-                    main,
-                    android.R.layout.simple_spinner_dropdown_item, categories
+                spinChartCategory.adapter = ArrayAdapter(main,
+                    android.R.layout.simple_spinner_dropdown_item, model.getCategories()
                 )
 
                 /* Reset the tab's model boolean. */
@@ -740,7 +710,7 @@ class Tab2Fragment : Fragment() {
             updatePieChart(doc, timeSpan)
 
             /* Grab the selected category. */
-            val category = spinTimeInterval.selectedItemPosition
+            val category = spinChartCategory.selectedItemPosition
 
             /* Initialize the array of data points for the line chart. */
             val data: DoubleArray

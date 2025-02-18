@@ -18,10 +18,9 @@ import com.spendsages.walletwatch.sortByPriceDescending
 import org.w3c.dom.Document
 import java.text.DecimalFormat
 import java.util.Locale
-import kotlin.collections.ArrayList
 
 /* This class provides support for the scrollable RecyclerView cardRecycler. */
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.EntryViewHolder?>() {
+class RecyclerAdapter(private var categories: Array<String>) :
     /* Maintain a list of all raw (unfiltered and unsorted) entries from the XML data file. */
     private lateinit var entriesRaw : MutableList<Entry>
     /* Maintain a list of filtered and sorted entries.

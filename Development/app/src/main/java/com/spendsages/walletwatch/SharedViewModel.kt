@@ -9,6 +9,8 @@ import org.w3c.dom.Document
 class SharedViewModel(context: Context) : ViewModel() {
     /* Instantiate an instance of the Data Repository object. */
     private val repository: DataRepository = DataRepository(context)
+    /* Initialize the category labels. */
+    private var categories: Array<String> = repository.parseCategoryLabels()
     /* Initialize all Tab Fragment booleans to true, which indicates to
     * each respective Tab Fragment that their category labels are outdated. */
     private var tabCategoriesNeedRefresh = Array(3){ true }
@@ -53,14 +55,24 @@ class SharedViewModel(context: Context) : ViewModel() {
         repository.save()
     }
 
-    /* Purpose: Rapidly retrieves the category labels from the XML data file.
-    * This method does not create, access, or modify the live DOM object "repository.doc".
+    /* Purpose: Retrieves the list of category labels.
     *
     * Parameters: None.
     *
-    * Returns: MutableList<String> that represents the category labels. */
-    fun getCategoryLabels() : MutableList<String> {
-        return repository.parseCategoryLabels()
+    * Returns: Array<String> that represents the category labels in the XML data file. */
+    fun getCategories(): Array<String> {
+        return categories
+    }
+
+    /* Purpose: Modifies a category label at a given index.
+    *
+    * Parameters: index represents the 0-based index of the category label.
+    *                 Note that index '0' is typically "All".
+    *             label represents the string of the new category label.
+    *
+    * Returns: Nothing. */
+    fun setCategory(index: Int, label: String) {
+        categories[index] = label
     }
 
     /* Purpose: Reset all Tab Fragment booleans to true, which indicates to

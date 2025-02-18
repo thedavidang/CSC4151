@@ -71,7 +71,7 @@ class DataRepository(private val context: Context) {
     * Parameters: None.
     *
     * Returns: MutableList<String> that represents the category labels. */
-    fun parseCategoryLabels() : MutableList<String> {
+    fun parseCategoryLabels() : Array<String> {
         /* Setup the Simple API for XML Parser object. */
         val parser = SAXParserFactory.newInstance().newSAXParser()
         /* Implement the handler for the SAX parser.
@@ -81,7 +81,8 @@ class DataRepository(private val context: Context) {
         val handler = object : DefaultHandler() {
             /* Initialize the list of category labels with "All",
             * since that is required to occupy the first zero-based index. */
-            val labels = mutableListOf("All")
+            val labels = arrayOf("All", "", "", "" )
+            var labelIndex = 1
             /* Initialize boolean to false as to indicate that we are not
             * capturing data from the XML yet. */
             private var capturing = false
@@ -99,12 +100,13 @@ class DataRepository(private val context: Context) {
                 if (capturing) {
                     /* Add the text content of the "label" element to the category
                     * labels list and stop consuming characters. */
-                    labels.add(String(ch!!, start, length).trim())
+                    labels[labelIndex] = String(ch!!, start, length).trim()
+                    labelIndex += 1
                     capturing = false
 
                     /* Forcibly halt the SAX Parser once all four category labels
                     * have been retrieved, including the pre-initialized "All" label. */
-                    if (labels.size == 4) {
+                    if (labelIndex >= labels.size) {
                         /* Throw a friendly SAX exception. */
                         throw SAXException("Parsing Complete")
                     }

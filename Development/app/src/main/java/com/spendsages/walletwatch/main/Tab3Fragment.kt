@@ -52,8 +52,6 @@ class Tab3Fragment : Fragment() {
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
-    private lateinit var categories : MutableList<String?>
-
     private lateinit var recycler : RecyclerView
     private lateinit var adapterRecycler : RecyclerAdapter
 
@@ -321,13 +319,13 @@ class Tab3Fragment : Fragment() {
         val rootView = binding.root
         main = requireActivity() as MainActivity
         model = main.model
-
+        
         /* Setup the RecyclerView, which will dynamically load entry cards as the user scrolls. */
         recycler = rootView.findViewById(R.id.cardRecycler)
         /* Set the RecyclerView to have a vertical layout. */
         recycler.layoutManager = LinearLayoutManager(context)
         /* Connect the RecyclerView to the data model using the RecyclerAdapter. */
-        adapterRecycler = RecyclerAdapter()
+        adapterRecycler = RecyclerAdapter(model.getCategories())
         /* Attach the adapter to the RecyclerView. */
         recycler.adapter = adapterRecycler
 
@@ -877,6 +875,17 @@ class Tab3Fragment : Fragment() {
                 .hideSoftInputFromWindow(amountInput.windowToken, 0)
         }
 
+        /* Refresh the category label for each category button. */
+        for ((index, button) in categoryButtons.withIndex()) {
+            button?.text = model.categories[index + 1]
+        }
+
+        /* Refresh the possible options for the filtering Spinbox. */
+        spinFiltering.adapter = ArrayAdapter(main,
+            android.R.layout.simple_spinner_dropdown_item, model.categories
+        )
+
+
         return rootView
     }
 
@@ -890,17 +899,14 @@ class Tab3Fragment : Fragment() {
             * if the user actually changed a category label
             * in the SettingsActivity. */
             if (model.getTabCategoriesNeedRefresh(2)) {
-                /* Refresh the categories. */
-                categories = DataManager.getCategories(doc)
                 /* Refresh the category label for each category button. */
                 for ((index, button) in categoryButtons.withIndex()) {
-                    button?.text = categories[index + 1]
+                    button?.text = model.getCategories()[index + 1]
                 }
 
                 /* Refresh the possible options for the filtering Spinbox. */
-                spinFiltering.adapter = ArrayAdapter<String?>(
-                    requireActivity(),
-                    android.R.layout.simple_spinner_dropdown_item, categories
+                spinFiltering.adapter = ArrayAdapter(main,
+                    android.R.layout.simple_spinner_dropdown_item, model.getCategories()
                 )
 
                 /* Reset the tab's model boolean. */

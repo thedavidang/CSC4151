@@ -40,8 +40,6 @@ class Tab1Fragment : Fragment() {
     private lateinit var main : MainActivity
     private lateinit var model : SharedViewModel
 
-    private lateinit var categories : MutableList<String>
-
     private lateinit var amountInput : EditText
     private var validAmount : Boolean = false
     private lateinit var invalidAmount : ImageView
@@ -439,11 +437,9 @@ class Tab1Fragment : Fragment() {
         * if the user actually changed a category label
         * in the SettingsActivity. */
         if (model.getTabCategoriesNeedRefresh(0)) {
-            /* Retrieve the labels for each category. */
-            categories = model.getCategoryLabels()
             /* Refresh the category label for each corresponding category button. */
             for ((index, button) in categoryButtons.withIndex()) {
-                button?.text = categories[index + 1]
+                button?.text = model.getCategories()[index + 1]
             }
             /* Reset the tab's model boolean. */
             model.resetTabCategoriesNeedRefresh(0)

@@ -47,20 +47,6 @@ object DataManager {
         return XPathFactory.newInstance().newXPath().evaluate(xpath, doc)
     }
 
-    /* Purpose: Retrieves the labels of each of the three categories.
-    *
-    * Parameters: doc represents the Document of the XML data file.
-    *
-    * Returns: categories represents a list of the category labels. */
-    fun getCategories(doc: Document) : MutableList<String?> {
-        val categories : MutableList<String?> = arrayListOf("All")
-        categories.add(getValueByID(doc, "c-1-l"))
-        categories.add(getValueByID(doc, "c-2-l"))
-        categories.add(getValueByID(doc, "c-3-l"))
-
-        return categories
-    }
-
     /* Purpose: Converts a Date object into a LocalDate object.
     *
     * Parameters: dateToConvert represents the Date object.

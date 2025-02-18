@@ -41,8 +41,6 @@ class CategoryFragment : Fragment() {
     private lateinit var model : SharedViewModel
     private lateinit var archive : Document
 
-    private var categories = arrayOfNulls<String?>(3)
-
     /* Array that holds the new label for each category that the user changes.
     * If there is no change to a category, that index MUST be null. */
     private var changed = arrayOfNulls<String?>(3)
@@ -112,16 +110,18 @@ class CategoryFragment : Fragment() {
                 * If so, then set a null in the same position as the existing
                 * category label as to ignore reordering. */
                 var categoryChanged = true
-                for ((index, category) in categories.withIndex()) {
+
+                for (i in 0..2) {
+                    val category = model.getCategories()[i + 1]
                     /* Just to be extra cautious, trim and truncate whitespaces on
                     * the saved "categories" strings and force both strings to be fully lowercase
                     * as to guarantee consistent style while comparing. */
-                    val categoryFormatted = category!!.trim().replace(
+                    val categoryFormatted = category.trim().replace(
                         Regex("\\s+"), " "
                     ).lowercase()
                     if (categoryFormatted == categoryInput.lowercase()) {
                         /* Set the null and move on to the next category textbox input. */
-                        changed[index] = null
+                        changed[i] = null
                         categoryChanged = false
                         break
                     }
@@ -158,9 +158,6 @@ class CategoryFragment : Fragment() {
         settings = activity as SettingsActivity
         model = settings.model
 
-        /* Grab the labels of the categories as they currently are in the XML data file. */
-        categories = DataManager.getCategories(model.get()).slice(1..3).toTypedArray()
-
         saveButton = rootView.findViewById(R.id.saveButton)
         /* Disable and grey-out the Save Changes button,
         * since the user has not made any changes yet. */
@@ -174,10 +171,10 @@ class CategoryFragment : Fragment() {
                     when (which) {
                         /* If user taps "Yes", then call the back-end function. */
                         DialogInterface.BUTTON_POSITIVE -> {
-                            val doc = model.get()
                             /* A category was changed without any restoration. */
                             success = if (
-                                DataManager.changeCategories(settings, doc, archive, changed)) {
+                                DataManager.changeCategories(
+                                    settings, model.get(), archive, changed)) {
                                 Toast.makeText(
                                     context, R.string.changedCategoryString, Toast.LENGTH_LONG)
                             }
@@ -186,15 +183,16 @@ class CategoryFragment : Fragment() {
                                 Toast.makeText(
                                     context, R.string.restoredCategoryString, Toast.LENGTH_LONG)
                             }
-
+                            /* Update the categories in the SharedViewModel. */
+                            for (i in 0..2) {
+                                if (!changed[i].isNullOrBlank()) {
+                                    model.setCategory(i + 1, changed[i]!!)
+                                }
+                            }
                             model.save()
                             model.notifyTabCategoriesNeedRefresh()
                             success.show()
                             toggleSaveButton(false)
-                            /* Retrieve updated categories. */
-                            categories = DataManager.getCategories(
-                                doc
-                            ).slice(1..3).toTypedArray()
                         }
                         /* If the user taps "No", then simply close the confirmation alert. */
                         DialogInterface.BUTTON_NEGATIVE -> {
@@ -215,19 +213,17 @@ class CategoryFragment : Fragment() {
             var message = "The following categories will stop being tracked " +
                     "and will be stored in an archive:\n"
             /* Output list of categories to stop tracking. */
-            var index = 0
-            while (index < 3) {
-                if (changed[index] != null) {
-                    message += "- " + categories[index] + "\n"
+            for (i in 0..2) {
+                if (changed[i] != null) {
+                    message += "- " + model.getCategories()[i + 1] + "\n"
 
-                    if (changed[index] in archivedLabels) {
-                        restoredLabels.add("- " + changed[index] + "\n")
+                    if (changed[i] in archivedLabels) {
+                        restoredLabels.add("- " + changed[i] + "\n")
                     }
                     else {
-                        newLabels.add("- " + changed[index] + "\n")
+                        newLabels.add("- " + changed[i] + "\n")
                     }
                 }
-                index++
             }
 
             /* Output list of new categories to start tracking. */
@@ -263,7 +259,7 @@ class CategoryFragment : Fragment() {
         for ((index, textbox) in categoryTextboxes.withIndex()) {
             /* Set the label for each category textbox
             as they currently are in the XML data file. */
-            textbox!!.setText(categories[index])
+            textbox!!.setText(model.getCategories()[index + 1])
 
             /* Listener that checks if the user changed the category textbox content. */
             textbox.addTextChangedListener(object : TextWatcher {
