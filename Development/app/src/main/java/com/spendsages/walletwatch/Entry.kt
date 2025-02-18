@@ -8,7 +8,7 @@ import java.time.Instant
 * which is an expense that has a dollar amount, possibly a description of purchase,
 * a timestamp of purchase, the category the expense entry falls under, and whether
 * or not the expense has been selected for deletion. */
-class Entry(
+data class Entry(
     var id: String,
     var amount: Double,
     var description: String,
