@@ -37,6 +37,7 @@ import com.spendsages.walletwatch.databinding.FragmentTab3Binding
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.util.Locale
 
@@ -268,8 +269,11 @@ class Tab3Fragment : Fragment() {
     *
     * Returns: Nothing. */
     private fun submitEdit() {
+        val changedAmount = changedInputs[0]!!.substring(2).replace(",", "").toDouble()
         val date = modelDateFormat.format(userDateFormat.parse(changedInputs[2]!!)!!)
         val category = (changedInputs[3]!!.toInt() + 1).toString()
+
+        var state = false
 
         /* Edit the entry in the XML data file. */
         val newEntryID = DataManager.editEntry(model.get(), entryID,
@@ -279,25 +283,27 @@ class Tab3Fragment : Fragment() {
         /* Update the data model. */
         model.save()
 
-        /* Refresh the RecyclerView as to display the changes. */
-        adapterRecycler.notifyItemChanged(adapterRecycler.findEntryById(entryID))
         /* If the entry was selected, re-select the checkbox. */
         val selectedEntryIndex = selectedEntries.indexOf(entryID)
         if (-1 != selectedEntryIndex) {
+            state = true
             selectedEntries[selectedEntryIndex] = newEntryID
-            adapterRecycler.setEntryCheckBox(newEntryID, true)
             /* Re-calculate the total dollar sum of the selected entries,
             * if there was a change in the entry's dollar amount. */
             if (originalInputs[0]!! != changedInputs[0]!!) {
-                val originalAmount = originalInputs[0]!!.substring(2).replace(
-                    ",", "").toDouble()
-                val changedAmount = changedInputs[0]!!.substring(2).replace(
-                    ",", "").toDouble()
+                val originalAmount = originalInputs[0]!!.substring(2).replace(",", "").toDouble()
                 selectedSum += changedAmount - originalAmount
                 if (selectedSum < 0.00) {
                     selectedSum = 0.00
                 }
             }
+        }
+
+        adapterRecycler.submitEdit(spinFiltering.selectedItemPosition,
+            spinSorting.selectedItemPosition, entryID) { entry ->
+            entry.copy(id = newEntryID, amount = changedAmount,
+                description = changedInputs[1]!!, timestamp = Instant.parse("${date}T00:00:00.00Z"),
+                category = category.toInt(), selected = state)
         }
 
         /* Display the Toast message "Expense Modified". */
@@ -430,12 +436,10 @@ class Tab3Fragment : Fragment() {
         /* Set the listener that will sort the entries in a new order
         * when a new option is selected. */
         spinSorting.onItemSelectedListener = object : OnItemSelectedListener {
-            @Suppress("NotifyDataSetChanged")
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 if (spinSortingCreated) {
-                    adapterRecycler.sortEntries(spinSorting.selectedItemPosition)
-                    adapterRecycler.notifyDataSetChanged()
+                    adapterRecycler.submitSort(recycler, spinSorting.selectedItemPosition)
                 }
                 else {
                     spinSortingCreated = true
@@ -450,13 +454,11 @@ class Tab3Fragment : Fragment() {
         /* Set the listener that will filter the entries down
         * to only those of the category chosen. If the user taps "All", then clear any filtering. */
         spinFiltering.onItemSelectedListener = object : OnItemSelectedListener {
-            @Suppress("NotifyDataSetChanged")
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 if (spinFilteringCreated) {
-                    adapterRecycler.filterEntries(spinFiltering.selectedItem.toString())
-                    adapterRecycler.sortEntries(spinSorting.selectedItemPosition)
-                    adapterRecycler.notifyDataSetChanged()
+                    adapterRecycler.submitFilter(recycler, position,
+                        spinSorting.selectedItemPosition)
                 }
                 else {
                     spinFilteringCreated = true
@@ -478,12 +480,7 @@ class Tab3Fragment : Fragment() {
                         * disable the deselect all checkbox, and disable the
                         * "Delete Selected" button. */
                         DialogInterface.BUTTON_POSITIVE -> {
-                            for (entryId in selectedEntries) {
-                                adapterRecycler.setEntryCheckBox(entryId, false)
-                                adapterRecycler.notifyItemChanged(
-                                    adapterRecycler.findEntryById(entryId)
-                                )
-                            }
+                            adapterRecycler.submitDeselect(selectedEntries.size)
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
                             selectedSum = 0.00
@@ -526,11 +523,8 @@ class Tab3Fragment : Fragment() {
                         * save the change, and disable the Delete Selected button. */
                         DialogInterface.BUTTON_POSITIVE -> {
                             DataManager.deleteEntries(model.get(), selectedEntries)
-                            for (entryId in selectedEntries) {
-                                adapterRecycler.notifyItemRemoved(
-                                    adapterRecycler.findEntryById(entryId)
-                                )
-                            }
+                            /* Refresh the RecyclerView as to display the changes. */
+                            adapterRecycler.submitDelete(selectedEntries.toHashSet())
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
                             selectedSum = 0.00
@@ -877,24 +871,28 @@ class Tab3Fragment : Fragment() {
 
         /* Refresh the category label for each category button. */
         for ((index, button) in categoryButtons.withIndex()) {
-            button?.text = model.categories[index + 1]
+            button?.text = model.getCategories()[index + 1]
         }
 
         /* Refresh the possible options for the filtering Spinbox. */
         spinFiltering.adapter = ArrayAdapter(main,
-            android.R.layout.simple_spinner_dropdown_item, model.categories
+            android.R.layout.simple_spinner_dropdown_item, model.getCategories()
         )
 
+        /* Reset the tab's model boolean. */
+        model.resetTabCategoriesNeedRefresh(2)
+
+        /* Initialize the entries list. */
+        adapterRecycler.initializeData(model.get())
 
         return rootView
     }
 
-    @Suppress("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         /* Observe the LiveData objects from SharedViewModel. */
-        model.getLive().observe(viewLifecycleOwner) { doc ->
+        model.getLive().observe(viewLifecycleOwner) {
             /* Only refresh the category button labels
             * if the user actually changed a category label
             * in the SettingsActivity. */
@@ -909,14 +907,14 @@ class Tab3Fragment : Fragment() {
                     android.R.layout.simple_spinner_dropdown_item, model.getCategories()
                 )
 
+                adapterRecycler.submitCategories(recycler, model.getCategories())
+
                 /* Reset the tab's model boolean. */
                 model.resetTabCategoriesNeedRefresh(2)
             }
 
-            adapterRecycler.updateData(model.get(), spinFiltering.selectedItem.toString(),
-                spinSorting.selectedItemPosition
-            )
-            adapterRecycler.notifyDataSetChanged()
+            adapterRecycler.submitFilter(recycler,
+                spinFiltering.selectedItemPosition, spinSorting.selectedItemPosition)
         }
     }
 

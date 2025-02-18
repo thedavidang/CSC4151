@@ -16,46 +16,6 @@ data class Entry(
     var category: Int,
     var selected: Boolean)
 
-/* Purpose: Static method that sorts a list of Entry objects by date from newest to oldest.
-*
-* Parameters: entries represents a list of Entry objects.
-*
-* Returns: list represents the sorted list of Entry objects
-* or will return null if entries is null. */
-fun sortByDateDescending(entries : MutableList<Entry>) : MutableList<Entry> {
-    return entries.sortedWith(compareByDescending { it.timestamp }) as MutableList<Entry>
-}
-
-/* Purpose: Static method that sorts a list of Entry objects by date from oldest to newest.
-*
-* Parameters: entries represents a list of Entry objects.
-*
-* Returns: list represents the sorted list of Entry objects
-* or will return null if entries is null. */
-fun sortByDateAscending(entries : MutableList<Entry>) : MutableList<Entry> {
-    return entries.sortedWith(compareBy { it.timestamp }) as MutableList<Entry>
-}
-
-/* Purpose: Static method that sorts a list of Entry objects by price from highest to cheapest.
-*
-* Parameters: entries represents a list of Entry objects.
-*
-* Returns: list represents the sorted list of Entry objects
-* or will return null if entries is null. */
-fun sortByPriceDescending(entries : MutableList<Entry>) : MutableList<Entry> {
-    return entries.sortedWith(compareByDescending { it.amount }) as MutableList<Entry>
-}
-
-/* Purpose: Static method that sorts a list of Entry objects by price from cheapest to highest.
-*
-* Parameters: entries represents a list of Entry objects.
-*
-* Returns: list represents the sorted list of Entry objects
-* or will return null if entries is null. */
-fun sortByPriceAscending(entries : MutableList<Entry>) : MutableList<Entry> {
-    return entries.sortedWith(compareBy { it.amount }) as MutableList<Entry>
-}
-
 /* Purpose: Static method that retrieves a list of all entries
 * from the XML data file as Entry objects.
 *
