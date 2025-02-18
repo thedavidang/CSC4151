@@ -4,6 +4,7 @@
 ### Kotlin ###
 # Compiled class file
 *.class
+*.salive
 
 # Log file
 *.log
