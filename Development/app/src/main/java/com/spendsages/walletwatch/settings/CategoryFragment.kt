@@ -50,7 +50,7 @@ class CategoryFragment : Fragment() {
     private lateinit var exportButton : Button
     private lateinit var importButton : Button
 
-    private val categoryTextboxes = Array<TextInputEditText?>(3) { null }
+    private val categoryTextboxes = arrayOfNulls<TextInputEditText?>(3)
 
     private lateinit var success : Toast
 

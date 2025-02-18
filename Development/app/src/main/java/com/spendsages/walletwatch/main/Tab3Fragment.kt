@@ -75,8 +75,8 @@ class Tab3Fragment : Fragment() {
     private lateinit var editOverlay : View
 
     private lateinit var entryID : String
-    private val originalInputs = Array<String?>(4) { null }
-    private val changedInputs = Array<String?>(4) { null }
+    private val originalInputs = arrayOfNulls<String?>(4)
+    private val changedInputs = arrayOfNulls<String?>(4)
 
     private lateinit var amountInput : EditText
     private var validAmount = false
@@ -98,7 +98,7 @@ class Tab3Fragment : Fragment() {
 
     private lateinit var categoryGroup : RadioGroup
     private var selectedCategory: Int = 0
-    private val categoryButtons = Array<RadioButton?>(3) { null }
+    private val categoryButtons = arrayOfNulls<RadioButton?>(3)
 
     private lateinit var cancelButton : Button
     private lateinit var saveButton : Button

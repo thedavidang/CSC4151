@@ -59,7 +59,7 @@ class Tab1Fragment : Fragment() {
 
     private lateinit var dateButton : ImageButton
 
-    private val categoryButtons = Array<Button?>(3) { null }
+    private val categoryButtons = arrayOfNulls<Button?>(3)
 
     private lateinit var success : Toast
 
