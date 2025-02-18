@@ -1,6 +1,5 @@
 package com.spendsages.walletwatch.main
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -150,7 +149,7 @@ class MainActivity : AppCompatActivity() {
             /* Open the keyboard that has the correct layout for the given UI textbox.
             * For example, if it is a numerical textbox, such as amountField,
             * it will open the numpad. */
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
                 .showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
     }
