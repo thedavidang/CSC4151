@@ -197,8 +197,9 @@ class Tab2Fragment : Fragment() {
                 var currentMonth = cal.get(Calendar.MONTH)
                 var currentMonthString = ""
                 /* Grab the abbreviation for the last 12 months. */
-                var j = 11
-                for (i in 1..12) {
+                var j = 12
+                repeat(j) {
+                    j -= 1
                     when (currentMonth) {
                         0 -> { currentMonthString = "Jan" }
                         1 -> { currentMonthString = "Feb" }
@@ -222,22 +223,21 @@ class Tab2Fragment : Fragment() {
                     if (currentMonth == -1) {
                         currentMonth = 11
                     }
-                    j--
                 }
             }
             /* All Time (in this case it is actually last 10 years). */
             2 -> {
                 /* Determine the current year. */
                 var currentYear = cal.get(Calendar.YEAR)
-                var j = 9
+                var j = 10
                 /* Grab the last 10 years. */
-                for (i in 1..10) {
+                repeat(j) {
+                    j -= 1
                     /* Add the year to the X-axis labels array. */
                     val xAxisValue = AxisValue(j.toFloat())
                     xAxisValue.setLabel(currentYear.toString())
                     xAxisValues.add(xAxisValue)
                     currentYear -= 1
-                    j--
                 }
             }
             /* Last 7 Days. */
@@ -246,8 +246,9 @@ class Tab2Fragment : Fragment() {
                 var currentDay = cal.get(Calendar.DAY_OF_WEEK)
                 var currentDayString = ""
                 /* Grab the abbreviation for the last 7 days. */
-                var j = 6
-                for (i in 1..7) {
+                var j = 7
+                repeat(j) {
+                    j -= 1
                     when (currentDay) {
                         1 -> { currentDayString = "Sun" }
                         2 -> { currentDayString = "Mon" }
@@ -266,7 +267,6 @@ class Tab2Fragment : Fragment() {
                     if (currentDay == 0) {
                         currentDay = 7
                     }
-                    j--
                 }
             }
         }
@@ -289,7 +289,7 @@ class Tab2Fragment : Fragment() {
         var yValue = minY
         var yLabel : String
         /* Iterate to create eleven evenly spaced Y-axis values with labels. */
-        for (i in 1..11) {
+        repeat(yAxisValues.size) {
             /* Calculate the scientific notation exponent of the Y-value by
             * taking the floor of the base 10 logarithm of the Y-axis value. */
             val yValExponent = kotlin.math.floor(kotlin.math.log10(yValue.toDouble()))
@@ -713,15 +713,12 @@ class Tab2Fragment : Fragment() {
             val category = spinChartCategory.selectedItemPosition
 
             /* Initialize the array of data points for the line chart. */
-            val data: DoubleArray
-
-            /* Check which category the user selected. */
-            when (category) {
+            val data : DoubleArray = when (category) {
                 /* All Categories. */
                 0 -> {
                     /* Grab the data set from whichever time interval
                     * the user selected. */
-                    data = when (timeSpan) {
+                    when (timeSpan) {
                         0 -> {
                             DataManager.last7Days(doc, "all")
                         }
@@ -737,7 +734,7 @@ class Tab2Fragment : Fragment() {
                 else -> {
                     /* Grab the data set from whichever time interval
                     * and category the user selected. */
-                    data = when (timeSpan) {
+                    when (timeSpan) {
                         0 -> {
                             DataManager.last7Days(doc, "c-$category")
                         }

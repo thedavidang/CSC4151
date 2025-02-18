@@ -69,7 +69,7 @@ object DataManager {
         var total = 0.00
 
         /* Iterate through the last seven calendar days. */
-        for (i in 1..7) {
+        repeat(7) {
             /* Retrieve the total amount of expenses for each day, if the Day element exists. */
             amount = getValueByID(doc, "$category-" + convertToLocalDate(
                 cal.time).toString() + "-t")
@@ -98,7 +98,7 @@ object DataManager {
         if (categoryID == "all") {
             var daySum: Double
 
-            for(i in 0..6) {
+            for (i in 0..6) {
                 daySum = 0.0
 
                 for (j in 1..3) {
@@ -144,7 +144,7 @@ object DataManager {
         var total = 0.00
 
         /* Iterate through the last twelve calendar months. */
-        for (i in 1..12) {
+        repeat(12) {
             /* Retrieve the total amount of expenses for each month, if the Month element exists. */
             amount = getValueByID(doc, "$category-" + convertToLocalDate(
                 cal.time).toString().substring(0, 7) + "-t")
@@ -631,7 +631,7 @@ object DataManager {
         /* Iterate through each label in the array. */
         for ((index, label) in labels.withIndex()) {
             /* Check if this label was actually changed. */
-            if (label != null) {
+            if (!label.isNullOrBlank()) {
                 /* Retrieve list of all label nodes in the Archive.xml. */
                 val archivedLabels = archive.getElementsByTagName("label")
 
