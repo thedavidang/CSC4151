@@ -24,7 +24,7 @@ import java.text.DecimalFormat
 
 /* This is the "main" of the program and is also the primary activity of the app.
 * This will immediately load upon app launch. */
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var tabLayout: TabLayout
     private lateinit var app: App
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
     * Parameters: view represents the UI object to set the focus on to.
     *
     * Returns: Nothing. */
-    fun showKeyboard(view : View) {
+    fun showKeyboard(view: View) {
         /* Set the focus on the UI object. */
         if (view.requestFocus()) {
             /* Open the keyboard that has the correct layout for the given UI textbox.
@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
     * Parameters: amount represents the dollar amount to format.
     *
     * Returns: String of the formatted dollar amount. */
-    fun formatDollarAmount(amount: Double) : String {
+    fun formatDollarAmount(amount: Double): String {
         /* Compute base 10 exponent of dollar amount. */
         val exponent = kotlin.math.floor(kotlin.math.log10(amount))
 

@@ -35,38 +35,38 @@ import kotlin.math.roundToInt
  * Use the [Tab2Fragment] constructor method to
  * create an instance of this fragment.
  */
-class Tab2Fragment : Fragment() {
+class Tab2Fragment: Fragment() {
     private var _binding: FragmentTab2Binding? = null
     private val binding get() = _binding!!
 
-    private var allowRefresh : Boolean = true
+    private var allowRefresh: Boolean = true
 
-    private lateinit var main : MainActivity
-    private lateinit var model : SharedViewModel
+    private lateinit var main: MainActivity
+    private lateinit var model: SharedViewModel
 
-    private lateinit var lineChart : LineChartView
-    private lateinit var pieChart : PieChartView
+    private lateinit var lineChart: LineChartView
+    private lateinit var pieChart: PieChartView
 
-    private lateinit var category1Label : String
-    private lateinit var category1Text : TextView
-    private lateinit var category1Total : TextView
+    private lateinit var category1Label: String
+    private lateinit var category1Text: TextView
+    private lateinit var category1Total: TextView
 
-    private lateinit var category2Label : String
-    private lateinit var category2Text : TextView
-    private lateinit var category2Total : TextView
+    private lateinit var category2Label: String
+    private lateinit var category2Text: TextView
+    private lateinit var category2Total: TextView
 
-    private lateinit var category3Label : String
-    private lateinit var category3Text : TextView
-    private lateinit var category3Total : TextView
+    private lateinit var category3Label: String
+    private lateinit var category3Text: TextView
+    private lateinit var category3Total: TextView
 
-    private lateinit var allText : TextView
-    private lateinit var allTotal : TextView
+    private lateinit var allText: TextView
+    private lateinit var allTotal: TextView
 
-    private lateinit var spinChartType : Spinner
+    private lateinit var spinChartType: Spinner
 
-    private lateinit var spinTimeInterval : Spinner
+    private lateinit var spinTimeInterval: Spinner
 
-    private lateinit var spinChartCategory : Spinner
+    private lateinit var spinChartCategory: Spinner
 
     /* Purpose: Controller method that reveals the line chart and hides the pie chart.
     *
@@ -94,7 +94,7 @@ class Tab2Fragment : Fragment() {
     * Parameters: isEnabled represents a Boolean of whether or not to enable the category selector.
     *
     * Returns: Nothing. */
-    private fun toggleCategorySelector(isEnabled : Boolean) {
+    private fun toggleCategorySelector(isEnabled: Boolean) {
         if (isEnabled) {
             spinChartCategory.isEnabled = true
             spinChartCategory.isClickable = true
@@ -287,7 +287,7 @@ class Tab2Fragment : Fragment() {
         val step = (maxY - minY) / 9
         /* Initialize the bottom Y-axis value and label. */
         var yValue = minY
-        var yLabel : String
+        var yLabel: String
         /* Iterate to create eleven evenly spaced Y-axis values with labels. */
         repeat(yAxisValues.size) {
             /* Calculate the scientific notation exponent of the Y-value by
@@ -354,9 +354,9 @@ class Tab2Fragment : Fragment() {
     fun updatePieChart(doc: Document, timeSpan: Int) {
         /* Initialize value variables used to populate the pie chart. */
         val values = ArrayList<SliceValue>(3)
-        val category1Amount : Float
-        val category2Amount : Float
-        val category3Amount : Float
+        val category1Amount: Float
+        val category2Amount: Float
+        val category3Amount: Float
 
         /* Check which time interval the user selected. */
         when (timeSpan) {
@@ -430,9 +430,9 @@ class Tab2Fragment : Fragment() {
     *
     * Returns: Nothing. */
     fun updateTotals(doc: Document, timeSpan: Int) {
-        val category1Amount : Double
-        val category2Amount : Double
-        val category3Amount : Double
+        val category1Amount: Double
+        val category2Amount: Double
+        val category3Amount: Double
 
         /* Check which time span the user selected. */
         when (timeSpan) {
@@ -498,7 +498,7 @@ class Tab2Fragment : Fragment() {
         spinChartType.adapter = ArrayAdapter(main, android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartTypes))
         /* Create a listener that swaps between the line chart and pie chart. */
-        spinChartType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        spinChartType.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
@@ -527,13 +527,13 @@ class Tab2Fragment : Fragment() {
         spinTimeInterval.adapter = ArrayAdapter(main, android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartIntervals))
         /* Listener to switch the time interval selected. */
-        spinTimeInterval.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        spinTimeInterval.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long
             ) {
                 val doc = model.get()
                 /* Initialize array to store data points for line chart. */
-                val data : DoubleArray
+                val data: DoubleArray
 
                 /* Check which time interval the user selected. */
                 when (position) {
@@ -604,13 +604,13 @@ class Tab2Fragment : Fragment() {
         /* Enable the category selector drop-down menu. */
         toggleCategorySelector(true)
         /* Listener to update the line chart based on the category selected. */
-        spinChartCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        spinChartCategory.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long
             ) {
                 val doc = model.get()
                 /* Initialize the array of data points for the line chart. */
-                val data : DoubleArray
+                val data: DoubleArray
                 /* Grab the selected time interval. */
                 val timeSpan = spinTimeInterval.selectedItemPosition
 
@@ -713,7 +713,7 @@ class Tab2Fragment : Fragment() {
             val category = spinChartCategory.selectedItemPosition
 
             /* Initialize the array of data points for the line chart. */
-            val data : DoubleArray = when (category) {
+            val data: DoubleArray = when (category) {
                 /* All Categories. */
                 0 -> {
                     /* Grab the data set from whichever time interval

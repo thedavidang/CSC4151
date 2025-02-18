@@ -46,67 +46,67 @@ import java.util.Locale
  * Use the [Tab3Fragment] constructor method to
  * create an instance of this fragment.
  */
-class Tab3Fragment : Fragment() {
+class Tab3Fragment: Fragment() {
     private var _binding: FragmentTab3Binding? = null
     private val binding get() = _binding!!
 
-    private lateinit var main : MainActivity
-    private lateinit var model : SharedViewModel
+    private lateinit var main: MainActivity
+    private lateinit var model: SharedViewModel
 
-    private lateinit var recycler : RecyclerView
-    private lateinit var adapterRecycler : RecyclerAdapter
+    private lateinit var recycler: RecyclerView
+    private lateinit var adapterRecycler: RecyclerAdapter
 
     /* List of entries selected for deletion. */
     private val selectedEntries = mutableListOf<String>()
     /* Total dollar sum of entries selected for deletion. */
-    private var selectedSum : Double = 0.00
+    private var selectedSum: Double = 0.00
 
-    private lateinit var deselectAllCheckBox : AppCompatCheckBox
+    private lateinit var deselectAllCheckBox: AppCompatCheckBox
 
-    private lateinit var deleteButton : Button
+    private lateinit var deleteButton: Button
 
-    private lateinit var spinSorting : Spinner
-    private var spinSortingCreated : Boolean = false
+    private lateinit var spinSorting: Spinner
+    private var spinSortingCreated: Boolean = false
 
-    private lateinit var spinFiltering : Spinner
-    private var spinFilteringCreated : Boolean = false
+    private lateinit var spinFiltering: Spinner
+    private var spinFilteringCreated: Boolean = false
 
     /* Edit Entry window private member variables. */
-    private lateinit var scroll : ScrollView
-    private lateinit var editOverlay : View
+    private lateinit var scroll: ScrollView
+    private lateinit var editOverlay: View
 
-    private lateinit var entryID : String
+    private lateinit var entryID: String
     private val originalInputs = arrayOfNulls<String?>(4)
     private val changedInputs = arrayOfNulls<String?>(4)
 
-    private lateinit var amountInput : EditText
+    private lateinit var amountInput: EditText
     private var validAmount = false
-    private lateinit var invalidAmount : ImageView
+    private lateinit var invalidAmount: ImageView
 
-    private lateinit var descriptionInput : TextInputEditText
+    private lateinit var descriptionInput: TextInputEditText
 
-    private lateinit var dateInput : EditText
+    private lateinit var dateInput: EditText
     private var validDate = true
-    private lateinit var dateSelector : CalendarView
-    private lateinit var dateOverlay : View
-    private lateinit var invalidDate : ImageView
-    private lateinit var cancelDate : Button
+    private lateinit var dateSelector: CalendarView
+    private lateinit var dateOverlay: View
+    private lateinit var invalidDate: ImageView
+    private lateinit var cancelDate: Button
     private val modelDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val userDateFormat = SimpleDateFormat("M/d/yyyy", Locale.US)
     private val today = LocalDate.now().toString()
 
-    private lateinit var dateButton : ImageButton
+    private lateinit var dateButton: ImageButton
 
-    private lateinit var categoryGroup : RadioGroup
+    private lateinit var categoryGroup: RadioGroup
     private var selectedCategory: Int = 0
     private val categoryButtons = arrayOfNulls<RadioButton?>(3)
 
-    private lateinit var cancelButton : Button
-    private lateinit var saveButton : Button
+    private lateinit var cancelButton: Button
+    private lateinit var saveButton: Button
 
-    private lateinit var success : Toast
-    private lateinit var deselect : Toast
-    private lateinit var delete : Toast
+    private lateinit var success: Toast
+    private lateinit var deselect: Toast
+    private lateinit var delete: Toast
 
     /* Purpose: Helper method that will display the quantity of entries
     * selected for deletion and the total dollar sum of those same entries
@@ -118,7 +118,7 @@ class Tab3Fragment : Fragment() {
     private fun updateDeselectAllCheckBoxText() {
         /* Initialize the text content string with the quantity of entries
         * selected for deletion, a newline, a dollar sign, and a space. */
-        var textContent : String = selectedEntries.size.toString() + " Selected\n"
+        var textContent: String = selectedEntries.size.toString() + " Selected\n"
 
         textContent += if (selectedSum >= 0.00) {
             /* Format the total dollar sum to 2 decimals with thousand-separator commas.
@@ -195,7 +195,7 @@ class Tab3Fragment : Fragment() {
     * isEnabled represents a Boolean of whether or not to enable the button.
     *
     * Returns: Nothing. */
-    private fun toggleButton(button : Button, isEnabled : Boolean) {
+    private fun toggleButton(button: Button, isEnabled: Boolean) {
         if (isEnabled) {
             button.isEnabled = true
             button.isClickable = true
@@ -216,7 +216,7 @@ class Tab3Fragment : Fragment() {
     * Parameters: None.
     *
     * Returns: True if amount field is not empty and not zero. */
-    private fun validateAmountInput() : Boolean {
+    private fun validateAmountInput(): Boolean {
         val input = amountInput.text.toString()
         validAmount = (input.isNotEmpty() && input != "$ 0.00")
 
@@ -236,7 +236,7 @@ class Tab3Fragment : Fragment() {
     * Parameters: None.
     *
     * Returns: True if date field is both in valid format and possible. */
-    private fun validateDateInput() : Boolean {
+    private fun validateDateInput(): Boolean {
         validDate = try {
             val dateText = dateInput.text.toString()
             /* Replace all non-numeric characters in date with slashes.
@@ -247,7 +247,7 @@ class Tab3Fragment : Fragment() {
                     dateText.matches(
                         Regex("(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])/[0-9]+")))
         }
-        catch (_ : Exception) {
+        catch (_: Exception) {
             false
         }
 
@@ -337,7 +337,7 @@ class Tab3Fragment : Fragment() {
 
         /* Create a listener for the checkbox of each entry. */
         adapterRecycler.setSelectListener(
-            object : OnClickListener {
+            object: OnClickListener {
                 override fun onButtonClick(
                     entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder
                 ) {
@@ -386,7 +386,7 @@ class Tab3Fragment : Fragment() {
 
         /* Create a listener for the edit button of each entry. */
         adapterRecycler.setEditListener(
-            object : OnClickListener {
+            object: OnClickListener {
                 override fun onButtonClick(
                     entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder
                 ) {
@@ -435,7 +435,7 @@ class Tab3Fragment : Fragment() {
         )
         /* Set the listener that will sort the entries in a new order
         * when a new option is selected. */
-        spinSorting.onItemSelectedListener = object : OnItemSelectedListener {
+        spinSorting.onItemSelectedListener = object: OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 if (spinSortingCreated) {
@@ -453,7 +453,7 @@ class Tab3Fragment : Fragment() {
         spinFiltering = rootView.findViewById(R.id.filteringSpinner)
         /* Set the listener that will filter the entries down
         * to only those of the category chosen. If the user taps "All", then clear any filtering. */
-        spinFiltering.onItemSelectedListener = object : OnItemSelectedListener {
+        spinFiltering.onItemSelectedListener = object: OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 if (spinFilteringCreated) {
@@ -564,7 +564,7 @@ class Tab3Fragment : Fragment() {
 
         descriptionInput = rootView.findViewById(R.id.descriptionFieldEdit)
         /* Set listener to check if Description changed. */
-        descriptionInput.addTextChangedListener(object : TextWatcher {
+        descriptionInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -662,7 +662,7 @@ class Tab3Fragment : Fragment() {
 
         amountInput = rootView.findViewById(R.id.amountFieldEdit)
         /* Set listener to enable category buttons if both inputs are valid. */
-        amountInput.addTextChangedListener(object : TextWatcher {
+        amountInput.addTextChangedListener(object: TextWatcher {
             /* Format the amount input into a defined, safe, and consistent format. */
             private val decimalFormat: DecimalFormat =
                 NumberFormat.getCurrencyInstance() as DecimalFormat
@@ -729,7 +729,7 @@ class Tab3Fragment : Fragment() {
         /* The date should be initially set to the current date in the "MM/dd/yyyy" format. */
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
         /* Set listener to enable category buttons if both inputs are valid. */
-        dateInput.addTextChangedListener(object : TextWatcher {
+        dateInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             /* If the user's new date input is valid and their amount input is still valid,

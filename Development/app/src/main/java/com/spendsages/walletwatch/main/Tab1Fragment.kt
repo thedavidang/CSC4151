@@ -33,35 +33,35 @@ import java.util.Locale
  * Use the [Tab1Fragment] constructor method to
  * create an instance of this fragment.
  */
-class Tab1Fragment : Fragment() {
+class Tab1Fragment: Fragment() {
     private var _binding: FragmentTab1Binding? = null
     private val binding get() = _binding!!
 
-    private lateinit var main : MainActivity
-    private lateinit var model : SharedViewModel
+    private lateinit var main: MainActivity
+    private lateinit var model: SharedViewModel
 
-    private lateinit var amountInput : EditText
-    private var validAmount : Boolean = false
-    private lateinit var invalidAmount : ImageView
-    private var amountInputEditedAtLeastOnce : Boolean = false
+    private lateinit var amountInput: EditText
+    private var validAmount: Boolean = false
+    private lateinit var invalidAmount: ImageView
+    private var amountInputEditedAtLeastOnce: Boolean = false
 
-    private lateinit var descriptionInput : TextInputEditText
+    private lateinit var descriptionInput: TextInputEditText
 
-    private lateinit var dateInput : EditText
-    private var validDate : Boolean = true
-    private lateinit var dateSelector : CalendarView
-    private lateinit var dateOverlay : View
-    private lateinit var invalidDate : ImageView
-    private lateinit var cancelDate : Button
+    private lateinit var dateInput: EditText
+    private var validDate: Boolean = true
+    private lateinit var dateSelector: CalendarView
+    private lateinit var dateOverlay: View
+    private lateinit var invalidDate: ImageView
+    private lateinit var cancelDate: Button
     private val modelDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val userDateFormat = SimpleDateFormat("M/d/yyyy", Locale.US)
     private val today = LocalDate.now().toString()
 
-    private lateinit var dateButton : ImageButton
+    private lateinit var dateButton: ImageButton
 
     private val categoryButtons = arrayOfNulls<Button?>(3)
 
-    private lateinit var success : Toast
+    private lateinit var success: Toast
 
     /* Purpose: Controller method that disables and hides CalendarView dateSelector or
     * enables and shows CalendarView dateSelector.
@@ -88,7 +88,7 @@ class Tab1Fragment : Fragment() {
     * Parameters: isEnabled represents a Boolean of whether or not to enable the category buttons.
     *
     * Returns: Nothing. */
-    private fun toggleCategoryButtons(isEnabled : Boolean) {
+    private fun toggleCategoryButtons(isEnabled: Boolean) {
         for (button in categoryButtons) {
             if (isEnabled) {
                 button?.isEnabled = true
@@ -111,7 +111,7 @@ class Tab1Fragment : Fragment() {
     * Parameters: None.
     *
     * Returns: True if amount field is not empty and not zero. */
-    private fun validateAmountInput() : Boolean {
+    private fun validateAmountInput(): Boolean {
         val input = amountInput.text.toString()
         validAmount = (input.isNotEmpty() && input != "$ 0.00")
 
@@ -131,7 +131,7 @@ class Tab1Fragment : Fragment() {
     * Parameters: None.
     *
     * Returns: True if date field is both in valid format and possible. */
-    private fun validateDateInput() : Boolean {
+    private fun validateDateInput(): Boolean {
         validDate = try {
             val dateText = dateInput.text.toString()
             /* Replace all non-numeric characters in date with slashes.
@@ -142,7 +142,7 @@ class Tab1Fragment : Fragment() {
                     dateText.matches(
                         Regex("(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])/[0-9]+")))
         }
-        catch (_ : Exception) {
+        catch (_: Exception) {
             false
         }
 
@@ -164,7 +164,7 @@ class Tab1Fragment : Fragment() {
     * category button that was selected.
     *
     * Returns: Nothing. */
-    private fun submitEntry(category : Int) {
+    private fun submitEntry(category: Int) {
         /* Retrieve user inputs and convert each to string */
         val amount = amountInput.text.toString()
         /* Trim off leading and trailing whitespace and truncate multiple whitespaces in
@@ -221,7 +221,7 @@ class Tab1Fragment : Fragment() {
         descriptionInput = rootView.findViewById(R.id.descriptionField)
         /* Set listener on Description textbox, so that we can check if the user
         * is writing a description but forgot to enter in a valid amount input first. */
-        descriptionInput.addTextChangedListener(object : TextWatcher {
+        descriptionInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -257,7 +257,7 @@ class Tab1Fragment : Fragment() {
         amountInput.setText(R.string.amountHintString)
         amountInput.setSelection(resources.getString(R.string.amountHintString).length)
         /* Set listener to enable category buttons if both inputs are valid. */
-        amountInput.addTextChangedListener(object : TextWatcher {
+        amountInput.addTextChangedListener(object: TextWatcher {
             /* Format the amount input into a defined, safe, and consistent format. */
             private val decimalFormat: DecimalFormat =
                 NumberFormat.getCurrencyInstance() as DecimalFormat
@@ -326,7 +326,7 @@ class Tab1Fragment : Fragment() {
         /* The date should be initially set to the current date in the "MM/dd/yyyy" format. */
         dateInput.setText(userDateFormat.format(modelDateFormat.parse(today)!!))
         /* Set listener to enable category buttons if both inputs are valid. */
-        dateInput.addTextChangedListener(object : TextWatcher {
+        dateInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {

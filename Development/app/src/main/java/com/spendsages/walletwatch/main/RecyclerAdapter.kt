@@ -20,7 +20,7 @@ import java.util.Locale
 class RecyclerAdapter(private var categories: Array<String>) :
     ListAdapter<Entry, RecyclerAdapter.EntryViewHolder>(EntryDiffCallback()) {
     /* Maintain a list of all raw (unfiltered and unsorted) entries from the XML data file. */
-    private lateinit var entriesRaw : MutableList<Entry>
+    private lateinit var entriesRaw: MutableList<Entry>
 
     private var selectListener: OnClickListener? = null
     private var editListener: OnClickListener? = null
@@ -105,7 +105,7 @@ class RecyclerAdapter(private var categories: Array<String>) :
     *             sort represents the selected sorting algorithm index.
     *
     * Returns: Nothing. */
-    fun submitSort(recyclerView: RecyclerView, sort : Int) {
+    fun submitSort(recyclerView: RecyclerView, sort: Int) {
         if (currentList.isNotEmpty()) {
             submitList(currentList.asSequence().sortEntries(sort)) {
                 /* Jump back to the very top of the list. */
@@ -138,7 +138,7 @@ class RecyclerAdapter(private var categories: Array<String>) :
     *             fields represents the new values for each of the entry's fields.
     *
     * Returns: Nothing. */
-    fun submitEdit(filter: Int, sort: Int, id : String, fields: (Entry) -> Entry) {
+    fun submitEdit(filter: Int, sort: Int, id: String, fields: (Entry) -> Entry) {
         val updatedList = currentList.map { entry ->
             if (entry.id == id) {
                 fields(entry)
@@ -220,7 +220,7 @@ class RecyclerAdapter(private var categories: Array<String>) :
     * which has a delete checkbox, displayed dollar amount, possibly a description of the purchase,
     * the date of purchase, the category in which the expense falls under, and an edit button.
     * Upon instantiation, the card is immediately added to the RecyclerView cardRecycler. */
-    class EntryViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class EntryViewHolder internal constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
         var deleteCheckbox: AppCompatCheckBox = itemView.findViewById(R.id.deleteCheckbox)
         var amount: TextView = itemView.findViewById(R.id.amountText)
         var description: TextView = itemView.findViewById(R.id.descriptionText)
