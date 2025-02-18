@@ -544,7 +544,7 @@ object DataManager {
                     }
                 }
                 /* Simply ignore child since it does not have an id attribute. */
-                catch (e : Exception) {
+                catch (_ : Exception) {
                     continue
                 }
             }
