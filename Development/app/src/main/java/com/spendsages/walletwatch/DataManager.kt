@@ -133,6 +133,85 @@ object DataManager {
         return daysOfWeek
     }
 
+    /* Purpose: Retrieves the total amount of expenses of the current year to date
+    *           for a given category.
+    *
+    * Parameters: doc represents the Document of the XML data file.
+    *             category represents the specific category to filter for.
+    *
+    * Returns: total represents the total amount of expenses of the year to date. */
+    fun yearToDateTotal(doc: Document, category: String) : Double {
+        val cal: Calendar = Calendar.getInstance()
+
+        var amount : String?
+        var total = 0.00
+
+        /* Iterate through the calendar months that have occurred thus far
+        * by starting with the current month (zero-based). */
+        repeat(cal.get(Calendar.MONTH) + 1) {
+            /* Retrieve the total amount of expenses for each month, if the Month element exists. */
+            amount = getValueByID(doc, "$category-" + convertToLocalDate(
+                cal.time).toString().substring(0, 7) + "-t")
+            if (amount != null) {
+                total += amount.toDouble()
+            }
+            /* Determine the previous month to retrieve next. */
+            cal.add(Calendar.MONTH, -1)
+        }
+
+        return total
+    }
+
+    /* Purpose: Grabs sub-totals of the current year totals for one or all categories.
+    *
+    * Parameters: doc represents the Document of the XML data file.
+    *             categoryID represents the specific category to filter for.
+    *
+    * Returns: Array holding sub-totals for each month of the current year. */
+    fun yearToDate(doc: Document, categoryID : String) : DoubleArray {
+        val cal: Calendar = Calendar.getInstance()
+        val currentMonth = cal.get(Calendar.MONTH)
+        val monthsOfYear = DoubleArray(currentMonth + 1) { 0.0 }
+
+        var amount : String?
+
+        if (categoryID == "all") {
+            var monthSum : Double
+
+            for (i in 0..currentMonth) {
+                monthSum = 0.0
+
+                for (j in 1..3) {
+                    /* Retrieve the total amount of expenses for each Month,
+                    * if the Month element exists. */
+                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
+                        cal.time).toString().substringBeforeLast("-") + "-t")
+                    if (amount != null) {
+                        monthSum += amount.toDouble()
+                    }
+                }
+                monthsOfYear[i] = monthSum
+                /* Determine the previous month to retrieve next. */
+                cal.add(Calendar.MONTH, -1)
+            }
+        }
+        else {
+            /* Iterate through the calendar months of the current year. */
+            for (i in 0..currentMonth) {
+                /* Retrieve the total amount of expenses for each month,
+                * if the month element exists. */
+                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
+                    cal.time).toString().substringBeforeLast("-") + "-t")
+                if (amount != null) {
+                    monthsOfYear[i] = amount.toDouble()
+                }
+                /* Determine the previous month to retrieve next. */
+                cal.add(Calendar.MONTH, -1)
+            }
+        }
+        return monthsOfYear
+    }
+
     /* Purpose: Retrieves the total amount of expenses from the last twelve months
     *           for a given category.
     *
@@ -170,6 +249,95 @@ object DataManager {
     * Returns: Array holding sub-totals for each of the past 12 months. */
     fun last12Months(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
+        val monthsOfYear = DoubleArray(12) { 0.0 }
+
+        var amount : String?
+
+        if (categoryID == "all") {
+            var monthSum : Double
+
+            for (i in 0..11) {
+                monthSum = 0.0
+
+                for (j in 1..3) {
+                    /* Retrieve the total amount of expenses for each Month,
+                    * if the Month element exists. */
+                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
+                        cal.time).toString().substringBeforeLast("-") + "-t")
+                    if (amount != null) {
+                        monthSum += amount.toDouble()
+                    }
+                }
+                monthsOfYear[i] = monthSum
+                /* Determine the previous month to retrieve next. */
+                cal.add(Calendar.MONTH, -1)
+            }
+        }
+        else {
+            /* Iterate through the last 12 calendar months. */
+            for (i in 0..11) {
+                /* Retrieve the total amount of expenses for each month,
+                * if the month element exists. */
+                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
+                    cal.time).toString().substringBeforeLast("-") + "-t")
+                if (amount != null) {
+                    monthsOfYear[i] = amount.toDouble()
+                }
+                /* Determine the previous month to retrieve next. */
+                cal.add(Calendar.MONTH, -1)
+            }
+        }
+        return monthsOfYear
+    }
+
+    /* Purpose: Retrieves the total amount of expenses from the prior year
+    *           for a given category.
+    *
+    * Parameters: doc represents the Document of the XML data file.
+    *             category represents the specific category to filter for.
+    *
+    * Returns: total represents the total amount of expenses of the previous year. */
+    fun lastYearTotal(doc: Document, category: String) : Double {
+        val cal: Calendar = Calendar.getInstance()
+        /* Move cal back to December of the prior year.
+        * The day is set to 1 instead of 31, since not
+        * all months have a 31, plus the day does not
+        * matter in this function, just the month and year.*/
+        cal.set(cal.get(Calendar.YEAR) - 1, Calendar.DECEMBER, 1)
+
+        var amount : String?
+        var total = 0.00
+
+        /* Iterate through last year's twelve calendar months. */
+        repeat(12) {
+            /* Retrieve the total amount of expenses for each month, if the Month element exists. */
+            amount = getValueByID(doc, "$category-" + convertToLocalDate(
+                cal.time).toString().substring(0, 7) + "-t")
+            if (amount != null) {
+                total += amount.toDouble()
+            }
+            /* Determine the previous month to retrieve next. */
+            cal.add(Calendar.MONTH, -1)
+        }
+
+        return total
+    }
+
+    /* Purpose: Grabs sub-totals of the the 12 calendar months from the
+    *           prior year for one or all categories.
+    *
+    * Parameters: doc represents the Document of the XML data file.
+    *             categoryID represents the specific category to filter for.
+    *
+    * Returns: Array holding totals for each month of the previous year. */
+    fun lastYear(doc: Document, categoryID : String) : DoubleArray {
+        val cal: Calendar = Calendar.getInstance()
+        /* Move cal back to December of the prior year.
+        * The day is set to 1 instead of 31, since not
+        * all months have a 31, plus the day does not
+        * matter in this function, just the month and year.*/
+        cal.set(cal.get(Calendar.YEAR) - 1, Calendar.DECEMBER, 1)
+
         val monthsOfYear = DoubleArray(12) { 0.0 }
 
         var amount : String?
