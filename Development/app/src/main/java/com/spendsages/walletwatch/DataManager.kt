@@ -23,10 +23,10 @@ object DataManager {
     /* Purpose: Retrieve a value from an element in the XML data file using an id.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * id represents the numerical id of the target element.
+    *             id represents the numerical id of the target element.
     *
     * Returns: A string representing the value of the target element or
-    * null if the target element id was not found. */
+    *          null if the target element id was not found. */
     fun getValueByID(doc: Document, id: String) : String? {
         val element = doc.getElementById(id)
 
@@ -39,10 +39,10 @@ object DataManager {
     /* Purpose: Retrieve a value from an element in the XML data file using an XPath expression.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * xpath represents the XPath expression query.
+    *             xpath represents the XPath expression query.
     *
     * Returns: A string representing the value of the target element or
-    * null if the target element id was not found. */
+    *          null if the target element id was not found. */
     private fun getValueByXPath(doc: Document, xpath: String) : String {
         return XPathFactory.newInstance().newXPath().evaluate(xpath, doc)
     }
@@ -56,12 +56,14 @@ object DataManager {
         return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     }
 
-    /* Purpose: Retrieves the total amount of expenses from the last seven days.
+    /* Purpose: Retrieves the total amount of expenses from the last seven days
+    *           for a given category.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * category represents the specific category to filter for.
+    *             category represents the specific category to filter for.
     *
-    * Returns: total represents the total amount of expenses from the last seven days. */
+    * Returns: total represents the total amount of expenses of a given category
+    *          from the last seven days. */
     fun last7DaysTotal(doc: Document, category : String) : Double {
         val cal: Calendar = Calendar.getInstance()
 
@@ -76,22 +78,22 @@ object DataManager {
             if (amount != null) {
                 total += amount.toDouble()
             }
-            /* Determine the day previous to the current day. */
+            /* Determine the previous day to retrieve next. */
             cal.add(Calendar.DAY_OF_MONTH, -1)
         }
 
         return total
     }
 
-    /* Purpose: Grabs last 7 days for one or all categories
+    /* Purpose: Grabs sub-totals of the last 7 days for one or all categories.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * categoryID represents the specific category to filter for.
+    *             categoryID represents the specific category to filter for.
     *
-    * Returns: array holding totals for category/all categories for current day/prior 6 days */
+    * Returns: Array holding sub-totals for each of the past 7 days. */
     fun last7Days(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
-        val daysOfWeek = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        val daysOfWeek = DoubleArray(7) { 0.0 }
 
         var amount : String?
 
@@ -111,7 +113,7 @@ object DataManager {
                     }
                 }
                 daysOfWeek[i] = daySum
-                /* Determine the day previous to the current day. */
+                /* Determine the previous day to retrieve next. */
                 cal.add(Calendar.DAY_OF_MONTH, -1)
             }
         }
@@ -124,19 +126,21 @@ object DataManager {
                 if (amount != null) {
                     daysOfWeek[i] = amount.toDouble()
                 }
-                /* Determine the day previous to the current day. */
+                /* Determine the previous day to retrieve next. */
                 cal.add(Calendar.DAY_OF_MONTH, -1)
             }
         }
         return daysOfWeek
     }
 
-    /* Purpose: Retrieves the total amount of expenses from the last twelve months.
+    /* Purpose: Retrieves the total amount of expenses from the last twelve months
+    *           for a given category.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * category represents the specific category to filter for.
+    *             category represents the specific category to filter for.
     *
-    * Returns: total represents the total amount of expenses from the last twelve months. */
+    * Returns: total represents the total amount of expenses of a given category
+    *          from the last twelve months. */
     fun last12MonthsTotal(doc: Document, category: String) : Double {
         val cal: Calendar = Calendar.getInstance()
 
@@ -151,24 +155,29 @@ object DataManager {
             if (amount != null) {
                 total += amount.toDouble()
             }
-            /* Determine the month previous to the current month. */
+            /* Determine the previous month to retrieve next. */
             cal.add(Calendar.MONTH, -1)
         }
 
         return total
     }
 
+    /* Purpose: Grabs sub-totals of the last 12 months for one or all categories.
+    *
+    * Parameters: doc represents the Document of the XML data file.
+    *             categoryID represents the specific category to filter for.
+    *
+    * Returns: Array holding sub-totals for each of the past 12 months. */
     fun last12Months(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
-        val monthsOfYear = doubleArrayOf(
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        val monthsOfYear = DoubleArray(12) { 0.0 }
 
         var amount : String?
 
         if (categoryID == "all") {
             var monthSum : Double
 
-            for(i in 0..11) {
+            for (i in 0..11) {
                 monthSum = 0.0
 
                 for (j in 1..3) {
@@ -181,7 +190,7 @@ object DataManager {
                     }
                 }
                 monthsOfYear[i] = monthSum
-                /* Determine the month previous to the current month. */
+                /* Determine the previous month to retrieve next. */
                 cal.add(Calendar.MONTH, -1)
             }
         }
@@ -195,24 +204,29 @@ object DataManager {
                 if (amount != null) {
                     monthsOfYear[i] = amount.toDouble()
                 }
-                /* Determine the month previous to the current month. */
+                /* Determine the previous month to retrieve next. */
                 cal.add(Calendar.MONTH, -1)
             }
         }
         return monthsOfYear
     }
 
+    /* Purpose: Grabs sub-totals of the last 10 years for one or all categories.
+    *
+    * Parameters: doc represents the Document of the XML data file.
+    *             categoryID represents the specific category to filter for.
+    *
+    * Returns: Array holding sub-totals for each of the past 10 years. */
     fun last10Years(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
-        val yearsOfDecade = doubleArrayOf(
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        val yearsOfDecade = DoubleArray(10) { 0.0 }
 
         var amount : String?
 
-        if(categoryID == "all") {
+        if (categoryID == "all") {
             var yearSum: Double
 
-            for(i in 0..9) {
+            for (i in 0..9) {
                 yearSum = 0.0
 
                 for (j in 1..3) {
@@ -225,7 +239,7 @@ object DataManager {
                     }
                 }
                 yearsOfDecade[i] = yearSum
-                /* Determine the year previous to the current year. */
+                /* Determine the previous year to retrieve next. */
                 cal.add(Calendar.YEAR, -1)
             }
         }
@@ -239,7 +253,7 @@ object DataManager {
                 if (amount != null) {
                     yearsOfDecade[i] = amount.toDouble()
                 }
-                /* Determine the year previous to the current year. */
+                /* Determine the previous year to retrieve next. */
                 cal.add(Calendar.YEAR, -1)
             }
         }
@@ -249,22 +263,22 @@ object DataManager {
     /* Purpose: Determine how much of the date XML tree hierarchy already exists.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * category represents the number of the target category.
-    * year represents the numerical year of the target date.
-    * month represents the numerical month of the target date.
-    * day represents the numerical day of the target date.
+    *             category represents the number of the target category.
+    *             year represents the numerical year of the target date.
+    *             month represents the numerical month of the target date.
+    *             day represents the numerical day of the target date.
     *
     * Returns: dateExists represents how much of the date XML tree hierarchy already exists.
-    * A value of 0 means the Year, Month, Day, and Entry elements
-    * need to be added as children to the existing Category element.
-    * A value of 1 means the Month, Day, and Entry elements
-    * * need to be added as children to the existing Year element.
-    * A value of 2 means the Day and Entry elements
-    * need to be added as children to the existing Month element.
-    * A value of 3 or more means the Entry element
-    * needs to be added as a child to the existing Day element.
-    * The id of the new entry will be this value minus 1.
-    * For example, 3 means an id of 2 and 4 means an id of 3. */
+    *          A value of 0 means the Year, Month, Day, and Entry elements
+    *          need to be added as children to the existing Category element.
+    *          A value of 1 means the Month, Day, and Entry elements
+    *          need to be added as children to the existing Year element.
+    *          A value of 2 means the Day and Entry elements
+    *          need to be added as children to the existing Month element.
+    *          A value of 3 or more means the Entry element
+    *          needs to be added as a child to the existing Day element.
+    *          The id of the new entry will be this value minus 1.
+    *          For example, 3 means an id of 2 and 4 means an id of 3. */
     private fun findExistingDateTags(doc : Document, category: String,
                                      year : String, month : String, day : String) : Int {
         var id = "c-$category-$year"
@@ -294,7 +308,7 @@ object DataManager {
     /* Purpose: Increment the amount of a total element in the XML data file.
     *
     * Parameters: element represents the total Element to increment.
-    * amount represents the amount to increment element by.
+    *             amount represents the amount to increment element by.
     *
     * Returns: Nothing. */
     private fun incrementTotal(element: Element, amount: String) {
@@ -304,10 +318,10 @@ object DataManager {
     /* Purpose: Add an entry to the XML data file.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * amountRaw represents the string of the raw dollar amount input.
-    * description represents the string of the optional expense description.
-    * date represents the string of the date of the expense.
-    * category represents the string of the selected category of the expense.
+    *             amountRaw represents the string of the raw dollar amount input.
+    *             description represents the string of the optional expense description.
+    *             date represents the string of the date of the expense.
+    *             category represents the string of the selected category of the expense.
     *
     * Returns: A String representing the new Entry's ID. */
     fun addEntry(doc : Document, amountRaw : String, description : String,
@@ -439,10 +453,10 @@ object DataManager {
     }
 
     /* Purpose: Check how much of a date tree hierarchy will be "empty" after removing a
-    * particular Entry tag. Any "empty" date tags will be deleted from the XML data file.
+    *           particular Entry tag. Any "empty" date tags will be deleted from the XML data file.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * entryID represents the id of the entry that will be deleted.
+    *             entryID represents the id of the entry that will be deleted.
     *
     * Returns: Nothing. */
     private fun deleteEmptyTags(doc: Document, entryID: String) {
@@ -509,13 +523,13 @@ object DataManager {
     }
 
     /* Purpose: Recursively goes through each child node that has an id attribute and updates
-    * the category number. For example, if a restored category was originally "c-1", but is
-    * now being set as "c-2", all the children of the restored category will need their id
-    * attributes to change from "c-1-..." to "c-2-...".
+    *           the category number. For example, if a restored category was originally "c-1",
+    *           but is now being set as "c-2", all the children of the restored category will
+    *           need their id attributes to change from "c-1-..." to "c-2-...".
     *
-    * Parameters: source represents the node that needs its children to have updated id attributes
-    * newCategoryID is the new category id section to overwrite
-    *  for each child id attribute (e.g. "c-3")
+    * Parameters: source represents the node that needs its children to have updated id attributes.
+    *             newCategoryID is the new category id section to overwrite for each
+    *             child id attribute (e.g. "c-3")
     *
     * Returns: Nothing. */
     private fun recursiveCategoryNumberUpdate(source: Node, newCategoryID: String) {
@@ -607,18 +621,18 @@ object DataManager {
     }
 
     /* Purpose: Saves each changed category data to Archive.xml and then resets for each new label.
-    * To save, first make a cloned copy of the category data and have the archive adopt the clone.
-    * Then, append that adopted clone to the root element of the archive.
+    *           To save, first make a cloned copy of the category data and have the archive adopt
+    *           the clone. Then, append that adopted clone to the root element of the archive.
     *
-    * To reset, first subtracts category total from data total.
-    * Second, sets category total to 0.00.
-    * Third, changes category label to new label name.
-    * Finally, deletes all children of category tag, except label tag and total tag.
+    *           To reset, first subtracts category total from data total.
+    *           Second, sets category total to 0.00.
+    *           Third, changes category label to new label name.
+    *           Finally, deletes all children of category tag, except label tag and total tag.
     *
     * Parameters: activity represents the activity that called this function.
-    * doc represents the Document of the XML data file.
-    * archive represents the Document of the Archive XML file.
-    * labels represent an array of which categories to overwrite.
+    *             doc represents the Document of the XML data file.
+    *             archive represents the Document of the Archive XML file.
+    *             labels represent an array of which categories to overwrite.
     *
     * Returns: Boolean of whether or not a category was restored. */
     fun changeCategories(activity : Activity, doc : Document,
@@ -688,13 +702,13 @@ object DataManager {
                     * to avoid IndexOutOfBounds exceptions caused by moving children
                     * to a new parent. */
                     val restoreCategoryList = mutableListOf<Node>()
-                    for(i in 0 until restoreCategory.childNodes.length) {
+                    for (i in 0 until restoreCategory.childNodes.length) {
                         val child = restoreCategory.childNodes.item(i)
                         val clone = child.cloneNode(true)
                         restoreCategoryList.add(clone)
                     }
                     /* Iterate through the cloned children inside the archived category list. */
-                    for(clone in restoreCategoryList) {
+                    for (clone in restoreCategoryList) {
                         /* If the clone node is the "total" node of the archived category list,
                         * grab the total and adjust the category total and data total
                         * in the WalletWatch.xml. */
@@ -714,7 +728,7 @@ object DataManager {
                             val cloneYearID = clone.attributes.getNamedItem("id").textContent
                             /* Grab the non-clone child node that matches the year id. */
                             val child: Node? = run {
-                                for(i in 0 until restoreCategory.childNodes.length) {
+                                for (i in 0 until restoreCategory.childNodes.length) {
                                     val childNode = restoreCategory.childNodes.item(i)
                                     val childYearID = childNode.attributes.getNamedItem(
                                         "id").textContent
@@ -778,7 +792,7 @@ object DataManager {
     /* Purpose: Delete entries from the XML data file.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * selectedEntries represents the list of strings of the ID of each selected entry.
+    *             selectedEntries represents the list of strings of the ID of each selected entry.
     *
     * Returns: Nothing. */
     fun deleteEntries(doc: Document, selectedEntries: MutableList<String>) {
@@ -791,10 +805,10 @@ object DataManager {
     /* Purpose: Edit an entry in the XML data file.
     *
     * Parameters: doc represents the Document of the XML data file.
-    * amountRaw represents the string of the raw dollar amount input.
-    * description represents the string of the optional expense description.
-    * date represents the string of the date of the expense.
-    * category represents the string of the selected category of the expense.
+    *             amountRaw represents the string of the raw dollar amount input.
+    *             description represents the string of the optional expense description.
+    *             date represents the string of the date of the expense.
+    *             category represents the string of the selected category of the expense.
     *
     * Returns: A String representing the Entry's new ID. */
     fun editEntry(doc: Document, entryID: String, amountRaw : String, description : String,
