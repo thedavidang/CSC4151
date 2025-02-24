@@ -114,8 +114,7 @@ class Tab2Fragment: Fragment() {
     *
     * Parameters: total represents the array of doubles for each data point.
     * timeSpan represents whether the user selected 0) Last 7 Days, 1) Year To Date (YTD),
-    * 2) Last 12 Months,  3) Last Year, or 4) All Time (All Time will only
-    * display the last 10 years).
+    * 2) Last 12 Months,  3) Last Year, or 4) All Time.
     * categoryPosition represent whether the user selected 0) All categories
     * or 1-3) a specific Category.
     *
@@ -309,12 +308,12 @@ class Tab2Fragment: Fragment() {
                     currentMonth -= 1
                 }
             }
-            /* All Time (in this case it is actually last 10 years). */
+            /* All Time. */
             else -> {
                 /* Determine the current year. */
                 var currentYear = cal.get(Calendar.YEAR)
-                var j = 10
-                /* Grab the last 10 years. */
+                var j = dataPoints.size
+                /* Grab all recorded years. */
                 repeat(j) {
                     j -= 1
                     /* Add the year to the X-axis labels array. */
@@ -403,8 +402,7 @@ class Tab2Fragment: Fragment() {
     /* Purpose: Controller method that populates the pie chart with the selected data set.
     *
     * Parameters: timeSpan represents whether the user selected 0) Last 7 Days,
-    * 1) Year To Date (YTD), 2) Last 12 Months,  3) Last Year, or 4) All Time (All Time will only
-    * display the last 10 years).
+    * 1) Year To Date (YTD), 2) Last 12 Months,  3) Last Year, or 4) All Time.
     *
     * Returns: Nothing. */
     fun updatePieChart(doc: Document, timeSpan: Int) {
@@ -494,8 +492,7 @@ class Tab2Fragment: Fragment() {
     /* Purpose: Controller method that populates the totals below the chart.
     *
     * Parameters: timeSpan represents whether the user selected 0) Last 7 Days,
-    * 1) Year To Date (YTD), 2) Last 12 Months,  3) Last Year, or 4) All Time (All Time will only
-    * display the last 10 years).
+    * 1) Year To Date (YTD), 2) Last 12 Months,  3) Last Year, or 4) All Time.
     *
     * Returns: Nothing. */
     fun updateTotals(doc: Document, timeSpan: Int) {
@@ -681,16 +678,15 @@ class Tab2Fragment: Fragment() {
                     }
                     /* All Time. */
                     else -> {
-                        /* Grab the Last 10 Years of data points from
+                        /* Grab all recorded years of data points from
                         * whichever category the user selected. */
                         data =
                             if (spinChartCategory.selectedItemPosition == 0) {
-                                DataManager.last10Years(doc, "all")
+                                DataManager.allTime(doc, "all")
                             }
                             else {
-                                DataManager.last10Years(
-                                    doc, "c-" +
-                                            spinChartCategory.selectedItemPosition.toString()
+                                DataManager.allTime(
+                                    doc, "c-" + spinChartCategory.selectedItemPosition.toString()
                                 )
                             }
                     }
@@ -746,7 +742,7 @@ class Tab2Fragment: Fragment() {
                                 DataManager.lastYear(doc, "all")
                             }
                             else -> {
-                                DataManager.last10Years(doc, "all")
+                                DataManager.allTime(doc, "all")
                             }
                         }
                     }
@@ -768,7 +764,7 @@ class Tab2Fragment: Fragment() {
                                 DataManager.lastYear(doc, "c-$position")
                             }
                             else -> {
-                                DataManager.last10Years(doc, "c-$position")
+                                DataManager.allTime(doc, "c-$position")
                             }
                         }
                     }
@@ -868,7 +864,7 @@ class Tab2Fragment: Fragment() {
                             DataManager.lastYear(doc, "all")
                         }
                         else -> {
-                            DataManager.last10Years(doc, "all")
+                            DataManager.allTime(doc, "all")
                         }
                     }
                 }
@@ -890,7 +886,7 @@ class Tab2Fragment: Fragment() {
                             DataManager.lastYear(doc, "c-$category")
                         }
                         else -> {
-                            DataManager.last10Years(doc, "c-$category")
+                            DataManager.allTime(doc, "c-$category")
                         }
                     }
                 }

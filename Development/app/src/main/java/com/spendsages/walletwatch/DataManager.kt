@@ -379,53 +379,69 @@ object DataManager {
         return monthsOfYear
     }
 
-    /* Purpose: Grabs sub-totals of the last 10 years for one or all categories.
+    /* Purpose: Grabs sub-totals of each year for one or all categories.
     *
     * Parameters: doc represents the Document of the XML data file.
     *             categoryID represents the specific category to filter for.
     *
-    * Returns: Array holding sub-totals for each of the past 10 years. */
-    fun last10Years(doc: Document, categoryID : String) : DoubleArray {
+    * Returns: Array holding sub-totals for each recorded year. */
+    fun allTime(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
-        val yearsOfDecade = DoubleArray(10) { 0.0 }
 
         var amount : String?
 
+        /* Determine the first year that data was recorded by grabbing
+        * the "year" element "id" attribute of each category. */
+        val currentYear = cal.get(Calendar.YEAR)
+        var yearOffset = 0
+        for (category in 1..3) {
+            /* XPath to retrieve the id of the first Year element of the category.
+            * New year elements are appended, so the oldest year is first. */
+            val xpath = "string(/root/category[@id=\"c-$category\"]/year[1]/@id)"
+            val year = getValueByXPath(doc, xpath).substringAfterLast('-').toInt()
+            /* Determine if this category's first year is the oldest one so far. */
+            val offset = currentYear - year
+            if (offset > yearOffset) {
+                yearOffset = offset
+            }
+        }
+
+        /* Initialize the array of year totals. */
+        val years = DoubleArray(yearOffset + 1) { 0.0 }
+
         if (categoryID == "all") {
             var yearSum: Double
-
-            for (i in 0..9) {
+            /* Iterate through each calendar year. */
+            for (i in 0..yearOffset) {
                 yearSum = 0.0
 
                 for (j in 1..3) {
                     /* Retrieve the total amount of expenses for each year,
                     * if the year element exists for the past decade. */
-                    amount = getValueByID(doc, "c-$j-" + convertToLocalDate(
-                        cal.time).toString().substringBefore("-") + "-t")
+                    amount = getValueByID(doc, "c-$j-" + cal.get(Calendar.YEAR) + "-t")
                     if (amount != null) {
                         yearSum += amount.toDouble()
                     }
                 }
-                yearsOfDecade[i] = yearSum
+                years[i] = yearSum
                 /* Determine the previous year to retrieve next. */
                 cal.add(Calendar.YEAR, -1)
             }
         }
         else {
-            /* Iterate through the last 10 calendar years. */
-            for (i in 0..9) {
+            /* Iterate through each calendar year. */
+            for (i in 0..yearOffset) {
                 /* Retrieve the total amount of expenses for each year,
                 * if the year element exists. */
-                amount = getValueByID(doc, "$categoryID-" + convertToLocalDate(
-                    cal.time).toString().substringBefore("-") + "-t")
+                amount = getValueByID(doc, "$categoryID-" + cal.get(Calendar.YEAR) + "-t")
                 if (amount != null) {
-                    yearsOfDecade[i] = amount.toDouble()
+                    years[i] = amount.toDouble()
                 }
                 /* Determine the previous year to retrieve next. */
                 cal.add(Calendar.YEAR, -1)
             }
         }
-        return yearsOfDecade
+        return years
     }
 
     /* Purpose: Determine how much of the date XML tree hierarchy already exists.
