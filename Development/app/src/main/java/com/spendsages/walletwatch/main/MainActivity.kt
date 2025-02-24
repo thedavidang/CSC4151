@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
@@ -77,6 +78,7 @@ class MainActivity: AppCompatActivity() {
         * and select Tab 1 at app launch. */
         tabLayout = findViewById(R.id.mainTabs)
         binding.mainPager.adapter = MainPagerAdapter(supportFragmentManager, lifecycle)
+        binding.mainPager.reduceDragSensitivity()
         TabLayoutMediator(tabLayout, binding.mainPager) { tab, position ->
             /* Set tab title. */
             tab.text = when (position) {
@@ -135,6 +137,18 @@ class MainActivity: AppCompatActivity() {
         /* Setup the shared view model, so that all fragments can access the same live data. */
         model = ViewModelProvider(app,
             SharedViewModelFactory(app.applicationContext))[SharedViewModel::class.java]
+    }
+
+    /* Reduces drag sensitivity of [ViewPager2] widget. */
+    private fun ViewPager2.reduceDragSensitivity() {
+        val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+        recyclerViewField.isAccessible = true
+        val recyclerView = recyclerViewField.get(this) as RecyclerView
+
+        val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+        touchSlopField.isAccessible = true
+        val touchSlop = touchSlopField.get(recyclerView) as Int
+        touchSlopField.set(recyclerView, touchSlop * 4)
     }
 
     /* Purpose: Force the focus on the given UI object and
