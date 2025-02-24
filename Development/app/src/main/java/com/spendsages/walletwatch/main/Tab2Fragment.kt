@@ -69,6 +69,10 @@ class Tab2Fragment: Fragment() {
 
     private lateinit var spinChartCategory: Spinner
 
+    private val monthAbbreviation = arrayOf(
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    )
+
     /* Purpose: Controller method that reveals the line chart and hides the pie chart.
     *
     * Parameters: None.
@@ -219,28 +223,13 @@ class Tab2Fragment: Fragment() {
             1 -> {
                 /* Determine the current month. */
                 var currentMonth = cal.get(Calendar.MONTH)
-                var currentMonthString = ""
                 /* Grab the abbreviation for each month of the current year. */
                 var j = currentMonth + 1
                 repeat(j) { i ->
                     j -= 1
-                    when (currentMonth) {
-                        0 -> { currentMonthString = "Jan" }
-                        1 -> { currentMonthString = "Feb" }
-                        2 -> { currentMonthString = "Mar" }
-                        3 -> { currentMonthString = "Apr" }
-                        4 -> { currentMonthString = "May" }
-                        5 -> { currentMonthString = "Jun" }
-                        6 -> { currentMonthString = "Jul" }
-                        7 -> { currentMonthString = "Aug" }
-                        8 -> { currentMonthString = "Sep" }
-                        9 -> { currentMonthString = "Oct" }
-                        10 -> { currentMonthString = "Nov" }
-                        11 -> { currentMonthString = "Dec" }
-                    }
                     /* Add the abbreviation to the X-axis labels array. */
                     val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(currentMonthString)
+                    xAxisValue.setLabel(monthAbbreviation[currentMonth])
                     xAxisValues.add(xAxisValue)
                     currentMonth -= 1
                 }
@@ -249,28 +238,13 @@ class Tab2Fragment: Fragment() {
             2 -> {
                 /* Determine the current month. */
                 var currentMonth = cal.get(Calendar.MONTH)
-                var currentMonthString = ""
                 /* Grab the abbreviation for the last 12 months. */
                 var j = 12
                 repeat(j) {
                     j -= 1
-                    when (currentMonth) {
-                        0 -> { currentMonthString = "Jan" }
-                        1 -> { currentMonthString = "Feb" }
-                        2 -> { currentMonthString = "Mar" }
-                        3 -> { currentMonthString = "Apr" }
-                        4 -> { currentMonthString = "May" }
-                        5 -> { currentMonthString = "Jun" }
-                        6 -> { currentMonthString = "Jul" }
-                        7 -> { currentMonthString = "Aug" }
-                        8 -> { currentMonthString = "Sep" }
-                        9 -> { currentMonthString = "Oct" }
-                        10 -> { currentMonthString = "Nov" }
-                        11 -> { currentMonthString = "Dec" }
-                    }
                     /* Add the abbreviation to the X-axis labels array. */
                     val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(currentMonthString)
+                    xAxisValue.setLabel(monthAbbreviation[currentMonth])
                     xAxisValues.add(xAxisValue)
                     currentMonth -= 1
                     /* Account for rollover into December of the previous year. */
@@ -281,29 +255,16 @@ class Tab2Fragment: Fragment() {
             }
             /* Last Year. */
             3 -> {
-                var currentMonth = 0
-                var currentMonthString = ""
+                /* The X-axis label on the far right will be "Dec" for December,
+                * which is the 12th month or zero-based index 11. */
+                var currentMonth = 11
                 /* Grab the abbreviation for each of the 12 months. */
                 var j = 12
                 repeat(j) {
                     j -= 1
-                    when (currentMonth) {
-                        0 -> { currentMonthString = "Jan" }
-                        1 -> { currentMonthString = "Feb" }
-                        2 -> { currentMonthString = "Mar" }
-                        3 -> { currentMonthString = "Apr" }
-                        4 -> { currentMonthString = "May" }
-                        5 -> { currentMonthString = "Jun" }
-                        6 -> { currentMonthString = "Jul" }
-                        7 -> { currentMonthString = "Aug" }
-                        8 -> { currentMonthString = "Sep" }
-                        9 -> { currentMonthString = "Oct" }
-                        10 -> { currentMonthString = "Nov" }
-                        11 -> { currentMonthString = "Dec" }
-                    }
                     /* Add the abbreviation to the X-axis labels array. */
                     val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(currentMonthString)
+                    xAxisValue.setLabel(monthAbbreviation[currentMonth])
                     xAxisValues.add(xAxisValue)
                     currentMonth -= 1
                 }
