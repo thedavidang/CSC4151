@@ -126,7 +126,9 @@ class Tab1Fragment: Fragment() {
     }
 
     /* Purpose: Validate date EditText ensuring that field is properly formatted
-    * and is not an impossible or future date.
+    * and is not an impossible or future date. The CalendarView UI only supports
+    * dates starting on January 1st, 1900 AD, so we also have to reject user input
+    * that attempts to enter a year of 1899 or older.
     *
     * Parameters: None.
     *
@@ -137,8 +139,10 @@ class Tab1Fragment: Fragment() {
             /* Replace all non-numeric characters in date with slashes.
             * Consecutive non-numeric characters will be replaced with a single dash. */
             val dateParsed = userDateFormat.parse(dateText)
-            /* Check if date is in M/d/yyyy format. */
+            /* Check if date is in M/d/yyyy format, not in the future,
+            * and not too far in the past. */
             (dateParsed != null && !dateParsed.after(modelDateFormat.parse(today)) &&
+                    !dateParsed.before(modelDateFormat.parse("1900-01-01")) &&
                     dateText.matches(
                         Regex("(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])/[0-9]+")))
         }
