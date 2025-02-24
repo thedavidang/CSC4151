@@ -9,11 +9,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.spendsages.walletwatch.DataManager
 import com.spendsages.walletwatch.R
 import com.spendsages.walletwatch.SharedViewModel
 import com.spendsages.walletwatch.databinding.FragmentTab2Binding
+import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener
 import lecho.lib.hellocharts.model.Axis
 import lecho.lib.hellocharts.model.AxisValue
 import lecho.lib.hellocharts.model.Line
@@ -160,6 +162,8 @@ class Tab2Fragment: Fragment() {
 
         /* Create a line object and color it according to the selected category. */
         val line = Line(values)
+        /* Enable datapoint labels. */
+        line.setHasLabelsOnlyForSelected(true)
         /* Check which category the user selected. */
         when (category) {
             /* Set line to black for All Categories. */
@@ -775,6 +779,18 @@ class Tab2Fragment: Fragment() {
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
+        }
+
+        /* Listener to display value when user taps a datapoint on the line chart. */
+        lineChart.onValueTouchListener = object: LineChartOnValueSelectListener {
+            override fun onValueSelected(lineIndex: Int, pointIndex: Int, value: PointValue?) {
+                if (null != value) {
+                    val output = main.formatDollarAmount(value.y.toDouble())
+                    Toast.makeText(context, output, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onValueDeselected() {}
         }
 
         return rootView
