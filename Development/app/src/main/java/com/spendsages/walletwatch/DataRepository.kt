@@ -70,7 +70,7 @@ class DataRepository(private val context: Context) {
     *
     * Parameters: None.
     *
-    * Returns: MutableList<String> that represents the category labels. */
+    * Returns: Array<String> that represents the category labels. */
     fun parseCategoryLabels() : Array<String> {
         /* Setup the Simple API for XML Parser object. */
         val parser = SAXParserFactory.newInstance().newSAXParser()
@@ -123,7 +123,7 @@ class DataRepository(private val context: Context) {
             println(err)
         }
 
-        /* Return the list of category labels, including "All" at index zero */
+        /* Return the list of category labels, including "All" at index zero. */
         return handler.labels
     }
 

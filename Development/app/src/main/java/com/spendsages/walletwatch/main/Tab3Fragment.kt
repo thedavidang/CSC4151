@@ -285,7 +285,7 @@ class Tab3Fragment: Fragment() {
 
         /* If the entry was selected, re-select the checkbox. */
         val selectedEntryIndex = selectedEntries.indexOf(entryID)
-        if (-1 != selectedEntryIndex) {
+        if (selectedEntryIndex != -1) {
             state = true
             selectedEntries[selectedEntryIndex] = newEntryID
             /* Re-calculate the total dollar sum of the selected entries,
