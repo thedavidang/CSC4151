@@ -36,7 +36,7 @@ class MainActivity: AppCompatActivity() {
     var modelLoaded: Boolean = false
 
     /* Setup public constant for the metric prefixes corresponding to one thousand and above. */
-    val metric = arrayListOf("k", "M", "G", "T", "P", "E", "Z", "Y")
+    val metric = arrayOf("k", "M", "G", "T", "P", "E", "Z", "Y")
 
     override fun onDestroy() {
         super.onDestroy()
