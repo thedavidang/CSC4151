@@ -22,7 +22,6 @@ import lecho.lib.hellocharts.model.PieChartData
 import lecho.lib.hellocharts.model.PointValue
 import lecho.lib.hellocharts.model.SliceValue
 import lecho.lib.hellocharts.model.Viewport
-
 import lecho.lib.hellocharts.view.LineChartView
 import lecho.lib.hellocharts.view.PieChartView
 import org.w3c.dom.Document
@@ -112,8 +111,9 @@ class Tab2Fragment: Fragment() {
     /* Purpose: Controller method that populates the line chart with the selected data set.
     *
     * Parameters: total represents the array of doubles for each data point.
-    * timeSpan represents whether the user selected 0) Last 7 Days, 1) Last 12 Months,
-    * or 2) All Time (All Time will only display the last 10 years).
+    * timeSpan represents whether the user selected 0) Last 7 Days, 1) Year To Date (YTD),
+    * 2) Last 12 Months,  3) Last Year, or 4) All Time (All Time will only
+    * display the last 10 years).
     * categoryPosition represent whether the user selected 0) All categories
     * or 1-3) a specific Category.
     *
@@ -123,15 +123,7 @@ class Tab2Fragment: Fragment() {
         val cal: Calendar = Calendar.getInstance()
 
         /* Initialize 0-based counter for the selected time interval. */
-        var counter =
-            when (timeSpan) {
-                /* Last 12 Months. */
-                1 -> { 11 }
-                /* All Time (in this case it is actually last 10 years). */
-                2 -> { 9 }
-                /* Last 7 Days. */
-                else -> { 6 }
-            }
+        var counter = dataPoints.size - 1
 
         /* Initialize minimum and maximum axis values. */
         val minX = 0.0f
@@ -170,29 +162,88 @@ class Tab2Fragment: Fragment() {
         val line = Line(values)
         /* Check which category the user selected. */
         when (category) {
+            /* Set line to black for All Categories. */
+            0 -> { line.color = resources.getColor(R.color.colorAll, context?.theme) }
             /* Set line to red for Category 1. */
             1 -> { line.color = resources.getColor(R.color.colorCategory1, context?.theme) }
             /* Set line to green for Category 2. */
             2 -> { line.color = resources.getColor(R.color.colorCategory2, context?.theme) }
             /* Set line to blue for Category 3. */
             3 -> { line.color = resources.getColor(R.color.colorCategory3, context?.theme) }
-            /* Set line to black for All Categories. */
-            else -> { line.color = resources.getColor(R.color.colorAll, context?.theme) }
         }
 
         /* Initialize the lines array such that the line can be added to the LineChartData. */
-        val lines = ArrayList<Line>()
+        val lines = ArrayList<Line>(1)
         lines.add(line)
         /* Add the line to the LineChartData. */
         val data = LineChartData()
         data.lines = lines
 
-        /* Populate the X-axis labels. */
-        val xAxisValues = ArrayList<AxisValue>()
+        /* Populate the X-axis labels with an initial capacity of 12. */
+        val xAxisValues = ArrayList<AxisValue>(12)
         /* Check which time interval the user selected. */
         when (timeSpan) {
-            /* Last 12 Months. */
+            /* Last 7 Days. */
+            0 -> {
+                /* Determine the current day. */
+                var currentDay = cal.get(Calendar.DAY_OF_WEEK)
+                var currentDayString = ""
+                /* Grab the abbreviation for the last 7 days. */
+                var j = 7
+                repeat(j) {
+                    j -= 1
+                    when (currentDay) {
+                        1 -> { currentDayString = "Sun" }
+                        2 -> { currentDayString = "Mon" }
+                        3 -> { currentDayString = "Tue" }
+                        4 -> { currentDayString = "Wed" }
+                        5 -> { currentDayString = "Thu" }
+                        6 -> { currentDayString = "Fri" }
+                        7 -> { currentDayString = "Sat" }
+                    }
+                    /* Add the abbreviation to the X-axis labels array. */
+                    val xAxisValue = AxisValue(j.toFloat())
+                    xAxisValue.setLabel(currentDayString)
+                    xAxisValues.add(xAxisValue)
+                    currentDay -= 1
+                    /* Account for rollover into Sunday of the previous week. */
+                    if (currentDay == 0) {
+                        currentDay = 7
+                    }
+                }
+            }
+            /* Year To Date (YTD). */
             1 -> {
+                /* Determine the current month. */
+                var currentMonth = cal.get(Calendar.MONTH)
+                var currentMonthString = ""
+                /* Grab the abbreviation for each month of the current year. */
+                var j = currentMonth + 1
+                repeat(j) { i ->
+                    j -= 1
+                    when (currentMonth) {
+                        0 -> { currentMonthString = "Jan" }
+                        1 -> { currentMonthString = "Feb" }
+                        2 -> { currentMonthString = "Mar" }
+                        3 -> { currentMonthString = "Apr" }
+                        4 -> { currentMonthString = "May" }
+                        5 -> { currentMonthString = "Jun" }
+                        6 -> { currentMonthString = "Jul" }
+                        7 -> { currentMonthString = "Aug" }
+                        8 -> { currentMonthString = "Sep" }
+                        9 -> { currentMonthString = "Oct" }
+                        10 -> { currentMonthString = "Nov" }
+                        11 -> { currentMonthString = "Dec" }
+                    }
+                    /* Add the abbreviation to the X-axis labels array. */
+                    val xAxisValue = AxisValue(j.toFloat())
+                    xAxisValue.setLabel(currentMonthString)
+                    xAxisValues.add(xAxisValue)
+                    currentMonth -= 1
+                }
+            }
+            /* Last 12 Months. */
+            2 -> {
                 /* Determine the current month. */
                 var currentMonth = cal.get(Calendar.MONTH)
                 var currentMonthString = ""
@@ -225,8 +276,37 @@ class Tab2Fragment: Fragment() {
                     }
                 }
             }
+            /* Last Year. */
+            3 -> {
+                var currentMonth = 0
+                var currentMonthString = ""
+                /* Grab the abbreviation for each of the 12 months. */
+                var j = 12
+                repeat(j) {
+                    j -= 1
+                    when (currentMonth) {
+                        0 -> { currentMonthString = "Jan" }
+                        1 -> { currentMonthString = "Feb" }
+                        2 -> { currentMonthString = "Mar" }
+                        3 -> { currentMonthString = "Apr" }
+                        4 -> { currentMonthString = "May" }
+                        5 -> { currentMonthString = "Jun" }
+                        6 -> { currentMonthString = "Jul" }
+                        7 -> { currentMonthString = "Aug" }
+                        8 -> { currentMonthString = "Sep" }
+                        9 -> { currentMonthString = "Oct" }
+                        10 -> { currentMonthString = "Nov" }
+                        11 -> { currentMonthString = "Dec" }
+                    }
+                    /* Add the abbreviation to the X-axis labels array. */
+                    val xAxisValue = AxisValue(j.toFloat())
+                    xAxisValue.setLabel(currentMonthString)
+                    xAxisValues.add(xAxisValue)
+                    currentMonth -= 1
+                }
+            }
             /* All Time (in this case it is actually last 10 years). */
-            2 -> {
+            else -> {
                 /* Determine the current year. */
                 var currentYear = cal.get(Calendar.YEAR)
                 var j = 10
@@ -238,35 +318,6 @@ class Tab2Fragment: Fragment() {
                     xAxisValue.setLabel(currentYear.toString())
                     xAxisValues.add(xAxisValue)
                     currentYear -= 1
-                }
-            }
-            /* Last 7 Days. */
-            else -> {
-                /* Determine the current day. */
-                var currentDay = cal.get(Calendar.DAY_OF_WEEK)
-                var currentDayString = ""
-                /* Grab the abbreviation for the last 7 days. */
-                var j = 7
-                repeat(j) {
-                    j -= 1
-                    when (currentDay) {
-                        1 -> { currentDayString = "Sun" }
-                        2 -> { currentDayString = "Mon" }
-                        3 -> { currentDayString = "Tue" }
-                        4 -> { currentDayString = "Wed" }
-                        5 -> { currentDayString = "Thu" }
-                        6 -> { currentDayString = "Fri" }
-                        7 -> { currentDayString = "Sat" }
-                    }
-                    /* Add the abbreviation to the X-axis labels array. */
-                    val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(currentDayString)
-                    xAxisValues.add(xAxisValue)
-                    currentDay -= 1
-                    /* Account for rollover into Sunday of the previous week. */
-                    if (currentDay == 0) {
-                        currentDay = 7
-                    }
                 }
             }
         }
@@ -347,8 +398,9 @@ class Tab2Fragment: Fragment() {
 
     /* Purpose: Controller method that populates the pie chart with the selected data set.
     *
-    * Parameters: timeSpan represents whether the user selected 0) Last 7 Days, 1) Last 12 Months,
-    * or 2) All Time.
+    * Parameters: timeSpan represents whether the user selected 0) Last 7 Days,
+    * 1) Year To Date (YTD), 2) Last 12 Months,  3) Last Year, or 4) All Time (All Time will only
+    * display the last 10 years).
     *
     * Returns: Nothing. */
     fun updatePieChart(doc: Document, timeSpan: Int) {
@@ -360,23 +412,35 @@ class Tab2Fragment: Fragment() {
 
         /* Check which time interval the user selected. */
         when (timeSpan) {
-            /* Last 12 Months. */
+            /* Last 7 Days. */
+            0 -> {
+                category1Amount = DataManager.last7DaysTotal(doc, "c-1").toFloat()
+                category2Amount = DataManager.last7DaysTotal(doc, "c-2").toFloat()
+                category3Amount = DataManager.last7DaysTotal(doc, "c-3").toFloat()
+            }
+            /* Year To Date (YTD). */
             1 -> {
+                category1Amount = DataManager.yearToDateTotal(doc, "c-1").toFloat()
+                category2Amount = DataManager.yearToDateTotal(doc, "c-2").toFloat()
+                category3Amount = DataManager.yearToDateTotal(doc, "c-3").toFloat()
+            }
+            /* Last 12 Months. */
+            2 -> {
                 category1Amount = DataManager.last12MonthsTotal(doc, "c-1").toFloat()
                 category2Amount = DataManager.last12MonthsTotal(doc, "c-2").toFloat()
                 category3Amount = DataManager.last12MonthsTotal(doc, "c-3").toFloat()
             }
+            /* Last Year. */
+            3 -> {
+                category1Amount = DataManager.lastYearTotal(doc, "c-1").toFloat()
+                category2Amount = DataManager.lastYearTotal(doc, "c-2").toFloat()
+                category3Amount = DataManager.lastYearTotal(doc, "c-3").toFloat()
+            }
             /* All Time. */
-            2 -> {
+            else -> {
                 category1Amount = DataManager.getValueByID(doc, "c-1-t")!!.toFloat()
                 category2Amount = DataManager.getValueByID(doc, "c-2-t")!!.toFloat()
                 category3Amount = DataManager.getValueByID(doc, "c-3-t")!!.toFloat()
-            }
-            /* Last 7 Days. */
-            else -> {
-                category1Amount = DataManager.last7DaysTotal(doc, "c-1").toFloat()
-                category2Amount = DataManager.last7DaysTotal(doc, "c-2").toFloat()
-                category3Amount = DataManager.last7DaysTotal(doc, "c-3").toFloat()
             }
         }
 
@@ -425,8 +489,9 @@ class Tab2Fragment: Fragment() {
 
     /* Purpose: Controller method that populates the totals below the chart.
     *
-    * Parameters: timeSpan represents whether the user selected 0) Last 7 Days, 1) Last 12 Months,
-    * or 2) All Time.
+    * Parameters: timeSpan represents whether the user selected 0) Last 7 Days,
+    * 1) Year To Date (YTD), 2) Last 12 Months,  3) Last Year, or 4) All Time (All Time will only
+    * display the last 10 years).
     *
     * Returns: Nothing. */
     fun updateTotals(doc: Document, timeSpan: Int) {
@@ -436,23 +501,35 @@ class Tab2Fragment: Fragment() {
 
         /* Check which time span the user selected. */
         when (timeSpan) {
-            /* Update the totals to use the Last 12 Months totals. */
+            /* Update the totals to use the Last 7 Days totals. */
+            0 -> {
+                category1Amount = DataManager.last7DaysTotal(doc, "c-1")
+                category2Amount = DataManager.last7DaysTotal(doc, "c-2")
+                category3Amount = DataManager.last7DaysTotal(doc, "c-3")
+            }
+            /* Update the totals to use the Year To Date (YTD) totals. */
             1 -> {
+                category1Amount = DataManager.yearToDateTotal(doc, "c-1")
+                category2Amount = DataManager.yearToDateTotal(doc, "c-2")
+                category3Amount = DataManager.yearToDateTotal(doc, "c-3")
+            }
+            /* Update the totals to use the Last 12 Months totals. */
+            2 -> {
                 category1Amount = DataManager.last12MonthsTotal(doc, "c-1")
                 category2Amount = DataManager.last12MonthsTotal(doc, "c-2")
                 category3Amount = DataManager.last12MonthsTotal(doc, "c-3")
             }
+            /* Update the totals to use Last Year's totals. */
+            3 -> {
+                category1Amount = DataManager.lastYearTotal(doc, "c-1")
+                category2Amount = DataManager.lastYearTotal(doc, "c-2")
+                category3Amount = DataManager.lastYearTotal(doc, "c-3")
+            }
             /* Update the totals to use the All Time totals. */
-            2 -> {
+            else -> {
                 category1Amount = DataManager.getValueByID(doc, "c-1-t")!!.toDouble()
                 category2Amount = DataManager.getValueByID(doc, "c-2-t")!!.toDouble()
                 category3Amount = DataManager.getValueByID(doc, "c-3-t")!!.toDouble()
-            }
-            /* Update the totals to use the Last 7 Days totals. */
-            else -> {
-                category1Amount = DataManager.last7DaysTotal(doc, "c-1")
-                category2Amount = DataManager.last7DaysTotal(doc, "c-2")
-                category3Amount = DataManager.last7DaysTotal(doc, "c-3")
             }
         }
 
@@ -503,26 +580,27 @@ class Tab2Fragment: Fragment() {
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
                 when (position) {
-                    /* If "Pie" is selected. */
-                    1 -> {
-                        /* Show the pie chart, hide the line chart,
-                        * and disable and grey-out the category selector. */
-                        showPieChart()
-                        toggleCategorySelector(false)
-                    }
                     /* If "Line" is selected. */
-                    else -> {
+                    0 -> {
                         /* Show the line chart, hide the pie chart,
                         * and enable and reveal the category selector. */
                         showLineChart()
                         toggleCategorySelector(true)
+                    }
+                    /* If "Pie" is selected. */
+                    else -> {
+                        /* Show the pie chart, hide the line chart,
+                        * and disable and grey-out the category selector. */
+                        showPieChart()
+                        toggleCategorySelector(false)
                     }
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        /* Populate Time Interval selector with "Last 7 Days", "Last 12 Months", and "All Time". */
+        /* Populate Time Interval selector with "Last 7 Days", "Year To Date", "Last 12 Months",
+        * "Last Year", and "All Time". */
         spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)
         spinTimeInterval.adapter = ArrayAdapter(main, android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartIntervals))
@@ -537,8 +615,38 @@ class Tab2Fragment: Fragment() {
 
                 /* Check which time interval the user selected. */
                 when (position) {
-                    /* Last 12 Months. */
+                    /* Last 7 days. */
+                    0 -> {
+                        /* Grab the Last 7 Days of data points from
+                        * whichever category the user selected. */
+                        data =
+                            if (spinChartCategory.selectedItemPosition == 0) {
+                                DataManager.last7Days(doc, "all")
+                            }
+                            else {
+                                DataManager.last7Days(
+                                    doc, "c-" +
+                                            spinChartCategory.selectedItemPosition.toString()
+                                )
+                            }
+                    }
+                    /* Year To Date (YTD). */
                     1 -> {
+                        /* Grab the current year's month-by-month data points from
+                        * whichever category the user selected. */
+                        data =
+                            if (spinChartCategory.selectedItemPosition == 0) {
+                                DataManager.yearToDate(doc, "all")
+                            }
+                            else {
+                                DataManager.yearToDate(
+                                    doc, "c-" +
+                                            spinChartCategory.selectedItemPosition.toString()
+                                )
+                            }
+                    }
+                    /* Last 12 Months. */
+                    2 -> {
                         /* Grab the Last 12 Months of data points from
                         * whichever category the user selected. */
                         data =
@@ -552,8 +660,23 @@ class Tab2Fragment: Fragment() {
                                 )
                             }
                     }
+                    /* Last Year. */
+                    3 -> {
+                        /* Grab the prior year's month-by-month data points from
+                        * whichever category the user selected. */
+                        data =
+                            if (spinChartCategory.selectedItemPosition == 0) {
+                                DataManager.lastYear(doc, "all")
+                            }
+                            else {
+                                DataManager.lastYear(
+                                    doc, "c-" +
+                                            spinChartCategory.selectedItemPosition.toString()
+                                )
+                            }
+                    }
                     /* All Time. */
-                    2 -> {
+                    else -> {
                         /* Grab the Last 10 Years of data points from
                         * whichever category the user selected. */
                         data =
@@ -562,21 +685,6 @@ class Tab2Fragment: Fragment() {
                             }
                             else {
                                 DataManager.last10Years(
-                                    doc, "c-" +
-                                            spinChartCategory.selectedItemPosition.toString()
-                                )
-                            }
-                    }
-                    /* Last 7 days. */
-                    else -> {
-                        /* Grab the Last 7 Days of data points from
-                        * whichever category the user selected. */
-                        data =
-                            if (spinChartCategory.selectedItemPosition == 0) {
-                                DataManager.last7Days(doc, "all")
-                            }
-                            else {
-                                DataManager.last7Days(
                                     doc, "c-" +
                                             spinChartCategory.selectedItemPosition.toString()
                                 )
@@ -625,7 +733,13 @@ class Tab2Fragment: Fragment() {
                                 DataManager.last7Days(doc, "all")
                             }
                             1 -> {
+                                DataManager.yearToDate(doc, "all")
+                            }
+                            2 -> {
                                 DataManager.last12Months(doc, "all")
+                            }
+                            3 -> {
+                                DataManager.lastYear(doc, "all")
                             }
                             else -> {
                                 DataManager.last10Years(doc, "all")
@@ -641,7 +755,13 @@ class Tab2Fragment: Fragment() {
                                 DataManager.last7Days(doc, "c-$position")
                             }
                             1 -> {
+                                DataManager.yearToDate(doc, "c-$position")
+                            }
+                            2 -> {
                                 DataManager.last12Months(doc, "c-$position")
+                            }
+                            3 -> {
+                                DataManager.lastYear(doc, "c-$position")
                             }
                             else -> {
                                 DataManager.last10Years(doc, "c-$position")
@@ -723,7 +843,13 @@ class Tab2Fragment: Fragment() {
                             DataManager.last7Days(doc, "all")
                         }
                         1 -> {
+                            DataManager.yearToDate(doc, "all")
+                        }
+                        2 -> {
                             DataManager.last12Months(doc, "all")
+                        }
+                        3 -> {
+                            DataManager.lastYear(doc, "all")
                         }
                         else -> {
                             DataManager.last10Years(doc, "all")
@@ -739,7 +865,13 @@ class Tab2Fragment: Fragment() {
                             DataManager.last7Days(doc, "c-$category")
                         }
                         1 -> {
+                            DataManager.yearToDate(doc, "c-$category")
+                        }
+                        2 -> {
                             DataManager.last12Months(doc, "c-$category")
+                        }
+                        3 -> {
+                            DataManager.lastYear(doc, "c-$category")
                         }
                         else -> {
                             DataManager.last10Years(doc, "c-$category")

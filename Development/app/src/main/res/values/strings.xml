@@ -62,7 +62,9 @@
 
     <string-array name="chartIntervals">
         <item>Last 7 Days</item>
+        <item>Year To Date</item>
         <item>Last 12 Months</item>
+        <item>Last Year</item>
         <item>All Time</item>
     </string-array>
 
