@@ -340,7 +340,7 @@ class Tab2Fragment: Fragment() {
         var yValue = minY
         var yLabel: String
         /* Iterate to create eleven evenly spaced Y-axis values with labels. */
-        repeat(yAxisValues.size) {
+        repeat(11) {
             /* Calculate the scientific notation exponent of the Y-value by
             * taking the floor of the base 10 logarithm of the Y-axis value. */
             val yValExponent = kotlin.math.floor(kotlin.math.log10(yValue.toDouble()))
