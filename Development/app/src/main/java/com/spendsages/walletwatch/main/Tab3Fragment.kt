@@ -911,7 +911,8 @@ class Tab3Fragment: Fragment() {
                     android.R.layout.simple_spinner_dropdown_item, model.getCategories()
                 )
 
-                adapterRecycler.submitCategories(recycler, model.getCategories())
+                /* Re-initialize the entries list from the new categories. */
+                adapterRecycler.initializeData(model.get())
 
                 /* Reset the tab's model boolean. */
                 model.resetTabCategoriesNeedRefresh(2)

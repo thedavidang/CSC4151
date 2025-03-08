@@ -194,28 +194,6 @@ class RecyclerAdapter(private var categories: Array<String>) :
         submitList(updatedList)
     }
 
-    /* Purpose: Updates the category label strings.
-    *
-    * Parameters: recyclerView represents the RecyclerView UI element.
-    *             newCategories represents the list of updated category label strings.
-    *
-    * Returns: Nothing. */
-    fun submitCategories(recyclerView: RecyclerView, newCategories: Array<String>) {
-        /* Re-populate the member variable with the new category label strings. */
-        categories = newCategories
-
-        /* Create a new list with updated category names. */
-        val updatedList = currentList.map { entry ->
-            /* Ensure entries are considered "new" by DiffUtil. */
-            entry.copy()
-        }
-
-        submitList(updatedList) {
-            /* Jump back to the very top of the list. */
-            recyclerView.scrollToPosition(0)
-        }
-    }
-
     /* This Internal Class is an object that represents an individual expense entry card,
     * which has a delete checkbox, displayed dollar amount, possibly a description of the purchase,
     * the date of purchase, the category in which the expense falls under, and an edit button.
