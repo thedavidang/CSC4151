@@ -883,11 +883,11 @@ class Tab3Fragment: Fragment() {
             android.R.layout.simple_spinner_dropdown_item, model.getCategories()
         )
 
-        /* Reset the tab's model boolean. */
-        model.resetTabCategoriesNeedRefresh(2)
-
         /* Initialize the entries list. */
         adapterRecycler.initializeData(model.get())
+
+        /* Reset the tab's model boolean. */
+        model.setTabNeedsRefreshState(2, false)
 
         return rootView
     }
@@ -897,10 +897,10 @@ class Tab3Fragment: Fragment() {
 
         /* Observe the LiveData objects from SharedViewModel. */
         model.getLive().observe(viewLifecycleOwner) {
-            /* Only refresh the category button labels
-            * if the user actually changed a category label
+            /* Only refresh the entries and category button labels
+            * if the user actually added an entry or changed a category label
             * in the SettingsActivity. */
-            if (model.getTabCategoriesNeedRefresh(2)) {
+            if (model.getTabNeedsRefreshState(2)) {
                 /* Refresh the category label for each category button. */
                 for ((index, button) in categoryButtons.withIndex()) {
                     button?.text = model.getCategories()[index + 1]
@@ -915,7 +915,7 @@ class Tab3Fragment: Fragment() {
                 adapterRecycler.initializeData(model.get())
 
                 /* Reset the tab's model boolean. */
-                model.resetTabCategoriesNeedRefresh(2)
+                model.setTabNeedsRefreshState(2, false)
             }
 
             adapterRecycler.submitFilter(recycler,

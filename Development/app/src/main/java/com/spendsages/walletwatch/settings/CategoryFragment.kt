@@ -190,7 +190,9 @@ class CategoryFragment : Fragment() {
                                 }
                             }
                             model.save()
-                            model.notifyTabCategoriesNeedRefresh()
+                            model.setTabNeedsRefreshState(0, true)
+                            model.setTabNeedsRefreshState(1, true)
+                            model.setTabNeedsRefreshState(2, true)
                             success.show()
                             toggleSaveButton(false)
                         }

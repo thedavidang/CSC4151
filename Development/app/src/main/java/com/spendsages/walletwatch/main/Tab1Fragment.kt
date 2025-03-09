@@ -182,6 +182,11 @@ class Tab1Fragment: Fragment() {
         /* Add the entry to the XML data file. */
         DataManager.addEntry(model.get(), amount, description, date, category.toString())
 
+        /* Notify Tab3Fragment that it needs to re-initialize its data
+        * as to acquire the new entry (or entries if the user added
+        * multiple one after another). */
+        model.setTabNeedsRefreshState(2, true)
+
         /* Update the data model. */
         model.save()
 
@@ -440,13 +445,13 @@ class Tab1Fragment: Fragment() {
         /* Only refresh the category button labels
         * if the user actually changed a category label
         * in the SettingsActivity. */
-        if (model.getTabCategoriesNeedRefresh(0)) {
+        if (model.getTabNeedsRefreshState(0)) {
             /* Refresh the category label for each corresponding category button. */
             for ((index, button) in categoryButtons.withIndex()) {
                 button?.text = model.getCategories()[index + 1]
             }
             /* Reset the tab's model boolean. */
-            model.resetTabCategoriesNeedRefresh(0)
+            model.setTabNeedsRefreshState(0, false)
         }
 
         if (main.appLaunched) {

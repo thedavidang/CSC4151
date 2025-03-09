@@ -761,7 +761,7 @@ class Tab2Fragment: Fragment() {
             /* Only refresh the category button labels
             * if the user actually changed a category label
             * in the SettingsActivity. */
-            if (model.getTabCategoriesNeedRefresh(1)) {
+            if (model.getTabNeedsRefreshState(1)) {
 
                 /* Refresh the label for Category 1. */
                 category1Label = model.getCategories()[1]
@@ -793,7 +793,7 @@ class Tab2Fragment: Fragment() {
                 )
 
                 /* Reset the tab's model boolean. */
-                model.resetTabCategoriesNeedRefresh(1)
+                model.setTabNeedsRefreshState(1, false)
             }
 
             /* Grab the selected time interval. */
