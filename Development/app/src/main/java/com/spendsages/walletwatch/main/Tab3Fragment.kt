@@ -350,7 +350,7 @@ class Tab3Fragment: Fragment() {
                             R.id.deleteCheckbox
                         ).isChecked) {
                         /* Set the entry's internal boolean to true. */
-                        entry.selected = true
+                        adapterRecycler.submitSelect(entry.id)
                         /* Add the entry id to the list of selected entries for deletion. */
                         selectedEntries.add(entry.id)
                         /* Increment the total dollar sum of entries selected for deletion. */
@@ -359,7 +359,7 @@ class Tab3Fragment: Fragment() {
                     /* Otherwise, the checkbox is now unchecked. */
                     else {
                         /* Set the entry's internal boolean to false. */
-                        entry.selected = false
+                        adapterRecycler.submitDeselect(entry.id)
                         /* Remove the entry id from the list of selected entries for deletion. */
                         selectedEntries.remove(entry.id)
                         /* Decrement the total dollar sum of entries selected for deletion. */
@@ -484,7 +484,7 @@ class Tab3Fragment: Fragment() {
                         * disable the deselect all checkbox, and disable the
                         * "Delete Selected" button. */
                         DialogInterface.BUTTON_POSITIVE -> {
-                            adapterRecycler.submitDeselect(selectedEntries.size)
+                            adapterRecycler.submitClear()
                             /* Clear the array, so that it is empty. */
                             selectedEntries.clear()
                             selectedSum = 0.00
@@ -884,7 +884,7 @@ class Tab3Fragment: Fragment() {
         )
 
         /* Initialize the entries list. */
-        adapterRecycler.initializeData(model.get())
+        adapterRecycler.retrieveData(model.get(), null)
 
         /* Reset the tab's model boolean. */
         model.setTabNeedsRefreshState(2, false)
@@ -912,7 +912,7 @@ class Tab3Fragment: Fragment() {
                 )
 
                 /* Re-initialize the entries list from the new categories. */
-                adapterRecycler.initializeData(model.get())
+                adapterRecycler.retrieveData(model.get(), selectedEntries.toHashSet())
 
                 /* Reset the tab's model boolean. */
                 model.setTabNeedsRefreshState(2, false)

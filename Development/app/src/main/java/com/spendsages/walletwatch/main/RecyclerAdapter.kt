@@ -43,14 +43,21 @@ class RecyclerAdapter(private var categories: Array<String>) :
         editListener = listener
     }
 
-    /* Purpose: Initializes the list of entries maintained in the background.
+    /* Purpose: (Re-)Initializes the list of entries maintained in the background.
     *
     * Parameters: doc represents the Document of the XML data file.
     *
     * Returns: Nothing. */
-    fun initializeData(doc: Document) {
+    fun retrieveData(doc: Document, selectedEntries: HashSet<String>?) {
         /* Retrieve the raw list of all entries in the XML data file. */
         entriesRaw = getEntries(doc)
+
+        /* Select any checkboxes that were previously selected. */
+        if (!selectedEntries.isNullOrEmpty()) {
+            for (entry in entriesRaw) {
+                if (entry.id in selectedEntries) entry.selected = true
+            }
+        }
     }
 
     /* Purpose: Getter/Accessor that returns the total number of filtered entries to display.
@@ -140,42 +147,68 @@ class RecyclerAdapter(private var categories: Array<String>) :
     * Returns: Nothing. */
     fun submitEdit(filter: Int, sort: Int, id: String, fields: (Entry) -> Entry) {
         val updatedList = currentList.map { entry ->
-            if (entry.id == id) {
-                fields(entry)
-            }
-            else {
-                entry
-            }
+            if (entry.id == id) fields(entry) else entry
         }
 
         /* Edit raw list as well. */
-        entriesRaw.map { entry ->
-            if (entry.id == id) {
-                fields(entry)
-            }
-            else {
-                entry
-            }
-        }
+        entriesRaw = entriesRaw.map { entry ->
+            if (entry.id == id) fields(entry) else entry
+        } as MutableList<Entry>
 
         /* Filter and sort the updated list. */
         submitList(updatedList.asSequence().filterEntries(filter, sort))
     }
 
-    /* Purpose: Deselects all entry checkboxes.
+    /* Purpose: Selects an entry checkbox.
     *
-    * Parameters: count represents the quantity of entries that were selected.
+    * Parameters: id represents the Entry ID string to modify.
     *
     * Returns: Nothing. */
-    fun submitDeselect(count: Int) {
-        val updatedList = if (count < currentList.size / 2) {
-            /* If only a few entries were selected, only deselect those. */
-            currentList.map { if (it.selected) it.copy(selected = false) else it }
+    fun submitSelect(id: String) {
+        val updatedList = currentList.map {
+            if (it.id == id) it.copy(selected = true) else it
         }
-        else {
-            /* If more than half the list were selected, it's faster to just deselect everything. */
-            currentList.map { it.copy(selected = false) }
+
+        /* Deselect from raw list as well. */
+        entriesRaw = entriesRaw.map {
+            if (it.id == id) it.copy(selected = true) else it
+        } as MutableList<Entry>
+
+        submitList(updatedList)
+    }
+
+    /* Purpose: Deselects an entry checkbox.
+    *
+    * Parameters: id represents the Entry ID string to modify.
+    *
+    * Returns: Nothing. */
+    fun submitDeselect(id: String) {
+        val updatedList = currentList.map {
+            if (it.id == id) it.copy(selected = false) else it
         }
+
+        /* Deselect from raw list as well. */
+        entriesRaw = entriesRaw.map {
+            if (it.id == id) it.copy(selected = false) else it
+        } as MutableList<Entry>
+
+        submitList(updatedList)
+    }
+
+    /* Purpose: Deselects all entry checkboxes.
+    *
+    * Parameters: None.
+    *
+    * Returns: Nothing. */
+    fun submitClear() {
+        val updatedList = currentList.map {
+            if (it.selected) it.copy(selected = false) else it
+        }
+
+        /* Deselect from raw list as well. */
+        entriesRaw = entriesRaw.map {
+            if (it.selected) it.copy(selected = false) else it
+        } as MutableList<Entry>
 
         submitList(updatedList)
     }
