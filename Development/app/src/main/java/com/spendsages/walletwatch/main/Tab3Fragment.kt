@@ -901,6 +901,9 @@ class Tab3Fragment: Fragment() {
             * if the user actually added an entry or changed a category label
             * in the SettingsActivity. */
             if (model.getTabNeedsRefreshState(2)) {
+                /* Cache the index of the selected category. */
+                val selectedCategory = spinFiltering.selectedItemPosition
+
                 /* Refresh the category label for each category button. */
                 for ((index, button) in categoryButtons.withIndex()) {
                     button?.text = model.getCategories()[index + 1]
@@ -913,6 +916,9 @@ class Tab3Fragment: Fragment() {
 
                 /* Re-initialize the entries list from the new categories. */
                 adapterRecycler.retrieveData(model.get(), selectedEntries.toHashSet())
+
+                /* Restore the selected category index. */
+                spinFiltering.setSelection(selectedCategory)
 
                 /* Reset the tab's model boolean. */
                 model.setTabNeedsRefreshState(2, false)

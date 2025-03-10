@@ -762,6 +762,8 @@ class Tab2Fragment: Fragment() {
             * if the user actually changed a category label
             * in the SettingsActivity. */
             if (model.getTabNeedsRefreshState(1)) {
+                /* Cache the index of the selected category. */
+                val selectedCategory = spinChartCategory.selectedItemPosition
 
                 /* Refresh the label for Category 1. */
                 category1Label = model.getCategories()[1]
@@ -791,6 +793,9 @@ class Tab2Fragment: Fragment() {
                 spinChartCategory.adapter = ArrayAdapter(main,
                     android.R.layout.simple_spinner_dropdown_item, model.getCategories()
                 )
+
+                /* Restore the selected category index. */
+                spinChartCategory.setSelection(selectedCategory)
 
                 /* Reset the tab's model boolean. */
                 model.setTabNeedsRefreshState(1, false)
