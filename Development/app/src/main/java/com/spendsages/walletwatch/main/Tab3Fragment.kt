@@ -920,6 +920,20 @@ class Tab3Fragment: Fragment() {
                 /* Restore the selected category index. */
                 spinFiltering.setSelection(selectedCategory)
 
+                /* Forcibly uncheck all checkboxes.
+                * The user may have changed a category label,
+                * which makes it impossible to recalculate
+                * the sum of the selected entries. */
+                adapterRecycler.submitClear()
+                /* Clear the array, so that it is empty. */
+                selectedEntries.clear()
+                selectedSum = 0.00
+                /* Immediately display the changes in the app. */
+                deselectAllCheckBox.text = getString(R.string.deselectAllString)
+                toggleButton(deselectAllCheckBox, false)
+                deselectAllCheckBox.isChecked = false
+                toggleButton(deleteButton, false)
+
                 /* Reset the tab's model boolean. */
                 model.setTabNeedsRefreshState(2, false)
             }
