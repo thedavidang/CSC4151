@@ -86,67 +86,67 @@ class CategoryFragment : Fragment() {
     * Returns: Nothing. */
     private fun checkInputs() {
         /* Reset changed array. */
-        changed[0] = ""
-        changed[1] = ""
-        changed[2] = ""
+        changed.fill("")
 
         /* Grab user input values and sanitize whitespaces. */
+        val categoryInputs = arrayOf("", "", "")
         for ((indexTextbox, categoryTextbox) in categoryTextboxes.withIndex()) {
             /* First, trim off any leading and trailing whitespaces.
             *    (e.g. " Test Category   #1 " -> "Test Category   #1"
             * Then, truncate multiple whitespaces in between words into a single space each.
             *    (e.g. "Test Category   #1" -> "Test Category #1"). */
-            val categoryInput = categoryTextbox!!.text.toString().trim().replace(
+            categoryInputs[indexTextbox] = categoryTextbox!!.text.toString().trim().replace(
                 Regex("\\s+"), " ")
 
-            /* Immediately disable the Save Changes button and return
-            * since there are duplicate user inputs. */
-            if (categoryInput in changed) {
-                toggleSaveButton(false)
-                return
-            } else {
-                /* Otherwise, check if the user input is
-                * an already existing, saved category label.
-                * If so, then set a null in the same position as the existing
-                * category label as to ignore reordering. */
-                var categoryChanged = true
+            /* Check if the user input is
+            * an already existing, saved category label.
+            * If so, then set a null in the same position as the existing
+            * category label as to ignore reordering. */
+            var categoryChanged = true
 
-                for (i in 0..2) {
-                    val category = model.getCategories()[i + 1]
-                    /* Just to be extra cautious, trim and truncate whitespaces on
-                    * the saved "categories" strings and force both strings to be fully lowercase
-                    * as to guarantee consistent style while comparing. */
-                    val categoryFormatted = category.trim().replace(
-                        Regex("\\s+"), " "
-                    ).lowercase()
-                    if (categoryFormatted == categoryInput.lowercase()) {
-                        /* Set the null and move on to the next category textbox input. */
-                        changed[i] = null
-                        categoryChanged = false
-                        break
-                    }
+            for (i in 0..2) {
+                val category = model.getCategories()[i + 1]
+                /* Just to be extra cautious, trim and truncate whitespaces on
+                * the saved "categories" strings and force both strings to be fully lowercase
+                * as to guarantee consistent style while comparing. */
+                val categoryFormatted = category.trim().replace(
+                    Regex("\\s+"), " "
+                ).lowercase()
+                if (categoryFormatted == categoryInputs[indexTextbox].lowercase()) {
+                    /* Set the null and move on to the next category textbox input. */
+                    changed[i] = null
+                    categoryChanged = false
+                    break
                 }
+            }
 
-                /* Getting here indicates that the user input is not a duplicate user input
-                * and is not an already existing, saved category label. */
-                if (categoryChanged) {
-                    /* So, place the new category label in an open slot,
-                    * preferably the textbox index, if possible.
-                    * Otherwise, just stick it in the first available slot. */
-                    val openSlotIndex = if (changed[indexTextbox].isNullOrBlank()) {
-                        indexTextbox
-                    } else {
-                        changed.indexOf("")
-                    }
-                    changed[openSlotIndex] = categoryInput
+            /* Getting here indicates that the user input is not a duplicate user input
+            * and is not an already existing, saved category label. */
+            if (categoryChanged) {
+                /* So, place the new category label in an open slot,
+                * preferably the textbox index, if possible.
+                * Otherwise, just stick it in the first available slot. */
+                val openSlotIndex = if (changed[indexTextbox].isNullOrBlank()) {
+                    indexTextbox
+                } else {
+                    changed.indexOf("")
                 }
+                changed[openSlotIndex] = categoryInputs[indexTextbox]
             }
         }
 
-        /* Disable Save Changes button if at least one element is non-null.
-        * Otherwise, disable the Save Changes button, since the user did not input
-        * anything that was actually any different from what was already there. */
-        toggleSaveButton(changed.any { it != null })
+        /* Disable the Save Changes button if any of the following are true:
+        *   A) There are duplicate user inputs.
+        *   B) There are empty string user inputs.
+        *   C) There are no user inputs different from the saved category labels. */
+        if ((categoryInputs.distinct().size != categoryInputs.size) ||
+            (categoryInputs.any { it.isBlank() }) ||
+            (changed.all { it == null })) {
+            toggleSaveButton(false)
+        } else {
+            /* Otherwise, enable the Save Changes button. */
+            toggleSaveButton(true)
+        }
     }
 
     override fun onCreateView(
