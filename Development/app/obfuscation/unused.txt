@@ -20805,7 +20805,6 @@ kotlin.collections.ArraysKt___ArraysJvmKt:
     public static synthetic void fill$default(float[],float,int,int,int,java.lang.Object)
     public static synthetic void fill$default(int[],int,int,int,int,java.lang.Object)
     public static synthetic void fill$default(long[],long,int,int,int,java.lang.Object)
-    public static synthetic void fill$default(java.lang.Object[],java.lang.Object,int,int,int,java.lang.Object)
     public static synthetic void fill$default(short[],short,int,int,int,java.lang.Object)
     public static synthetic void fill$default(boolean[],boolean,int,int,int,java.lang.Object)
     public static final java.util.List filterIsInstance(java.lang.Object[],java.lang.Class)
@@ -21161,6 +21160,7 @@ kotlin.collections.ArraysKt___ArraysKt:
     public static final synthetic boolean contains(float[],float)
     public static final boolean contains(int[],int)
     public static final boolean contains(long[],long)
+    public static final boolean contains(java.lang.Object[],java.lang.Object)
     public static final boolean contains(short[],short)
     public static final boolean contains(boolean[],boolean)
     private static final int count(byte[])
@@ -21187,7 +21187,6 @@ kotlin.collections.ArraysKt___ArraysKt:
     public static final java.util.List distinct(float[])
     public static final java.util.List distinct(int[])
     public static final java.util.List distinct(long[])
-    public static final java.util.List distinct(java.lang.Object[])
     public static final java.util.List distinct(short[])
     public static final java.util.List distinct(boolean[])
     public static final java.util.List distinctBy(byte[],kotlin.jvm.functions.Function1)
@@ -22499,7 +22498,6 @@ kotlin.collections.ArraysKt___ArraysKt:
     public static final java.util.Collection toCollection(float[],java.util.Collection)
     public static final java.util.Collection toCollection(int[],java.util.Collection)
     public static final java.util.Collection toCollection(long[],java.util.Collection)
-    public static final java.util.Collection toCollection(java.lang.Object[],java.util.Collection)
     public static final java.util.Collection toCollection(short[],java.util.Collection)
     public static final java.util.Collection toCollection(boolean[],java.util.Collection)
     public static final double[] toDoubleArray(java.lang.Double[])
@@ -22539,7 +22537,6 @@ kotlin.collections.ArraysKt___ArraysKt:
     public static final java.util.Set toMutableSet(float[])
     public static final java.util.Set toMutableSet(int[])
     public static final java.util.Set toMutableSet(long[])
-    public static final java.util.Set toMutableSet(java.lang.Object[])
     public static final java.util.Set toMutableSet(short[])
     public static final java.util.Set toMutableSet(boolean[])
     public static final java.util.Set toSet(byte[])
@@ -22683,7 +22680,6 @@ kotlin.collections.CollectionsKt__CollectionsKt:
     public static final varargs java.util.List listOfNotNull(java.lang.Object[])
     private static final java.util.List mutableListOf()
     public static final varargs java.util.List mutableListOf(java.lang.Object[])
-    public static final java.util.List optimizeReadOnlyList(java.util.List)
     private static final java.util.Collection orEmpty(java.util.Collection)
     private static final java.util.List orEmpty(java.util.List)
     private static final void rangeCheck$CollectionsKt__CollectionsKt(int,int,int)
@@ -23003,10 +22999,7 @@ kotlin.collections.CollectionsKt___CollectionsKt:
     public static final double[] toDoubleArray(java.util.Collection)
     public static final float[] toFloatArray(java.util.Collection)
     public static final int[] toIntArray(java.util.Collection)
-    public static final java.util.List toList(java.lang.Iterable)
     public static final long[] toLongArray(java.util.Collection)
-    public static final java.util.List toMutableList(java.lang.Iterable)
-    public static final java.util.List toMutableList(java.util.Collection)
     public static final java.util.Set toMutableSet(java.lang.Iterable)
     public static final java.util.Set toSet(java.lang.Iterable)
     public static final short[] toShortArray(java.util.Collection)
@@ -29862,7 +29855,7 @@ androidx.core.os.LocaleListCompat:
     public final int size()
     public final java.lang.String toLanguageTags()
     public static androidx.core.os.LocaleListCompat wrap(android.os.LocaleList)
-androidx.core.os.LocaleListCompatWrapper$$InternalSyntheticThrowCCEIfNotNull$206$eabde584e09f5dbef5e5c77b987ffae1119ec566c4556bde1e78e256d6ae9d7b$0
+androidx.core.os.LocaleListCompatWrapper$$InternalSyntheticThrowCCEIfNotNull$207$eabde584e09f5dbef5e5c77b987ffae1119ec566c4556bde1e78e256d6ae9d7b$0
 androidx.core.os.LocaleListCompatWrapper
 androidx.core.os.LocaleListInterface:
     public abstract java.util.Locale get()
@@ -31356,7 +31349,7 @@ androidx.lifecycle.ViewModel:
     public abstract void clear()
     public static void closeWithRuntimeException(java.lang.Object)
     public abstract java.lang.Object getTag()
-androidx.lifecycle.ViewModelProvider$$InternalSyntheticThrowCCEIfNotNull$132$d9ef27056c92cb35606c8162a27672e3c06bbd16f1ea6710f3881b0047422c20$0
+androidx.lifecycle.ViewModelProvider$$InternalSyntheticThrowCCEIfNotNull$133$d9ef27056c92cb35606c8162a27672e3c06bbd16f1ea6710f3881b0047422c20$0
 androidx.lifecycle.ViewModelProvider$AndroidViewModelFactory$Companion
 androidx.lifecycle.ViewModelProvider$AndroidViewModelFactory
 androidx.lifecycle.ViewModelProvider$Factory$Companion
@@ -33607,7 +33600,7 @@ com.google.android.material.datepicker.MaterialCalendar$$InternalSyntheticThrowC
 com.google.android.material.datepicker.MaterialCalendar$$InternalSyntheticThrowCCEIfNotNull$16$a4c48b855944400f3a37fd7ce152a9437d0f7b776d2ddb6f6ae01d36b3b56503$1
 com.google.android.material.datepicker.MaterialCalendar$1:
     public final synthetic com.google.android.material.datepicker.MaterialCalendar this$0
-com.google.android.material.datepicker.MaterialCalendar$3$$InternalSyntheticThrowCCEIfNotNull$175$11d4ec5a207ce79f5d476fe91140e0eb1349444d0450a9810d3f7c5973a317b3$0
+com.google.android.material.datepicker.MaterialCalendar$3$$InternalSyntheticThrowCCEIfNotNull$176$11d4ec5a207ce79f5d476fe91140e0eb1349444d0450a9810d3f7c5973a317b3$0
 com.google.android.material.datepicker.MaterialCalendar$3:
     public static void onDayClick()
 com.google.android.material.datepicker.MaterialCalendar$4:
@@ -33643,7 +33636,7 @@ com.google.android.material.datepicker.MaterialCalendarGridView:
 com.google.android.material.datepicker.MaterialDatePicker$$InternalSyntheticThrowCCEIfNotNull$16$6f9012f149ef32ee9a67cbfe32c48b15f6aac2dda686c51d0d808efe178f2b7f$0
 com.google.android.material.datepicker.MaterialDatePicker$$InternalSyntheticThrowCCEIfNotNull$30$bda0d98b3cbf8cb5d502e9d97dd349e14cb6aff4142636fd41860955b0102acd$0
 com.google.android.material.datepicker.MaterialDatePicker$$InternalSyntheticThrowCCEIfNotNull$30$bda0d98b3cbf8cb5d502e9d97dd349e14cb6aff4142636fd41860955b0102acd$1
-com.google.android.material.datepicker.MaterialDatePicker$1$$InternalSyntheticThrowCCEIfNotNull$201$fa1d04f1d21baf893c4683b5052f5e1a3880949fd73761df9abbfd4297b09909$0
+com.google.android.material.datepicker.MaterialDatePicker$1$$InternalSyntheticThrowCCEIfNotNull$202$fa1d04f1d21baf893c4683b5052f5e1a3880949fd73761df9abbfd4297b09909$0
 com.google.android.material.datepicker.MaterialDatePicker$1
 com.google.android.material.datepicker.MaterialDatePicker$2
 com.google.android.material.datepicker.MaterialDatePicker$3:
@@ -33665,7 +33658,7 @@ com.google.android.material.datepicker.MaterialDatePicker:
     public final int getThemeResId()
     public static void updateHeader()
 com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
-com.google.android.material.datepicker.MaterialTextInputPicker$$InternalSyntheticThrowCCEIfNotNull$201$10f04847218b83c9bef9d4f97278bb386358b28cd393fa1c3f960e62558304c9$0
+com.google.android.material.datepicker.MaterialTextInputPicker$$InternalSyntheticThrowCCEIfNotNull$202$10f04847218b83c9bef9d4f97278bb386358b28cd393fa1c3f960e62558304c9$0
 com.google.android.material.datepicker.MaterialTextInputPicker$1
 com.google.android.material.datepicker.MaterialTextInputPicker:
     public com.google.android.material.datepicker.DateSelector dateSelector
@@ -34623,7 +34616,6 @@ com.spendsages.walletwatch.main.RecyclerAdapter:
     public static void onCurrentListChanged()
     public static void setEditListener()
     public static void setSelectListener()
-    public static void submitClear()
     public static void submitDelete()
     public static void submitDeselect()
     public static void submitEdit()
@@ -34693,21 +34685,23 @@ kotlin.collections.ArrayDeque:
     public final int decremented(int)
     public final int getSize()
     public final java.lang.Object removeAt(int)
-kotlin.collections.ArraysKt:
-    public static final int getLastIndex(java.lang.Object[])
+kotlin.collections.ArraysKt
 kotlin.collections.ArraysKt___ArraysJvmKt:
     public static synthetic void copyInto$default(int[],int[],int)
-    public static final void fill(java.lang.Object[],int,int)
 kotlin.collections.ArraysKt___ArraysKt
 kotlin.collections.ArraysUtilJVM
-kotlin.collections.CollectionsKt:
-    public static kotlin.collections.CollectionsKt___CollectionsKt$asSequence$$inlined$Sequence$1 asSequence(java.lang.Iterable)
-    public static boolean contains(java.util.Collection,java.lang.Object)
+kotlin.collections.CollectionsKt
 kotlin.collections.CollectionsKt__CollectionsJVMKt:
     public static java.util.List listOf(java.lang.Object)
 kotlin.collections.CollectionsKt__CollectionsKt:
     public static java.util.List emptyList()
     public static void throwIndexOverflow()
+kotlin.collections.CollectionsKt__IteratorsJVMKt
+kotlin.collections.CollectionsKt__IteratorsKt
+kotlin.collections.CollectionsKt__MutableCollectionsJVMKt
+kotlin.collections.CollectionsKt__MutableCollectionsKt
+kotlin.collections.CollectionsKt__ReversedViewsKt
+kotlin.collections.CollectionsKt___CollectionsJvmKt
 kotlin.collections.CollectionsKt___CollectionsKt
 kotlin.collections.EmptyIterator:
     public static java.lang.Void next()
