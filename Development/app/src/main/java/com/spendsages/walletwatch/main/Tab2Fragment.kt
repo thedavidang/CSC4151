@@ -876,7 +876,7 @@ class Tab2Fragment: Fragment() {
 
         if (allowRefresh)
         {
-            /* Disable view refresh when navigating away to Tab2Fragment,
+            /* Disable view refresh when navigating to Tab2Fragment,
             * so that the app does not freeze. */
             allowRefresh = false
             /* Tab 2 is currently visible to the user,

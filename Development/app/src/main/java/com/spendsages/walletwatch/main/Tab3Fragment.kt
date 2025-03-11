@@ -443,7 +443,7 @@ class Tab3Fragment: Fragment() {
             override fun onItemSelected(
                 parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 if (spinSortingCreated) {
-                    adapterRecycler.submitSort(recycler, spinSorting.selectedItemPosition)
+                    adapterRecycler.submitSort(recycler, position)
                 }
                 else {
                     spinSortingCreated = true
