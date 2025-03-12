@@ -1,10 +1,12 @@
 package com.spendsages.walletwatch.main
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -749,6 +751,10 @@ class Tab2Fragment: Fragment() {
 
             override fun onValueDeselected() {}
         }
+
+        /* Hide the keyboard. */
+        (main.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(view?.windowToken, 0)
 
         return rootView
     }

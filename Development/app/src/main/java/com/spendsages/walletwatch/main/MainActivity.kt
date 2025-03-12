@@ -98,6 +98,7 @@ class MainActivity: AppCompatActivity() {
                 } else if (state == SCROLL_STATE_IDLE) {
                     /* Hide the loading bar once tab is finished loading. */
                     loadingBar.visibility = ProgressBar.GONE
+                    binding.mainPager.isUserInputEnabled = true
                 }
             }
 
@@ -119,12 +120,14 @@ class MainActivity: AppCompatActivity() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                /* Check if the app is past the launch stage and
-                * that current tab is not Tab 1. */
-                if (appLaunched && position != 0) {
-                    /* Hide the keyboard. */
-                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                        .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
+                /* Check if the app is past the launch stage and, if so,
+                * then disable user input while ViewPager2 is scrolling
+                * to the selected tab via its swipe animation.
+                * Without this code, the user could confuse ViewPager2
+                * by quickly tapping inside Tab 1 while transitioning
+                * to Tab 3 and cause the app to freeze. */
+                if (appLaunched) {
+                    binding.mainPager.isUserInputEnabled = false
                 }
             }
         })

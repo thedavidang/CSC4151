@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
@@ -416,8 +417,8 @@ class CategoryFragment : Fragment() {
         @Suppress("ClickableViewAccessibility")
         rootView.setOnTouchListener { _: View, _: MotionEvent ->
             /* Hide the keyboard. */
-            (settings.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(categoryTextboxes[0]!!.windowToken, 0)
+            (settings.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(rootView.windowToken, 0)
         }
 
         return rootView

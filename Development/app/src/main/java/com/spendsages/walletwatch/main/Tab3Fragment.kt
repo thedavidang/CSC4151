@@ -1,7 +1,7 @@
 package com.spendsages.walletwatch.main
 
 import android.app.AlertDialog
-import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
@@ -852,8 +852,8 @@ class Tab3Fragment: Fragment() {
         /* Set the listener to reveal the CalendarView and its background. */
         dateButton.setOnClickListener {
             /* Hide the keyboard. */
-            (main.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(amountInput.windowToken, 0)
+            (main.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(view?.windowToken, 0)
 
             /* Temporarily disable buttons. */
             toggleButton(cancelButton, false)
@@ -869,8 +869,8 @@ class Tab3Fragment: Fragment() {
         @Suppress("ClickableViewAccessibility")
         editOverlay.setOnTouchListener { _: View, _: MotionEvent ->
             /* Hide the keyboard. */
-            (main.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(amountInput.windowToken, 0)
+            (main.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(view?.windowToken, 0)
         }
 
         /* Refresh the category label for each category button. */
@@ -888,6 +888,10 @@ class Tab3Fragment: Fragment() {
 
         /* Reset the tab's model boolean. */
         model.setTabNeedsRefreshState(2, false)
+
+        /* Hide the keyboard. */
+        (main.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(view?.windowToken, 0)
 
         return rootView
     }
