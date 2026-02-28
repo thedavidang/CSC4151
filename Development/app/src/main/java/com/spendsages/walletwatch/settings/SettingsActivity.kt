@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -37,6 +40,14 @@ class SettingsActivity : AppCompatActivity() {
 
         /* Display the activity_settings.xml layout. */
         setContentView(binding.root)
+
+        /* Enable Edge-to-Edge and handle insets. */
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.settingsPager) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, 0, 0, systemBars.bottom)
+            insets
+        }
 
         /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
         tabLayout = findViewById(R.id.settingsTabs)
