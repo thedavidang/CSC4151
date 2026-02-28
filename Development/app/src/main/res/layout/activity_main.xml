@@ -19,6 +19,7 @@
 
         <RelativeLayout
             android:id="@+id/mainTopLayout"
+            android:layout_marginTop="60dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
