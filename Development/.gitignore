@@ -151,6 +151,7 @@ obj/
 .idea/appInsightsSettings.xml
 .idea/runConfigurations.xml
 .idea/deploymentTargetSelector.xml
+.idea/deviceManager.xml
 
 # Legacy Eclipse project files
 .cproject
