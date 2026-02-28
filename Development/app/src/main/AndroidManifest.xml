@@ -17,18 +17,17 @@
         android:directBootAware="false"
         android:hardwareAccelerated="true"
         android:theme="@style/AppTheme"
-        tools:targetApi="s">
+        android:intentMatchingFlags="enforceIntentFilter"
+        tools:targetApi="36">
         <activity
             android:name="com.spendsages.walletwatch.main.MainActivity"
-            android:screenOrientation="portrait"
             android:noHistory="false"
             android:windowSoftInputMode="stateVisible"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true"
             android:showForAllUsers="false"
             android:showWhenLocked="false"
-            android:turnScreenOn="false"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            android:turnScreenOn="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,15 +36,13 @@
         <activity
             android:name="com.spendsages.walletwatch.settings.SettingsActivity"
             android:parentActivityName=".main.MainActivity"
-            android:screenOrientation="portrait"
             android:noHistory="true"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="false"
             android:showForAllUsers="false"
             android:showWhenLocked="false"
-            android:turnScreenOn="false"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
+            android:turnScreenOn="false"/>
     </application>
 
 </manifest>
