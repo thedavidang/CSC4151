@@ -38,10 +38,6 @@ base {
     archivesName.set("WalletWatch-Installer")
 }
 
-configurations.all {
-    exclude(group = "com.android.support", module = "support-v4")
-}
-
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     val kotlinVersion: String by rootProject.extra
@@ -51,13 +47,5 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
-    implementation("com.github.lecho:hellocharts-library:1.5.8") {
-        exclude(group = "com.android.support")
-    }
-    implementation("androidx.core:core-ktx:1.17.0") {
-        exclude(group = "com.android.support")
-    }
-    implementation("androidx.legacy:legacy-support-v4:1.0.0") {
-        exclude(group = "com.android.support")
-    }
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

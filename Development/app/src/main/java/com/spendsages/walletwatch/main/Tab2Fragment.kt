@@ -13,21 +13,23 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.spendsages.walletwatch.DataManager
 import com.spendsages.walletwatch.R
 import com.spendsages.walletwatch.SharedViewModel
 import com.spendsages.walletwatch.databinding.FragmentTab2Binding
-import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener
-import lecho.lib.hellocharts.model.Axis
-import lecho.lib.hellocharts.model.AxisValue
-import lecho.lib.hellocharts.model.Line
-import lecho.lib.hellocharts.model.LineChartData
-import lecho.lib.hellocharts.model.PieChartData
-import lecho.lib.hellocharts.model.PointValue
-import lecho.lib.hellocharts.model.SliceValue
-import lecho.lib.hellocharts.model.Viewport
-import lecho.lib.hellocharts.view.LineChartView
-import lecho.lib.hellocharts.view.PieChartView
 import org.w3c.dom.Document
 import java.text.DecimalFormat
 import java.util.Calendar
@@ -47,8 +49,8 @@ class Tab2Fragment: Fragment() {
     private lateinit var main: MainActivity
     private lateinit var model: SharedViewModel
 
-    private lateinit var lineChart: LineChartView
-    private lateinit var pieChart: PieChartView
+    private lateinit var lineChart: LineChart
+    private lateinit var pieChart: PieChart
 
     private lateinit var category1Label: String
     private lateinit var category1Text: TextView
@@ -132,234 +134,151 @@ class Tab2Fragment: Fragment() {
         /* Initialize 0-based counter for the selected time interval. */
         var counter = dataPoints.size - 1
 
-        /* Initialize minimum and maximum axis values. */
-        val minX = 0.0f
-        val maxX = counter.toFloat()
-
-        var minY = -1.0f
-        var maxY = -1.0f
-
         /* Initialize array of data points. */
-        val values = ArrayList<PointValue>(counter)
+        val values = ArrayList<Entry>(counter)
 
         /* Populate the coordinates for each data point. */
         for (i in 0..counter) {
             val x = i.toFloat()
             val y = dataPoints[counter].toFloat()
 
-            values.add(PointValue(x, y))
-
-            /* Update Y-axis minimum and maximum values. */
-            if (minY == -1.0f) {
-                minY = y
-                maxY = y
-            }
-            else if (y < minY) {
-                minY = y
-            }
-            else if (y > maxY) {
-                maxY = y
-            }
+            values.add(Entry(x, y))
 
             /* Decrement "counter". For loop uses "i" as its counter. */
             counter--
         }
 
         /* Create a line object and color it according to the selected category. */
-        val line = Line(values)
+        val dataSet = LineDataSet(values, "")
+        /* Set the line width to 4f (4dp). */
+        dataSet.setLineWidth(4f);
         /* Enable datapoint labels. */
-        line.setHasLabelsOnlyForSelected(true)
+        dataSet.setDrawValues(false)
         /* Check which category the user selected. */
         when (category) {
             /* Set line to black for All Categories. */
-            0 -> { line.color = resources.getColor(R.color.colorAll, context?.theme) }
+            0 -> { dataSet.color = resources.getColor(R.color.colorAll, context?.theme) }
             /* Set line to red for Category 1. */
-            1 -> { line.color = resources.getColor(R.color.colorCategory1, context?.theme) }
+            1 -> { dataSet.color = resources.getColor(R.color.colorCategory1, context?.theme) }
             /* Set line to green for Category 2. */
-            2 -> { line.color = resources.getColor(R.color.colorCategory2, context?.theme) }
+            2 -> { dataSet.color = resources.getColor(R.color.colorCategory2, context?.theme) }
             /* Set line to blue for Category 3. */
-            3 -> { line.color = resources.getColor(R.color.colorCategory3, context?.theme) }
+            3 -> { dataSet.color = resources.getColor(R.color.colorCategory3, context?.theme) }
         }
 
-        /* Initialize the lines array such that the line can be added to the LineChartData. */
-        val lines = ArrayList<Line>(1)
-        lines.add(line)
-        /* Add the line to the LineChartData. */
-        val data = LineChartData()
-        data.lines = lines
+        /* Display datapoint dots on the line. */
+        dataSet.setDrawCircles(true)
+        dataSet.setDrawCircleHole(false)
+        dataSet.setCircleColor(dataSet.color)
+        dataSet.circleRadius = 6f
 
-        /* Populate the X-axis labels with an initial capacity of 12. */
-        val xAxisValues = ArrayList<AxisValue>(12)
+        /* Add the dataSet to the LineData. */
+        val data = LineData(dataSet)
+
+        /* Map X-axis labels. */
+        val xAxisLabels = ArrayList<String>()
         /* Check which time interval the user selected. */
         when (timeSpan) {
             /* Last 7 Days. */
             0 -> {
-                /* Determine the current day. */
                 var currentDay = cal.get(Calendar.DAY_OF_WEEK)
-                var currentDayString = ""
-                /* Grab the abbreviation for the last 7 days. */
-                var j = 7
-                repeat(j) {
-                    j -= 1
-                    when (currentDay) {
-                        1 -> { currentDayString = "Sun" }
-                        2 -> { currentDayString = "Mon" }
-                        3 -> { currentDayString = "Tue" }
-                        4 -> { currentDayString = "Wed" }
-                        5 -> { currentDayString = "Thu" }
-                        6 -> { currentDayString = "Fri" }
-                        7 -> { currentDayString = "Sat" }
-                    }
-                    /* Add the abbreviation to the X-axis labels array. */
-                    val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(currentDayString)
-                    xAxisValues.add(xAxisValue)
+                repeat(7) {
+                    xAxisLabels.add(when (currentDay) {
+                        1 -> "Sun"
+                        2 -> "Mon"
+                        3 -> "Tue"
+                        4 -> "Wed"
+                        5 -> "Thu"
+                        6 -> "Fri"
+                        7 -> "Sat"
+                        else -> ""
+                    })
                     currentDay -= 1
-                    /* Account for rollover into Sunday of the previous week. */
-                    if (currentDay == 0) {
-                        currentDay = 7
-                    }
+                    if (currentDay == 0) currentDay = 7
                 }
             }
             /* Year To Date (YTD). */
             1 -> {
-                /* Determine the current month. */
                 var currentMonth = cal.get(Calendar.MONTH)
-                /* Grab the abbreviation for each month of the current year. */
-                var j = currentMonth + 1
-                repeat(j) { i ->
-                    j -= 1
-                    /* Add the abbreviation to the X-axis labels array. */
-                    val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(monthAbbreviation[currentMonth])
-                    xAxisValues.add(xAxisValue)
+                repeat(currentMonth + 1) {
+                    xAxisLabels.add(monthAbbreviation[currentMonth])
                     currentMonth -= 1
                 }
             }
             /* Last 12 Months. */
             2 -> {
-                /* Determine the current month. */
                 var currentMonth = cal.get(Calendar.MONTH)
-                /* Grab the abbreviation for the last 12 months. */
-                var j = 12
-                repeat(j) {
-                    j -= 1
-                    /* Add the abbreviation to the X-axis labels array. */
-                    val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(monthAbbreviation[currentMonth])
-                    xAxisValues.add(xAxisValue)
+                repeat(12) {
+                    xAxisLabels.add(monthAbbreviation[currentMonth])
                     currentMonth -= 1
-                    /* Account for rollover into December of the previous year. */
-                    if (currentMonth == -1) {
-                        currentMonth = 11
-                    }
+                    if (currentMonth == -1) currentMonth = 11
                 }
             }
             /* Last Year. */
             3 -> {
-                /* The X-axis label on the far right will be "Dec" for December,
-                * which is the 12th month or zero-based index 11. */
                 var currentMonth = 11
-                /* Grab the abbreviation for each of the 12 months. */
-                var j = 12
-                repeat(j) {
-                    j -= 1
-                    /* Add the abbreviation to the X-axis labels array. */
-                    val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(monthAbbreviation[currentMonth])
-                    xAxisValues.add(xAxisValue)
+                repeat(12) {
+                    xAxisLabels.add(monthAbbreviation[currentMonth])
                     currentMonth -= 1
                 }
             }
             /* All Time. */
             else -> {
-                /* Determine the current year. */
                 var currentYear = cal.get(Calendar.YEAR)
-                var j = dataPoints.size
-                /* Grab all recorded years. */
-                repeat(j) {
-                    j -= 1
-                    /* Add the year to the X-axis labels array. */
-                    val xAxisValue = AxisValue(j.toFloat())
-                    xAxisValue.setLabel(currentYear.toString())
-                    xAxisValues.add(xAxisValue)
+                repeat(dataPoints.size) {
+                    xAxisLabels.add(currentYear.toString())
                     currentYear -= 1
                 }
             }
         }
+        xAxisLabels.reverse()
 
-        /* Populate the X-axis with labels. */
-        val axisX = Axis(xAxisValues).setHasLines(true)
-        axisX.maxLabelChars = 4
-        axisX.textColor = Color.BLACK
-        data.axisXBottom = axisX
-
-        /* Adjust the dimensions of the line chart to fit the highest Y-value data point. */
-        val view = Viewport(minX, maxY, maxX, minY)
-        lineChart.currentViewport = view
-
-        /* Populate the Y-axis with eleven values and labels. */
-        val yAxisValues = ArrayList<AxisValue>(11)
-        /* Setup step value such that there will be eleven evenly spaced Y-axis labels. */
-        val step = (maxY - minY) / 9
-        /* Initialize the bottom Y-axis value and label. */
-        var yValue = minY
-        var yLabel: String
-        /* Iterate to create eleven evenly spaced Y-axis values with labels. */
-        repeat(11) {
-            /* Calculate the scientific notation exponent of the Y-value by
-            * taking the floor of the base 10 logarithm of the Y-axis value. */
-            val yValExponent = kotlin.math.floor(kotlin.math.log10(yValue.toDouble()))
-            /* Check if the Y-axis value is less than 100. */
-            if (yValExponent < 2.0) {
-                /* Display cents with two decimal places. */
-                yLabel = DecimalFormat("0.00").format(yValue)
+        val xAxis = lineChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(true)
+        xAxis.textColor = Color.BLACK
+        xAxis.setTextSize(14f)
+        /* Ensure labels are aligned with data points and not duplicated. */
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setLabelCount(xAxisLabels.size, true)
+        xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                return xAxisLabels.getOrNull(value.toInt()) ?: ""
             }
-            /* Check if the Y-axis value is from 100 to 1,000. */
-            else if (yValExponent < 3.0) {
-                /* Display dollars without cents with no decimal places. */
-                yLabel = yValue.toString().substringBefore(".")
+        }
+
+        val yAxisLeft = lineChart.axisLeft
+        yAxisLeft.textColor = Color.BLACK
+        yAxisLeft.setDrawGridLines(true)
+        yAxisLeft.setTextSize(14f);
+        /* Increase padding between Y-axis labels and the Y-axis. */
+        yAxisLeft.xOffset = 10f
+        yAxisLeft.valueFormatter = object : ValueFormatter() {
+            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                val yValExponent = kotlin.math.floor(kotlin.math.log10(value.toDouble()))
+                return if (yValExponent < 2.0) {
+                    DecimalFormat("0.00").format(value)
+                } else if (yValExponent < 3.0) {
+                    value.toString().substringBefore(".")
+                } else if ((yValExponent % 3.0) == 0.0) {
+                    val metricPrefix = main.metric[((yValExponent / 3) - 1).toInt()]
+                    val yString = value.toDouble().toLong().toString()
+                    yString.substring(0, 1) + "." + yString.substring(1, 2) + " " + metricPrefix
+                } else {
+                    val metricPrefix = main.metric[((yValExponent / 3) - 1).toInt()]
+                    value.toLong().toString().substring(0, ((yValExponent % 3) + 1).toInt()) + " " + metricPrefix
+                }
             }
-            /* Check if Y-axis value needs to have at least 2 significant digits (e.g. 9.0 G). */
-            else if ((yValExponent % 3.0) == 0.0) {
-                /* Determine the metric prefix by subtracting one from
-                * the floor of the exponent divided by three. */
-                val metricPrefix = main.metric[((yValExponent / 3) - 1).toInt()]
-                val yString = yValue.toDouble().toLong().toString()
-                /* Add one decimal as to have 2 significant digits. */
-                yLabel = yString.substring(0, 1) + "." + yString.substring(1, 2) +
-                        " " + metricPrefix
-            }
-            /* Otherwise, the Y-axis value is 1,000 or more. */
-            else {
-                /* Determine the metric prefix by subtracting one from
-                * the floor of the exponent divided by three. */
-                val metricPrefix = main.metric[((yValExponent / 3) - 1).toInt()]
-                /* Set the Y-axis label by consolidating the value to the digits before the
-                * thousand separator by getting the substring up to the index of
-                * one plus the remainder of the exponent divided by three. */
-                yLabel = yValue.toLong().toString().substring(0,
-                    ((yValExponent % 3) + 1).toInt()) + " " + metricPrefix
-            }
+        }
 
-            val yAxisValue = AxisValue(yValue)
-            yAxisValue.setLabel(yLabel)
-            /* Add the Y-axis value and label to the Y-axis object. */
-            yAxisValues.add(yAxisValue)
-
-            /* Increment the yValue by the step. */
-            yValue += step
-         }
-
-        /* Populate the Y-axis with values and labels. */
-        val axisY = Axis(yAxisValues).setHasLines(true)
-        /* Limit Y-axis labels to five characters. */
-        axisY.maxLabelChars = 5
-        axisY.textColor = Color.BLACK
-        data.axisYLeft = axisY
-
-        /* Populate the line with the data points. */
-        lineChart.lineChartData = data
+        lineChart.axisRight.isEnabled = false
+        lineChart.description.isEnabled = false
+        lineChart.legend.isEnabled = false
+        /* Add padding to the bottom of the chart area. */
+        lineChart.setExtraOffsets(0f, 0f, 0f, 20f)
+        lineChart.data = data
+        lineChart.invalidate()
     }
 
     /* Purpose: Controller method that populates the pie chart with the selected data set.
@@ -370,7 +289,6 @@ class Tab2Fragment: Fragment() {
     * Returns: Nothing. */
     fun updatePieChart(doc: Document, timeSpan: Int) {
         /* Initialize value variables used to populate the pie chart. */
-        val values = ArrayList<SliceValue>(3)
         val category1Amount: Float
         val category2Amount: Float
         val category3Amount: Float
@@ -411,45 +329,36 @@ class Tab2Fragment: Fragment() {
 
         val total = category1Amount + category2Amount + category3Amount
 
-        /* Set the colors and percentage labels for each of the category data set slices. */
-        val category1Slice = SliceValue(
-            category1Amount, resources.getColor(R.color.colorCategory1, context?.theme)
-        )
+        val entries = ArrayList<PieEntry>()
+        val colors = ArrayList<Int>()
+
         if (category1Amount > 0) {
-            category1Slice.setLabel(
-                ((category1Amount / total) * 100).roundToInt().toString() + " %")
+            entries.add(PieEntry(category1Amount, ((category1Amount / total) * 100).roundToInt().toString() + " %"))
+            colors.add(resources.getColor(R.color.colorCategory1, context?.theme))
         }
-        else {
-            category1Slice.setLabel("")
-        }
-        values.add(category1Slice)
 
-        val category2Slice = SliceValue(
-            category2Amount, resources.getColor(R.color.colorCategory2, context?.theme)
-        )
         if (category2Amount > 0) {
-            category2Slice.setLabel(
-                ((category2Amount / total) * 100).roundToInt().toString() + " %")
+            entries.add(PieEntry(category2Amount, ((category2Amount / total) * 100).roundToInt().toString() + " %"))
+            colors.add(resources.getColor(R.color.colorCategory2, context?.theme))
         }
-        else {
-            category2Slice.setLabel("")
-        }
-        values.add(category2Slice)
 
-        val category3Slice = SliceValue(
-            category3Amount, resources.getColor(R.color.colorCategory3, context?.theme)
-        )
         if (category3Amount > 0) {
-            category3Slice.setLabel(
-                ((category3Amount / total) * 100).roundToInt().toString() + " %")
+            entries.add(PieEntry(category3Amount, ((category3Amount / total) * 100).roundToInt().toString() + " %"))
+            colors.add(resources.getColor(R.color.colorCategory3, context?.theme))
         }
-        else {
-            category3Slice.setLabel("")
-        }
-        values.add(category3Slice)
 
-        /* Populate the pie chart with the colored slices. */
-        pieChart.pieChartData = PieChartData(values).setHasLabels(true)
+        val dataSet = PieDataSet(entries, "")
+        dataSet.colors = colors
+        dataSet.setDrawValues(false)
+
+        val data = PieData(dataSet)
+        pieChart.data = data
+        pieChart.description.isEnabled = false
+        pieChart.legend.isEnabled = false
+        pieChart.setHoleColor(Color.TRANSPARENT)
+        pieChart.setUsePercentValues(true)
+        pieChart.setEntryLabelTextSize(18f)
+        pieChart.invalidate()
     }
 
     /* Purpose: Controller method that populates the totals below the chart.
@@ -741,16 +650,16 @@ class Tab2Fragment: Fragment() {
         }
 
         /* Listener to display value when user taps a datapoint on the line chart. */
-        lineChart.onValueTouchListener = object: LineChartOnValueSelectListener {
-            override fun onValueSelected(lineIndex: Int, pointIndex: Int, value: PointValue?) {
-                if (null != value) {
-                    val output = main.formatDollarAmount(value.y.toDouble())
+        lineChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                if (e != null) {
+                    val output = main.formatDollarAmount(e.y.toDouble())
                     Toast.makeText(context, output, Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onValueDeselected() {}
-        }
+            override fun onNothingSelected() {}
+        })
 
         /* Hide the keyboard. */
         (main.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
