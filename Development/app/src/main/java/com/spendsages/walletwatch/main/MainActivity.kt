@@ -127,7 +127,6 @@ class MainActivity: AppCompatActivity() {
                 } else if (state == SCROLL_STATE_IDLE) {
                     /* Hide the loading bar once tab is finished loading. */
                     loadingBar.visibility = ProgressBar.GONE
-                    binding.mainPager.isUserInputEnabled = true
                 }
             }
 
@@ -147,19 +146,6 @@ class MainActivity: AppCompatActivity() {
                     /* Stop showing the loading bar when the data model
                     * is populated after Tab3Fragment is created. */
                     modelLoaded = true
-                }
-            }
-
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                /* Check if the app is past the launch stage and, if so,
-                * then disable user input while ViewPager2 is scrolling
-                * to the selected tab via its swipe animation.
-                * Without this code, the user could confuse ViewPager2
-                * by quickly tapping inside Tab 1 while transitioning
-                * to Tab 3 and cause the app to freeze. */
-                if (appLaunched) {
-                    binding.mainPager.isUserInputEnabled = false
                 }
             }
         })
