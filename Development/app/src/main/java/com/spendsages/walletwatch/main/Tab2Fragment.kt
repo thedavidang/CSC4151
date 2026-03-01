@@ -255,6 +255,8 @@ class Tab2Fragment: Fragment() {
         yAxisLeft.textColor = Color.BLACK
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.setTextSize(14f)
+        /* Lock the bottom of the Y-axis to 0.0. */
+        yAxisLeft.axisMinimum = 0f
         /* Increase padding between Y-axis labels and the Y-axis. */
         yAxisLeft.xOffset = 10f
         yAxisLeft.valueFormatter = object : ValueFormatter() {
@@ -279,8 +281,8 @@ class Tab2Fragment: Fragment() {
         lineChart.axisRight.isEnabled = false
         lineChart.description.isEnabled = false
         lineChart.legend.isEnabled = false
-        /* Add padding to the bottom of the chart area. */
-        lineChart.setExtraOffsets(0f, 0f, 0f, 20f)
+        /* Add padding to the bottom and right of the chart area. */
+        lineChart.setExtraOffsets(0f, 0f, 20f, 20f)
         lineChart.data = data
         lineChart.invalidate()
     }
