@@ -1,5 +1,7 @@
 package com.spendsages.walletwatch.main
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.Color
 import android.os.Bundle
@@ -12,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
@@ -97,7 +100,7 @@ class Tab2Fragment: Fragment() {
         pieChart.visibility = View.VISIBLE
     }
 
-    /* Purpose: Controller method that disables and greys-out category selector or
+    /* Purpose: Controller method that disables and grays-out category selector or
     * enables and reveals category selector.
     *
     * Parameters: isEnabled represents a Boolean of whether or not to enable the category selector.
@@ -151,7 +154,7 @@ class Tab2Fragment: Fragment() {
         /* Create a line object and color it according to the selected category. */
         val dataSet = LineDataSet(values, "")
         /* Set the line width to 4f (4dp). */
-        dataSet.setLineWidth(4f);
+        dataSet.setLineWidth(4f)
         /* Enable datapoint labels. */
         dataSet.setDrawValues(false)
         /* Check which category the user selected. */
@@ -251,7 +254,7 @@ class Tab2Fragment: Fragment() {
         val yAxisLeft = lineChart.axisLeft
         yAxisLeft.textColor = Color.BLACK
         yAxisLeft.setDrawGridLines(true)
-        yAxisLeft.setTextSize(14f);
+        yAxisLeft.setTextSize(14f)
         /* Increase padding between Y-axis labels and the Y-axis. */
         yAxisLeft.xOffset = 10f
         yAxisLeft.valueFormatter = object : ValueFormatter() {
@@ -267,7 +270,8 @@ class Tab2Fragment: Fragment() {
                     yString.substring(0, 1) + "." + yString.substring(1, 2) + " " + metricPrefix
                 } else {
                     val metricPrefix = main.metric[((yValExponent / 3) - 1).toInt()]
-                    value.toLong().toString().substring(0, ((yValExponent % 3) + 1).toInt()) + " " + metricPrefix
+                    value.toLong().toString().substring(0,
+                        ((yValExponent % 3) + 1).toInt()) + " " + metricPrefix
                 }
             }
         }
@@ -333,17 +337,20 @@ class Tab2Fragment: Fragment() {
         val colors = ArrayList<Int>()
 
         if (category1Amount > 0) {
-            entries.add(PieEntry(category1Amount, ((category1Amount / total) * 100).roundToInt().toString() + " %"))
+            entries.add(PieEntry(category1Amount,
+                ((category1Amount / total) * 100).roundToInt().toString() + " %"))
             colors.add(resources.getColor(R.color.colorCategory1, context?.theme))
         }
 
         if (category2Amount > 0) {
-            entries.add(PieEntry(category2Amount, ((category2Amount / total) * 100).roundToInt().toString() + " %"))
+            entries.add(PieEntry(category2Amount,
+                ((category2Amount / total) * 100).roundToInt().toString() + " %"))
             colors.add(resources.getColor(R.color.colorCategory2, context?.theme))
         }
 
         if (category3Amount > 0) {
-            entries.add(PieEntry(category3Amount, ((category3Amount / total) * 100).roundToInt().toString() + " %"))
+            entries.add(PieEntry(category3Amount,
+                ((category3Amount / total) * 100).roundToInt().toString() + " %"))
             colors.add(resources.getColor(R.color.colorCategory3, context?.theme))
         }
 
@@ -432,20 +439,73 @@ class Tab2Fragment: Fragment() {
 
         category1Text = rootView.findViewById(R.id.category1Text)
         category1Total = rootView.findViewById(R.id.category1Total)
+        category1Total.setOnClickListener {
+            /* Get a handle to the system clipboard service. */
+            val clipboardManager = getSystemService(
+                main, ClipboardManager::class.java)
+            /* Create a ClipData object to hold the data to be copied. */
+            val clipData = ClipData.newPlainText(
+                category1Text.text, category1Total.text.removePrefix("$ "))
+            /* Set the data to the clipboard. */
+            clipboardManager?.setPrimaryClip(clipData)
+            /* Let user know that copy succeeded. */
+            Toast.makeText(main,
+                "Category 1 total copied to clipboard", Toast.LENGTH_SHORT).show()
+        }
 
         category2Text = rootView.findViewById(R.id.category2Text)
         category2Total = rootView.findViewById(R.id.category2Total)
+        category2Total.setOnClickListener {
+            /* Get a handle to the system clipboard service. */
+            val clipboardManager = getSystemService(
+                main, ClipboardManager::class.java)
+            /* Create a ClipData object to hold the data to be copied. */
+            val clipData = ClipData.newPlainText(
+                category2Text.text, category2Total.text.removePrefix("$ "))
+            /* Set the data to the clipboard. */
+            clipboardManager?.setPrimaryClip(clipData)
+            /* Let user know that copy succeeded. */
+            Toast.makeText(main,
+                "Category 2 total copied to clipboard", Toast.LENGTH_SHORT).show()
+        }
 
         category3Text = rootView.findViewById(R.id.category3Text)
         category3Total = rootView.findViewById(R.id.category3Total)
+        category3Total.setOnClickListener {
+            /* Get a handle to the system clipboard service. */
+            val clipboardManager = getSystemService(
+                main, ClipboardManager::class.java)
+            /* Create a ClipData object to hold the data to be copied. */
+            val clipData = ClipData.newPlainText(
+                category3Text.text, category3Total.text.removePrefix("$ "))
+            /* Set the data to the clipboard. */
+            clipboardManager?.setPrimaryClip(clipData)
+            /* Let user know that copy succeeded. */
+            Toast.makeText(main,
+                "Category 3 total copied to clipboard", Toast.LENGTH_SHORT).show()
+        }
 
         allText = rootView.findViewById(R.id.allText)
         allText.text = model.getCategories()[0]
         allTotal = rootView.findViewById(R.id.allTotal)
+        allTotal.setOnClickListener {
+            /* Get a handle to the system clipboard service. */
+            val clipboardManager = getSystemService(
+                main, ClipboardManager::class.java)
+            /* Create a ClipData object to hold the data to be copied. */
+            val clipData = ClipData.newPlainText(
+                allText.text, allTotal.text.removePrefix("$ "))
+            /* Set the data to the clipboard. */
+            clipboardManager?.setPrimaryClip(clipData)
+            /* Let user know that copy succeeded. */
+            Toast.makeText(main, "Total of all categories copied to clipboard",
+                Toast.LENGTH_SHORT).show()
+        }
 
         /* Populate the Chart selector with "Line" and "Pie". */
         spinChartType = rootView.findViewById(R.id.chartTypeSpinner)
-        spinChartType.adapter = ArrayAdapter(main, android.R.layout.simple_spinner_dropdown_item,
+        spinChartType.adapter = ArrayAdapter(main,
+            android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartTypes))
         /* Create a listener that swaps between the line chart and pie chart. */
         spinChartType.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
@@ -463,7 +523,7 @@ class Tab2Fragment: Fragment() {
                     /* If "Pie" is selected. */
                     else -> {
                         /* Show the pie chart, hide the line chart,
-                        * and disable and grey-out the category selector. */
+                        * and disable and gray-out the category selector. */
                         showPieChart()
                         toggleCategorySelector(false)
                     }
@@ -475,7 +535,8 @@ class Tab2Fragment: Fragment() {
         /* Populate Time Interval selector with "Last 7 Days", "Year To Date", "Last 12 Months",
         * "Last Year", and "All Time". */
         spinTimeInterval = rootView.findViewById(R.id.lineIntervalSpinner)
-        spinTimeInterval.adapter = ArrayAdapter(main, android.R.layout.simple_spinner_dropdown_item,
+        spinTimeInterval.adapter = ArrayAdapter(main,
+            android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.chartIntervals))
         /* Listener to switch the time interval selected. */
         spinTimeInterval.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
@@ -558,14 +619,16 @@ class Tab2Fragment: Fragment() {
                             }
                             else {
                                 DataManager.allTime(
-                                    doc, "c-" + spinChartCategory.selectedItemPosition.toString()
+                                    doc, "c-" +
+                                            spinChartCategory.selectedItemPosition.toString()
                                 )
                             }
                     }
                 }
 
                 /* Update the line chart with the new time interval data set. */
-                updateLineChart(data, position, spinChartCategory.selectedItemPosition)
+                updateLineChart(data, position,
+                    spinChartCategory.selectedItemPosition)
 
                 /* Update the pie chart with the new time interval data set. */
                 updatePieChart(doc, position)
@@ -650,11 +713,23 @@ class Tab2Fragment: Fragment() {
         }
 
         /* Listener to display value when user taps a datapoint on the line chart. */
+        lineChart.maxHighlightDistance = 20f
         lineChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 if (e != null) {
+                    /* Get the dollar amount of the tapped data point. */
                     val output = main.formatDollarAmount(e.y.toDouble())
-                    Toast.makeText(context, output, Toast.LENGTH_SHORT).show()
+                    /* Get a handle to the system clipboard service. */
+                    val clipboardManager = getSystemService(
+                        main, ClipboardManager::class.java)
+                    /* Create a ClipData object to hold the data to be copied. */
+                    val clipData = ClipData.newPlainText(
+                        e.x.toString(), output.removePrefix("$ "))
+                    /* Set the data to the clipboard. */
+                    clipboardManager?.setPrimaryClip(clipData)
+                    /* Let user know that copy succeeded. */
+                    Toast.makeText(main, "$output copied to clipboard",
+                        Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -706,8 +781,8 @@ class Tab2Fragment: Fragment() {
 
                 /* Refresh the category names in the Category selector. */
                 spinChartCategory.adapter = ArrayAdapter(main,
-                    android.R.layout.simple_spinner_dropdown_item, model.getCategories()
-                )
+                    android.R.layout.simple_spinner_dropdown_item,
+                    model.getCategories())
 
                 /* Restore the selected category index. */
                 spinChartCategory.setSelection(selectedCategory)
