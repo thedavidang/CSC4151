@@ -1,8 +1,11 @@
 package com.spendsages.walletwatch.main
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsets.Type.displayCutout
+import android.view.WindowInsets.Type.systemBars
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
@@ -64,6 +67,28 @@ class MainActivity: AppCompatActivity() {
             .hideSoftInputFromWindow(binding.mainPager.windowToken, 0)
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        var leftInset = displayCutout()
+        var rightInset = displayCutout()
+        /* Enable Edge-to-Edge and handle insets. */
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainHeadingLayout) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            if (Configuration.ORIENTATION_PORTRAIT == newConfig.orientation) {
+                leftInset = systemBars.left
+                rightInset = systemBars.right
+            }
+            view.setPadding(leftInset, systemBars.top, rightInset, 0)
+            insets
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainPager) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(leftInset, 0, rightInset, systemBars.bottom)
+            insets
+        }
+    }
+
     /* Overwritten function that performs tasks immediately upon app launch. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,14 +97,7 @@ class MainActivity: AppCompatActivity() {
 
         /* Display the activity_main.xml layout. */
         setContentView(binding.root)
-
-        /* Enable Edge-to-Edge and handle insets. */
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.mainPager) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(0, 0, 0, systemBars.bottom)
-            insets
-        }
+        this.onConfigurationChanged(resources.configuration)
 
         /* Setup the round progress bar circle that
         * will be displayed while a tab is loading. */

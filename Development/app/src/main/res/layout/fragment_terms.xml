@@ -9,29 +9,29 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/termsFragment"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".settings.TermsFragment" >
-
-    <View
-        android:id="@+id/menuSpacing"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"  />
-
-    <TextView
-        android:id="@+id/termsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="10dp"
-        android:scrollbars="vertical"
-        android:text="@string/termsString"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/menuSpacing"
-        tools:ignore="VisualLintLongText" />
+        tools:context=".settings.TermsFragment" >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/menuSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"  />
+
+        <TextView
+            android:id="@+id/termsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:scrollbars="vertical"
+            android:text="@string/termsString"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/menuSpacing"
+            tools:ignore="VisualLintLongText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

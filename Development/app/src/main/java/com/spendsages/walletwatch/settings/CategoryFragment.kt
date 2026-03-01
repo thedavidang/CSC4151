@@ -419,6 +419,7 @@ class CategoryFragment : Fragment() {
             /* Hide the keyboard. */
             (settings.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(rootView.windowToken, 0)
+            false
         }
 
         return rootView

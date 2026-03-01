@@ -871,6 +871,7 @@ class Tab3Fragment: Fragment() {
             /* Hide the keyboard. */
             (main.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(view?.windowToken, 0)
+            false
         }
 
         /* Refresh the category label for each category button. */

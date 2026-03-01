@@ -1,6 +1,8 @@
 package com.spendsages.walletwatch.settings
 
+import android.content.res.Configuration
 import android.os.Bundle
+import android.view.WindowInsets.Type.displayCutout
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +34,28 @@ class SettingsActivity : AppCompatActivity() {
         this.viewModelStore.clear()
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        var leftInset = displayCutout()
+        var rightInset = displayCutout()
+        /* Enable Edge-to-Edge and handle insets. */
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.settingsHeadingLayout) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            if (Configuration.ORIENTATION_PORTRAIT == newConfig.orientation) {
+                leftInset = systemBars.left
+                rightInset = systemBars.right
+            }
+            view.setPadding(leftInset, systemBars.top, rightInset, 0)
+            insets
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.settingsPager) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(leftInset, 0, rightInset, systemBars.bottom)
+            insets
+        }
+    }
+
     /* Overwritten function that performs tasks immediately upon opening Settings. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +64,7 @@ class SettingsActivity : AppCompatActivity() {
 
         /* Display the activity_settings.xml layout. */
         setContentView(binding.root)
-
-        /* Enable Edge-to-Edge and handle insets. */
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.settingsPager) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(0, 0, 0, systemBars.bottom)
-            insets
-        }
+        this.onConfigurationChanged(resources.configuration)
 
         /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
         tabLayout = findViewById(R.id.settingsTabs)

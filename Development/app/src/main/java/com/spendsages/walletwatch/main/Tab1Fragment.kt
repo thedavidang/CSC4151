@@ -435,6 +435,7 @@ class Tab1Fragment: Fragment() {
             /* Hide the keyboard. */
             (main.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(amountInput.windowToken, 0)
+            false
         }
 
         return rootView
