@@ -120,7 +120,10 @@ class MainActivity: AppCompatActivity() {
             ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
                 if (!appLaunched) {
-                    showKeyboard(findViewById<EditText>(R.id.amountField))
+                    val keyboard = findViewById<EditText>(R.id.amountField)
+                    if (null != keyboard) {
+                        showKeyboard(keyboard)
+                    }
                     appLaunched = true
                 } else if (position == 2) {
                     /* Stop showing the loading bar when the data model
