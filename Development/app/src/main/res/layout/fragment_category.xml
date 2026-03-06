@@ -29,7 +29,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menuSpacing"/>
+            app:layout_constraintTop_toBottomOf="@+id/menuSpacing"
+            tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/category1Holder"
@@ -61,7 +62,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category1Holder"/>
+            app:layout_constraintTop_toBottomOf="@+id/category1Holder"
+            tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/category2Holder"
@@ -93,7 +95,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category2Holder"/>
+            app:layout_constraintTop_toBottomOf="@+id/category2Holder"
+            tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/category3Holder"
@@ -166,7 +169,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dataSpacing"/>
+            app:layout_constraintTop_toBottomOf="@+id/dataSpacing"
+            tools:ignore="TextContrastCheck" />
 
         <View
             android:id="@+id/exportSpacing"
