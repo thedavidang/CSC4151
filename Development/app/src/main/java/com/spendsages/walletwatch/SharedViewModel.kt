@@ -40,7 +40,7 @@ class SharedViewModel(context: Context) : ViewModel() {
     *
     * Parameters: None.
     *
-    * Returns: CharSequence that represents the a string conversion of the DOM data
+    * Returns: CharSequence that represents the string conversion of the DOM data
     * in the XML data file at a point in time. */
     fun getString(doc: Document): CharSequence {
         return repository.docString(doc)

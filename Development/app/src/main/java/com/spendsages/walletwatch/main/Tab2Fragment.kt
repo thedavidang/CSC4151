@@ -103,7 +103,7 @@ class Tab2Fragment: Fragment() {
     /* Purpose: Controller method that disables and grays-out category selector or
     * enables and reveals category selector.
     *
-    * Parameters: isEnabled represents a Boolean of whether or not to enable the category selector.
+    * Parameters: isEnabled represents a Boolean of whether to enable the category selector.
     *
     * Returns: Nothing. */
     private fun toggleCategorySelector(isEnabled: Boolean) {
@@ -124,14 +124,14 @@ class Tab2Fragment: Fragment() {
     /* Purpose: Controller method that populates the line chart with the selected data set.
     *
     * Parameters: total represents the array of doubles for each data point.
-    * timeSpan represents whether the user selected 0) Last 7 Days, 1) Year To Date (YTD),
-    * 2) Last 12 Months,  3) Last Year, or 4) All Time.
-    * categoryPosition represent whether the user selected 0) All categories
-    * or 1-3) a specific Category.
+    * timeSpan represents whether the user selected (0) Last 7 Days, (1) Year To Date (YTD),
+    * (2) Last 12 Months, (3) Last Year, or (4) All Time.
+    * categoryPosition represent whether the user selected (0) All categories
+    * or (1-3) a specific Category.
     *
     * Returns: Nothing. */
     fun updateLineChart(dataPoints: DoubleArray, timeSpan: Int, category: Int) {
-        /* Initialize a Calender object. */
+        /* Initialize a Calendar object. */
         val cal: Calendar = Calendar.getInstance()
 
         /* Initialize 0-based counter for the selected time interval. */
@@ -407,7 +407,7 @@ class Tab2Fragment: Fragment() {
                 category2Amount = DataManager.lastYearTotal(doc, "c-2")
                 category3Amount = DataManager.lastYearTotal(doc, "c-3")
             }
-            /* Update the totals to use the All Time totals. */
+            /* Update the totals to use the All-Time totals. */
             else -> {
                 category1Amount = DataManager.getValueByID(doc, "c-1-t")!!.toDouble()
                 category2Amount = DataManager.getValueByID(doc, "c-2-t")!!.toDouble()

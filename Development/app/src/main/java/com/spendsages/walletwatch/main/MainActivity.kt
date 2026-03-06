@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets.Type.displayCutout
-import android.view.WindowInsets.Type.systemBars
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
@@ -99,11 +98,11 @@ class MainActivity: AppCompatActivity() {
         setContentView(binding.root)
         this.onConfigurationChanged(resources.configuration)
 
-        /* Setup the round progress bar circle that
+        /* Set up the round progress bar circle that
         * will be displayed while a tab is loading. */
         loadingBar = findViewById(R.id.loadingBar)
 
-        /* Setup the tab layout mediator, which will load the three tabs
+        /* Set up the tab layout mediator, which will load the three tabs
         * and select Tab 1 at app launch. */
         tabLayout = findViewById(R.id.mainTabs)
         binding.mainPager.adapter = MainPagerAdapter(supportFragmentManager, lifecycle)
@@ -155,7 +154,7 @@ class MainActivity: AppCompatActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        /* Setup the shared view model, so that all fragments can access the same live data. */
+        /* Set up the shared view model, so that all fragments can access the same live data. */
         model = ViewModelProvider(app,
             SharedViewModelFactory(app.applicationContext))[SharedViewModel::class.java]
     }
@@ -202,7 +201,7 @@ class MainActivity: AppCompatActivity() {
 
         /* Check if dollar amount is less than one billion. */
         return if (exponent < 9) {
-            /* Format dollar amount with dollar sign and thousand separator commas. */
+            /* Format dollar amount with dollar sign and the thousand separator commas. */
             "$ " + DecimalFormat("#,##0.00").format(amount)
         }
         /* Otherwise, dollar amount is extremely large (one billion or more). */

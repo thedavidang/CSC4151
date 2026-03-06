@@ -283,10 +283,10 @@ class RecyclerAdapter(private var categories: Array<String>) :
     /* Purpose: Creates an individual expense entry card using layout_card.xml.
     *
     * Parameters: viewGroup represents a ViewGroup object.
-    *             i represents the index position of this entry in the list of entries.
+    *             index represents the index position of this entry in the list of entries.
     *
     * Returns: An EntryViewHolder object, which is an individual expense entry card. */
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): EntryViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, index: Int): EntryViewHolder {
         return EntryViewHolder(LayoutInflater.from(viewGroup.context).inflate(
             R.layout.layout_card, viewGroup, false))
     }
@@ -294,13 +294,13 @@ class RecyclerAdapter(private var categories: Array<String>) :
     /* Purpose: Fills in the contents of an individual expense entry card.
     *
     * Parameters: entryViewHolder represents an individual expense entry card object.
-    *             i represents the index position of this entry in the list of entries.
+    *             index represents the index position of this entry in the list of entries.
     *
     * Returns: An EntryViewHolder object, which is an individual expense entry card. */
-    override fun onBindViewHolder(entryViewHolder: EntryViewHolder, i: Int) {
+    override fun onBindViewHolder(entryViewHolder: EntryViewHolder, index: Int) {
         /* Confirm that there is at least one entry to display in the list of filtered entries. */
         if (itemCount > 0) {
-            val entry = getItem(i)
+            val entry = getItem(index)
             entryViewHolder.bind(entry, categories[entry.category])
 
             entryViewHolder.deleteCheckbox.setOnClickListener {

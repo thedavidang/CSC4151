@@ -126,7 +126,7 @@ class Tab3Fragment: Fragment() {
             main.formatDollarAmount(selectedSum)
         }
         else {
-            /* If the sum somehow ended up going negative, display a zero sum. */
+            /* If the sum somehow ended up going negative, display a zero-sum. */
             "$ 0.00"
         }
 
@@ -157,7 +157,7 @@ class Tab3Fragment: Fragment() {
     /* Purpose: Controller method that disables and hides Edit Entry window or
     * enables and shows Edit Entry window.
     *
-    * Parameters: isEnabled represents a Boolean of whether or not to enable the Edit Entry window.
+    * Parameters: isEnabled represents a Boolean of whether to enable the Edit Entry window.
     *
     * Returns: Nothing. */
     private fun toggleEditWindow(isEnabled: Boolean) {
@@ -172,7 +172,7 @@ class Tab3Fragment: Fragment() {
     /* Purpose: Controller method that disables and hides CalendarView dateSelector or
     * enables and shows CalendarView dateSelector.
     *
-    * Parameters: isEnabled represents a Boolean of whether or not to enable the dateSelector.
+    * Parameters: isEnabled represents a Boolean of whether to enable the dateSelector.
     *
     * Returns: Nothing. */
     private fun toggleDateSelector(isEnabled: Boolean) {
@@ -188,11 +188,11 @@ class Tab3Fragment: Fragment() {
         }
     }
 
-    /* Purpose: Controller method that disables and greys-out a button or
+    /* Purpose: Controller method that disables and grays-out a button or
     * enables and reveals a button.
     *
     * Parameters: button represents the Button widget to toggle.
-    * isEnabled represents a Boolean of whether or not to enable the button.
+    * isEnabled represents a Boolean of whether to enable the button.
     *
     * Returns: Nothing. */
     private fun toggleButton(button: Button, isEnabled: Boolean) {
@@ -330,7 +330,7 @@ class Tab3Fragment: Fragment() {
         main = requireActivity() as MainActivity
         model = main.model
         
-        /* Setup the RecyclerView, which will dynamically load entry cards as the user scrolls. */
+        /* Set up the RecyclerView, which will dynamically load entry cards as the user scrolls. */
         recycler = rootView.findViewById(R.id.cardRecycler)
         /* Set the RecyclerView to have a vertical layout. */
         recycler.layoutManager = LinearLayoutManager(context)
@@ -371,7 +371,7 @@ class Tab3Fragment: Fragment() {
                     updateDeselectAllCheckBoxText()
 
                     /* Toggle the deselect all checkbox and delete button
-                    * depending on whether or not any entries are selected. */
+                    * depending on whether any entries are selected. */
                     when (selectedEntries.size) {
                         1 -> {
                             toggleButton(deselectAllCheckBox, true)

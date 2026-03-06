@@ -66,7 +66,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
         this.onConfigurationChanged(resources.configuration)
 
-        /* Setup the tab layout mediator, which will load the three tabs and select Tab 1. */
+        /* Set up the tab layout mediator, which will load the three tabs and select Tab 1. */
         tabLayout = findViewById(R.id.settingsTabs)
         binding.settingsPager.adapter = SettingsPagerAdapter(supportFragmentManager, lifecycle)
         binding.settingsPager.reduceDragSensitivity()
@@ -83,7 +83,7 @@ class SettingsActivity : AppCompatActivity() {
                 .hideSoftInputFromWindow(binding.settingsPager.windowToken, 0)
         }.attach()
 
-        /* Setup the shared view model, so that all fragments can access the same live data. */
+        /* Set up the shared view model, so that all fragments can access the same live data. */
         model = ViewModelProvider(app,
             SharedViewModelFactory(app.applicationContext)
         )[SharedViewModel::class.java]

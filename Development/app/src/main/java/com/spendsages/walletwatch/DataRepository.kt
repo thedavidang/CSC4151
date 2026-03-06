@@ -72,7 +72,7 @@ class DataRepository(private val context: Context) {
     *
     * Returns: Array<String> that represents the category labels. */
     fun parseCategoryLabels() : Array<String> {
-        /* Setup the Simple API for XML Parser object. */
+        /* Set up the Simple API for XML Parser object. */
         val parser = SAXParserFactory.newInstance().newSAXParser()
         /* Implement the handler for the SAX parser.
         * This handler implements a purpose-built algorithm

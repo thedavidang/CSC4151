@@ -66,7 +66,7 @@ class Tab1Fragment: Fragment() {
     /* Purpose: Controller method that disables and hides CalendarView dateSelector or
     * enables and shows CalendarView dateSelector.
     *
-    * Parameters: isEnabled represents a Boolean of whether or not to enable the dateSelector.
+    * Parameters: isEnabled represents a Boolean of whether to enable the dateSelector.
     *
     * Returns: Nothing. */
     private fun toggleDateSelector(isEnabled: Boolean) {
@@ -82,10 +82,10 @@ class Tab1Fragment: Fragment() {
         }
     }
 
-    /* Purpose: Controller method that disables and greys-out category buttons or
+    /* Purpose: Controller method that disables and grays-out category buttons or
     * enables and reveals category buttons.
     *
-    * Parameters: isEnabled represents a Boolean of whether or not to enable the category buttons.
+    * Parameters: isEnabled represents a Boolean of whether to enable the category buttons.
     *
     * Returns: Nothing. */
     private fun toggleCategoryButtons(isEnabled: Boolean) {
@@ -255,7 +255,7 @@ class Tab1Fragment: Fragment() {
         categoryButtons[2] = rootView.findViewById(R.id.category3Button)
         /* The category buttons should initially be disabled. */
         toggleCategoryButtons(false)
-        /* Setup the submit listener for each corresponding category button. */
+        /* Set up the submit listener for each corresponding category button. */
         for ((index, button) in categoryButtons.withIndex()) {
             button?.setOnClickListener {
                 submitEntry(index + 1)

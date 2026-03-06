@@ -7,7 +7,7 @@ import java.time.Instant
 /* This class represents an Entry object,
 * which is an expense that has a dollar amount, possibly a description of purchase,
 * a timestamp of purchase, the category the expense entry falls under, and whether
-* or not the expense has been selected for deletion. */
+* the expense has been selected for deletion. */
 data class Entry(
     var id: String,
     var amount: Double,

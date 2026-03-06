@@ -55,10 +55,10 @@ class CategoryFragment : Fragment() {
 
     private lateinit var success : Toast
 
-    /* Purpose: Controller method that disables and greys-out Save Changes button or
+    /* Purpose: Controller method that disables and grays-out Save Changes button or
     * enables and reveals the Save Changes button.
     *
-    * Parameters: enable represents a Boolean of whether or not
+    * Parameters: enable represents a Boolean of whether
     *             to enable the Save Changes button.
     *
     * Returns: Nothing. */
@@ -93,9 +93,9 @@ class CategoryFragment : Fragment() {
         val categoryInputs = arrayOf("", "", "")
         for ((indexTextbox, categoryTextbox) in categoryTextboxes.withIndex()) {
             /* First, trim off any leading and trailing whitespaces.
-            *    (e.g. " Test Category   #1 " -> "Test Category   #1"
+            *    e.g. " Test Category   #1 " -> "Test Category   #1"
             * Then, truncate multiple whitespaces in between words into a single space each.
-            *    (e.g. "Test Category   #1" -> "Test Category #1"). */
+            *    e.g. "Test Category   #1" -> "Test Category #1" */
             categoryInputs[indexTextbox] = categoryTextbox!!.text.toString().trim().replace(
                 Regex("\\s+"), " ")
 
@@ -160,7 +160,7 @@ class CategoryFragment : Fragment() {
         model = settings.model
 
         saveButton = rootView.findViewById(R.id.saveButton)
-        /* Disable and grey-out the Save Changes button,
+        /* Disable and gray-out the Save Changes button,
         * since the user has not made any changes yet. */
         toggleSaveButton(false)
 
@@ -274,7 +274,7 @@ class CategoryFragment : Fragment() {
                 override fun afterTextChanged(s: Editable) {
                     /* Check if the user did not enter any word(s) into the category textbox. */
                     if (s.toString().isBlank()) {
-                        /* Disable and grey-out the Save Changes button. */
+                        /* Disable and gray-out the Save Changes button. */
                         toggleSaveButton(false)
                     } else {
                         /* Check if at least one new category has been entered.

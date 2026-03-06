@@ -93,7 +93,7 @@ object DataManager {
     * Returns: Array holding sub-totals for each of the past 7 days. */
     fun last7Days(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
-        val daysOfWeek = DoubleArray(7) { 0.0 }
+        val daysOfWeek = DoubleArray(7)
 
         var amount : String?
 
@@ -171,7 +171,7 @@ object DataManager {
     fun yearToDate(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
         val currentMonth = cal.get(Calendar.MONTH)
-        val monthsOfYear = DoubleArray(currentMonth + 1) { 0.0 }
+        val monthsOfYear = DoubleArray(currentMonth + 1)
 
         var amount : String?
 
@@ -249,7 +249,7 @@ object DataManager {
     * Returns: Array holding sub-totals for each of the past 12 months. */
     fun last12Months(doc: Document, categoryID : String) : DoubleArray {
         val cal: Calendar = Calendar.getInstance()
-        val monthsOfYear = DoubleArray(12) { 0.0 }
+        val monthsOfYear = DoubleArray(12)
 
         var amount : String?
 
@@ -323,7 +323,7 @@ object DataManager {
         return total
     }
 
-    /* Purpose: Grabs sub-totals of the the 12 calendar months from the
+    /* Purpose: Grabs sub-totals of the 12 calendar months from the
     *           prior year for one or all categories.
     *
     * Parameters: doc represents the Document of the XML data file.
@@ -338,7 +338,7 @@ object DataManager {
         * matter in this function, just the month and year.*/
         cal.set(cal.get(Calendar.YEAR) - 1, Calendar.DECEMBER, 1)
 
-        val monthsOfYear = DoubleArray(12) { 0.0 }
+        val monthsOfYear = DoubleArray(12)
 
         var amount : String?
 
@@ -407,7 +407,7 @@ object DataManager {
         }
 
         /* Initialize the array of year totals. */
-        val years = DoubleArray(yearOffset + 1) { 0.0 }
+        val years = DoubleArray(yearOffset + 1)
 
         if (categoryID == "all") {
             var yearSum: Double
@@ -723,7 +723,7 @@ object DataManager {
             /* Make sure child node exists and has attributes,
             * which should mean it has an id attribute. */
             if (child != null && child.hasAttributes()) {
-                /* Ensure the id attribute of the the node exists. */
+                /* Ensure the id attribute of the node exists. */
                 try {
                     val id = child.attributes.getNamedItem("id")
                     if (id != null) {
@@ -818,7 +818,7 @@ object DataManager {
     *             archive represents the Document of the Archive XML file.
     *             labels represent an array of which categories to overwrite.
     *
-    * Returns: Boolean of whether or not a category was restored. */
+    * Returns: Boolean of whether a category was restored. */
     fun changeCategories(activity : Activity, doc : Document,
                          archive : Document, labels : Array<String?>): Boolean {
         /* Initialize archived category node to restore and set to null. */
@@ -924,7 +924,7 @@ object DataManager {
                                 return@run null
                             }
 
-                            /* Move the non-clone child category data out of the the archive and
+                            /* Move the non-clone child category data out of the archive and
                             * paste it into the category in the WalletWatch.xml. */
                             val year = doc.adoptNode(child)
                             category.appendChild(year)
