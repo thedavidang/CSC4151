@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId = "com.spendsages.walletwatch"
-        minSdk = 28
+        minSdk = 30
         targetSdk = 36
         versionCode = 15
         versionName = "1.2.2"
