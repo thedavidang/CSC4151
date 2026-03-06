@@ -25,6 +25,7 @@ import com.spendsages.walletwatch.databinding.FragmentTab1Binding
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.util.Locale
 
@@ -178,9 +179,12 @@ class Tab1Fragment: Fragment() {
         )
         /* Convert date input into "yyyy-MM-dd" format. */
         val date = modelDateFormat.format(userDateFormat.parse(dateInput.text.toString())!!)
+        /* Get current UTC time and append it to selected date input. */
+        val timestampString = Instant.now().toString().replaceRange(0, 10, date)
 
         /* Add the entry to the XML data file. */
-        DataManager.addEntry(model.get(), amount, description, date, category.toString())
+        DataManager.addEntry(model.get(),
+            amount, description, timestampString, category.toString())
 
         /* Notify Tab3Fragment that it needs to re-initialize its data
         * as to acquire the new entry (or entries if the user added

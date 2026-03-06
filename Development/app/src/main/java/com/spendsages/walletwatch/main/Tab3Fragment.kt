@@ -76,6 +76,7 @@ class Tab3Fragment: Fragment() {
     private lateinit var editOverlay: View
 
     private lateinit var entryID: String
+    private lateinit var entryTime: Instant
     private val originalInputs = arrayOfNulls<String?>(4)
     private val changedInputs = arrayOfNulls<String?>(4)
 
@@ -275,13 +276,15 @@ class Tab3Fragment: Fragment() {
     private fun submitEdit() {
         val changedAmount = changedInputs[0]!!.substring(2).replace(",", "").toDouble()
         val date = modelDateFormat.format(userDateFormat.parse(changedInputs[2]!!)!!)
+        val newTimestamp = Instant.parse("${date}T${entryTime.toString().substring(11)}")
         val category = (changedInputs[3]!!.toInt() + 1).toString()
 
         var state = false
 
         /* Edit the entry in the XML data file. */
         val newEntryID = DataManager.editEntry(model.get(), entryID,
-            changedInputs[0]!!, changedInputs[1]!!, date, category
+            changedInputs[0]!!, changedInputs[1]!!,
+            newTimestamp.toString(), category
         )
 
         /* Update the data model. */
@@ -306,7 +309,7 @@ class Tab3Fragment: Fragment() {
         adapterRecycler.submitEdit(spinFiltering.selectedItemPosition,
             spinSorting.selectedItemPosition, entryID) { entry ->
             entry.copy(id = newEntryID, amount = changedAmount,
-                description = changedInputs[1]!!, timestamp = Instant.parse("${date}T00:00:00.00Z"),
+                description = changedInputs[1]!!, timestamp = newTimestamp,
                 category = category.toInt(), selected = state)
         }
 
@@ -394,8 +397,10 @@ class Tab3Fragment: Fragment() {
                 override fun onButtonClick(
                     entry: Entry, viewHolder: RecyclerAdapter.EntryViewHolder
                 ) {
-                    /* Retrieve the id, amount, description, date, and category of the entry. */
+                    /* Retrieve the id, time, amount, description, date, and category of the entry. */
                     entryID = entry.id
+                    entryTime = entry.timestamp
+
                     amountInput.setText(viewHolder.amount.text)
                     originalInputs[0] = viewHolder.amount.text.toString()
                     changedInputs[0] = viewHolder.amount.text.toString()

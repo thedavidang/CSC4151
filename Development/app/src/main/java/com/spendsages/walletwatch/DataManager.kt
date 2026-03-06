@@ -7,7 +7,6 @@ import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.io.OutputStreamWriter
 import java.io.StringWriter
-import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
@@ -504,16 +503,16 @@ object DataManager {
     * Parameters: doc represents the Document of the XML data file.
     *             amountRaw represents the string of the raw dollar amount input.
     *             description represents the string of the optional expense description.
-    *             date represents the string of the date of the expense.
+    *             timestamp represents the string of the date and time of the expense.
     *             category represents the string of the selected category of the expense.
     *
     * Returns: A String representing the new Entry's ID. */
     fun addEntry(doc : Document, amountRaw : String, description : String,
-                 date: String, category: String) : String {
+                 timestamp: String, category: String) : String {
         /* Extract year, month, and day from date string. */
-        val year = date.substring(0, 4)
-        val month = date.substring(5, 7)
-        val day = date.substring(8)
+        val year = timestamp.substring(0, 4)
+        val month = timestamp.substring(5, 7)
+        val day = timestamp.substring(8)
         /* Determine how much of the date XML tree hierarchy already exists. */
         val dateExists = findExistingDateTags(doc, category, year, month, day)
         /* Remove any thousand separator commas. */
@@ -620,12 +619,10 @@ object DataManager {
         descriptionTag.textContent = description
         entryTag.appendChild(descriptionTag)
 
-        /* Grab the current timestamp from the device clock in UTC,
-        * but replace the date portion with the user's date input. */
+        /* Create the Timestamp element. */
         val timestampTag = doc.createElement("timestamp")
         timestampTag.setAttribute("id", "$id-s")
-        timestampTag.textContent =
-            Instant.now().toString().replaceRange(0, 10, date)
+        timestampTag.textContent = timestamp
         entryTag.appendChild(timestampTag)
 
         /* Append the new Entry element right after the last Entry element of the Day element.
@@ -991,14 +988,14 @@ object DataManager {
     * Parameters: doc represents the Document of the XML data file.
     *             amountRaw represents the string of the raw dollar amount input.
     *             description represents the string of the optional expense description.
-    *             date represents the string of the date of the expense.
+    *             timestamp represents the string of the date and time of the expense.
     *             category represents the string of the selected category of the expense.
     *
     * Returns: A String representing the Entry's new ID. */
     fun editEntry(doc: Document, entryID: String, amountRaw : String, description : String,
-                  date: String, category: String) : String {
+                  timestamp: String, category: String) : String {
         /* Add a new entry with the updated attributes. */
-        val id = addEntry(doc, amountRaw, description, date, category)
+        val id = addEntry(doc, amountRaw, description, timestamp, category)
         /* Remove the old entry. */
         deleteEmptyTags(doc, entryID)
 
