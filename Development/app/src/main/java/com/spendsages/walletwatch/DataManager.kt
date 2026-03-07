@@ -512,7 +512,7 @@ object DataManager {
         /* Extract year, month, and day from date string. */
         val year = timestamp.substring(0, 4)
         val month = timestamp.substring(5, 7)
-        val day = timestamp.substring(8)
+        val day = timestamp.substring(8, 10)
         /* Determine how much of the date XML tree hierarchy already exists. */
         val dateExists = findExistingDateTags(doc, category, year, month, day)
         /* Remove any thousand separator commas. */
