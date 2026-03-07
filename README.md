@@ -27,13 +27,13 @@ WalletWatch© is an app designed for budget-minded individuals that are unwillin
 Not only is WalletWatch© securely offline, but it is also extremely quick and easy to use! A simplicity-driven design and intuitive user interface allow you the capability to rapidly add purchases and visualize charts of your aggregated expenses. This app is excellent for those who are juggling multiple bank accounts, want to discover how much money they spend in a particular category, or who simply want to keep their financial information more private.
 
 ## Latest Stable Version
-- 1.2.2
+- 1.3.0
 
 ## Recommended System Requirements
-- Android 15 (Vanilla Ice Cream) and up
+- Android 16 (B "Baklava") and up
 
 ## Minimum System Requirements
-- Android 9 (Pie) and up
+- Android 11 (R) and up
 
 ## Installation Instructions
 ### Available on the Google Play Store:
@@ -47,10 +47,10 @@ If you prefer not to install WalletWatch from the Google Play Store, then you ma
 - https://github.com/thedavidang/CSC4151/blob/master/APK_SETUP.md
 
 Basically, you will download and install the WalletWatch APK installer file from this link:
-- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-v1.2.2-Installer.apk
+- https://github.com/thedavidang/CSC4151/raw/master/WalletWatch-v1.3.0-Installer.apk
 
 ### Alternative 2 - Download repo and run in Android Studio:
-If you do not have an Android smartphone device or have a version of Android earlier than Android 9 (Pie) installed, then follow this step-by-step walkthrough to run the WalletWatch app in an emulator on your computer:
+If you do not have an Android smartphone device or have a version of Android earlier than Android 11 (R) installed, then follow this step-by-step walkthrough to run the WalletWatch app in an emulator on your computer:
 - https://github.com/thedavidang/CSC4151/blob/master/DEV_SETUP.md
 
 ## Application Usage
